@@ -34,7 +34,6 @@ A flexible, two-column toolbar component for displaying toggle switches and acti
 components/
   toolbar/
     toolbar.tsx          # Main ToolBar component (export default)
-    toggle-group.tsx     # Toggle grouping logic (internal utility)
     index.tsx            # Public API exports
 ```
 
@@ -43,11 +42,12 @@ components/
 ```
 ToolBar (container)
 ├── Left Section (flex container)
-│   └── ToggleGroup
-│       └── ToggleSwitch (mapped from leftButtons)
+│   └── ToggleSwitch (mapped from leftButtons)
 └── Right Section (flex container)
     └── Button (mapped from rightButtons)
 ```
+
+**Note:** Toggle grouping logic is implemented directly in `toolbar.tsx` for simplicity. A separate `toggle-group.tsx` file is not needed.
 
 ## API Design
 
@@ -70,7 +70,7 @@ interface ToggleButtonConfig {
   id: string
   label: string
   icon: React.ComponentType<{ className?: string }>
-  defaultState?: boolean     // Default: false
+  checked: boolean            // Current state (controlled by parent)
   onChange: (checked: boolean) => void
 }
 
@@ -113,14 +113,14 @@ function JsonDiffPage() {
           id: 'ignoreKeyOrder',
           label: 'Ignore Key Order',
           icon: IconKey,
-          defaultState: toggles.ignoreKeyOrder,
+          checked: toggles.ignoreKeyOrder,
           onChange: handleToggleChange('ignoreKeyOrder')
         },
         {
           id: 'prettyPrint',
           label: 'Pretty Print',
           icon: IconCode,
-          defaultState: toggles.prettyPrint,
+          checked: toggles.prettyPrint,
           onChange: handleToggleChange('prettyPrint')
         }
       ]}
@@ -230,6 +230,7 @@ The ToolBar is a **controlled component** - all state is managed by the parent.
 - `onChange` callbacks notify parent of changes
 - Parent implements business logic and validation
 - Enables easy persistence (localStorage, URL params, etc.)
+- **Important:** The `checked` prop is the current state from parent, not an initial value. This follows React's controlled component pattern (similar to how `<input checked={value} />` works).
 
 ### Button State
 
