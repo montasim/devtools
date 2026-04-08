@@ -11,30 +11,10 @@ import { Separator } from "@/components/ui/separator";
 import { Logo } from "@/components/logo";
 
 const footerLinks = [
-  {
-    title: "Overview",
-    href: "#",
-  },
-  {
-    title: "Features",
-    href: "#",
-  },
-  {
-    title: "Pricing",
-    href: "#",
-  },
-  {
-    title: "Careers",
-    href: "#",
-  },
-  {
-    title: "Help",
-    href: "#",
-  },
-  {
-    title: "Privacy",
-    href: "#",
-  },
+  { label: "JSON", href: "/" },
+  { label: "TEXT", href: "/text" },
+  { label: "XML", href: "/xml" },
+  { label: "CSV", href: "/csv" },
 ];
 
 const Footer = () => {
@@ -48,13 +28,13 @@ const Footer = () => {
               <Logo />
 
               <ul className="mt-6 flex flex-wrap items-center gap-4">
-                {footerLinks.map(({ title, href }) => (
-                  <li key={title}>
+                {footerLinks.map(({ label, href }) => (
+                  <li key={label}>
                     <Link
                       className="text-muted-foreground hover:text-foreground"
                       href={href}
                     >
-                      {title}
+                      {label}
                     </Link>
                   </li>
                 ))}

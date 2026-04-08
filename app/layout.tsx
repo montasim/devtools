@@ -31,9 +31,13 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-      <Navbar/>
-      {children}
-      <Footer/>
+        <Navbar/>
+
+        <main className="py-4 sm:py-6 lg:py-8">
+          {children}
+        </main>
+        
+        <Footer/>
       </body>
     </html>
   );
