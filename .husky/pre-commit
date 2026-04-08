@@ -1,0 +1,2 @@
+sh .husky/check-package-manager
+pnpm lint-staged

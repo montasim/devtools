@@ -1,0 +1,24 @@
+#!/bin/sh
+# Check if pnpm-lock.yaml exists and is being maintained
+
+if [ ! -f "pnpm-lock.yaml" ]; then
+  echo "❌ Error: pnpm-lock.yaml not found. This project uses pnpm as the package manager."
+  echo "   Please run 'pnpm install' to generate the lock file."
+  exit 1
+fi
+
+# Warn if other lock files exist
+if [ -f "package-lock.json" ]; then
+  echo "⚠️  Warning: package-lock.json detected. This project uses pnpm."
+  echo "   Please remove package-lock.json and use 'pnpm install'"
+fi
+
+if [ -f "yarn.lock" ]; then
+  echo "⚠️  Warning: yarn.lock detected. This project uses pnpm."
+  echo "   Please remove yarn.lock and use 'pnpm install'"
+fi
+
+if [ -f "bun.lockb" ]; then
+  echo "⚠️  Warning: bun.lockb detected. This project uses pnpm."
+  echo "   Please remove bun.lockb and use 'pnpm install'"
+fi

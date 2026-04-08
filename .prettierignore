@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+.next/
+# Coverage
+coverage/
+
+# Vercel
+.vercel/
+
+# TypeScript
+next-env.d.ts
+# Environment files
+.env
+.env.*
+
+# Lock files
+package-lock.json
+pnpm-lock.yaml
+
+# Auto-generated
+*.min.css

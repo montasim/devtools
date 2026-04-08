@@ -1,0 +1,28 @@
+# <type>(<scope>): <subject>
+#
+# Type: feat | fix | docs | style | refactor | perf | test | build | ci | chore | revert
+# Scope: (optional) area of code affected
+# Subject: brief summary of changes (imperative mood, no period)
+#
+# Body (optional): detailed description of what changed and why
+#
+# Footer (optional): references to issues, breaking changes, etc.
+#
+# Examples:
+# feat(auth): add OAuth2 login support
+# fix: resolve memory leak in data fetching
+# docs: update installation instructions
+# feat!: breaking change - remove deprecated API
+#
+# Type descriptions:
+# feat     - New feature
+# fix      - Bug fix
+# docs     - Documentation changes
+# style    - Code style changes (formatting, etc.)
+# refactor - Code refactoring
+# perf     - Performance improvements
+# test     - Adding or updating tests
+# build    - Build system changes
+# ci       - CI/CD changes
+# chore    - Maintenance tasks
+# revert   - Revert a previous commit
