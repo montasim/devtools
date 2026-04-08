@@ -60,6 +60,21 @@ Navbar (container)
     └── AuthButtons
 ```
 
+## Design Decisions
+
+### Logo Component Strategy
+**Current Behavior:** Desktop uses `<Logo />` component, mobile uses custom `<img>` tag
+**Refactor Decision:** Maintain current behavior during refactor
+**Rationale:** The current implementation works correctly. Standardizing the logo approach is a separate concern and can be addressed in a future refactor if needed.
+
+### Radix UI Dependencies
+This refactor maintains existing Radix UI primitives:
+- `NavigationMenu` (desktop dropdowns)
+- `Accordion` (mobile accordion menus)
+- `Sheet` (mobile drawer)
+
+These dependencies are preserved to maintain functionality while improving code organization.
+
 ## Component Responsibilities
 
 ### Navbar (navbar.tsx)
@@ -133,11 +148,22 @@ interface NavbarProps {
 - Shared behavior configurations (animation timing, etc.)
 - Avoids prop drilling for deep components
 
+**Context Interface:**
+```typescript
+interface NavContextValue {
+  animationDuration?: number; // Menu animation timing in ms
+  theme?: 'light' | 'dark' | 'system'; // Theme preference
+}
+```
+
 ### types.ts
 **Purpose:** Centralized type definitions
 **Exports:**
 - `MenuItem`, `AuthConfig`, `LogoConfig`, `NavbarProps`
+- `NavContextValue`
 - Single source of truth for interfaces
+
+**Note:** Current interface is `Navbar1Props` (likely a typo). This refactor will rename it to `NavbarProps` for consistency with the component name.
 
 ### constants.ts
 **Purpose:** Default configurations
@@ -285,6 +311,9 @@ NavMenu → NavMenuItem → SubMenuItem
 6. ✅ TypeScript compilation passes
 7. ✅ Production build succeeds
 8. ✅ Manual testing confirms desktop and mobile navigation work correctly
+9. ✅ No performance regression (Lighthouse scores maintained or improved)
+10. ✅ Keyboard navigation works correctly (WCAG 2.1 AA compliant)
+11. ✅ All component interfaces are properly documented with JSDoc comments
 
 ## Future Considerations
 
