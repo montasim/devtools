@@ -1,8 +1,8 @@
 import { SunIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/logo";
-import { NavMenu } from "@/components/nav-menu";
-import { NavigationSheet } from "@/components/navigation-sheet";
+import { NavMenu } from "@/components/navbar/nav-menu";
+import { NavigationSheet } from "@/components/navbar/navigation-sheet";
 
 const Navbar = () => {
   return (
