@@ -17,9 +17,12 @@ const Navbar = () => {
 
                 <div className="flex items-center gap-3">
                     <Button className="hidden sm:inline-flex" variant="outline">
-                        Sign In
+                        History
                     </Button>
-                    <Button>Sign Up</Button>
+                    <Button>Shortcuts</Button>
+                    <Button className="hidden sm:inline-flex" variant="outline">
+                        Docs
+                    </Button>
                     <ThemeToggle />
 
                     {/* Mobile Menu */}
