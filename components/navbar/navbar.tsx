@@ -3,6 +3,8 @@ import { Logo } from '@/components/logo';
 import { NavMenu } from '@/components/navbar/nav-menu';
 import { NavigationSheet } from '@/components/navbar/navigation-sheet';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
+import { Clock, Keyboard, Book } from 'lucide-react';
+import { Separator } from '../ui/separator';
 
 const Navbar = () => {
     return (
@@ -15,18 +17,26 @@ const Navbar = () => {
                     <NavMenu className="hidden md:block" />
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 overflow-visible">
                     <Button className="hidden sm:inline-flex" variant="outline">
+                        <Clock className="mr-2 h-4 w-4" />
                         History
                     </Button>
-                    <Button className="hidden sm:inline-flex">Shortcuts</Button>
+                    <Button className="hidden sm:inline-flex">
+                        <Keyboard className="mr-2 h-4 w-4" />
+                        Shortcuts
+                    </Button>
                     <Button className="hidden sm:inline-flex" variant="outline">
+                        <Book className="mr-2 h-4 w-4" />
                         Docs
                     </Button>
+
+                    <Separator orientation="vertical" className='hidden md:block' />
+
                     <ThemeToggle />
 
                     {/* Mobile Menu */}
-                    <div className="md:hidden">
+                    <div className="shrink-0 md:hidden flex items-center">
                         <NavigationSheet />
                     </div>
                 </div>
