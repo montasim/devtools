@@ -19,7 +19,7 @@ const Navbar = () => {
                     <Button className="hidden sm:inline-flex" variant="outline">
                         History
                     </Button>
-                    <Button>Shortcuts</Button>
+                    <Button className="hidden sm:inline-flex">Shortcuts</Button>
                     <Button className="hidden sm:inline-flex" variant="outline">
                         Docs
                     </Button>
