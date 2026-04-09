@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { HardDrive, Type, FileText, AlignLeft, Layers, GitBranch } from 'lucide-react';
 import type { ParseError } from './types';
 
 export interface EditorStats {
@@ -102,27 +103,36 @@ export function EditorFooter({ content, error }: EditorFooterProps) {
     const stats = useMemo(() => calculateStats(content), [content]);
 
     return (
-        <div className="flex items-center justify-between px-2 py-1 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between px-3 py-1.5 border-t border-gray-200 dark:border-gray-700">
             {/* Left side: Statistics */}
-            <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
-                <span title="File size">{stats.fileSize}</span>
-                <span className="text-gray-300 dark:text-gray-600">|</span>
-                <span title="Characters">{stats.characterCount} chars</span>
-                <span className="text-gray-300 dark:text-gray-600">|</span>
-                <span title="Words">{stats.wordCount} words</span>
-                <span className="text-gray-300 dark:text-gray-600">|</span>
-                <span title="Lines">{stats.lineCount} lines</span>
+            <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                <span title="File size" className="flex items-center gap-1.5">
+                    <HardDrive className="h-3.5 w-3.5" />
+                    {stats.fileSize}
+                </span>
+                <span title="Characters" className="flex items-center gap-1.5">
+                    <Type className="h-3.5 w-3.5" />
+                    {stats.characterCount}
+                </span>
+                <span title="Words" className="flex items-center gap-1.5">
+                    <FileText className="h-3.5 w-3.5" />
+                    {stats.wordCount}
+                </span>
+                <span title="Lines" className="flex items-center gap-1.5">
+                    <AlignLeft className="h-3.5 w-3.5" />
+                    {stats.lineCount}
+                </span>
                 {stats.depth > 0 && (
-                    <>
-                        <span className="text-gray-300 dark:text-gray-600">|</span>
-                        <span title="Max nesting depth">Depth: {stats.depth}</span>
-                    </>
+                    <span title="Max nesting depth" className="flex items-center gap-1.5">
+                        <Layers className="h-3.5 w-3.5" />
+                        {stats.depth}
+                    </span>
                 )}
                 {stats.paths.length > 0 && (
-                    <>
-                        <span className="text-gray-300 dark:text-gray-600">|</span>
-                        <span title={`Found ${stats.paths.length} paths`}>{stats.paths.length} paths</span>
-                    </>
+                    <span title={`Found ${stats.paths.length} paths`} className="flex items-center gap-1.5">
+                        <GitBranch className="h-3.5 w-3.5" />
+                        {stats.paths.length}
+                    </span>
                 )}
             </div>
 
