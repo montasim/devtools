@@ -5,6 +5,7 @@ import { EditorPaneProps } from './types';
 import { JsonEditor } from './json-editor';
 import { DiffPanel } from './diff-panel';
 import { useJsonDiff } from './use-json-diff';
+import { Separator } from '../ui/separator';
 
 export interface EditorPaneRef {
     triggerCompare: () => Promise<void>;
@@ -86,24 +87,31 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
     return (
         <div className={className}>
             {/* Editor Panes */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <JsonEditor
-                    label="Original"
-                    value={leftContent}
-                    onChange={setLeftContent}
-                    onError={(error) =>
-                        setLeftValid(error === null && leftContent.trim().length > 0)
-                    }
-                />
+            <div className="flex flex-col md:flex-row gap-4 mb-4">
+                <div className="flex-1">
+                    <JsonEditor
+                        label="Original"
+                        value={leftContent}
+                        onChange={setLeftContent}
+                        onError={(error) =>
+                            setLeftValid(error === null && leftContent.trim().length > 0)
+                        }
+                    />
+                </div>
 
-                <JsonEditor
-                    label="Modified"
-                    value={rightContent}
-                    onChange={setRightContent}
-                    onError={(error) =>
-                        setRightValid(error === null && rightContent.trim().length > 0)
-                    }
-                />
+                <Separator orientation='vertical' className="hidden md:block" />
+                <Separator orientation='horizontal' className="block md:hidden" />
+
+                <div className="flex-1">
+                    <JsonEditor
+                        label="Modified"
+                        value={rightContent}
+                        onChange={setRightContent}
+                        onError={(error) =>
+                            setRightValid(error === null && rightContent.trim().length > 0)
+                        }
+                    />
+                </div>
             </div>
 
             {/* Diff Panel */}
