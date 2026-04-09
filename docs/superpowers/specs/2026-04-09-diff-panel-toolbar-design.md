@@ -74,18 +74,34 @@ DiffPanelToolbar (main container)
 
 ### State Management
 
-**Local State:**
+**Controlled Component Pattern:**
+The toolbar is a controlled component. The parent manages the `viewMode` state and passes it down:
+
+```typescript
+// In parent component (e.g., DiffPanel)
+const [viewMode, setViewMode] = useState<ViewMode>('unified');
+
+<DiffPanelToolbar
+  viewMode={viewMode}
+  onViewModeChange={setViewMode}
+  // ... other props
+/>
+```
+
+**Local State (Internal to Toolbar):**
 ```typescript
 {
-  viewMode: 'split' | 'unified' | 'inline';  // default: 'unified'
-  isShareDialogOpen: boolean;
-  isOptionsMenuOpen: boolean;
+  isShareDialogOpen: boolean;  // Managed internally
+  isOptionsMenuOpen: boolean;   // Managed by DropdownMenu component
 }
 ```
 
 **Props (Input):**
 ```typescript
 interface DiffPanelToolbarProps {
+  // View mode (controlled)
+  viewMode: ViewMode;
+
   // Statistics
   additionCount: number;
   deletionCount: number;
@@ -248,15 +264,19 @@ interface DiffPanelToolbarProps {
 **New Integration:**
 ```typescript
 // In diff-panel.tsx
+const [viewMode, setViewMode] = useState<ViewMode>('unified');
+
 <DiffPanelToolbar
+  viewMode={viewMode}                              // NEW: controlled prop
   additionCount={diffResult.additionCount}
   deletionCount={diffResult.deletionCount}
   modificationCount={diffResult.modificationCount}  // NEW
   totalLines={diffResult.lineCount}                 // NEW
-  onViewModeChange={(mode) => setViewMode(mode)}    // NEW
+  onViewModeChange={setViewMode}                    // NEW: callback
   onShare={() => openShareDialog()}                 // NEW
   onExport={(format) => handleExport(format)}       // NEW
   onFilterChange={(filter) => setFilter(filter)}    // NEW
+  onPanelToggle={(panel) => togglePanel(panel)}     // NEW
 />
 ```
 
@@ -273,6 +293,35 @@ export interface DiffResult {
   modificationCount: number;  // NEW FIELD
 }
 ```
+
+**Calculating modificationCount:**
+Since the existing `DiffLine` type only has `'addition' | 'deletion' | 'unchanged'`, modifications should be calculated as pairs of adjacent additions and deletions at the same line position. Implementation approach:
+
+```typescript
+// In diff computation logic (e.g., lib/json-diff.ts or similar)
+function calculateModificationCount(hunks: DiffHunk[]): number {
+  let modifications = 0;
+  hunks.forEach(hunk => {
+    for (let i = 0; i < hunk.lines.length - 1; i++) {
+      const current = hunk.lines[i];
+      const next = hunk.lines[i + 1];
+      // Count deletion followed by addition as a modification
+      if (current.type === 'deletion' && next.type === 'addition' &&
+          current.oldLineNumber === next.newLineNumber) {
+        modifications++;
+      }
+    }
+  });
+  return modifications;
+}
+```
+
+**Alternative (Simpler):**
+If modification tracking is too complex for the current diff algorithm, `modificationCount` can be calculated as:
+```typescript
+modificationCount = Math.min(additionCount, deletionCount);
+```
+This treats modifications as the minimum of additions/deletions, representing lines that were both removed and added.
 
 ### Share Dialog (Future Component)
 
@@ -325,25 +374,45 @@ components/editor-pane/
 ## Success Criteria
 
 1. ✅ Toolbar displays accurate diff statistics
-2. ✅ View mode tabs work correctly
-3. ✅ Share button opens dialog
+2. ✅ View mode tabs work correctly and trigger callbacks
+3. ✅ Share button triggers callback (dialog implementation is separate follow-up)
 4. ✅ Three-dot menu shows all sections and options
-5. ✅ Component is fully typed with TypeScript
-6. ✅ Dark mode works correctly
-7. ✅ Responsive design passes mobile tests
-8. ✅ Accessibility standards met
-9. ✅ Integrates seamlessly with existing DiffPanel
-10. ✅ No breaking changes to existing code
+5. ✅ Menu items trigger appropriate callbacks (export, filter, panels)
+6. ✅ Component is fully typed with TypeScript
+7. ✅ Dark mode works correctly
+8. ✅ Responsive design passes mobile tests
+9. ✅ Accessibility standards met
+10. ✅ Integrates seamlessly with existing DiffPanel
+11. ✅ No breaking changes to existing code
 
-## Open Questions
+## Scope Clarifications
 
-1. Should share dialog be implemented in this phase or as a follow-up?
-2. Should panel toggles (Bookmarks, Tree Panel, etc.) be implemented now or stubbed?
-3. Do we need animation for view mode transitions?
+**In Scope (This Implementation):**
+- Complete toolbar component with all UI elements
+- View mode tabs (Split/Unified/Inline) as controlled component
+- Diff statistics display with percentage calculation
+- Share button (triggers callback, dialog is separate)
+- Three-dot menu with all sections (Filter Changes, Export, Panels)
+- Menu items trigger callbacks (implementation of handlers is parent's responsibility)
+- Responsive design and accessibility
+- TypeScript interfaces and type definitions
+- Integration with existing DiffPanel component
+
+**Out of Scope (Follow-up Work):**
+- Share dialog UI component (toolbar only triggers `onShare` callback)
+- Implementation of export handlers (JSON patch, merge patch, etc.)
+- Implementation of panel toggles (bookmarks, tree panel, statistics, validation)
+- Actual diff rendering for Split/Unified/Inline views (toolbar only manages state)
+- Animation for view mode transitions (can be added later)
+
+**Rationale:**
+The toolbar is a presentation component that manages UI state and triggers callbacks. Actual implementation of share dialog, export functionality, and panel components should be separate responsibilities to maintain component isolation and enable incremental development.
 
 ## Timeline Estimate
 
 - Component implementation: 2-3 hours
+- Interface updates (DiffResult extension): 0.5-1 hour
 - Integration and testing: 1-2 hours
-- Share dialog (if included): +1-2 hours
-- **Total: 3-5 hours** (depending on scope)
+- **Total: 3.5-6 hours**
+
+Note: This excludes share dialog implementation and handler implementations (exports, panels), which are separate follow-up tasks.
