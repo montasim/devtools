@@ -290,66 +290,31 @@ export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpe
 
                     <Separator />
 
-                    {/* Export & Copy Options */}
+                    {/* Copy & Export Options */}
                     <div className="space-y-3">
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                             Export Options
                         </label>
                         <div className="grid grid-cols-1 gap-2">
-                            <Button
-                                variant="outline"
-                                className="w-full justify-start"
-                                onClick={copyDiffToClipboard}
-                                disabled={!diffResult}
-                            >
-                                <Copy className="h-4 w-4 mr-2" />
-                                Copy Diff to Clipboard
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="w-full justify-start"
-                                onClick={copyAsJSONPatch}
-                                disabled={!diffResult}
-                            >
-                                <Copy className="h-4 w-4 mr-2" />
-                                Copy as JSON Patch
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="w-full justify-start"
-                                onClick={copyAsMergePatch}
-                                disabled={!diffResult}
-                            >
-                                <Copy className="h-4 w-4 mr-2" />
-                                Copy as Merge Patch
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="w-full justify-start"
-                                onClick={downloadPatch}
-                                disabled={!diffResult}
-                            >
-                                <Download className="h-4 w-4 mr-2" />
-                                Download Patch
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="w-full justify-start"
-                                onClick={exportHTMLReport}
-                                disabled={!diffResult}
-                            >
-                                <FileText className="h-4 w-4 mr-2" />
-                                Export HTML Report
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="w-full justify-start"
-                                onClick={copyJSONPaths}
-                                disabled={!diffResult}
-                            >
-                                <Share2 className="h-4 w-4 mr-2" />
-                                Copy JSON Paths
-                            </Button>
+                            {[
+                                { icon: Copy, label: 'Copy Diff to Clipboard', onClick: copyDiffToClipboard },
+                                { icon: Copy, label: 'Copy as JSON Patch', onClick: copyAsJSONPatch },
+                                { icon: Copy, label: 'Copy as Merge Patch', onClick: copyAsMergePatch },
+                                { icon: Share2, label: 'Copy JSON Paths', onClick: copyJSONPaths },
+                                { icon: Download, label: 'Download Patch', onClick: downloadPatch },
+                                { icon: FileText, label: 'Export HTML Report', onClick: exportHTMLReport },
+                            ].map(({ icon: Icon, label, onClick }) => (
+                                <Button
+                                    key={label}
+                                    variant="outline"
+                                    className="w-full justify-start"
+                                    onClick={onClick}
+                                    disabled={!diffResult}
+                                >
+                                    <Icon className="h-4 w-4 mr-2" />
+                                    {label}
+                                </Button>
+                            ))}
                         </div>
                     </div>
 
