@@ -152,7 +152,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
     }, [value]);
 
     // Handle file upload
-    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
 
@@ -199,37 +199,37 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
 
         // Reset input so same file can be selected again
         event.target.value = '';
-    };
+    }, [onChange, onError]);
 
     // Handle clear editor content
-    const handleClear = () => {
+    const handleClear = useCallback(() => {
         onChange('');
         setError(null);
         onError(null);
-    };
+    }, [onChange, onError]);
 
     // Handle copy link to clipboard
-    const handleCopyLink = () => {
+    const handleCopyLink = useCallback(() => {
         // Generate a shareable link with current content
         const encoded = btoa(value);
         const url = `${window.location.origin}?content=${encoded}`;
         navigator.clipboard.writeText(url);
-    };
+    }, [value]);
 
     // Handle search in editor
-    const handleSearch = () => {
+    const handleSearch = useCallback(() => {
         // Focus the editor and trigger search (CodeMirror search)
         if (viewRef.current) {
             // Trigger search dialog - this would need proper CodeMirror search extension
             console.log('Search triggered');
         }
-    };
+    }, []);
 
     // Handle more menu
-    const handleMoreMenu = () => {
+    const handleMoreMenu = useCallback(() => {
         // Open more options menu
         console.log('More menu opened');
-    };
+    }, []);
 
     // Define action buttons dynamically
     const actionButtons = useMemo(
@@ -255,6 +255,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                 label: 'Search',
                 onClick: handleSearch,
                 title: 'Search',
+                isSearch: true,
             },
             {
                 id: 'clear',
@@ -283,7 +284,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                 </label>
                 <div className="flex items-center gap-2">
                     {/* Action buttons */}
-                    <EditorActions buttons={actionButtons} readOnly={readOnly} />
+                    <EditorActions buttons={actionButtons} readOnly={readOnly} editorView={viewRef} />
                 </div>
             </div>
 
