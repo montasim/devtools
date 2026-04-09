@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback } from 'react';
 import { Toolbar } from '@/components/toolbar';
 import { EditorPane, type EditorPaneRef } from '@/components/editor-pane';
+import { FormatPane } from '@/components/format-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, GitCompare, Code, Minimize2, FileJson, Share2 } from 'lucide-react';
 
@@ -14,6 +15,11 @@ export default function Home() {
     const [canCompare, setCanCompare] = useState(false);
     const [isComputing, setIsComputing] = useState(false);
     const [activeTab, setActiveTab] = useState('diff');
+    const [formatIndentation, setFormatIndentation] = useState(2);
+    const [formatSortKeys, setFormatSortKeys] = useState(false);
+    const [formatRemoveTrailingCommas, setFormatRemoveTrailingCommas] = useState(false);
+    const [formatEscapeUnicode, setFormatEscapeUnicode] = useState(false);
+    const [canFormat, setCanFormat] = useState(false);
 
     const editorPaneRef = useRef<EditorPaneRef>(null);
 
@@ -174,20 +180,53 @@ export default function Home() {
                 </TabsContent>
 
                 <TabsContent value="format" className="mt-0">
-                    <div className="container mx-auto px-4 py-8">
-                        <div className="max-w-4xl">
-                            <h2 className="text-2xl font-bold mb-4">Format JSON</h2>
-                            <p className="text-muted-foreground mb-6">
-                                Format and beautify your JSON code with proper indentation and spacing.
-                            </p>
-                            <div className="space-y-4">
-                                <div className="p-4 border rounded-lg">
-                                    <h3 className="font-semibold mb-2">JSON Formatter</h3>
-                                    <p className="text-sm text-muted-foreground">
-                                        Coming soon: Paste your JSON here to format it with proper indentation.
-                                    </p>
-                                </div>
-                            </div>
+                    <div>
+                        <Toolbar
+                            toggles={[
+                                {
+                                    id: 'indentation',
+                                    label: 'Indentation',
+                                    checked: formatIndentation === 4,
+                                    onChange: () => setFormatIndentation(formatIndentation === 2 ? 4 : 2),
+                                },
+                                {
+                                    id: 'sortKeys',
+                                    label: 'Sort Keys',
+                                    checked: formatSortKeys,
+                                    onChange: setFormatSortKeys,
+                                },
+                                {
+                                    id: 'removeTrailingCommas',
+                                    label: 'Remove Trailing Commas',
+                                    checked: formatRemoveTrailingCommas,
+                                    onChange: setFormatRemoveTrailingCommas,
+                                },
+                                {
+                                    id: 'escapeUnicode',
+                                    label: 'Escape Unicode',
+                                    checked: formatEscapeUnicode,
+                                    onChange: setFormatEscapeUnicode,
+                                },
+                            ]}
+                            actions={[
+                                {
+                                    id: 'clear',
+                                    label: 'Clear All',
+                                    onClick: handleClear,
+                                    variant: 'outline',
+                                },
+                            ]}
+                        />
+
+                        <div className="mx-auto">
+                            <FormatPane
+                                indentation={formatIndentation}
+                                sortKeys={formatSortKeys}
+                                removeTrailingCommas={formatRemoveTrailingCommas}
+                                escapeUnicode={formatEscapeUnicode}
+                                onError={handleError}
+                                onValidationChange={setCanFormat}
+                            />
                         </div>
                     </div>
                 </TabsContent>
