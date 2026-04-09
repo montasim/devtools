@@ -44,6 +44,7 @@ export interface EditorPaneProps {
     // Event handlers
     onCompare?: (result: DiffResult) => void;
     onError?: (error: Error) => void;
+    onValidationChange?: (canCompare: boolean) => void;
 
     // Styling
     className?: string;
@@ -77,7 +78,6 @@ export interface JsonEditorProps {
     onChange: (value: string) => void;
     onError: (error: ParseError | null) => void;
     label: string;
-    placeholder?: string;
     readOnly?: boolean;
 }
 

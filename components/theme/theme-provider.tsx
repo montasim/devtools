@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 type Theme = "light" | "dark" | "system";
 
@@ -35,15 +35,20 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [effectiveTheme, setEffectiveTheme] = useState<"light" | "dark">(() =>
     getEffectiveTheme(theme)
   );
+  const effectiveThemeRef = useRef<"light" | "dark">(effectiveTheme);
 
-  // Apply theme to HTML element
+  // Apply theme to HTML element and update effective theme
   useEffect(() => {
     const root = document.documentElement;
     const actualTheme = getEffectiveTheme(theme);
 
     root.classList.remove("light", "dark");
     root.classList.add(actualTheme);
-    setEffectiveTheme(actualTheme);
+
+    // Update effective theme asynchronously to avoid cascading renders
+    Promise.resolve().then(() => {
+      setEffectiveTheme(actualTheme);
+    });
   }, [theme]);
 
   // Listen for system theme changes when using system theme

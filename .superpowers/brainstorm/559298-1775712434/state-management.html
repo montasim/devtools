@@ -1,0 +1,156 @@
+<h2>State Management</h2>
+<p class="subtitle">How data flows through the component</p>
+
+<div class="mockup">
+    <div class="mockup-header">EditorPane State Structure</div>
+    <div class="mockup-body">
+        <pre
+            style="
+                background: #1e293b;
+                color: #e2e8f0;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                font-size: 0.8rem;
+                overflow-x: auto;
+            "
+        >
+interface EditorPaneState {
+  // Content
+  leftContent: string;           // Raw JSON in left pane
+  rightContent: string;          // Raw JSON in right pane
+
+  // Validation
+  leftValid: boolean;            // Is left JSON valid?
+  rightValid: boolean;           // Is right JSON valid?
+  leftError: ParseError | null;  // Error details (line, column, message)
+  rightError: ParseError | null;
+
+  // Diff state
+  diffResult: DiffResult | null; // Computed diff
+  isComputing: boolean;          // Loading state
+
+  // UI state
+  showLineNumbers: boolean;      // Always true (for future)
+  leftEditorFocused: boolean;    // For keyboard shortcuts
+  rightEditorFocused: boolean;
+}
+    </pre
+        >
+    </div>
+</div>
+
+<div class="mockup" style="margin-top: 1rem">
+    <div class="mockup-header">Props Interface</div>
+    <div class="mockup-body">
+        <pre
+            style="
+                background: #1e293b;
+                color: #e2e8f0;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                font-size: 0.8rem;
+                overflow-x: auto;
+            "
+        >
+interface EditorPaneProps {
+  // Toggle states (from Toolbar)
+  ignoreKeyOrder: boolean;
+  prettyPrint: boolean;
+  ignoreWhitespace: boolean;
+  semanticTypeDiff: boolean;
+
+  // Initial content (optional)
+  initialLeftContent?: string;
+  initialRightContent?: string;
+
+  // Event handlers
+  onCompare?: (result: DiffResult) => void;
+  onError?: (error: Error) => void;
+
+  // Styling
+  className?: string;
+}
+    </pre
+        >
+    </div>
+</div>
+
+<div class="split" style="margin-top: 1rem">
+    <div class="mockup">
+        <div class="mockup-header">State Updates</div>
+        <div class="mockup-body" style="font-size: 0.85rem">
+            <div style="margin-bottom: 0.75rem">
+                <strong>User types in left editor</strong>
+                <div style="margin-top: 0.5rem; padding-left: 0.5rem">
+                    <div>1. onChange → setLeftContent()</div>
+                    <div>2. validateJson() → setLeftValid/Error</div>
+                    <div>3. Both valid? → Enable Compare button</div>
+                </div>
+            </div>
+            <div style="margin-bottom: 0.75rem">
+                <strong>User clicks Compare</strong>
+                <div style="margin-top: 0.5rem; padding-left: 0.5rem">
+                    <div>1. setIsComputing(true)</div>
+                    <div>2. useJsonDiff(content, toggles)</div>
+                    <div>3. setDiffResult(result)</div>
+                    <div>4. setIsComputing(false)</div>
+                    <div>5. onCompare?.(result)</div>
+                </div>
+            </div>
+            <div>
+                <strong>User uploads file</strong>
+                <div style="margin-top: 0.5rem; padding-left: 0.5rem">
+                    <div>1. FileReader.readAsText()</div>
+                    <div>2. validate → setContent()</div>
+                    <div>3. Error? → toast notification</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mockup">
+        <div class="mockup-header">Data Flow Diagram</div>
+        <div class="mockup-body">
+            <div style="font-size: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem">
+                <div style="display: flex; align-items: center; gap: 0.5rem">
+                    <span class="mock-button" style="font-size: 0.7rem">JsonEditor</span>
+                    <span style="color: #999">onChange</span>
+                    <span class="mock-button" style="font-size: 0.7rem">EditorPane</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem">
+                    <span class="mock-button" style="font-size: 0.7rem">EditorPane</span>
+                    <span style="color: #999">validates</span>
+                    <span class="mock-button" style="font-size: 0.7rem">JSON.parse()</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem">
+                    <span class="mock-button" style="font-size: 0.7rem">EditorPane</span>
+                    <span style="color: #999">calls</span>
+                    <span class="mock-button" style="font-size: 0.7rem">useJsonDiff</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem">
+                    <span class="mock-button" style="font-size: 0.7rem">useJsonDiff</span>
+                    <span style="color: #999">returns</span>
+                    <span class="mock-button" style="font-size: 0.7rem">DiffResult</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem">
+                    <span class="mock-button" style="font-size: 0.7rem">EditorPane</span>
+                    <span style="color: #999">passes to</span>
+                    <span class="mock-button" style="font-size: 0.7rem">DiffPanel</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Why This Approach?</h3>
+    <ul style="font-size: 0.85rem">
+        <li>
+            <strong>Lifted state:</strong> EditorPane owns all state, children are presentational
+        </li>
+        <li><strong>Controlled inputs:</strong> JsonEditors are controlled components</li>
+        <li><strong>Validation separation:</strong> Parse errors stored separately from content</li>
+        <li><strong>Loading states:</strong> isComputing prevents duplicate diff requests</li>
+        <li><strong>Event callbacks:</strong> Optional props for parent component integration</li>
+    </ul>
+</div>

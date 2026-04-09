@@ -1,0 +1,86 @@
+<h2>Component Architecture</h2>
+<p class="subtitle">How the pieces fit together</p>
+
+<div class="mockup">
+    <div class="mockup-header">Component Hierarchy</div>
+    <div class="mockup-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start">
+            <div>
+                <h4 style="margin: 0 0 0.5rem 0; color: #6366f1">EditorPane (Orchestrator)</h4>
+                <div class="placeholder" style="padding: 0.5rem; font-size: 0.85rem">
+                    • Manages state for both editors<br />
+                    • Handles file uploads<br />
+                    • Coordinates diff computation<br />
+                    • Passes props to children
+                </div>
+            </div>
+            <div>
+                <h4 style="margin: 0 0 0.5rem 0; color: #6366f1">JsonEditor (x2)</h4>
+                <div class="placeholder" style="padding: 0.5rem; font-size: 0.85rem">
+                    • CodeMirror instance<br />
+                    • Shiki syntax highlighting<br />
+                    • Real-time JSON validation<br />
+                    • Error display with line/column
+                </div>
+            </div>
+            <div>
+                <h4 style="margin: 0 0 0.5rem 0; color: #6366f1">DiffPanel</h4>
+                <div class="placeholder" style="padding: 0.5rem; font-size: 0.85rem">
+                    • Unified diff view (+/-)<br />
+                    • Line numbers<br />
+                    • Color-coded changes<br />
+                    • Toggle-based filtering
+                </div>
+            </div>
+            <div>
+                <h4 style="margin: 0 0 0.5rem 0; color: #6366f1">useJsonDiff (Hook)</h4>
+                <div class="placeholder" style="padding: 0.5rem; font-size: 0.85rem">
+                    • Diff computation logic<br />
+                    • Applies toggle settings<br />
+                    • Handles formatting<br />
+                    • Returns diff result
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Data Flow</h3>
+    <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem">
+        <span class="mock-button">User Input</span>
+        <span style="color: #999">→</span>
+        <span class="mock-button">JsonEditor</span>
+        <span style="color: #999">→</span>
+        <span class="mock-button">EditorPane State</span>
+        <span style="color: #999">→</span>
+        <span class="mock-button">Compare Click</span>
+        <span style="color: #999">→</span>
+        <span class="mock-button">useJsonDiff</span>
+        <span style="color: #999">→</span>
+        <span class="mock-button">DiffPanel</span>
+    </div>
+</div>
+
+<div class="section">
+    <h3>File Structure</h3>
+    <pre
+        style="
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        "
+    >
+components/editor-pane/
+├── editor-pane.tsx      # Main orchestrator
+├── diff-panel.tsx        # Unified diff display
+├── json-editor.tsx       # CodeMirror wrapper
+├── use-json-diff.ts      # Diff logic hook
+├── types.ts              # Shared types
+└── index.ts              # Barrel exports
+  </pre
+    >
+</div>

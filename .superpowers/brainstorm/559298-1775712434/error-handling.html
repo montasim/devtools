@@ -1,0 +1,130 @@
+<h2>Error Handling & Validation</h2>
+<p class="subtitle">Real-time JSON validation with inline errors</p>
+
+<div class="mockup">
+    <div class="mockup-header">Validation Flow</div>
+    <div class="mockup-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+            <div>
+                <h4 style="margin: 0 0 0.5rem 0; color: #6366f1">Real-Time Validation</h4>
+                <div class="placeholder" style="font-size: 0.85rem">
+                    <div style="margin-bottom: 0.5rem">
+                        <span class="mock-button" style="font-size: 0.75rem"
+                            >User types in JsonEditor</span
+                        >
+                    </div>
+                    <div style="margin-bottom: 0.5rem">
+                        <span class="mock-button" style="font-size: 0.75rem; background: #6366f1"
+                            >Debounce 300ms</span
+                        >
+                    </div>
+                    <div style="margin-bottom: 0.5rem">
+                        <span class="mock-button" style="font-size: 0.75rem; background: #6366f1"
+                            >JSON.parse()</span
+                        >
+                    </div>
+                    <div style="margin-bottom: 0.5rem">
+                        <span class="mock-button" style="font-size: 0.75rem; background: #dc2626"
+                            >Error?</span
+                        >
+                        <span style="font-size: 0.85rem; margin-left: 0.5rem"
+                            >→ Show inline error</span
+                        >
+                    </div>
+                    <div>
+                        <span class="mock-button" style="font-size: 0.75rem; background: #16a34a"
+                            >Valid?</span
+                        >
+                        <span style="font-size: 0.85rem; margin-left: 0.5rem"
+                            >→ Enable Compare button</span
+                        >
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h4 style="margin: 0 0 0.5rem 0; color: #6366f1">Error Display</h4>
+                <div class="placeholder" style="font-size: 0.85rem">
+                    <div
+                        style="
+                            background: #dc2626;
+                            color: white;
+                            padding: 0.75rem;
+                            border-radius: 0.375rem;
+                            margin-bottom: 0.5rem;
+                        "
+                    >
+                        <strong>JSON Parse Error</strong><br />
+                        <span style="font-size: 0.8rem">Line 12, Column 8: Unexpected token }</span>
+                    </div>
+                    <div style="font-size: 0.85rem; color: #999">
+                        • Error shown in red banner above editor<br />
+                        • Editor highlights the error line<br />
+                        • Compare button disabled<br />
+                        • File upload shows error toast
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Validation States</h3>
+    <div class="options" data-multiselect>
+        <div class="option">
+            <div class="content">
+                <h3>Empty</h3>
+                <p>No content → Compare disabled, show "Enter JSON to compare"</p>
+            </div>
+        </div>
+        <div class="option">
+            <div class="content">
+                <h3>Invalid</h3>
+                <p>Parse error → Compare disabled, show inline error with line/column</p>
+            </div>
+        </div>
+        <div class="option">
+            <div class="content">
+                <h3>Valid</h3>
+                <p>Parse succeeds → Compare enabled, green check indicator</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Error Scenarios</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem">
+        <tr style="border-bottom: 1px solid #333">
+            <th style="text-align: left; padding: 0.5rem">Scenario</th>
+            <th style="text-align: left; padding: 0.5rem">Behavior</th>
+        </tr>
+        <tr style="border-bottom: 1px solid #333">
+            <td style="padding: 0.5rem">Invalid JSON paste</td>
+            <td style="padding: 0.5rem">Show error, highlight error line, disable Compare</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333">
+            <td style="padding: 0.5rem">Invalid JSON file upload</td>
+            <td style="padding: 0.5rem">Toast error, don't populate editor</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333">
+            <td style="padding: 0.5rem">Huge file (>10MB)</td>
+            <td style="padding: 0.5rem">Warning toast, still load but may be slow</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333">
+            <td style="padding: 0.5rem">Diff fails unexpectedly</td>
+            <td style="padding: 0.5rem">Error message in DiffPanel, retry button</td>
+        </tr>
+    </table>
+</div>
+
+<div class="section">
+    <h3>File Upload Handling</h3>
+    <ul style="font-size: 0.85rem">
+        <li><strong>Accept:</strong> .json files only (initially)</li>
+        <li><strong>Size limit:</strong> 10MB warning, 50MB hard limit</li>
+        <li><strong>Encoding:</strong> UTF-8 only, show error if invalid</li>
+        <li><strong>Validation:</strong> Parse on upload, reject if invalid with clear error</li>
+        <li><strong>UX:</strong> Drag-and-drop zone + file input button</li>
+    </ul>
+</div>

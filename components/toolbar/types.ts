@@ -13,6 +13,7 @@ export interface ToolbarAction {
   icon?: ReactNode;
   onClick: () => void;
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  disabled?: boolean;
 }
 
 export interface ToolbarProps {

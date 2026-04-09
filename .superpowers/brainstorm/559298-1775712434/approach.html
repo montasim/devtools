@@ -1,0 +1,95 @@
+<h2>EditorPane Architecture - Which Approach?</h2>
+<p class="subtitle">
+    All options use CodeMirror editors + Shiki highlighting. The difference is in component
+    structure and data flow.
+</p>
+
+<div class="cards">
+    <div class="card" data-choice="monolithic" onclick="toggleSelect(this)">
+        <div class="card-body">
+            <h3>Approach A: Monolithic Component</h3>
+            <p><strong>Single EditorPane.tsx</strong> - ~400 lines</p>
+            <ul>
+                <li>Both editors + diff panel in one file</li>
+                <li>Direct state management with useState</li>
+                <li>Simple, easy to understand</li>
+                <li>Harder to test individual pieces</li>
+                <li>Becomes unwieldy as features grow</li>
+            </ul>
+            <div class="mockup" style="margin-top: 1rem">
+                <div class="mockup-header">File Structure</div>
+                <div class="mockup-body" style="font-family: monospace; font-size: 0.85rem">
+                    components/editor-pane/<br />
+                    ├── editor-pane.tsx (everything)<br />
+                    ├── types.ts<br />
+                    └── index.ts
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-choice="modular" onclick="toggleSelect(this)">
+        <div class="card-body">
+            <h3>Approach B: Modular Components ✓</h3>
+            <p><strong>Split concerns</strong> - 4-5 focused files</p>
+            <ul>
+                <li>EditorPane (orchestrator)</li>
+                <li>DiffPanel (unified diff view)</li>
+                <li>JsonEditor (CodeMirror wrapper)</li>
+                <li>useJsonDiff (custom hook)</li>
+                <li>Each piece testable in isolation</li>
+                <li>Follows your navbar/toolbar pattern</li>
+            </ul>
+            <div class="mockup" style="margin-top: 1rem">
+                <div class="mockup-header">File Structure</div>
+                <div class="mockup-body" style="font-family: monospace; font-size: 0.85rem">
+                    components/editor-pane/<br />
+                    ├── editor-pane.tsx (orchestrator)<br />
+                    ├── diff-panel.tsx<br />
+                    ├── json-editor.tsx<br />
+                    ├── use-json-diff.ts<br />
+                    ├── types.ts<br />
+                    └── index.ts
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-choice="feature" onclick="toggleSelect(this)">
+        <div class="card-body">
+            <h3>Approach C: Feature-Based Modules</h3>
+            <p><strong>Separate by capability</strong> - 6-8 files</p>
+            <ul>
+                <li>EditorPane + JsonEditor (UI)</li>
+                <li>diff-engine/ (logic)</li>
+                <li>json-parser/ (validation)</li>
+                <li>formatters/ (pretty print)</li>
+                <li>Most flexible for future formats</li>
+                <li>More boilerplate now</li>
+            </ul>
+            <div class="mockup" style="margin-top: 1rem">
+                <div class="mockup-header">File Structure</div>
+                <div class="mockup-body" style="font-family: monospace; font-size: 0.85rem">
+                    components/editor-pane/<br />
+                    ├── editor-pane.tsx<br />
+                    ├── json-editor.tsx<br />
+                    ├── diff-panel.tsx<br />
+                    ├── lib/<br />
+                    │ ├── diff-engine/<br />
+                    │ ├── json-parser/<br />
+                    │ └── formatters/<br />
+                    └── types.ts
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Recommendation: Approach B (Modular)</h3>
+    <p>
+        <strong>Why:</strong> Matches your existing navbar/toolbar architecture pattern. Splits
+        concerns without over-engineering. Each component has a single responsibility. Easy to test
+        now, easy to add XML/CSV formats later.
+    </p>
+</div>

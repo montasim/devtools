@@ -1,0 +1,121 @@
+<h2>Diff Logic Implementation</h2>
+<p class="subtitle">How the four toggles affect JSON comparison</p>
+
+<div class="split">
+    <div class="mockup">
+        <div class="mockup-header">Toggle Behavior</div>
+        <div class="mockup-body">
+            <div style="margin-bottom: 1rem">
+                <strong>1. Pretty Print</strong>
+                <p style="font-size: 0.85rem; color: #999; margin: 0.5rem 0">
+                    Parse JSON → Format with 2-space indent → Compare formatted strings
+                </p>
+            </div>
+            <div style="margin-bottom: 1rem">
+                <strong>2. Ignore Whitespace</strong>
+                <p style="font-size: 0.85rem; color: #999; margin: 0.5rem 0">
+                    Normalize whitespace (collapse multiple spaces, trim lines) → Compare
+                </p>
+            </div>
+            <div style="margin-bottom: 1rem">
+                <strong>3. Ignore Key Order</strong>
+                <p style="font-size: 0.85rem; color: #999; margin: 0.5rem 0">
+                    Custom logic: Parse objects → Sort keys recursively → Compare structure
+                </p>
+            </div>
+            <div style="margin-bottom: 1rem">
+                <strong>4. Semantic Type Diff</strong>
+                <p style="font-size: 0.85rem; color: #999; margin: 0.5rem 0">
+                    Deep comparison: string "123" vs number 123 → treat as same type
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mockup">
+        <div class="mockup-header">Diff Pipeline</div>
+        <div class="mockup-body">
+            <div style="font-size: 0.85rem">
+                <div style="margin-bottom: 0.5rem">
+                    <span class="mock-button" style="font-size: 0.75rem">Input JSON</span>
+                </div>
+                <div style="margin-bottom: 0.5rem">
+                    <span class="mock-button" style="font-size: 0.75rem; background: #6366f1"
+                        >Validate JSON</span
+                    >
+                </div>
+                <div style="margin-bottom: 0.5rem">
+                    <span class="mock-button" style="font-size: 0.75rem; background: #6366f1"
+                        >Apply Toggles</span
+                    >
+                </div>
+                <div style="margin-bottom: 0.5rem">
+                    <span class="mock-button" style="font-size: 0.75rem; background: #6366f1"
+                        >Normalize (sort/parse)</span
+                    >
+                </div>
+                <div style="margin-bottom: 0.5rem">
+                    <span class="mock-button" style="font-size: 0.75rem; background: #6366f1"
+                        >Compute Diff (npm:diff)</span
+                    >
+                </div>
+                <div style="margin-bottom: 0.5rem">
+                    <span class="mock-button" style="font-size: 0.75rem; background: #6366f1"
+                        >Format Unified Output</span
+                    >
+                </div>
+                <div>
+                    <span class="mock-button" style="font-size: 0.75rem">Unified Diff</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Key Implementation Details</h3>
+    <ul>
+        <li>
+            <strong>CodeMirror Integration:</strong> Minimal setup - just line numbers, no heavy IDE
+            features. Editor state managed as simple string values.
+        </li>
+        <li>
+            <strong>Shiki Highlighting:</strong> Use `shiki` for JSON syntax highlighting. Works in
+            RSC, tree-sitter based.
+        </li>
+        <li>
+            <strong>Diff Library:</strong> Use `diff` npm package for text/word/line diffing with
+            custom preprocessing for JSON.
+        </li>
+        <li>
+            <strong>Key Order Logic:</strong> Custom recursive function to sort object keys before
+            comparison.
+        </li>
+        <li>
+            <strong>Semantic Type:</strong> Deep comparison that coerces types (string "123" ↔
+            number 123, boolean ↔ string "true").
+        </li>
+    </ul>
+</div>
+
+<div class="pros-cons">
+    <div class="pros">
+        <h4>Why This Approach</h4>
+        <ul>
+            <li>Diff library handles text/word/line efficiently</li>
+            <li>Custom JSON preprocessing gives us full control</li>
+            <li>Minimal CodeMirror = fast load, small bundle</li>
+            <li>Shiki is lightweight vs Prism/Highlight.js</li>
+            <li>Hook-based logic = easy to test in isolation</li>
+        </ul>
+    </div>
+    <div class="cons">
+        <h4>Trade-offs</h4>
+        <ul>
+            <li>Custom key-sort logic = more code to maintain</li>
+            <li>Semantic type coercion can hide real differences</li>
+            <li>Large files may need performance optimization</li>
+            <li>CodeMirror/Shiki integration needs care</li>
+        </ul>
+    </div>
+</div>

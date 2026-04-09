@@ -1,26 +1,44 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { Toolbar } from '@/components/toolbar';
-import { EditorPane } from '@/components/editor-pane';
+import { EditorPane, type EditorPaneRef } from '@/components/editor-pane';
 
 export default function Home() {
     const [ignoreKeyOrder, setIgnoreKeyOrder] = useState(true);
     const [prettyPrint, setPrettyPrint] = useState(true);
     const [ignoreWhitespace, setIgnoreWhitespace] = useState(false);
     const [semanticTypeDiff, setSemanticTypeDiff] = useState(false);
+    const [canCompare, setCanCompare] = useState(false);
+    const [isComputing, setIsComputing] = useState(false);
 
-    const handleCompare = (result: { hunks: unknown[]; additionCount: number; deletionCount: number }) => {
+    const editorPaneRef = useRef<EditorPaneRef>(null);
+
+    const handleCompare = useCallback((result: { hunks: unknown[]; additionCount: number; deletionCount: number }) => {
         console.log('Diff result:', result);
-    };
+    }, []);
 
     const handleError = (error: Error) => {
         console.error('Diff error:', error);
     };
 
+    const handleValidationChange = useCallback((isValid: boolean) => {
+        setCanCompare(isValid);
+        // Update computing state from ref
+        setIsComputing(editorPaneRef.current?.isComputing ?? false);
+    }, []);
+
     const handleClear = () => {
         // Reload page to clear all content
         window.location.reload();
+    };
+
+    const handleCompareClick = async () => {
+        if (editorPaneRef.current) {
+            setIsComputing(true);
+            await editorPaneRef.current.triggerCompare();
+            setIsComputing(false);
+        }
     };
 
     return (
@@ -54,6 +72,13 @@ export default function Home() {
                 ]}
                 actions={[
                     {
+                        id: 'compare',
+                        label: isComputing ? 'Computing...' : 'Compare',
+                        onClick: handleCompareClick,
+                        variant: 'default',
+                        disabled: !canCompare || isComputing,
+                    },
+                    {
                         id: 'clear',
                         label: 'Clear All',
                         onClick: handleClear,
@@ -64,6 +89,7 @@ export default function Home() {
 
             <div className="mx-auto py-8">
                 <EditorPane
+                    ref={editorPaneRef}
                     ignoreKeyOrder={ignoreKeyOrder}
                     prettyPrint={prettyPrint}
                     ignoreWhitespace={ignoreWhitespace}
@@ -72,6 +98,7 @@ export default function Home() {
                     initialRightContent={`{\n  "age": 30,\n  "name": "John Doe"\n}`}
                     onCompare={handleCompare}
                     onError={handleError}
+                    onValidationChange={handleValidationChange}
                 />
             </div>
         </div>

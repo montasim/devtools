@@ -1,0 +1,165 @@
+<h2>Testing Strategy</h2>
+<p class="subtitle">How we'll verify the EditorPane works correctly</p>
+
+<div class="split">
+    <div class="mockup">
+        <div class="mockup-header">Unit Tests</div>
+        <div class="mockup-body" style="font-size: 0.85rem">
+            <div style="margin-bottom: 0.75rem">
+                <strong>useJsonDiff Hook</strong>
+                <ul style="margin: 0.5rem 0; padding-left: 1rem">
+                    <li>Toggle combinations (16 scenarios)</li>
+                    <li>Valid JSON comparisons</li>
+                    <li>Invalid JSON handling</li>
+                    <li>Empty content edge cases</li>
+                </ul>
+            </div>
+            <div style="margin-bottom: 0.75rem">
+                <strong>JsonEditor Component</strong>
+                <ul style="margin: 0.5rem 0; padding-left: 1rem">
+                    <li>Renders CodeMirror instance</li>
+                    <li>onChange callback fires</li>
+                    <li>Error state displays correctly</li>
+                    <li>File upload triggers onChange</li>
+                </ul>
+            </div>
+            <div style="margin-bottom: 0.75rem">
+                <strong>DiffPanel Component</strong>
+                <ul style="margin: 0.5rem 0; padding-left: 1rem">
+                    <li>Renders unified diff correctly</li>
+                    <li>Line numbers match content</li>
+                    <li>Color coding is accurate</li>
+                    <li>Empty state shows message</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="mockup">
+        <div class="mockup-header">Integration Tests</div>
+        <div class="mockize-body" style="font-size: 0.85rem">
+            <div style="margin-bottom: 0.75rem">
+                <strong>EditorPane Full Flow</strong>
+                <ul style="margin: 0.5rem 0; padding-left: 1rem">
+                    <li>User types in both editors</li>
+                    <li>Validation states update</li>
+                    <li>Compare button enables/disables</li>
+                    <li>Click Compare → diff appears</li>
+                    <li>Toggles change diff result</li>
+                </ul>
+            </div>
+            <div style="margin-bottom: 0.75rem">
+                <strong>Error Scenarios</strong>
+                <ul style="margin: 0.5rem 0; padding-left: 1rem">
+                    <li>Invalid JSON shows error</li>
+                    <li>Invalid file upload rejected</li>
+                    <li>Diff failure displays error</li>
+                    <li>Huge file warning shows</li>
+                </ul>
+            </div>
+            <div style="margin-bottom: 0.75rem">
+                <strong>Keyboard Navigation</strong>
+                <ul style="margin: 0.5rem 0; padding-left: 1rem">
+                    <li>Tab between editors</li>
+                    <li>Ctrl+Enter triggers Compare</li>
+                    <li>Escape clears errors</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Test Cases - useJsonDiff Hook</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem">
+        <tr style="border-bottom: 1px solid #333; background: #1e293b">
+            <th style="text-align: left; padding: 0.5rem">Scenario</th>
+            <th style="text-align: left; padding: 0.5rem">Input</th>
+            <th style="text-align: left; padding: 0.5rem">Toggles</th>
+            <th style="text-align: left; padding: 0.5rem">Expected</th>
+        </tr>
+        <tr style="border-bottom: 1px solid #333">
+            <td style="padding: 0.5rem">Identical JSON</td>
+            <td style="padding: 0.5rem">Same in both</td>
+            <td style="padding: 0.5rem">Any</td>
+            <td style="padding: 0.5rem">No differences</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333">
+            <td style="padding: 0.5rem">Key order differs</td>
+            <td style="padding: 0.5rem">{a:1,b:2} vs {b:2,a:1}</td>
+            <td style="padding: 0.5rem">Ignore Key Order: ON</td>
+            <td style="padding: 0.5rem">No differences</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333">
+            <td style="padding: 0.5rem">Whitespace differs</td>
+            <td style="padding: 0.5rem">Format differs</td>
+            <td style="padding: 0.5rem">Ignore Whitespace: ON</td>
+            <td style="padding: 0.5rem">No differences</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333">
+            <td style="padding: 0.5rem">Type coercion</td>
+            <td style="padding: 0.5rem">"123" vs 123</td>
+            <td style="padding: 0.5rem">Semantic Type: ON</td>
+            <td style="padding: 0.5rem">No differences</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333">
+            <td style="padding: 0.5rem">Real difference</td>
+            <td style="padding: 0.5rem">{a:1} vs {a:2}</td>
+            <td style="padding: 0.5rem">Any</td>
+            <td style="padding: 0.5rem">Show difference</td>
+        </tr>
+    </table>
+</div>
+
+<div class="section">
+    <h3>Test Tools</h3>
+    <ul style="font-size: 0.85rem">
+        <li><strong>Framework:</strong> Vitest (already in project for Next.js)</li>
+        <li><strong>React Testing:</strong> @testing-library/react</li>
+        <li><strong>Assertions:</strong> Vitest built-in + custom matchers</li>
+        <li><strong>Mocking:</strong> Vitest vi.mock() for CodeMirror, Shiki</li>
+        <li><strong>Coverage:</strong> Vitest --coverage (aim for 80%+)</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h3>Manual Testing Checklist</h3>
+    <div class="options" data-multiselect>
+        <div class="option">
+            <div class="content">
+                <h3>Editor Interactions</h3>
+                <p>Type, paste, upload files, delete content, use keyboard shortcuts</p>
+            </div>
+        </div>
+        <div class="option">
+            <div class="content">
+                <h3>Validation</h3>
+                <p>Invalid JSON shows error, valid JSON enables Compare, errors clear on fix</p>
+            </div>
+        </div>
+        <div class="option">
+            <div class="content">
+                <h3>Diff Toggles</h3>
+                <p>Each toggle changes result, combinations work correctly</p>
+            </div>
+        </div>
+        <div class="option">
+            <div class="content">
+                <h3>Performance</h3>
+                <p>Large files (1MB+) don't freeze UI, diff completes in <2s</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Success Criteria</h3>
+    <ul style="font-size: 0.85rem">
+        <li>✅ All unit tests pass (useJsonDiff, JsonEditor, DiffPanel)</li>
+        <li>✅ Integration tests cover full user flow</li>
+        <li>✅ Manual testing checklist complete</li>
+        <li>✅ Build succeeds with no TypeScript errors</li>
+        <li>✅ Bundle size increase <200KB gzipped</li>
+        <li>✅ No console errors in browser</li>
+    </ul>
+</div>

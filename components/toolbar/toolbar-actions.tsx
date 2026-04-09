@@ -31,6 +31,7 @@ export const ToolbarActions = ({ items }: ToolbarActionsProps) => {
             variant={variant}
             size="sm"
             onClick={item.onClick}
+            disabled={item.disabled}
           >
             {icon && <span className="mr-2">{icon}</span>}
             {item.label}

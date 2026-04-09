@@ -1,0 +1,116 @@
+<h2>Dependencies & Package Setup</h2>
+<p class="subtitle">Required npm packages and why we need them</p>
+
+<div class="mockup">
+    <div class="mockup-header">Core Dependencies</div>
+    <div class="mockup-body">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem">
+            <tr style="border-bottom: 1px solid #333; background: #1e293b">
+                <th style="text-align: left; padding: 0.75rem">Package</th>
+                <th style="text-align: left; padding: 0.75rem">Version</th>
+                <th style="text-align: left; padding: 0.75rem">Purpose</th>
+            </tr>
+            <tr style="border-bottom: 1px solid #333">
+                <td style="padding: 0.75rem; font-family: monospace; color: #6366f1">diff</td>
+                <td style="padding: 0.75rem">^7.0.0</td>
+                <td style="padding: 0.75rem">Text/word/line diffing (unified diff output)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #333">
+                <td style="padding: 0.75rem; font-family: monospace; color: #6366f1">
+                    @codemirror/view
+                </td>
+                <td style="padding: 0.75rem">^6.28.0</td>
+                <td style="padding: 0.75rem">Minimal editor (line numbers only)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #333">
+                <td style="padding: 0.75rem; font-family: monospace; color: #6366f1">
+                    @codemirror/state
+                </td>
+                <td style="padding: 0.75rem">^6.4.0</td>
+                <td style="padding: 0.75rem">Editor state management</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #333">
+                <td style="padding: 0.75rem; font-family: monospace; color: #6366f1">
+                    @codemirror/commands
+                </td>
+                <td style="padding: 0.75rem">^6.6.0</td>
+                <td style="padding: 0.75rem">Basic editor commands (history, selection)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #333">
+                <td style="padding: 0.75rem; font-family: monospace; color: #6366f1">
+                    @codemirror/language
+                </td>
+                <td style="padding: 0.75rem">^6.10.0</td>
+                <td style="padding: 0.75rem">Language support (for future XML/CSV)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #333">
+                <td style="padding: 0.75rem; font-family: monospace; color: #6366f1">
+                    @codemirror/autocomplete
+                </td>
+                <td style="padding: 0.75rem">^6.18.0</td>
+                <td style="padding: 0.75rem">Bracket matching (lightweight)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #333">
+                <td style="padding: 0.75rem; font-family: monospace; color: #6366f1">shiki</td>
+                <td style="padding: 0.75rem">^1.10.0</td>
+                <td style="padding: 0.75rem">
+                    Syntax highlighting (tree-sitter based, RSC compatible)
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Why This Stack?</h3>
+    <div class="pros-cons">
+        <div class="pros">
+            <h4>Advantages</h4>
+            <ul>
+                <li>
+                    <strong>CodeMirror 6:</strong> Modular, tree-sitter based, lighter than
+                    Monaco/Ace
+                </li>
+                <li><strong>Minimal setup:</strong> Only line numbers, no heavy IDE features</li>
+                <li><strong>Shiki:</strong> VS Code's highlighter, works in RSC, very accurate</li>
+                <li><strong>diff package:</strong> Battle-tested, handles edge cases well</li>
+                <li><strong>Bundle size:</strong> ~150KB gzipped vs ~500KB for full editor</li>
+            </ul>
+        </div>
+        <div class="cons">
+            <h4>Trade-offs</h4>
+            <ul>
+                <li>More packages to install vs single editor library</li>
+                <li>CodeMirror 6 has learning curve (different from v5)</li>
+                <li>Shiki async API needs careful handling</li>
+                <li>Less built-in vs Monaco (but we don't need it)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Installation Command</h3>
+    <pre
+        style="
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        "
+    >
+npm install diff @codemirror/view @codemirror/state @codemirror/commands @codemirror/language @codemirror/autocomplete shiki
+  </pre
+    >
+</div>
+
+<div class="section">
+    <h3>Future Additions (Not Now)</h3>
+    <div class="placeholder" style="padding: 0.75rem; font-size: 0.85rem">
+        <strong>XML support:</strong> No additional packages needed (custom tree-walker)<br />
+        <strong>CSV support:</strong> papaparse (when we add CSV format)<br />
+        <strong>YAML support:</strong> yaml package (if needed later)
+    </div>
+</div>
