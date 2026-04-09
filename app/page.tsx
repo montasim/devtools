@@ -16,7 +16,7 @@ export default function Home() {
 
     const handleCompare = useCallback(
         (result: { hunks: unknown[]; additionCount: number; deletionCount: number }) => {
-            console.log('Diff result:', result);
+            // console.log('Diff result:', result);
         },
         [],
     );

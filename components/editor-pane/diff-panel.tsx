@@ -44,6 +44,105 @@ export function DiffPanel({
     const [showShareDialog, setShowShareDialog] = useState(false);
     const [bookmarks, setBookmarks] = useState<number[]>([]);
 
+
+
+    // Keyboard shortcuts handler
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            const cmdOrCtrl = isMac ? event.metaKey : event.ctrlKey;
+
+            // Filter shortcuts
+            if (cmdOrCtrl && !event.shiftKey && !event.altKey) {
+                switch (event.key) {
+                    case '1':
+                        event.preventDefault();
+                        setFilter('all');
+                        break;
+                    case '2':
+                        event.preventDefault();
+                        setFilter('additions');
+                        break;
+                    case '3':
+                        event.preventDefault();
+                        setFilter('deletions');
+                        break;
+                    case '4':
+                        event.preventDefault();
+                        setFilter('modifications');
+                        break;
+                }
+            }
+
+            // Export shortcuts (Cmd/Ctrl + Shift)
+            if (cmdOrCtrl && event.shiftKey && !event.altKey && diffResult) {
+                switch (event.key) {
+                    case 'P':
+                        event.preventDefault();
+                        handleExport('json-patch', diffResult);
+                        break;
+                    case 'G':
+                        event.preventDefault();
+                        handleExport('merge-patch', diffResult);
+                        break;
+                    case 'D':
+                        event.preventDefault();
+                        handleExport('download-patch', diffResult);
+                        break;
+                    case 'H':
+                        event.preventDefault();
+                        handleExport('html-report', diffResult);
+                        break;
+                    case 'J':
+                        event.preventDefault();
+                        handleExport('json-paths', diffResult);
+                        break;
+                }
+            }
+
+            // Panel shortcuts (Cmd/Ctrl)
+            if (cmdOrCtrl && !event.shiftKey && !event.altKey) {
+                switch (event.key) {
+                    case 'b':
+                    case 'B':
+                        event.preventDefault();
+                        setShowBookmarks(!showBookmarks);
+                        break;
+                    case 't':
+                    case 'T':
+                        event.preventDefault();
+                        setShowTreePanel(!showTreePanel);
+                        break;
+                    case 's':
+                    case 'S':
+                        event.preventDefault();
+                        setShowStatistics(!showStatistics);
+                        break;
+                    case 'v':
+                    case 'V':
+                        event.preventDefault();
+                        setShowValidation(!showValidation);
+                        break;
+                }
+            }
+        };
+
+        // Add event listener when component mounts
+        window.addEventListener('keydown', handleKeyDown);
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [
+        filter,
+        diffResult,
+        showBookmarks,
+        showTreePanel,
+        showStatistics,
+        showValidation,
+    ]);
+
     if (isLoading) {
         return (
             <div
@@ -207,103 +306,6 @@ export function DiffPanel({
             setBookmarks([...bookmarks, hunkIndex]);
         }
     };
-
-    // Keyboard shortcuts handler
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-            const cmdOrCtrl = isMac ? event.metaKey : event.ctrlKey;
-
-            // Filter shortcuts
-            if (cmdOrCtrl && !event.shiftKey && !event.altKey) {
-                switch (event.key) {
-                    case '1':
-                        event.preventDefault();
-                        setFilter('all');
-                        break;
-                    case '2':
-                        event.preventDefault();
-                        setFilter('additions');
-                        break;
-                    case '3':
-                        event.preventDefault();
-                        setFilter('deletions');
-                        break;
-                    case '4':
-                        event.preventDefault();
-                        setFilter('modifications');
-                        break;
-                }
-            }
-
-            // Export shortcuts (Cmd/Ctrl + Shift)
-            if (cmdOrCtrl && event.shiftKey && !event.altKey && diffResult) {
-                switch (event.key) {
-                    case 'P':
-                        event.preventDefault();
-                        handleExport('json-patch', diffResult);
-                        break;
-                    case 'G':
-                        event.preventDefault();
-                        handleExport('merge-patch', diffResult);
-                        break;
-                    case 'D':
-                        event.preventDefault();
-                        handleExport('download-patch', diffResult);
-                        break;
-                    case 'H':
-                        event.preventDefault();
-                        handleExport('html-report', diffResult);
-                        break;
-                    case 'J':
-                        event.preventDefault();
-                        handleExport('json-paths', diffResult);
-                        break;
-                }
-            }
-
-            // Panel shortcuts (Cmd/Ctrl)
-            if (cmdOrCtrl && !event.shiftKey && !event.altKey) {
-                switch (event.key) {
-                    case 'b':
-                    case 'B':
-                        event.preventDefault();
-                        setShowBookmarks(!showBookmarks);
-                        break;
-                    case 't':
-                    case 'T':
-                        event.preventDefault();
-                        setShowTreePanel(!showTreePanel);
-                        break;
-                    case 's':
-                    case 'S':
-                        event.preventDefault();
-                        setShowStatistics(!showStatistics);
-                        break;
-                    case 'v':
-                    case 'V':
-                        event.preventDefault();
-                        setShowValidation(!showValidation);
-                        break;
-                }
-            }
-        };
-
-        // Add event listener when component mounts
-        window.addEventListener('keydown', handleKeyDown);
-
-        // Cleanup
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [
-        filter,
-        diffResult,
-        showBookmarks,
-        showTreePanel,
-        showStatistics,
-        showValidation,
-    ]);
 
     // Filter diff result based on selected filter
     const getFilteredDiff = () => {
