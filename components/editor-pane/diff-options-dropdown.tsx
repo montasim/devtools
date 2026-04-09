@@ -8,7 +8,21 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { MoreVertical } from 'lucide-react';
+import {
+    MoreVertical,
+    List,
+    Plus,
+    Minus,
+    Replace,
+    Copy,
+    Download,
+    FileText,
+    Share2,
+    Bookmark,
+    FolderTree,
+    BarChart3,
+    CheckCircle,
+} from 'lucide-react';
 import { ExportFormat, DiffFilter, PanelType } from './types';
 
 interface DiffOptionsDropdownProps {
@@ -67,30 +81,34 @@ export function DiffOptionsDropdown({
                     Filter Changes
                 </div>
                 <DropdownMenuItem onClick={() => onFilterChange?.('all')}>
+                    <List className="h-4 w-4 mr-2" />
                     <span className="text-foreground">All</span>
                     <span className="ml-auto text-muted-foreground">
                         {totalCount}
                     </span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onFilterChange?.('additions')}>
+                    <Plus className="h-4 w-4 mr-2 text-green-600 dark:text-green-400" />
                     <span className="text-green-600 dark:text-green-400">
-                        + Added
+                        Added
                     </span>
                     <span className="ml-auto text-muted-foreground">
                         {additionCount}
                     </span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onFilterChange?.('deletions')}>
+                    <Minus className="h-4 w-4 mr-2 text-red-600 dark:text-red-400" />
                     <span className="text-red-600 dark:text-red-400">
-                        − Deleted
+                        Deleted
                     </span>
                     <span className="ml-auto text-muted-foreground">
                         {deletionCount}
                     </span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onFilterChange?.('modifications')}>
+                    <Replace className="h-4 w-4 mr-2 text-orange-600 dark:text-orange-400" />
                     <span className="text-orange-600 dark:text-orange-400">
-                        ~ Modified
+                        Modified
                     </span>
                     <span className="ml-auto text-muted-foreground">
                         {modificationCount}
@@ -104,18 +122,23 @@ export function DiffOptionsDropdown({
                     Export
                 </div>
                 <DropdownMenuItem onClick={() => onExport?.('json-patch')}>
+                    <Copy className="h-4 w-4 mr-2" />
                     Copy as JSON Patch
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onExport?.('merge-patch')}>
+                    <Copy className="h-4 w-4 mr-2" />
                     Copy as Merge Patch
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onExport?.('download-patch')}>
+                    <Download className="h-4 w-4 mr-2" />
                     Download Patch
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onExport?.('html-report')}>
+                    <FileText className="h-4 w-4 mr-2" />
                     Export HTML Report
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onExport?.('json-paths')}>
+                    <Share2 className="h-4 w-4 mr-2" />
                     Copy JSON Paths
                 </DropdownMenuItem>
 
@@ -126,15 +149,19 @@ export function DiffOptionsDropdown({
                     Panels
                 </div>
                 <DropdownMenuItem onClick={() => onPanelToggle?.('bookmarks')}>
+                    <Bookmark className="h-4 w-4 mr-2" />
                     Bookmarks
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onPanelToggle?.('tree-panel')}>
+                    <FolderTree className="h-4 w-4 mr-2" />
                     Tree Panel
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onPanelToggle?.('statistics')}>
+                    <BarChart3 className="h-4 w-4 mr-2" />
                     Statistics
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onPanelToggle?.('validation')}>
+                    <CheckCircle className="h-4 w-4 mr-2" />
                     Validation
                 </DropdownMenuItem>
             </DropdownMenuContent>
