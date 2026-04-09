@@ -290,17 +290,43 @@ export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpe
 
                     <Separator />
 
-                    {/* Copy & Export Options */}
-                    <div className="space-y-3">
+                    {/* Copy Diff Section */}
+                    <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Export Options
+                            Copy Diff Content
                         </label>
-                        <div className="grid grid-cols-1 gap-2">
-                            {[
+
+<div className="grid grid-cols-1 gap-2 mt-2">
+                        {[
                                 { icon: Copy, label: 'Copy Diff to Clipboard', onClick: copyDiffToClipboard },
                                 { icon: Copy, label: 'Copy as JSON Patch', onClick: copyAsJSONPatch },
                                 { icon: Copy, label: 'Copy as Merge Patch', onClick: copyAsMergePatch },
                                 { icon: Share2, label: 'Copy JSON Paths', onClick: copyJSONPaths },
+                            ].map(({ icon: Icon, label, onClick }) => (
+                                <Button
+                                    key={label}
+                                    variant="outline"
+                                    className="w-full justify-start"
+                                    onClick={onClick}
+                                    disabled={!diffResult}
+                                >
+                                    <Icon className="h-4 w-4 mr-2" />
+                                    {label}
+                                </Button>
+                            ))}
+                            </div>
+                    </div>
+
+                    <Separator />
+
+                    {/* Export Options Section */}
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Export Options
+                        </label>
+
+                        <div className="grid grid-cols-1 gap-2 mt-2">
+                            {[
                                 { icon: Download, label: 'Download Patch', onClick: downloadPatch },
                                 { icon: FileText, label: 'Export HTML Report', onClick: exportHTMLReport },
                             ].map(({ icon: Icon, label, onClick }) => (
