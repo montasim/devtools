@@ -314,7 +314,25 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                 </label>
                 <div className="flex items-center gap-2">
                     {/* Action buttons */}
-                    <EditorActions buttons={actionButtons} readOnly={readOnly} editorView={viewRef} />
+                    <EditorActions
+                        buttons={actionButtons}
+                        readOnly={readOnly}
+                        editorView={viewRef}
+                        content={value}
+                        onContentChange={onChange}
+                        onError={(error) => {
+                            if (error) {
+                                const parseError: ParseError = {
+                                    message: error,
+                                    line: 1,
+                                    column: 1,
+                                };
+                                onError(parseError);
+                            } else {
+                                onError(null);
+                            }
+                        }}
+                    />
                 </div>
             </div>
 
