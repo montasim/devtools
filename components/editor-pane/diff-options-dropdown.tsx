@@ -67,11 +67,7 @@ export function DiffOptionsDropdown({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button
-                    variant="outline"
-                    size="icon-sm"
-                    aria-label="More options"
-                >
+                <Button variant="outline" size="icon-sm" aria-label="More options">
                     <MoreVertical className="h-4 w-4" />
                 </Button>
             </DropdownMenuTrigger>
@@ -83,36 +79,22 @@ export function DiffOptionsDropdown({
                 <DropdownMenuItem onClick={() => onFilterChange?.('all')}>
                     <List className="h-4 w-4 mr-2" />
                     <span className="text-foreground">All</span>
-                    <span className="ml-auto text-muted-foreground">
-                        {totalCount}
-                    </span>
+                    <span className="ml-auto text-muted-foreground">{totalCount}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onFilterChange?.('additions')}>
                     <Plus className="h-4 w-4 mr-2 text-green-600 dark:text-green-400" />
-                    <span className="text-green-600 dark:text-green-400">
-                        Added
-                    </span>
-                    <span className="ml-auto text-muted-foreground">
-                        {additionCount}
-                    </span>
+                    <span className="text-green-600 dark:text-green-400">Added</span>
+                    <span className="ml-auto text-muted-foreground">{additionCount}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onFilterChange?.('deletions')}>
                     <Minus className="h-4 w-4 mr-2 text-red-600 dark:text-red-400" />
-                    <span className="text-red-600 dark:text-red-400">
-                        Deleted
-                    </span>
-                    <span className="ml-auto text-muted-foreground">
-                        {deletionCount}
-                    </span>
+                    <span className="text-red-600 dark:text-red-400">Deleted</span>
+                    <span className="ml-auto text-muted-foreground">{deletionCount}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onFilterChange?.('modifications')}>
                     <Replace className="h-4 w-4 mr-2 text-orange-600 dark:text-orange-400" />
-                    <span className="text-orange-600 dark:text-orange-400">
-                        Modified
-                    </span>
-                    <span className="ml-auto text-muted-foreground">
-                        {modificationCount}
-                    </span>
+                    <span className="text-orange-600 dark:text-orange-400">Modified</span>
+                    <span className="ml-auto text-muted-foreground">{modificationCount}</span>
                 </DropdownMenuItem>
 
                 <DropdownMenuSeparator />

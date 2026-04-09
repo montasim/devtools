@@ -2,115 +2,371 @@
 <p class="subtitle">Reviewing the proposed component structure and layout</p>
 
 <div class="mockup">
-  <div class="mockup-header">Proposed Toolbar Layout</div>
-  <div class="mockup-body">
-    <div style="border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
-      <!-- Toolbar -->
-      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #f9fafb; border-bottom: 1px solid #e5e7eb;">
+    <div class="mockup-header">Proposed Toolbar Layout</div>
+    <div class="mockup-body">
+        <div style="border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden">
+            <!-- Toolbar -->
+            <div
+                style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 12px 16px;
+                    background: #f9fafb;
+                    border-bottom: 1px solid #e5e7eb;
+                "
+            >
+                <!-- Left: View Mode Tabs -->
+                <div style="display: flex; align-items: center; gap: 4px">
+                    <button
+                        style="
+                            padding: 6px 12px;
+                            border: 1px solid #d1d5db;
+                            background: white;
+                            border-radius: 6px;
+                            font-size: 13px;
+                            font-weight: 500;
+                            color: #374151;
+                            cursor: pointer;
+                            white-space: nowrap;
+                        "
+                    >
+                        Split
+                    </button>
+                    <button
+                        style="
+                            padding: 6px 12px;
+                            border: 1px solid #d1d5db;
+                            background: #3b82f6;
+                            border-radius: 6px;
+                            font-size: 13px;
+                            font-weight: 500;
+                            color: white;
+                            cursor: pointer;
+                            white-space: nowrap;
+                        "
+                    >
+                        Unified
+                    </button>
+                    <button
+                        style="
+                            padding: 6px 12px;
+                            border: 1px solid #d1d5db;
+                            background: white;
+                            border-radius: 6px;
+                            font-size: 13px;
+                            font-weight: 500;
+                            color: #374151;
+                            cursor: pointer;
+                            white-space: nowrap;
+                        "
+                    >
+                        Inline
+                    </button>
+                </div>
 
-        <!-- Left: View Mode Tabs -->
-        <div style="display: flex; align-items: center; gap: 4px;">
-          <button style="padding: 6px 12px; border: 1px solid #d1d5db; background: white; border-radius: 6px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; white-space: nowrap;">Split</button>
-          <button style="padding: 6px 12px; border: 1px solid #d1d5db; background: #3b82f6; border-radius: 6px; font-size: 13px; font-weight: 500; color: white; cursor: pointer; white-space: nowrap;">Unified</button>
-          <button style="padding: 6px 12px; border: 1px solid #d1d5db; background: white; border-radius: 6px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; white-space: nowrap;">Inline</button>
+                <!-- Right: Stats and Actions -->
+                <div style="display: flex; align-items: center; gap: 12px">
+                    <!-- Stats -->
+                    <div
+                        style="
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            font-size: 12px;
+                            color: #6b7280;
+                        "
+                    >
+                        <span style="color: #16a34a; font-weight: 600">+2</span>
+                        <span style="color: #dc2626; font-weight: 600">−1</span>
+                        <span style="color: #ea580c; font-weight: 600">~2</span>
+                        <span style="font-weight: 500">23.5% changed</span>
+                    </div>
+
+                    <!-- Separator -->
+                    <div style="width: 1px; height: 20px; background: #d1d5db"></div>
+
+                    <!-- Share Button -->
+                    <button
+                        style="
+                            padding: 6px;
+                            border: 1px solid #d1d5db;
+                            background: white;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        "
+                        title="Share"
+                    >
+                        <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                    </button>
+
+                    <!-- Three-dot Menu -->
+                    <button
+                        style="
+                            padding: 6px;
+                            border: 1px solid #d1d5db;
+                            background: white;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        "
+                        title="More options"
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="5" r="1.5"></circle>
+                            <circle cx="12" cy="12" r="1.5"></circle>
+                            <circle cx="12" cy="19" r="1.5"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preview of menu that would open on three-dot click -->
+            <div style="padding: 16px; background: #fafafa; border-top: 1px solid #e5e7eb">
+                <p
+                    style="
+                        font-size: 11px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        color: #6b7280;
+                        margin-bottom: 8px;
+                    "
+                >
+                    Three-dot menu preview:
+                </p>
+
+                <div
+                    style="
+                        background: white;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 6px;
+                        padding: 8px;
+                        font-size: 12px;
+                        max-width: 280px;
+                    "
+                >
+                    <!-- Filter Changes Section -->
+                    <div style="margin-bottom: 8px">
+                        <p
+                            style="
+                                font-size: 10px;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                color: #9ca3af;
+                                margin-bottom: 4px;
+                                padding-left: 8px;
+                            "
+                        >
+                            Filter Changes
+                        </p>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #374151;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            All <span style="color: #6b7280; float: right">5</span>
+                        </div>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #16a34a;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            + Added <span style="color: #6b7280; float: right">2</span>
+                        </div>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #dc2626;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            − Deleted <span style="color: #6b7280; float: right">1</span>
+                        </div>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #ea580c;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            ~ Modified <span style="color: #6b7280; float: right">2</span>
+                        </div>
+                    </div>
+
+                    <div style="height: 1px; background: #e5e7eb; margin: 8px 0"></div>
+
+                    <!-- Export Section -->
+                    <div style="margin-bottom: 8px">
+                        <p
+                            style="
+                                font-size: 10px;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                color: #9ca3af;
+                                margin-bottom: 4px;
+                                padding-left: 8px;
+                            "
+                        >
+                            Export
+                        </p>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #374151;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            Copy as JSON Patch
+                        </div>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #374151;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            Copy as Merge Patch
+                        </div>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #374151;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            Download Patch
+                        </div>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #374151;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            Export HTML Report
+                        </div>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #374151;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            Copy JSON Paths
+                        </div>
+                    </div>
+
+                    <div style="height: 1px; background: #e5e7eb; margin: 8px 0"></div>
+
+                    <!-- Panels Section -->
+                    <div style="margin-bottom: 8px">
+                        <p
+                            style="
+                                font-size: 10px;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                color: #9ca3af;
+                                margin-bottom: 4px;
+                                padding-left: 8px;
+                            "
+                        >
+                            Panels
+                        </p>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #374151;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            Bookmarks
+                        </div>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #374151;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            Tree Panel
+                        </div>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #374151;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            Statistics
+                        </div>
+                        <div
+                            style="
+                                padding: 6px 8px;
+                                color: #374151;
+                                cursor: pointer;
+                                border-radius: 4px;
+                            "
+                        >
+                            Validation
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <!-- Right: Stats and Actions -->
-        <div style="display: flex; align-items: center; gap: 12px;">
-
-          <!-- Stats -->
-          <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #6b7280;">
-            <span style="color: #16a34a; font-weight: 600;">+2</span>
-            <span style="color: #dc2626; font-weight: 600;">−1</span>
-            <span style="color: #ea580c; font-weight: 600;">~2</span>
-            <span style="font-weight: 500;">23.5% changed</span>
-          </div>
-
-          <!-- Separator -->
-          <div style="width: 1px; height: 20px; background: #d1d5db;"></div>
-
-          <!-- Share Button -->
-          <button style="padding: 6px; border: 1px solid #d1d5db; background: white; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;" title="Share">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="18" cy="5" r="3"></circle>
-              <circle cx="6" cy="12" r="3"></circle>
-              <circle cx="18" cy="19" r="3"></circle>
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-            </svg>
-          </button>
-
-          <!-- Three-dot Menu -->
-          <button style="padding: 6px; border: 1px solid #d1d5db; background: white; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;" title="More options">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <circle cx="12" cy="5" r="1.5"></circle>
-              <circle cx="12" cy="12" r="1.5"></circle>
-              <circle cx="12" cy="19" r="1.5"></circle>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Preview of menu that would open on three-dot click -->
-      <div style="padding: 16px; background: #fafafa; border-top: 1px solid #e5e7eb;">
-        <p style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: #6b7280; margin-bottom: 8px;">Three-dot menu preview:</p>
-
-        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px; font-size: 12px; max-width: 280px;">
-
-          <!-- Filter Changes Section -->
-          <div style="margin-bottom: 8px;">
-            <p style="font-size: 10px; font-weight: 600; text-transform: uppercase; color: #9ca3af; margin-bottom: 4px; padding-left: 8px;">Filter Changes</p>
-            <div style="padding: 6px 8px; color: #374151; cursor: pointer; border-radius: 4px;">All <span style="color: #6b7280; float: right;">5</span></div>
-            <div style="padding: 6px 8px; color: #16a34a; cursor: pointer; border-radius: 4px;">+ Added <span style="color: #6b7280; float: right;">2</span></div>
-            <div style="padding: 6px 8px; color: #dc2626; cursor: pointer; border-radius: 4px;">− Deleted <span style="color: #6b7280; float: right;">1</span></div>
-            <div style="padding: 6px 8px; color: #ea580c; cursor: pointer; border-radius: 4px;">~ Modified <span style="color: #6b7280; float: right;">2</span></div>
-          </div>
-
-          <div style="height: 1px; background: #e5e7eb; margin: 8px 0;"></div>
-
-          <!-- Export Section -->
-          <div style="margin-bottom: 8px;">
-            <p style="font-size: 10px; font-weight: 600; text-transform: uppercase; color: #9ca3af; margin-bottom: 4px; padding-left: 8px;">Export</p>
-            <div style="padding: 6px 8px; color: #374151; cursor: pointer; border-radius: 4px;">Copy as JSON Patch</div>
-            <div style="padding: 6px 8px; color: #374151; cursor: pointer; border-radius: 4px;">Copy as Merge Patch</div>
-            <div style="padding: 6px 8px; color: #374151; cursor: pointer; border-radius: 4px;">Download Patch</div>
-            <div style="padding: 6px 8px; color: #374151; cursor: pointer; border-radius: 4px;">Export HTML Report</div>
-            <div style="padding: 6px 8px; color: #374151; cursor: pointer; border-radius: 4px;">Copy JSON Paths</div>
-          </div>
-
-          <div style="height: 1px; background: #e5e7eb; margin: 8px 0;"></div>
-
-          <!-- Panels Section -->
-          <div style="margin-bottom: 8px;">
-            <p style="font-size: 10px; font-weight: 600; text-transform: uppercase; color: #9ca3af; margin-bottom: 4px; padding-left: 8px;">Panels</p>
-            <div style="padding: 6px 8px; color: #374151; cursor: pointer; border-radius: 4px;">Bookmarks</div>
-            <div style="padding: 6px 8px; color: #374151; cursor: pointer; border-radius: 4px;">Tree Panel</div>
-            <div style="padding: 6px 8px; color: #374151; cursor: pointer; border-radius: 4px;">Statistics</div>
-            <div style="padding: 6px 8px; color: #374151; cursor: pointer; border-radius: 4px;">Validation</div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <div class="section">
-  <h3>Component Structure</h3>
-  <ul style="font-size: 13px; color: #374151; line-height: 1.6;">
-    <li><strong>Left side:</strong> Tab buttons for view modes (Split/Unified/Inline)</li>
-    <li><strong>Right side:</strong> Diff stats, share button, three-dot menu</li>
-    <li><strong>Stats format:</strong> +additions −deletions ~modifications percentage</li>
-    <li><strong>Menu groups:</strong> Filter Changes, Export, Panels</li>
-  </ul>
+    <h3>Component Structure</h3>
+    <ul style="font-size: 13px; color: #374151; line-height: 1.6">
+        <li><strong>Left side:</strong> Tab buttons for view modes (Split/Unified/Inline)</li>
+        <li><strong>Right side:</strong> Diff stats, share button, three-dot menu</li>
+        <li><strong>Stats format:</strong> +additions −deletions ~modifications percentage</li>
+        <li><strong>Menu groups:</strong> Filter Changes, Export, Panels</li>
+    </ul>
 </div>
 
 <div class="section">
-  <h3>Key Features</h3>
-  <ul style="font-size: 13px; color: #374151; line-height: 1.6;">
-    <li>Uses shadcn/ui Button and DropdownMenu components</li>
-    <li>Responsive design with proper spacing</li>
-    <li>Color-coded stats (green/red/orange)</li>
-    <li>Reusable component structure</li>
-    <li>Dark mode support</li>
-  </ul>
+    <h3>Key Features</h3>
+    <ul style="font-size: 13px; color: #374151; line-height: 1.6">
+        <li>Uses shadcn/ui Button and DropdownMenu components</li>
+        <li>Responsive design with proper spacing</li>
+        <li>Color-coded stats (green/red/orange)</li>
+        <li>Reusable component structure</li>
+        <li>Dark mode support</li>
+    </ul>
 </div>

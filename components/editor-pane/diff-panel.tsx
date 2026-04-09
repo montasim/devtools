@@ -27,10 +27,17 @@ import { ChevronRight, ChevronDown, X, CheckCircle } from 'lucide-react';
  * />
  * ```
  */
-export function DiffPanel({ diffResult, isLoading, leftContent = '', rightContent = '' }: DiffPanelProps) {
+export function DiffPanel({
+    diffResult,
+    isLoading,
+    leftContent = '',
+    rightContent = '',
+}: DiffPanelProps) {
     const [viewMode, setViewMode] = useState<ViewMode>('unified');
     const [showTreePanel, setShowTreePanel] = useState(false);
-    const [filter, setFilter] = useState<'all' | 'additions' | 'deletions' | 'modifications'>('all');
+    const [filter, setFilter] = useState<'all' | 'additions' | 'deletions' | 'modifications'>(
+        'all',
+    );
     const [showStatistics, setShowStatistics] = useState(false);
     const [showValidation, setShowValidation] = useState(false);
     const [showBookmarks, setShowBookmarks] = useState(false);
@@ -104,30 +111,38 @@ export function DiffPanel({ diffResult, isLoading, leftContent = '', rightConten
     };
 
     const generateJSONPatch = (diffResult: DiffResult) => {
-        return diffResult.hunks.map(hunk => ({
+        return diffResult.hunks.map((hunk) => ({
             op: 'replace',
             path: '/path',
-            value: hunk.lines.filter(l => l.type === 'addition' || l.type === 'unchanged').map(l => l.content).join('')
+            value: hunk.lines
+                .filter((l) => l.type === 'addition' || l.type === 'unchanged')
+                .map((l) => l.content)
+                .join(''),
         }));
     };
 
     const generateMergePatch = (diffResult: DiffResult) => {
-        return diffResult.hunks.map(hunk => ({
+        return diffResult.hunks.map((hunk) => ({
             conflict: 'modify',
             file: '/path',
-            changes: hunk.lines.map(l => l.content)
+            changes: hunk.lines.map((l) => l.content),
         }));
     };
 
     const generateUnifiedDiff = (diffResult: DiffResult) => {
-        return diffResult.hunks.map(hunk => {
-            const header = `@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@`;
-            const lines = hunk.lines.map(line => {
-                const prefix = line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' ';
-                return `${prefix}${line.content}`;
-            }).join('\n');
-            return `${header}\n${lines}`;
-        }).join('\n');
+        return diffResult.hunks
+            .map((hunk) => {
+                const header = `@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@`;
+                const lines = hunk.lines
+                    .map((line) => {
+                        const prefix =
+                            line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' ';
+                        return `${prefix}${line.content}`;
+                    })
+                    .join('\n');
+                return `${header}\n${lines}`;
+            })
+            .join('\n');
     };
 
     const generateHTMLReport = (diffResult: DiffResult) => {
@@ -145,15 +160,26 @@ export function DiffPanel({ diffResult, isLoading, leftContent = '', rightConten
 <body>
     <h1>Diff Report</h1>
     <p><strong>Changes:</strong> ${diffResult.additionCount} additions, ${diffResult.deletionCount} deletions, ${diffResult.modificationCount} modifications</p>
-    ${diffResult.hunks.map(hunk => `
+    ${diffResult.hunks
+        .map(
+            (hunk) => `
         <div class="hunk">
             <h2>@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@</h2>
-            ${hunk.lines.map(line => {
-                const className = line.type === 'addition' ? 'addition' : line.type === 'deletion' ? 'deletion' : '';
-                return `<div class="${className}">${line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' '} ${line.content}</div>`;
-            }).join('')}
+            ${hunk.lines
+                .map((line) => {
+                    const className =
+                        line.type === 'addition'
+                            ? 'addition'
+                            : line.type === 'deletion'
+                              ? 'deletion'
+                              : '';
+                    return `<div class="${className}">${line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' '} ${line.content}</div>`;
+                })
+                .join('')}
         </div>
-    `).join('')}
+    `,
+        )
+        .join('')}
 </body>
 </html>`;
         const blob = new Blob([html], { type: 'text/html' });
@@ -163,8 +189,8 @@ export function DiffPanel({ diffResult, isLoading, leftContent = '', rightConten
 
     const getJSONPaths = (diffResult: DiffResult) => {
         const paths: string[] = [];
-        diffResult.hunks.forEach(hunk => {
-            hunk.lines.forEach(line => {
+        diffResult.hunks.forEach((hunk) => {
+            hunk.lines.forEach((line) => {
                 if (line.content.includes('/')) {
                     const match = line.content.match(/"([^"]+)"/);
                     if (match) paths.push(match[1]);
@@ -176,7 +202,7 @@ export function DiffPanel({ diffResult, isLoading, leftContent = '', rightConten
 
     const toggleBookmark = (hunkIndex: number) => {
         if (bookmarks.includes(hunkIndex)) {
-            setBookmarks(bookmarks.filter(b => b !== hunkIndex));
+            setBookmarks(bookmarks.filter((b) => b !== hunkIndex));
         } else {
             setBookmarks([...bookmarks, hunkIndex]);
         }
@@ -186,38 +212,50 @@ export function DiffPanel({ diffResult, isLoading, leftContent = '', rightConten
     const getFilteredDiff = () => {
         if (filter === 'all') return diffResult;
 
-        const filteredHunks = diffResult.hunks.map(hunk => {
-            if (filter === 'additions') {
-                return { ...hunk, lines: hunk.lines.filter(l => l.type === 'addition') };
-            } else if (filter === 'deletions') {
-                return { ...hunk, lines: hunk.lines.filter(l => l.type === 'deletion') };
-            } else if (filter === 'modifications') {
-                const modLines: DiffLine[] = [];
-                for (let i = 0; i < hunk.lines.length - 1; i++) {
-                    const current = hunk.lines[i];
-                    const next = hunk.lines[i + 1];
-                    if (current.type === 'deletion' && next.type === 'addition') {
-                        modLines.push(current, next);
-                        i++;
-                    } else if (current.type === 'unchanged') {
-                        modLines.push(current);
+        const filteredHunks = diffResult.hunks
+            .map((hunk) => {
+                if (filter === 'additions') {
+                    return { ...hunk, lines: hunk.lines.filter((l) => l.type === 'addition') };
+                } else if (filter === 'deletions') {
+                    return { ...hunk, lines: hunk.lines.filter((l) => l.type === 'deletion') };
+                } else if (filter === 'modifications') {
+                    const modLines: DiffLine[] = [];
+                    for (let i = 0; i < hunk.lines.length - 1; i++) {
+                        const current = hunk.lines[i];
+                        const next = hunk.lines[i + 1];
+                        if (current.type === 'deletion' && next.type === 'addition') {
+                            modLines.push(current, next);
+                            i++;
+                        } else if (current.type === 'unchanged') {
+                            modLines.push(current);
+                        }
                     }
+                    return { ...hunk, lines: modLines };
                 }
-                return { ...hunk, lines: modLines };
-            }
-            return hunk;
-        }).filter(hunk => hunk.lines.length > 0);
+                return hunk;
+            })
+            .filter((hunk) => hunk.lines.length > 0);
 
         return {
             ...diffResult,
             hunks: filteredHunks,
-            additionCount: filter === 'additions' ? diffResult.additionCount :
-                          filter === 'deletions' ? 0 :
-                          filter === 'modifications' ? diffResult.modificationCount : diffResult.additionCount,
-            deletionCount: filter === 'deletions' ? diffResult.deletionCount :
-                          filter === 'additions' ? 0 :
-                          filter === 'modifications' ? 0 : diffResult.deletionCount,
-            modificationCount: filter === 'modifications' ? diffResult.modificationCount : 0
+            additionCount:
+                filter === 'additions'
+                    ? diffResult.additionCount
+                    : filter === 'deletions'
+                      ? 0
+                      : filter === 'modifications'
+                        ? diffResult.modificationCount
+                        : diffResult.additionCount,
+            deletionCount:
+                filter === 'deletions'
+                    ? diffResult.deletionCount
+                    : filter === 'additions'
+                      ? 0
+                      : filter === 'modifications'
+                        ? 0
+                        : diffResult.deletionCount,
+            modificationCount: filter === 'modifications' ? diffResult.modificationCount : 0,
         };
     };
 
@@ -295,13 +333,32 @@ export function DiffPanel({ diffResult, isLoading, leftContent = '', rightConten
                 )}
 
                 {/* Right Side Panels */}
-                {showStatistics && <StatisticsPanel diffResult={filteredDiff} onClose={() => setShowStatistics(false)} />}
-                {showValidation && <ValidationPanel diffResult={filteredDiff} onClose={() => setShowValidation(false)} />}
-                {showBookmarks && <BookmarksPanel bookmarks={bookmarks} hunks={diffResult.hunks} onToggleBookmark={toggleBookmark} onClose={() => setShowBookmarks(false)} />}
+                {showStatistics && (
+                    <StatisticsPanel
+                        diffResult={filteredDiff}
+                        onClose={() => setShowStatistics(false)}
+                    />
+                )}
+                {showValidation && (
+                    <ValidationPanel
+                        diffResult={filteredDiff}
+                        onClose={() => setShowValidation(false)}
+                    />
+                )}
+                {showBookmarks && (
+                    <BookmarksPanel
+                        bookmarks={bookmarks}
+                        hunks={diffResult.hunks}
+                        onToggleBookmark={toggleBookmark}
+                        onClose={() => setShowBookmarks(false)}
+                    />
+                )}
 
                 {/* Main diff content */}
                 <div className="flex-1 overflow-auto max-h-96">
-                    {viewMode === 'unified' && <UnifiedView diffResult={filteredDiff} bookmarks={bookmarks} />}
+                    {viewMode === 'unified' && (
+                        <UnifiedView diffResult={filteredDiff} bookmarks={bookmarks} />
+                    )}
                     {viewMode === 'split' && <SplitView diffResult={filteredDiff} />}
                     {viewMode === 'inline' && <InlineView diffResult={filteredDiff} />}
                     {viewMode === 'tree' && <TreeView diffResult={filteredDiff} />}
@@ -325,11 +382,16 @@ function UnifiedView({ diffResult, bookmarks }: { diffResult: DiffResult; bookma
     return (
         <pre className="text-sm font-mono">
             {diffResult.hunks.map((hunk, index) => (
-                <div key={`hunk-${hunk.oldStart}-${hunk.newStart}`} id={`hunk-${index}`} className={bookmarks?.includes(index) ? 'ring-2 ring-yellow-400 ring-offset-2' : ''}>
+                <div
+                    key={`hunk-${hunk.oldStart}-${hunk.newStart}`}
+                    id={`hunk-${index}`}
+                    className={
+                        bookmarks?.includes(index) ? 'ring-2 ring-yellow-400 ring-offset-2' : ''
+                    }
+                >
                     {/* Hunk header */}
                     <div className="px-4 py-1 bg-gray-100 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                        @@ -{hunk.oldStart},{hunk.oldLines} +{hunk.newStart},{hunk.newLines}{' '}
-                        @@
+                        @@ -{hunk.oldStart},{hunk.oldLines} +{hunk.newStart},{hunk.newLines} @@
                     </div>
 
                     {/* Hunk lines */}
@@ -410,7 +472,9 @@ function SplitView({ diffResult }: { diffResult: DiffResult }) {
                                         </span>
                                         <span className="w-4 mr-2 select-none">
                                             {line.type === 'deletion' ? (
-                                                <span className="text-red-600 dark:text-red-400">-</span>
+                                                <span className="text-red-600 dark:text-red-400">
+                                                    -
+                                                </span>
                                             ) : (
                                                 <span> </span>
                                             )}
@@ -446,7 +510,9 @@ function SplitView({ diffResult }: { diffResult: DiffResult }) {
                                         </span>
                                         <span className="w-4 mr-2 select-none">
                                             {line.type === 'addition' ? (
-                                                <span className="text-green-600 dark:text-green-400">+</span>
+                                                <span className="text-green-600 dark:text-green-400">
+                                                    +
+                                                </span>
                                             ) : (
                                                 <span> </span>
                                             )}
@@ -485,8 +551,7 @@ function InlineView({ diffResult }: { diffResult: DiffResult }) {
                     {hunk.lines.map((line, lineIndex) => {
                         const prevLine = hunk.lines[lineIndex - 1];
                         const isModification =
-                            line.type === 'addition' &&
-                            prevLine?.type === 'deletion';
+                            line.type === 'addition' && prevLine?.type === 'deletion';
 
                         if (isModification) return null;
 
@@ -496,10 +561,15 @@ function InlineView({ diffResult }: { diffResult: DiffResult }) {
                                     {line.oldLineNumber || line.newLineNumber || ' '}
                                 </span>
                                 <span className="w-4 mr-2 select-none shrink-0">
-                                    {line.type === 'deletion' && hunk.lines[lineIndex + 1]?.type === 'addition' ? (
-                                        <span className="text-orange-600 dark:text-orange-400">~</span>
+                                    {line.type === 'deletion' &&
+                                    hunk.lines[lineIndex + 1]?.type === 'addition' ? (
+                                        <span className="text-orange-600 dark:text-orange-400">
+                                            ~
+                                        </span>
                                     ) : line.type === 'addition' ? (
-                                        <span className="text-green-600 dark:text-green-400">+</span>
+                                        <span className="text-green-600 dark:text-green-400">
+                                            +
+                                        </span>
                                     ) : line.type === 'deletion' ? (
                                         <span className="text-red-600 dark:text-red-400">-</span>
                                     ) : (
@@ -509,18 +579,14 @@ function InlineView({ diffResult }: { diffResult: DiffResult }) {
 
                                 {/* Deletion (old) */}
                                 {line.type === 'deletion' && (
-                                    <span
-                                        className="px-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 mr-2"
-                                    >
+                                    <span className="px-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 mr-2">
                                         {line.content}
                                     </span>
                                 )}
 
                                 {/* Addition (new) */}
                                 {line.type === 'addition' && (
-                                    <span
-                                        className="px-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300"
-                                    >
+                                    <span className="px-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300">
                                         {line.content}
                                     </span>
                                 )}
@@ -560,16 +626,22 @@ function TreeView({ diffResult }: { diffResult: DiffResult }) {
                                 <div key={`tree-line-${lineIndex}`} className="py-1">
                                     {line.type === 'addition' && (
                                         <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
-                                            <span className="text-green-600 dark:text-green-400 font-bold text-xs">+</span>
+                                            <span className="text-green-600 dark:text-green-400 font-bold text-xs">
+                                                +
+                                            </span>
                                             <span className="w-px h-px bg-green-600 dark:bg-green-400 flex-1" />
                                             <span className="text-xs ml-2">{line.content}</span>
                                         </div>
                                     )}
                                     {line.type === 'deletion' && (
                                         <div className="flex items-center gap-2 text-red-700 dark:text-red-300">
-                                            <span className="text-red-600 dark:text-red-400 font-bold text-xs">-</span>
+                                            <span className="text-red-600 dark:text-red-400 font-bold text-xs">
+                                                -
+                                            </span>
                                             <span className="w-px h-px bg-red-600 dark:bg-red-400 flex-1" />
-                                            <span className="text-xs ml-2 line-through opacity-60">{line.content}</span>
+                                            <span className="text-xs ml-2 line-through opacity-60">
+                                                {line.content}
+                                            </span>
                                         </div>
                                     )}
                                 </div>
@@ -591,7 +663,9 @@ function StatisticsPanel({ diffResult, onClose }: { diffResult: DiffResult; onCl
     return (
         <div className="w-80 border-l border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-4">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Statistics</h3>
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Statistics
+                </h3>
                 <button
                     onClick={onClose}
                     className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
@@ -602,34 +676,53 @@ function StatisticsPanel({ diffResult, onClose }: { diffResult: DiffResult; onCl
             <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">Total Lines:</span>
-                    <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">{diffResult.lineCount}</span>
+                    <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">
+                        {diffResult.lineCount}
+                    </span>
                 </div>
                 <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">Changes:</span>
                     <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">
-                        {diffResult.additionCount + diffResult.deletionCount + diffResult.modificationCount}
+                        {diffResult.additionCount +
+                            diffResult.deletionCount +
+                            diffResult.modificationCount}
                     </span>
                 </div>
                 <div className="flex justify-between">
                     <span className="text-green-600 dark:text-green-400">Additions:</span>
-                    <span className="font-mono font-semibold text-green-700 dark:text-green-300">{diffResult.additionCount}</span>
+                    <span className="font-mono font-semibold text-green-700 dark:text-green-300">
+                        {diffResult.additionCount}
+                    </span>
                 </div>
                 <div className="flex justify-between">
                     <span className="text-red-600 dark:text-red-400">Deletions:</span>
-                    <span className="font-mono font-semibold text-red-700 dark:text-red-300">{diffResult.deletionCount}</span>
+                    <span className="font-mono font-semibold text-red-700 dark:text-red-300">
+                        {diffResult.deletionCount}
+                    </span>
                 </div>
                 <div className="flex justify-between">
                     <span className="text-orange-600 dark:text-orange-400">Modifications:</span>
-                    <span className="font-mono font-semibold text-orange-700 dark:text-orange-300">{diffResult.modificationCount}</span>
+                    <span className="font-mono font-semibold text-orange-700 dark:text-orange-300">
+                        {diffResult.modificationCount}
+                    </span>
                 </div>
                 <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">Hunks:</span>
-                    <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">{diffResult.hunks.length}</span>
+                    <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">
+                        {diffResult.hunks.length}
+                    </span>
                 </div>
                 <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">Changed:</span>
                     <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">
-                        {((diffResult.additionCount + diffResult.deletionCount + diffResult.modificationCount) / diffResult.lineCount * 100).toFixed(1)}%
+                        {(
+                            ((diffResult.additionCount +
+                                diffResult.deletionCount +
+                                diffResult.modificationCount) /
+                                diffResult.lineCount) *
+                            100
+                        ).toFixed(1)}
+                        %
                     </span>
                 </div>
             </div>
@@ -649,7 +742,9 @@ function ValidationPanel({ diffResult, onClose }: { diffResult: DiffResult; onCl
     return (
         <div className="w-80 border-l border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-4">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Validation</h3>
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Validation
+                </h3>
                 <button
                     onClick={onClose}
                     className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
@@ -665,7 +760,10 @@ function ValidationPanel({ diffResult, onClose }: { diffResult: DiffResult; onCl
                     </div>
                 ) : (
                     issues.map((issue, index) => (
-                        <div key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                        <div
+                            key={index}
+                            className="flex items-start gap-2 text-gray-700 dark:text-gray-300"
+                        >
                             <span className="text-red-500">{index + 1}.</span>
                             <span>{issue}</span>
                         </div>
@@ -677,7 +775,12 @@ function ValidationPanel({ diffResult, onClose }: { diffResult: DiffResult; onCl
 }
 
 // Bookmarks Panel
-function BookmarksPanel({ bookmarks, hunks, onToggleBookmark, onClose }: {
+function BookmarksPanel({
+    bookmarks,
+    hunks,
+    onToggleBookmark,
+    onClose,
+}: {
     bookmarks: number[];
     hunks: DiffResult['hunks'];
     onToggleBookmark: (index: number) => void;
@@ -686,7 +789,9 @@ function BookmarksPanel({ bookmarks, hunks, onToggleBookmark, onClose }: {
     return (
         <div className="w-80 border-l border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-4">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Bookmarks</h3>
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Bookmarks
+                </h3>
                 <button
                     onClick={onClose}
                     className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
@@ -706,12 +811,15 @@ function BookmarksPanel({ bookmarks, hunks, onToggleBookmark, onClose }: {
                                 className="flex items-center gap-2 w-full px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-left"
                                 onClick={() => {
                                     onToggleBookmark(bookmarkIndex);
-                                    document.getElementById(`hunk-${bookmarkIndex}`)?.scrollIntoView({ behavior: 'smooth' });
+                                    document
+                                        .getElementById(`hunk-${bookmarkIndex}`)
+                                        ?.scrollIntoView({ behavior: 'smooth' });
                                 }}
                             >
                                 <span className="text-yellow-600 dark:text-yellow-400">⭐</span>
                                 <span className="text-xs text-gray-700 dark:text-gray-300">
-                                    Hunk {bookmarkIndex + 1} (lines {hunk.oldStart}-{hunk.oldStart + hunk.oldLines})
+                                    Hunk {bookmarkIndex + 1} (lines {hunk.oldStart}-
+                                    {hunk.oldStart + hunk.oldLines})
                                 </span>
                             </button>
                         );

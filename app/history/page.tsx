@@ -2,9 +2,7 @@ export default function HistoryPage() {
     return (
         <div className="mx-auto py-12">
             <h1 className="mb-4 text-4xl font-bold">History</h1>
-            <p className="text-lg text-muted-foreground">
-                View your recent tool usage
-            </p>
+            <p className="text-lg text-muted-foreground">View your recent tool usage</p>
             <div className="mt-8 rounded-lg border border-dashed p-12 text-center">
                 <p className="text-muted-foreground">Coming soon...</p>
             </div>

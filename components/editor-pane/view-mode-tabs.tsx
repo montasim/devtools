@@ -34,11 +34,7 @@ const VIEW_MODES: { value: ViewMode; label: string }[] = [
  * />
  * ```
  */
-export function ViewModeTabs({
-    currentMode,
-    onModeChange,
-    className,
-}: ViewModeTabsProps) {
+export function ViewModeTabs({ currentMode, onModeChange, className }: ViewModeTabsProps) {
     return (
         <div
             className={cn('flex items-center gap-1', className)}

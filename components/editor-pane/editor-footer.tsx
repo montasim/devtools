@@ -47,11 +47,14 @@ function calculateStats(content: string): EditorStats {
                     return currentDepth;
                 }
                 if (Array.isArray(obj)) {
-                    return obj.reduce((max, item) => Math.max(max, calculateDepth(item, currentDepth + 1)), currentDepth);
+                    return obj.reduce(
+                        (max, item) => Math.max(max, calculateDepth(item, currentDepth + 1)),
+                        currentDepth,
+                    );
                 }
                 return Object.values(obj as object).reduce(
                     (max, value) => Math.max(max, calculateDepth(value, currentDepth + 1)),
-                    currentDepth
+                    currentDepth,
                 );
             };
             depth = calculateDepth(parsed);
@@ -108,10 +111,27 @@ export function EditorFooter({ content, error }: EditorFooterProps) {
             { icon: Type, label: `${stats.characterCount} chars`, title: 'Characters' },
             { icon: FileText, label: `${stats.wordCount} words`, title: 'Words' },
             { icon: AlignLeft, label: `${stats.lineCount} lines`, title: 'Lines' },
-            ...(stats.depth > 0 ? [{ icon: Layers, label: `depth ${stats.depth}`, title: 'Max nesting depth', emphasized: true }] : []),
-            ...(stats.paths.length > 0 ? [{ icon: GitBranch, label: `${stats.paths.length} paths`, title: `${stats.paths.length} paths` }] : []),
+            ...(stats.depth > 0
+                ? [
+                      {
+                          icon: Layers,
+                          label: `depth ${stats.depth}`,
+                          title: 'Max nesting depth',
+                          emphasized: true,
+                      },
+                  ]
+                : []),
+            ...(stats.paths.length > 0
+                ? [
+                      {
+                          icon: GitBranch,
+                          label: `${stats.paths.length} paths`,
+                          title: `${stats.paths.length} paths`,
+                      },
+                  ]
+                : []),
         ],
-        [stats]
+        [stats],
     );
 
     return (
@@ -120,9 +140,15 @@ export function EditorFooter({ content, error }: EditorFooterProps) {
                 {/* Left side: Statistics */}
                 <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400 overflow-x-auto scrollbar-hide flex-1">
                     {statistics.map((stat, index) => (
-                        <div key={index} title={stat.title} className="flex items-center gap-1.5 shrink-0">
+                        <div
+                            key={index}
+                            title={stat.title}
+                            className="flex items-center gap-1.5 shrink-0"
+                        >
                             <stat.icon className="h-3.5 w-3.5 text-gray-500" />
-                            <span className={stat.emphasized ? 'font-medium' : ''}>{stat.label}</span>
+                            <span className={stat.emphasized ? 'font-medium' : ''}>
+                                {stat.label}
+                            </span>
                         </div>
                     ))}
                 </div>

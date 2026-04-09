@@ -73,7 +73,9 @@ export function EditorOperationsMenu({
             onContentChange(result);
             onError?.(null);
         } catch (error) {
-            onError?.(`Failed to ${operationName}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            onError?.(
+                `Failed to ${operationName}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            );
         }
     };
 
@@ -114,7 +116,9 @@ export function EditorOperationsMenu({
                 <DropdownMenuShortcut>⌘⇧E</DropdownMenuShortcut>
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={onCollapse || (() => handleOperation(collapseJson, 'collapse'))}>
+            <DropdownMenuItem
+                onClick={onCollapse || (() => handleOperation(collapseJson, 'collapse'))}
+            >
                 <Minimize2 className="mr-2 h-4 w-4" />
                 Collapse All
                 <DropdownMenuShortcut>⌘⇧C</DropdownMenuShortcut>
@@ -128,19 +132,33 @@ export function EditorOperationsMenu({
                     JSON Operations
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent className="w-48">
-                    <DropdownMenuItem onClick={onRemoveNulls || (() => handleOperation(removeNulls, 'remove nulls'))}>
+                    <DropdownMenuItem
+                        onClick={
+                            onRemoveNulls || (() => handleOperation(removeNulls, 'remove nulls'))
+                        }
+                    >
                         <Trash2 className="mr-2 h-4 w-4" />
                         Remove Nulls
                         <DropdownMenuShortcut>⌘⌥N</DropdownMenuShortcut>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem onClick={onRemoveEmptyStrings || (() => handleOperation(removeEmptyStrings, 'remove empty strings'))}>
+                    <DropdownMenuItem
+                        onClick={
+                            onRemoveEmptyStrings ||
+                            (() => handleOperation(removeEmptyStrings, 'remove empty strings'))
+                        }
+                    >
                         <MinusCircle className="mr-2 h-4 w-4" />
                         Remove Empty Strings
                         <DropdownMenuShortcut>⌘⌥S</DropdownMenuShortcut>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem onClick={onRemoveEmptyObjects || (() => handleOperation(removeEmptyObjects, 'remove empty objects'))}>
+                    <DropdownMenuItem
+                        onClick={
+                            onRemoveEmptyObjects ||
+                            (() => handleOperation(removeEmptyObjects, 'remove empty objects'))
+                        }
+                    >
                         <Package className="mr-2 h-4 w-4" />
                         Remove Empty Objects
                         <DropdownMenuShortcut>⌘⌥O</DropdownMenuShortcut>
@@ -148,19 +166,30 @@ export function EditorOperationsMenu({
 
                     <DropdownMenuSeparator />
 
-                    <DropdownMenuItem onClick={onSortKeys || (() => handleOperation(sortKeys, 'sort keys'))}>
+                    <DropdownMenuItem
+                        onClick={onSortKeys || (() => handleOperation(sortKeys, 'sort keys'))}
+                    >
                         <ArrowUpDown className="mr-2 h-4 w-4" />
                         Sort Keys
                         <DropdownMenuShortcut>⌘⌥K</DropdownMenuShortcut>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem onClick={onFormatDates || (() => handleOperation(formatDates, 'format dates'))}>
+                    <DropdownMenuItem
+                        onClick={
+                            onFormatDates || (() => handleOperation(formatDates, 'format dates'))
+                        }
+                    >
                         <Calendar className="mr-2 h-4 w-4" />
                         Format Dates
                         <DropdownMenuShortcut>⌘⌥D</DropdownMenuShortcut>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem onClick={onEscapeUnicode || (() => handleOperation(escapeUnicode, 'escape unicode'))}>
+                    <DropdownMenuItem
+                        onClick={
+                            onEscapeUnicode ||
+                            (() => handleOperation(escapeUnicode, 'escape unicode'))
+                        }
+                    >
                         <Globe className="mr-2 h-4 w-4" />
                         Escape Unicode
                         <DropdownMenuShortcut>⌘⌥U</DropdownMenuShortcut>

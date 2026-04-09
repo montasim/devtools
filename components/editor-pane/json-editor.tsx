@@ -192,54 +192,57 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
     }, [value]);
 
     // Handle file upload
-    const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
+    const handleFileUpload = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            const file = event.target.files?.[0];
+            if (!file) return;
 
-        // Check file size (50MB hard limit)
-        const MAX_SIZE = 50 * 1024 * 1024; // 50MB in bytes
-        const WARNING_SIZE = 10 * 1024 * 1024; // 10MB in bytes
+            // Check file size (50MB hard limit)
+            const MAX_SIZE = 50 * 1024 * 1024; // 50MB in bytes
+            const WARNING_SIZE = 10 * 1024 * 1024; // 10MB in bytes
 
-        if (file.size > MAX_SIZE) {
-            const sizeError: ParseError = {
-                message: `File too large. Maximum size is 50MB.`,
-                line: 1,
-                column: 1,
+            if (file.size > MAX_SIZE) {
+                const sizeError: ParseError = {
+                    message: `File too large. Maximum size is 50MB.`,
+                    line: 1,
+                    column: 1,
+                };
+                setError(sizeError);
+                onError(sizeError);
+                return;
+            }
+
+            if (file.size > WARNING_SIZE) {
+                console.warn(
+                    `Large file detected (${(file.size / 1024 / 1024).toFixed(2)}MB). Upload may take a moment.`,
+                );
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const content = e.target?.result as string;
+                onChange(content);
+                // Validate immediately for file upload
+                const validationError = validateJson(content);
+                setError(validationError);
+                onError(validationError);
             };
-            setError(sizeError);
-            onError(sizeError);
-            return;
-        }
-
-        if (file.size > WARNING_SIZE) {
-            console.warn(
-                `Large file detected (${(file.size / 1024 / 1024).toFixed(2)}MB). Upload may take a moment.`,
-            );
-        }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const content = e.target?.result as string;
-            onChange(content);
-            // Validate immediately for file upload
-            const validationError = validateJson(content);
-            setError(validationError);
-            onError(validationError);
-        };
-        reader.onerror = () => {
-            const readError: ParseError = {
-                message: 'Failed to read file. Please try again.',
-                line: 1,
-                column: 1,
+            reader.onerror = () => {
+                const readError: ParseError = {
+                    message: 'Failed to read file. Please try again.',
+                    line: 1,
+                    column: 1,
+                };
+                setError(readError);
+                onError(readError);
             };
-            setError(readError);
-            onError(readError);
-        };
-        reader.readAsText(file);
+            reader.readAsText(file);
 
-        // Reset input so same file can be selected again
-        event.target.value = '';
-    }, [onChange, onError]);
+            // Reset input so same file can be selected again
+            event.target.value = '';
+        },
+        [onChange, onError],
+    );
 
     // Handle clear editor content
     const handleClear = useCallback(() => {
@@ -620,7 +623,9 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
             {error && (
                 <div className="mt-2 p-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded dark:text-red-400 dark:bg-red-900/20 dark:border-red-800">
                     <div className="font-medium">{error.message}</div>
-                    <div className="text-xs mt-1">Line {error.line}, Column {error.column}</div>
+                    <div className="text-xs mt-1">
+                        Line {error.line}, Column {error.column}
+                    </div>
                 </div>
             )}
 

@@ -67,7 +67,7 @@ export function removeNulls(content: string): string {
         const removeNullsRecursive = (obj: unknown): unknown => {
             if (obj === null) return null;
             if (Array.isArray(obj)) {
-                return obj.filter(item => item !== null).map(removeNullsRecursive);
+                return obj.filter((item) => item !== null).map(removeNullsRecursive);
             }
             if (typeof obj === 'object') {
                 const result: Record<string, unknown> = {};
@@ -97,7 +97,7 @@ export function removeEmptyStrings(content: string): string {
             if (Array.isArray(obj)) {
                 const filtered = obj
                     .map(removeEmptyStringsRecursive)
-                    .filter(item => item !== null);
+                    .filter((item) => item !== null);
                 return filtered.length === obj.length ? obj : filtered;
             }
             if (typeof obj === 'object' && obj !== null) {
@@ -128,7 +128,7 @@ export function removeEmptyObjects(content: string): string {
             if (Array.isArray(obj)) {
                 const filtered = obj
                     .map(removeEmptyObjectsRecursive)
-                    .filter(item => item !== null && item !== undefined && item !== '');
+                    .filter((item) => item !== null && item !== undefined && item !== '');
                 return filtered.length === 0 ? null : filtered;
             }
             if (typeof obj === 'object' && obj !== null) {
@@ -218,15 +218,19 @@ export function escapeUnicode(content: string): string {
     try {
         const parsed = JSON.parse(content);
         // Use JSON.stringify with replacer to escape unicode
-        return JSON.stringify(parsed, (_, value) => {
-            if (typeof value === 'string') {
-                // Escape unicode characters
-                return value.replace(/[\u007F-\uFFFF]/g, (char) => {
-                    return '\\u' + char.charCodeAt(0).toString(16).padStart(4, '0');
-                });
-            }
-            return value;
-        }, 2);
+        return JSON.stringify(
+            parsed,
+            (_, value) => {
+                if (typeof value === 'string') {
+                    // Escape unicode characters
+                    return value.replace(/[\u007F-\uFFFF]/g, (char) => {
+                        return '\\u' + char.charCodeAt(0).toString(16).padStart(4, '0');
+                    });
+                }
+                return value;
+            },
+            2,
+        );
     } catch {
         return content;
     }

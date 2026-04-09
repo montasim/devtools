@@ -28,6 +28,7 @@ components/editor-pane/
 ## Task 1: Extend Type Definitions
 
 **Files:**
+
 - Modify: `components/editor-pane/types.ts`
 
 - [ ] **Step 1: Add type definitions for toolbar**
@@ -86,7 +87,7 @@ export interface DiffResult {
     lineCount: number;
     additionCount: number;
     deletionCount: number;
-    modificationCount: number;  // NEW FIELD
+    modificationCount: number; // NEW FIELD
 }
 ```
 
@@ -102,6 +103,7 @@ git commit -m "feat(types): add diff panel toolbar types and modificationCount f
 ## Task 2: Implement Modification Count Calculation
 
 **Files:**
+
 - Modify: `components/editor-pane/use-json-diff.ts`
 
 - [ ] **Step 1: Add modification count calculation helper**
@@ -165,6 +167,7 @@ git commit -m "feat(diff): add modification count calculation to diff result"
 ## Task 3: Create DiffStatsDisplay Component
 
 **Files:**
+
 - Create: `components/editor-pane/diff-stats-display.tsx`
 
 - [ ] **Step 1: Create component file**
@@ -238,6 +241,7 @@ git commit -m "feat(toolbar): add DiffStatsDisplay component"
 ## Task 4: Create ViewModeTabs Component
 
 **Files:**
+
 - Create: `components/editor-pane/view-mode-tabs.tsx`
 
 - [ ] **Step 1: Create component file**
@@ -305,6 +309,7 @@ git commit -m "feat(toolbar): add ViewModeTabs component"
 ## Task 5: Create DiffOptionsDropdown Component
 
 **Files:**
+
 - Create: `components/editor-pane/diff-options-dropdown.tsx`
 
 - [ ] **Step 1: Create component file**
@@ -449,6 +454,7 @@ git commit -m "feat(toolbar): add DiffOptionsDropdown component"
 ## Task 6: Rewrite DiffPanelToolbar Component
 
 **Files:**
+
 - Modify: `components/editor-pane/diff-panel-toolbar.tsx`
 
 - [ ] **Step 1: Replace toolbar implementation**
@@ -549,17 +555,20 @@ git commit -m "feat(toolbar): rewrite DiffPanelToolbar with new implementation"
 ## Task 7: Update DiffPanel Integration
 
 **Files:**
+
 - Modify: `components/editor-pane/diff-panel.tsx`
 
 - [ ] **Step 1: Add view mode state**
 
 Add this import at the top:
+
 ```typescript
 import { useState } from 'react';
 import { ViewMode } from './types';
 ```
 
 Add state inside the DiffPanel component (after props destructuring):
+
 ```typescript
 const [viewMode, setViewMode] = useState<ViewMode>('unified');
 ```
@@ -607,6 +616,7 @@ git commit -m "feat(panel): integrate new DiffPanelToolbar with view mode state"
 ## Task 8: Test the Implementation
 
 **Files:**
+
 - Test: All modified components
 
 - [ ] **Step 1: Run development server**
@@ -622,34 +632,34 @@ Expected: Server starts without errors
 Test in browser at http://localhost:3000:
 
 1. **Toolbar displays correctly**
-   - Stats show correct numbers
-   - Percentage is calculated accurately
-   - Colors are correct (green/red/orange)
+    - Stats show correct numbers
+    - Percentage is calculated accurately
+    - Colors are correct (green/red/orange)
 
 2. **View mode tabs work**
-   - Click each tab (Split, Unified, Inline)
-   - Active tab highlights correctly
-   - Check console logs show mode changes
+    - Click each tab (Split, Unified, Inline)
+    - Active tab highlights correctly
+    - Check console logs show mode changes
 
 3. **Share button**
-   - Click share button
-   - Check console shows "Share clicked"
+    - Click share button
+    - Check console shows "Share clicked"
 
 4. **Options dropdown**
-   - Click three-dot menu
-   - Verify all sections appear
-   - Click each menu item
-   - Check console logs for actions
+    - Click three-dot menu
+    - Verify all sections appear
+    - Click each menu item
+    - Check console logs for actions
 
 5. **Dark mode**
-   - Toggle dark mode
-   - Verify colors invert correctly
-   - Check contrast is readable
+    - Toggle dark mode
+    - Verify colors invert correctly
+    - Check contrast is readable
 
 6. **Responsive**
-   - Resize browser to mobile width
-   - Verify toolbar remains usable
-   - Check tabs scroll if needed
+    - Resize browser to mobile width
+    - Verify toolbar remains usable
+    - Check tabs scroll if needed
 
 - [ ] **Step 3: Run type check**
 
@@ -687,6 +697,7 @@ git commit -m "test: verify implementation - all checks passing"
 ## Task 9: Accessibility Verification
 
 **Files:**
+
 - Test: Manual accessibility checks
 
 - [ ] **Step 1: Keyboard navigation test**
@@ -713,6 +724,7 @@ Expected: All elements properly announced
 - [ ] **Step 3: ARIA attributes check**
 
 Inspect DOM and verify:
+
 - `role="toolbar"` on toolbar container
 - `role="tablist"` and `role="tab"` on tabs
 - `aria-selected` on active tab
@@ -724,6 +736,7 @@ Expected: All ARIA attributes present
 - [ ] **Step 4: Color contrast check**
 
 Use browser extension or online tool to verify:
+
 - Green text on background: WCAG AA compliant
 - Red text on background: WCAG AA compliant
 - Orange text on background: WCAG AA compliant
@@ -742,6 +755,7 @@ git commit -m "test: verify accessibility compliance"
 ## Task 10: Documentation and Cleanup
 
 **Files:**
+
 - Create: Component documentation (optional)
 - Modify: README if needed
 
@@ -749,7 +763,7 @@ git commit -m "test: verify accessibility compliance"
 
 Add JSDoc comments to exported components:
 
-```typescript
+````typescript
 /**
  * DiffPanelToolbar - Toolbar component for diff panels
  *
@@ -768,7 +782,7 @@ Add JSDoc comments to exported components:
  * ```
  */
 export function DiffPanelToolbar(props: DiffPanelToolbarProps) {
-```
+````
 
 Repeat for other exported components.
 
@@ -789,23 +803,24 @@ git commit -m "docs: add JSDoc comments and finalize implementation"
 
 After completing all tasks, verify:
 
-- [ ] 1. Toolbar displays accurate diff statistics
-- [ ] 2. View mode tabs work correctly and trigger callbacks
-- [ ] 3. Share button triggers callback
-- [ ] 4. Three-dot menu shows all sections and options
-- [ ] 5. Menu items trigger appropriate callbacks
-- [ ] 6. Component is fully typed with TypeScript
-- [ ] 7. Dark mode works correctly
-- [ ] 8. Responsive design passes mobile tests
-- [ ] 9. Accessibility standards met
-- [ ] 10. Integrates seamlessly with existing DiffPanel
-- [ ] 11. No breaking changes to existing code
+- [ ]   1. Toolbar displays accurate diff statistics
+- [ ]   2. View mode tabs work correctly and trigger callbacks
+- [ ]   3. Share button triggers callback
+- [ ]   4. Three-dot menu shows all sections and options
+- [ ]   5. Menu items trigger appropriate callbacks
+- [ ]   6. Component is fully typed with TypeScript
+- [ ]   7. Dark mode works correctly
+- [ ]   8. Responsive design passes mobile tests
+- [ ]   9. Accessibility standards met
+- [ ]   10. Integrates seamlessly with existing DiffPanel
+- [ ]   11. No breaking changes to existing code
 
 ---
 
 ## Notes for Implementation
 
 **Key Design Decisions:**
+
 1. **Controlled component pattern** for view mode - parent owns state
 2. **Modification count** uses simplified calculation (Math.min) for performance
 3. **Callbacks are optional** - toolbar works without any handlers
@@ -813,12 +828,14 @@ After completing all tasks, verify:
 5. **Accessibility first** - all interactive elements properly labeled
 
 **Testing Strategy:**
+
 - Manual testing required for UI components
 - Existing tests should continue passing
 - No unit tests added (follow existing project pattern)
 - Focus on integration and accessibility testing
 
 **Future Enhancements (Out of Scope):**
+
 - Share dialog implementation
 - Export handler implementations
 - Panel toggle implementations

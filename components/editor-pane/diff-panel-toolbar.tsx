@@ -42,8 +42,7 @@ export function DiffPanelToolbar({
     // Calculate percentage changed
     const percentageChanged =
         totalLines > 0
-            ? ((additionCount + deletionCount + modificationCount) / totalLines) *
-              100
+            ? ((additionCount + deletionCount + modificationCount) / totalLines) * 100
             : 0;
 
     return (

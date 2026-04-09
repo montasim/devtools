@@ -11,6 +11,7 @@ A reusable toolbar component for diff panels that displays diff statistics, prov
 ## Requirements
 
 ### Functional Requirements
+
 1. Display diff statistics with color-coded additions, deletions, and modifications
 2. Provide view mode switching between Split, Unified, and Inline views
 3. Offer share functionality via dialog
@@ -19,6 +20,7 @@ A reusable toolbar component for diff panels that displays diff statistics, prov
 6. Be fully responsive
 
 ### Non-Functional Requirements
+
 1. Follow existing codebase patterns (Toolbar component)
 2. Use shadcn/ui components exclusively
 3. TypeScript with strict typing
@@ -44,27 +46,32 @@ DiffPanelToolbar (main container)
 ### Component Responsibilities
 
 **DiffPanelToolbar**
+
 - Manages toolbar state (view mode, dialog states)
 - Calculates percentage from stats
 - Coordinates between child components
 - Handles responsive layout
 
 **ViewModeTabs**
+
 - Renders tab buttons for each view mode
 - Manages active tab state
 - Triggers `onViewModeChange` callback
 
 **DiffStatsDisplay**
+
 - Formats and displays statistics
 - Color-codes additions (green), deletions (red), modifications (orange)
 - Shows percentage calculation
 
 **ShareButton**
+
 - Icon button with tooltip
 - Opens share dialog (separate component)
 - Triggers `onShare` callback
 
 **DiffOptionsDropdown**
+
 - Three-dot menu with grouped sections
 - Filter Changes section with counts
 - Export section with multiple formats
@@ -89,40 +96,43 @@ const [viewMode, setViewMode] = useState<ViewMode>('unified');
 ```
 
 **Local State (Internal to Toolbar):**
+
 ```typescript
 {
-  isShareDialogOpen: boolean;  // Managed internally
-  isOptionsMenuOpen: boolean;   // Managed by DropdownMenu component
+    isShareDialogOpen: boolean; // Managed internally
+    isOptionsMenuOpen: boolean; // Managed by DropdownMenu component
 }
 ```
 
 **Props (Input):**
+
 ```typescript
 interface DiffPanelToolbarProps {
-  // View mode (controlled)
-  viewMode: ViewMode;
+    // View mode (controlled)
+    viewMode: ViewMode;
 
-  // Statistics
-  additionCount: number;
-  deletionCount: number;
-  modificationCount: number;
-  totalLines: number;
+    // Statistics
+    additionCount: number;
+    deletionCount: number;
+    modificationCount: number;
+    totalLines: number;
 
-  // Callbacks
-  onViewModeChange?: (mode: ViewMode) => void;
-  onShare?: () => void;
-  onExport?: (format: ExportFormat) => void;
-  onFilterChange?: (filter: DiffFilter) => void;
-  onPanelToggle?: (panel: PanelType) => void;
+    // Callbacks
+    onViewModeChange?: (mode: ViewMode) => void;
+    onShare?: () => void;
+    onExport?: (format: ExportFormat) => void;
+    onFilterChange?: (filter: DiffFilter) => void;
+    onPanelToggle?: (panel: PanelType) => void;
 
-  // Styling
-  className?: string;
+    // Styling
+    className?: string;
 }
 ```
 
 **Derived State:**
+
 ```typescript
-percentageChanged = ((additionCount + deletionCount + modificationCount) / totalLines) * 100
+percentageChanged = ((additionCount + deletionCount + modificationCount) / totalLines) * 100;
 ```
 
 ### Data Flow Diagram
@@ -146,6 +156,7 @@ DiffOptionsDropdown → onExport/onFilterChange/onPanelToggle callbacks
 ### UI Components & Styling
 
 **View Mode Tabs:**
+
 - Component: `Button` from shadcn/ui
 - Variant: `outline` (inactive), `default` (active)
 - Size: `sm`
@@ -153,41 +164,44 @@ DiffOptionsDropdown → onExport/onFilterChange/onPanelToggle callbacks
 - Active tab highlighted with primary color
 
 **Diff Stats Display:**
+
 - Layout: Horizontal flex with gaps
 - Typography: `text-sm` for labels, `font-semibold` for numbers
 - Colors:
-  - Additions: `text-green-600 dark:text-green-400`
-  - Deletions: `text-red-600 dark:text-red-400`
-  - Modified: `text-orange-600 dark:text-orange-400`
-  - Percentage: `text-gray-600 dark:text-gray-400`
+    - Additions: `text-green-600 dark:text-green-400`
+    - Deletions: `text-red-600 dark:text-red-400`
+    - Modified: `text-orange-600 dark:text-orange-400`
+    - Percentage: `text-gray-600 dark:text-gray-400`
 - Separator: Vertical line using `Separator` component
 
 **Share Button:**
+
 - Component: `Button` with `size="icon-sm"`
 - Icon: `Share2` from lucide-react
 - Tooltip: "Share this diff"
 - Variant: `outline`
 
 **Options Dropdown:**
+
 - Component: `DropdownMenu` from shadcn/ui
 - Trigger: `Button` with `MoreVertical` icon
 - Menu structure:
-  1. **Filter Changes** section
-     - All (5)
-     - + Added (2)
-     - - Deleted (1)
-     - ~ Modified (2)
-  2. **Export** section
-     - Copy as JSON Patch
-     - Copy as Merge Patch
-     - Download Patch
-     - Export HTML Report
-     - Copy JSON Paths
-  3. **Panels** section
-     - Bookmarks
-     - Tree Panel
-     - Statistics
-     - Validation
+    1. **Filter Changes** section
+        - All (5)
+        -   - Added (2)
+        -   - Deleted (1)
+        - ~ Modified (2)
+    2. **Export** section
+        - Copy as JSON Patch
+        - Copy as Merge Patch
+        - Download Patch
+        - Export HTML Report
+        - Copy JSON Paths
+    3. **Panels** section
+        - Bookmarks
+        - Tree Panel
+        - Statistics
+        - Validation
 
 ### Type Definitions
 
@@ -196,12 +210,7 @@ DiffOptionsDropdown → onExport/onFilterChange/onPanelToggle callbacks
 type ViewMode = 'split' | 'unified' | 'inline';
 
 // Export formats
-type ExportFormat =
-  | 'json-patch'
-  | 'merge-patch'
-  | 'download-patch'
-  | 'html-report'
-  | 'json-paths';
+type ExportFormat = 'json-patch' | 'merge-patch' | 'download-patch' | 'html-report' | 'json-paths';
 
 // Diff filters
 type DiffFilter = 'all' | 'additions' | 'deletions' | 'modifications';
@@ -211,38 +220,41 @@ type PanelType = 'bookmarks' | 'tree-panel' | 'statistics' | 'validation';
 
 // Main props interface
 interface DiffPanelToolbarProps {
-  // Statistics
-  additionCount: number;
-  deletionCount: number;
-  modificationCount: number;
-  totalLines: number;
+    // Statistics
+    additionCount: number;
+    deletionCount: number;
+    modificationCount: number;
+    totalLines: number;
 
-  // Callbacks
-  onViewModeChange?: (mode: ViewMode) => void;
-  onShare?: () => void;
-  onExport?: (format: ExportFormat) => void;
-  onFilterChange?: (filter: DiffFilter) => void;
-  onPanelToggle?: (panel: PanelType) => void;
+    // Callbacks
+    onViewModeChange?: (mode: ViewMode) => void;
+    onShare?: () => void;
+    onExport?: (format: ExportFormat) => void;
+    onFilterChange?: (filter: DiffFilter) => void;
+    onPanelToggle?: (panel: PanelType) => void;
 
-  // Styling
-  className?: string;
+    // Styling
+    className?: string;
 }
 ```
 
 ### Responsive Design
 
 **Desktop (>768px):**
+
 - Full toolbar with all elements visible
 - Tabs and stats on same row
 - Horizontal spacing optimized
 
 **Mobile (≤768px):**
+
 - Tabs scroll horizontally if needed
 - Stats maintain visibility
 - Buttons remain touch-friendly (min 44×44px)
 - Menu accessible via dropdown
 
 **Accessibility:**
+
 - Keyboard navigation (Tab, Arrow keys, Enter/Space)
 - ARIA labels on icon buttons
 - Focus indicators
@@ -253,6 +265,7 @@ interface DiffPanelToolbarProps {
 ### With Existing Components
 
 **Current Integration:**
+
 ```typescript
 // In diff-panel.tsx
 <DiffPanelToolbar
@@ -262,6 +275,7 @@ interface DiffPanelToolbarProps {
 ```
 
 **New Integration:**
+
 ```typescript
 // In diff-panel.tsx
 const [viewMode, setViewMode] = useState<ViewMode>('unified');
@@ -283,14 +297,15 @@ const [viewMode, setViewMode] = useState<ViewMode>('unified');
 ### Required Interface Changes
 
 **Extend DiffResult Interface:**
+
 ```typescript
 // In components/editor-pane/types.ts
 export interface DiffResult {
-  hunks: DiffHunk[];
-  lineCount: number;
-  additionCount: number;
-  deletionCount: number;
-  modificationCount: number;  // NEW FIELD
+    hunks: DiffHunk[];
+    lineCount: number;
+    additionCount: number;
+    deletionCount: number;
+    modificationCount: number; // NEW FIELD
 }
 ```
 
@@ -300,32 +315,38 @@ Since the existing `DiffLine` type only has `'addition' | 'deletion' | 'unchange
 ```typescript
 // In diff computation logic (e.g., lib/json-diff.ts or similar)
 function calculateModificationCount(hunks: DiffHunk[]): number {
-  let modifications = 0;
-  hunks.forEach(hunk => {
-    for (let i = 0; i < hunk.lines.length - 1; i++) {
-      const current = hunk.lines[i];
-      const next = hunk.lines[i + 1];
-      // Count deletion followed by addition as a modification
-      if (current.type === 'deletion' && next.type === 'addition' &&
-          current.oldLineNumber === next.newLineNumber) {
-        modifications++;
-      }
-    }
-  });
-  return modifications;
+    let modifications = 0;
+    hunks.forEach((hunk) => {
+        for (let i = 0; i < hunk.lines.length - 1; i++) {
+            const current = hunk.lines[i];
+            const next = hunk.lines[i + 1];
+            // Count deletion followed by addition as a modification
+            if (
+                current.type === 'deletion' &&
+                next.type === 'addition' &&
+                current.oldLineNumber === next.newLineNumber
+            ) {
+                modifications++;
+            }
+        }
+    });
+    return modifications;
 }
 ```
 
 **Alternative (Simpler):**
 If modification tracking is too complex for the current diff algorithm, `modificationCount` can be calculated as:
+
 ```typescript
 modificationCount = Math.min(additionCount, deletionCount);
 ```
+
 This treats modifications as the minimum of additions/deletions, representing lines that were both removed and added.
 
 ### Share Dialog (Future Component)
 
 The share button will open a dialog component (to be implemented separately):
+
 - Display shareable URL
 - Copy to clipboard button
 - Social sharing options (optional)
@@ -334,6 +355,7 @@ The share button will open a dialog component (to be implemented separately):
 ## Testing Strategy
 
 ### Unit Tests
+
 1. Component renders with all props
 2. Stats display correctly with zero values
 3. Percentage calculation accuracy
@@ -343,18 +365,21 @@ The share button will open a dialog component (to be implemented separately):
 7. Menu items trigger correct callbacks
 
 ### Integration Tests
+
 1. Toolbar integration with DiffPanel
 2. View mode changes propagate to parent
 3. Export actions trigger parent handlers
 4. Filter changes update diff display
 
 ### Accessibility Tests
+
 1. Keyboard navigation flows correctly
 2. Screen reader announces stats properly
 3. Focus management in dropdown
 4. Color contrast meets WCAG AA
 
 ### Visual Regression Tests
+
 1. Light mode renders correctly
 2. Dark mode renders correctly
 3. Mobile breakpoint layouts
@@ -388,6 +413,7 @@ components/editor-pane/
 ## Scope Clarifications
 
 **In Scope (This Implementation):**
+
 - Complete toolbar component with all UI elements
 - View mode tabs (Split/Unified/Inline) as controlled component
 - Diff statistics display with percentage calculation
@@ -399,6 +425,7 @@ components/editor-pane/
 - Integration with existing DiffPanel component
 
 **Out of Scope (Follow-up Work):**
+
 - Share dialog UI component (toolbar only triggers `onShare` callback)
 - Implementation of export handlers (JSON patch, merge patch, etc.)
 - Implementation of panel toggles (bookmarks, tree panel, statistics, validation)

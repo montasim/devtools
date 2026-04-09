@@ -99,8 +99,8 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
                     />
                 </div>
 
-                <Separator orientation='vertical' className="hidden md:block" />
-                <Separator orientation='horizontal' className="block md:hidden" />
+                <Separator orientation="vertical" className="hidden md:block" />
+                <Separator orientation="horizontal" className="block md:hidden" />
 
                 <div className="flex-1">
                     <JsonEditor

@@ -4,10 +4,7 @@ import { useState, useCallback } from 'react';
 import type { EditorView } from '@codemirror/view';
 import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Search as SearchIcon } from 'lucide-react';
 import { EditorOperationsMenu } from './editor-operations-menu';
 
@@ -85,7 +82,7 @@ export function EditorActions({
 }: EditorActionsProps) {
     // Check if there's a more-menu button
     const hasMoreMenu = buttons.some(
-        (button) => isEditorActionButton(button) && button.id === 'more-menu'
+        (button) => isEditorActionButton(button) && button.id === 'more-menu',
     );
 
     if (readOnly || !buttons || buttons.length === 0) {

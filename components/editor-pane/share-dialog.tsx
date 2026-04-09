@@ -23,7 +23,13 @@ interface ShareDialogProps {
     onOpenChange?: (open: boolean) => void;
 }
 
-export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpenChange }: ShareDialogProps) {
+export function ShareDialog({
+    diffResult,
+    leftContent,
+    rightContent,
+    open,
+    onOpenChange,
+}: ShareDialogProps) {
     const [copied, setCopied] = useState(false);
 
     // Generate shareable URL
@@ -73,7 +79,8 @@ export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpe
             diffResult.hunks.forEach((hunk, index) => {
                 diffText += `@@ Hunk ${index + 1} @@\n`;
                 hunk.lines.forEach((line) => {
-                    const prefix = line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' ';
+                    const prefix =
+                        line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' ';
                     diffText += `${prefix} ${line.content}\n`;
                 });
                 diffText += '\n';
@@ -91,10 +98,13 @@ export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpe
     const generateJSONPatch = useCallback(() => {
         if (!diffResult) return [];
 
-        return diffResult.hunks.map(hunk => ({
+        return diffResult.hunks.map((hunk) => ({
             op: 'replace',
             path: '/path',
-            value: hunk.lines.filter(l => l.type === 'addition' || l.type === 'unchanged').map(l => l.content).join('')
+            value: hunk.lines
+                .filter((l) => l.type === 'addition' || l.type === 'unchanged')
+                .map((l) => l.content)
+                .join(''),
         }));
     }, [diffResult]);
 
@@ -116,10 +126,10 @@ export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpe
     const generateMergePatch = useCallback(() => {
         if (!diffResult) return [];
 
-        return diffResult.hunks.map(hunk => ({
+        return diffResult.hunks.map((hunk) => ({
             conflict: 'modify',
             file: '/path',
-            changes: hunk.lines.map(l => l.content)
+            changes: hunk.lines.map((l) => l.content),
         }));
     }, [diffResult]);
 
@@ -142,14 +152,23 @@ export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpe
         if (!diffResult) return;
 
         try {
-            const patch = diffResult.hunks.map(hunk => {
-                const header = `@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@`;
-                const lines = hunk.lines.map(line => {
-                    const prefix = line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' ';
-                    return `${prefix}${line.content}`;
-                }).join('\n');
-                return `${header}\n${lines}`;
-            }).join('\n');
+            const patch = diffResult.hunks
+                .map((hunk) => {
+                    const header = `@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@`;
+                    const lines = hunk.lines
+                        .map((line) => {
+                            const prefix =
+                                line.type === 'addition'
+                                    ? '+'
+                                    : line.type === 'deletion'
+                                      ? '-'
+                                      : ' ';
+                            return `${prefix}${line.content}`;
+                        })
+                        .join('\n');
+                    return `${header}\n${lines}`;
+                })
+                .join('\n');
 
             const blob = new Blob([patch], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
@@ -182,15 +201,26 @@ export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpe
 <body>
     <h1>Diff Report</h1>
     <p><strong>Changes:</strong> ${diffResult.additionCount} additions, ${diffResult.deletionCount} deletions, ${diffResult.modificationCount} modifications</p>
-    ${diffResult.hunks.map(hunk => `
+    ${diffResult.hunks
+        .map(
+            (hunk) => `
         <div class="hunk">
             <h2>@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@</h2>
-            ${hunk.lines.map(line => {
-                const className = line.type === 'addition' ? 'addition' : line.type === 'deletion' ? 'deletion' : '';
-                return `<div class="${className}">${line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' '} ${line.content}</div>`;
-            }).join('')}
+            ${hunk.lines
+                .map((line) => {
+                    const className =
+                        line.type === 'addition'
+                            ? 'addition'
+                            : line.type === 'deletion'
+                              ? 'deletion'
+                              : '';
+                    return `<div class="${className}">${line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' '} ${line.content}</div>`;
+                })
+                .join('')}
         </div>
-    `).join('')}
+    `,
+        )
+        .join('')}
 </body>
 </html>`;
 
@@ -208,8 +238,8 @@ export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpe
 
         try {
             const paths: string[] = [];
-            diffResult.hunks.forEach(hunk => {
-                hunk.lines.forEach(line => {
+            diffResult.hunks.forEach((hunk) => {
+                hunk.lines.forEach((line) => {
                     if (line.content.includes('/')) {
                         const match = line.content.match(/"([^"]+)"/);
                         if (match) paths.push(match[1]);
@@ -277,7 +307,7 @@ export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpe
                                 className="shrink-0"
                             >
                                 {copied ? (
-                                     <Check className="h-4 w-4" />
+                                    <Check className="h-4 w-4" />
                                 ) : (
                                     <Copy className="h-4 w-4" />
                                 )}
@@ -296,11 +326,23 @@ export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpe
                             Copy Diff Content
                         </label>
 
-<div className="grid grid-cols-1 gap-2 mt-2">
-                        {[
-                                { icon: Copy, label: 'Copy Diff to Clipboard', onClick: copyDiffToClipboard },
-                                { icon: Copy, label: 'Copy as JSON Patch', onClick: copyAsJSONPatch },
-                                { icon: Copy, label: 'Copy as Merge Patch', onClick: copyAsMergePatch },
+                        <div className="grid grid-cols-1 gap-2 mt-2">
+                            {[
+                                {
+                                    icon: Copy,
+                                    label: 'Copy Diff to Clipboard',
+                                    onClick: copyDiffToClipboard,
+                                },
+                                {
+                                    icon: Copy,
+                                    label: 'Copy as JSON Patch',
+                                    onClick: copyAsJSONPatch,
+                                },
+                                {
+                                    icon: Copy,
+                                    label: 'Copy as Merge Patch',
+                                    onClick: copyAsMergePatch,
+                                },
                                 { icon: Share2, label: 'Copy JSON Paths', onClick: copyJSONPaths },
                             ].map(({ icon: Icon, label, onClick }) => (
                                 <Button
@@ -314,7 +356,7 @@ export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpe
                                     {label}
                                 </Button>
                             ))}
-                            </div>
+                        </div>
                     </div>
 
                     <Separator />
@@ -328,7 +370,11 @@ export function ShareDialog({ diffResult, leftContent, rightContent, open, onOpe
                         <div className="grid grid-cols-1 gap-2 mt-2">
                             {[
                                 { icon: Download, label: 'Download Patch', onClick: downloadPatch },
-                                { icon: FileText, label: 'Export HTML Report', onClick: exportHTMLReport },
+                                {
+                                    icon: FileText,
+                                    label: 'Export HTML Report',
+                                    onClick: exportHTMLReport,
+                                },
                             ].map(({ icon: Icon, label, onClick }) => (
                                 <Button
                                     key={label}

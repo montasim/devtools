@@ -46,10 +46,7 @@ export function DiffStatsDisplay({
             >
                 +{additionCount}
             </span>
-            <span
-                className="font-semibold text-red-600 dark:text-red-400"
-                aria-label="Deletions"
-            >
+            <span className="font-semibold text-red-600 dark:text-red-400" aria-label="Deletions">
                 −{deletionCount}
             </span>
             <span
