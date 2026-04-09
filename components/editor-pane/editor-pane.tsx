@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect, useImperativeHandle, forwardRef } from 'react';
+import { useState, useCallback, useEffect, useImperativeHandle, forwardRef, useRef } from 'react';
 import { EditorPaneProps } from './types';
 import { JsonEditor } from './json-editor';
 import { DiffPanel } from './diff-panel';
@@ -27,11 +27,61 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
     },
     ref,
 ) {
-    // State
-    const [leftContent, setLeftContent] = useState<string>(initialLeftContent);
-    const [rightContent, setRightContent] = useState<string>(initialRightContent);
+    // State with lazy initialization from localStorage
+    const [leftContent, setLeftContent] = useState<string>(() => {
+        if (initialLeftContent !== '') return initialLeftContent;
+        try {
+            return localStorage.getItem('json-diff-left-content') || initialLeftContent;
+        } catch {
+            return initialLeftContent;
+        }
+    });
+
+    const [rightContent, setRightContent] = useState<string>(() => {
+        if (initialRightContent !== '') return initialRightContent;
+        try {
+            return localStorage.getItem('json-diff-right-content') || initialRightContent;
+        } catch {
+            return initialRightContent;
+        }
+    });
+
     const [leftValid, setLeftValid] = useState<boolean>(false);
     const [rightValid, setRightValid] = useState<boolean>(false);
+
+    // Save to localStorage whenever content changes (but not on initial render)
+    const initialLeftContentRef = useRef(initialLeftContent);
+    const initialRightContentRef = useRef(initialRightContent);
+
+    useEffect(() => {
+        initialLeftContentRef.current = initialLeftContent;
+    }, [initialLeftContent]);
+
+    useEffect(() => {
+        initialRightContentRef.current = initialRightContent;
+    }, [initialRightContent]);
+
+    useEffect(() => {
+        // Only save if content is different from initial props
+        if (leftContent !== initialLeftContentRef.current) {
+            try {
+                localStorage.setItem('json-diff-left-content', leftContent);
+            } catch (error) {
+                console.error('Failed to save left content to localStorage:', error);
+            }
+        }
+    }, [leftContent]);
+
+    useEffect(() => {
+        // Only save if content is different from initial props
+        if (rightContent !== initialRightContentRef.current) {
+            try {
+                localStorage.setItem('json-diff-right-content', rightContent);
+            } catch (error) {
+                console.error('Failed to save right content to localStorage:', error);
+            }
+        }
+    }, [rightContent]);
 
     // Diff hook
     const {
