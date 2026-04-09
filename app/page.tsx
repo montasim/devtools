@@ -6,6 +6,7 @@ import { EditorPane, type EditorPaneRef } from '@/components/editor-pane';
 import { FormatPane, FormatShareDialog } from '@/components/format-pane';
 import { MinifyPane, MinifyShareDialog } from '@/components/minify-pane';
 import { ViewerPane, ViewerShareDialog } from '@/components/viewer-pane';
+import { ParserPane, ParserShareDialog } from '@/components/parser-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, GitCompare, Code, Minimize2, FileJson, Share2, Trash2, Eye } from 'lucide-react';
 
@@ -35,6 +36,12 @@ export default function Home() {
     const [canView, setCanView] = useState(false);
     const [viewerShareDialogOpen, setViewerShareDialogOpen] = useState(false);
     const [viewerContent, setViewerContent] = useState('');
+    const [parserShowTypes, setParserShowTypes] = useState(true);
+    const [parserShowPaths, setParserShowPaths] = useState(true);
+    const [parserShowStatistics, setParserShowStatistics] = useState(true);
+    const [canParse, setCanParse] = useState(false);
+    const [parserShareDialogOpen, setParserShareDialogOpen] = useState(false);
+    const [parserContent, setParserContent] = useState('');
 
     const editorPaneRef = useRef<EditorPaneRef>(null);
 
@@ -121,6 +128,28 @@ export default function Home() {
         return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
+    // Load parser content from localStorage on mount and keep in sync
+    useEffect(() => {
+        const loadParserContent = () => {
+            try {
+                const content = localStorage.getItem('json-parser-content') || '';
+                setParserContent(content);
+            } catch (error) {
+                console.error('Failed to load parser content:', error);
+            }
+        };
+
+        loadParserContent();
+
+        // Listen for storage changes
+        const handleStorageChange = () => {
+            loadParserContent();
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+
     const handleClear = () => {
         // Reload page to clear all content
         window.location.reload();
@@ -168,6 +197,18 @@ export default function Home() {
 
         // Open the share dialog
         setViewerShareDialogOpen(true);
+    };
+
+    const handleParserShare = () => {
+        // Get the parser content from localStorage
+        const parserContentData = localStorage.getItem('json-parser-content');
+        if (!parserContentData) {
+            alert('No content to share. Please enter some JSON first.');
+            return;
+        }
+
+        // Open the share dialog
+        setParserShareDialogOpen(true);
     };
 
     return (
@@ -375,6 +416,12 @@ export default function Home() {
                     onOpenChange={setViewerShareDialogOpen}
                 />
 
+                <ParserShareDialog
+                    content={parserContent}
+                    open={parserShareDialogOpen}
+                    onOpenChange={setParserShareDialogOpen}
+                />
+
                 <TabsContent value="minify" className="mt-0">
                     <div>
                         <Toolbar
@@ -473,33 +520,54 @@ export default function Home() {
                 </TabsContent>
 
                 <TabsContent value="parser" className="mt-0">
-                    <div className="container mx-auto px-4 py-8">
-                        <div className="max-w-4xl">
-                            <h2 className="text-2xl font-bold mb-4">JSON Parser</h2>
-                            <p className="text-muted-foreground mb-6">
-                                Parse and validate JSON data with detailed error reporting and structure visualization.
-                            </p>
-                            <div className="space-y-4">
-                                <div className="p-4 border rounded-lg">
-                                    <h3 className="font-semibold mb-2">JSON Parser</h3>
-                                    <p className="text-sm text-muted-foreground">
-                                        Coming soon: Parse JSON to validate structure and visualize data hierarchy.
-                                    </p>
-                                </div>
-                                <div className="p-4 border rounded-lg">
-                                    <h3 className="font-semibold mb-2">Path Explorer</h3>
-                                    <p className="text-sm text-muted-foreground">
-                                        Coming soon: Navigate and explore JSON paths with dot notation support.
-                                    </p>
-                                </div>
-                                <div className="p-4 border rounded-lg">
-                                    <h3 className="font-semibold mb-2">Type Inspector</h3>
-                                    <p className="text-sm text-muted-foreground">
-                                        Coming soon: Inspect data types and validate JSON schema compliance.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                    <div>
+                        <Toolbar
+                            toggles={[
+                                {
+                                    id: 'showTypes',
+                                    label: 'Show Types',
+                                    checked: parserShowTypes,
+                                    onChange: setParserShowTypes,
+                                },
+                                {
+                                    id: 'showPaths',
+                                    label: 'Show Paths',
+                                    checked: parserShowPaths,
+                                    onChange: setParserShowPaths,
+                                },
+                                {
+                                    id: 'showStatistics',
+                                    label: 'Show Statistics',
+                                    checked: parserShowStatistics,
+                                    onChange: setParserShowStatistics,
+                                },
+                            ]}
+                            actions={[
+                                {
+                                    id: 'clear',
+                                    label: 'Clear All',
+                                    onClick: handleClear,
+                                    variant: 'outline',
+                                    icon: <Trash2 className="h-4 w-4" />,
+                                },
+                                {
+                                    id: 'share',
+                                    label: 'Share',
+                                    onClick: handleParserShare,
+                                    variant: 'outline',
+                                    icon: <Share2 className="h-4 w-4" />,
+                                },
+                            ]}
+                        />
+
+                        <ParserPane
+                            className='mx-auto'
+                            showTypes={parserShowTypes}
+                            showPaths={parserShowPaths}
+                            showStatistics={parserShowStatistics}
+                            onError={handleError}
+                            onValidationChange={setCanParse}
+                        />
                     </div>
                 </TabsContent>
 
