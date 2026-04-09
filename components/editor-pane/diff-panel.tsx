@@ -1,8 +1,12 @@
 'use client';
 
-import { DiffPanelProps } from './types';
+import { useState } from 'react';
+import { DiffPanelProps, ViewMode } from './types';
+import { DiffPanelToolbar } from './diff-panel-toolbar';
 
 export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
+    const [viewMode, setViewMode] = useState<ViewMode>('unified');
+
     if (isLoading) {
         return (
             <div
@@ -34,12 +38,30 @@ export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
             aria-label="Code diff"
         >
             {/* Header */}
-            <div className="px-4 py-2 bg-gray-100 border-b border-gray-300 flex items-center justify-between dark:bg-gray-800 dark:border-gray-600">
-                <span className="text-sm font-medium text-gray-900 dark:text-gray-100">Diff</span>
-                <div className="text-xs text-gray-600 dark:text-gray-400">
-                    {diffResult.additionCount} additions, {diffResult.deletionCount} deletions
-                </div>
-            </div>
+            <DiffPanelToolbar
+                viewMode={viewMode}
+                additionCount={diffResult.additionCount}
+                deletionCount={diffResult.deletionCount}
+                modificationCount={diffResult.modificationCount}
+                totalLines={diffResult.lineCount}
+                onViewModeChange={setViewMode}
+                onShare={() => {
+                    // TODO: Implement share dialog
+                    console.log('Share clicked');
+                }}
+                onExport={(format) => {
+                    // TODO: Implement export handlers
+                    console.log('Export:', format);
+                }}
+                onFilterChange={(filter) => {
+                    // TODO: Implement filter logic
+                    console.log('Filter:', filter);
+                }}
+                onPanelToggle={(panel) => {
+                    // TODO: Implement panel toggles
+                    console.log('Panel:', panel);
+                }}
+            />
 
             {/* Diff content */}
             <div className="overflow-auto max-h-96">
