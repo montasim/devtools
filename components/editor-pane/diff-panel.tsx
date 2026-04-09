@@ -1,20 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { DiffPanelProps, DiffResult, ViewMode } from './types';
+import { DiffPanelProps, DiffResult, ViewMode, DiffLine } from './types';
 import { DiffPanelToolbar } from './diff-panel-toolbar';
-import { ChevronRight, ChevronDown } from 'lucide-react';
+import { ChevronRight, ChevronDown, X, CheckCircle } from 'lucide-react';
 
 /**
  * DiffPanel - Main component for displaying code diffs
  *
- * Renders diff with configurable view modes (split, unified, inline).
+ * Renders diff with configurable view modes (split, unified, inline, tree).
  * Includes toolbar with statistics and action buttons.
  *
  * Features:
- * - Multiple diff view modes (Split, Unified, Inline)
- * - Tree panel for navigation
- * - Real-time statistics
+ * - Multiple diff view modes (Split, Unified, Inline, Tree)
+ * - Filter by change type
+ * - Export functionality (copy, download, HTML report)
+ * - Side panels (tree, statistics, validation, bookmarks)
  * - Responsive design with dark mode support
  *
  * @example
@@ -28,6 +29,11 @@ import { ChevronRight, ChevronDown } from 'lucide-react';
 export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
     const [viewMode, setViewMode] = useState<ViewMode>('unified');
     const [showTreePanel, setShowTreePanel] = useState(false);
+    const [filter, setFilter] = useState<'all' | 'additions' | 'deletions' | 'modifications'>('all');
+    const [showStatistics, setShowStatistics] = useState(false);
+    const [showValidation, setShowValidation] = useState(false);
+    const [showBookmarks, setShowBookmarks] = useState(false);
+    const [bookmarks, setBookmarks] = useState<number[]>([]);
 
     if (isLoading) {
         return (
@@ -58,6 +64,163 @@ export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
         element?.scrollIntoView({ behavior: 'smooth' });
     };
 
+    const handleExport = (format: string, diffResult: DiffResult) => {
+        switch (format) {
+            case 'json-patch':
+                copyToClipboard(JSON.stringify(generateJSONPatch(diffResult), null, 2));
+                break;
+            case 'merge-patch':
+                copyToClipboard(JSON.stringify(generateMergePatch(diffResult), null, 2));
+                break;
+            case 'download-patch':
+                downloadPatch(diffResult);
+                break;
+            case 'html-report':
+                generateHTMLReport(diffResult);
+                break;
+            case 'json-paths':
+                copyToClipboard(JSON.stringify(getJSONPaths(diffResult), null, 2));
+                break;
+        }
+    };
+
+    const copyToClipboard = (text: string) => {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Copied to clipboard!');
+        });
+    };
+
+    const downloadPatch = (diffResult: DiffResult) => {
+        const patch = generateUnifiedDiff(diffResult);
+        const blob = new Blob([patch], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'changes.patch';
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
+    const generateJSONPatch = (diffResult: DiffResult) => {
+        return diffResult.hunks.map(hunk => ({
+            op: 'replace',
+            path: '/path',
+            value: hunk.lines.filter(l => l.type === 'addition' || l.type === 'unchanged').map(l => l.content).join('')
+        }));
+    };
+
+    const generateMergePatch = (diffResult: DiffResult) => {
+        return diffResult.hunks.map(hunk => ({
+            conflict: 'modify',
+            file: '/path',
+            changes: hunk.lines.map(l => l.content)
+        }));
+    };
+
+    const generateUnifiedDiff = (diffResult: DiffResult) => {
+        return diffResult.hunks.map(hunk => {
+            const header = `@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@`;
+            const lines = hunk.lines.map(line => {
+                const prefix = line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' ';
+                return `${prefix}${line.content}`;
+            }).join('\n');
+            return `${header}\n${lines}`;
+        }).join('\n');
+    };
+
+    const generateHTMLReport = (diffResult: DiffResult) => {
+        const html = `<!DOCTYPE html>
+<html>
+<head>
+    <title>Diff Report</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        .addition { background: #d4edda; }
+        .deletion { background: #f8d7da; }
+        .hunk { margin-bottom: 20px; border: 1px solid #ddd; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Diff Report</h1>
+    <p><strong>Changes:</strong> ${diffResult.additionCount} additions, ${diffResult.deletionCount} deletions, ${diffResult.modificationCount} modifications</p>
+    ${diffResult.hunks.map(hunk => `
+        <div class="hunk">
+            <h2>@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@</h2>
+            ${hunk.lines.map(line => {
+                const className = line.type === 'addition' ? 'addition' : line.type === 'deletion' ? 'deletion' : '';
+                return `<div class="${className}">${line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' '} ${line.content}</div>`;
+            }).join('')}
+        </div>
+    `).join('')}
+</body>
+</html>`;
+        const blob = new Blob([html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+    };
+
+    const getJSONPaths = (diffResult: DiffResult) => {
+        const paths: string[] = [];
+        diffResult.hunks.forEach(hunk => {
+            hunk.lines.forEach(line => {
+                if (line.content.includes('/')) {
+                    const match = line.content.match(/"([^"]+)"/);
+                    if (match) paths.push(match[1]);
+                }
+            });
+        });
+        return [...new Set(paths)];
+    };
+
+    const toggleBookmark = (hunkIndex: number) => {
+        if (bookmarks.includes(hunkIndex)) {
+            setBookmarks(bookmarks.filter(b => b !== hunkIndex));
+        } else {
+            setBookmarks([...bookmarks, hunkIndex]);
+        }
+    };
+
+    // Filter diff result based on selected filter
+    const getFilteredDiff = () => {
+        if (filter === 'all') return diffResult;
+
+        const filteredHunks = diffResult.hunks.map(hunk => {
+            if (filter === 'additions') {
+                return { ...hunk, lines: hunk.lines.filter(l => l.type === 'addition') };
+            } else if (filter === 'deletions') {
+                return { ...hunk, lines: hunk.lines.filter(l => l.type === 'deletion') };
+            } else if (filter === 'modifications') {
+                const modLines: DiffLine[] = [];
+                for (let i = 0; i < hunk.lines.length - 1; i++) {
+                    const current = hunk.lines[i];
+                    const next = hunk.lines[i + 1];
+                    if (current.type === 'deletion' && next.type === 'addition') {
+                        modLines.push(current, next);
+                        i++;
+                    } else if (current.type === 'unchanged') {
+                        modLines.push(current);
+                    }
+                }
+                return { ...hunk, lines: modLines };
+            }
+            return hunk;
+        }).filter(hunk => hunk.lines.length > 0);
+
+        return {
+            ...diffResult,
+            hunks: filteredHunks,
+            additionCount: filter === 'additions' ? diffResult.additionCount :
+                          filter === 'deletions' ? 0 :
+                          filter === 'modifications' ? diffResult.modificationCount : diffResult.additionCount,
+            deletionCount: filter === 'deletions' ? diffResult.deletionCount :
+                          filter === 'additions' ? 0 :
+                          filter === 'modifications' ? 0 : diffResult.deletionCount,
+            modificationCount: filter === 'modifications' ? diffResult.modificationCount : 0
+        };
+    };
+
+    const filteredDiff = getFilteredDiff();
+
     return (
         <div
             className="border border-gray-300 rounded-md overflow-hidden dark:border-gray-600"
@@ -73,29 +236,41 @@ export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
                 totalLines={diffResult.lineCount}
                 onViewModeChange={setViewMode}
                 onShare={() => {
-                    console.log('Share clicked');
+                    alert('Share functionality - coming soon!');
                 }}
                 onExport={(format) => {
-                    console.log('Export:', format);
+                    handleExport(format, diffResult);
                 }}
-                onFilterChange={(filter) => {
-                    console.log('Filter:', filter);
-                }}
+                onFilterChange={setFilter}
                 onPanelToggle={(panel) => {
                     if (panel === 'tree-panel') {
                         setShowTreePanel(!showTreePanel);
+                    } else if (panel === 'statistics') {
+                        setShowStatistics(!showStatistics);
+                    } else if (panel === 'validation') {
+                        setShowValidation(!showValidation);
+                    } else if (panel === 'bookmarks') {
+                        setShowBookmarks(!showBookmarks);
                     }
                 }}
             />
 
-            {/* Main content area with tree panel */}
+            {/* Main content area with panels */}
             <div className="flex">
-                {/* Tree Panel Sidebar */}
+                {/* Left Sidebar - Tree Panel */}
                 {showTreePanel && (
                     <div className="w-64 border-r border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 p-4">
-                        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                            File Structure
-                        </h3>
+                        <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                File Structure
+                            </h3>
+                            <button
+                                onClick={() => setShowTreePanel(false)}
+                                className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                            >
+                                <X className="h-4 w-4" />
+                            </button>
+                        </div>
                         <div className="space-y-1">
                             {diffResult.hunks.map((hunk, index) => (
                                 <div key={index} className="text-xs">
@@ -117,12 +292,17 @@ export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
                     </div>
                 )}
 
-                {/* Diff content */}
+                {/* Right Side Panels */}
+                {showStatistics && <StatisticsPanel diffResult={filteredDiff} onClose={() => setShowStatistics(false)} />}
+                {showValidation && <ValidationPanel diffResult={filteredDiff} onClose={() => setShowValidation(false)} />}
+                {showBookmarks && <BookmarksPanel bookmarks={bookmarks} hunks={diffResult.hunks} onToggleBookmark={toggleBookmark} onClose={() => setShowBookmarks(false)} />}
+
+                {/* Main diff content */}
                 <div className="flex-1 overflow-auto max-h-96">
-                    {viewMode === 'unified' && <UnifiedView diffResult={diffResult} />}
-                    {viewMode === 'split' && <SplitView diffResult={diffResult} />}
-                    {viewMode === 'inline' && <InlineView diffResult={diffResult} />}
-                    {viewMode === 'tree' && <TreeView diffResult={diffResult} />}
+                    {viewMode === 'unified' && <UnifiedView diffResult={filteredDiff} bookmarks={bookmarks} />}
+                    {viewMode === 'split' && <SplitView diffResult={filteredDiff} />}
+                    {viewMode === 'inline' && <InlineView diffResult={filteredDiff} />}
+                    {viewMode === 'tree' && <TreeView diffResult={filteredDiff} />}
                 </div>
             </div>
         </div>
@@ -130,11 +310,11 @@ export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
 }
 
 // Unified view - standard diff format
-function UnifiedView({ diffResult }: { diffResult: DiffResult }) {
+function UnifiedView({ diffResult, bookmarks }: { diffResult: DiffResult; bookmarks?: number[] }) {
     return (
         <pre className="text-sm font-mono">
             {diffResult.hunks.map((hunk, index) => (
-                <div key={`hunk-${hunk.oldStart}-${hunk.newStart}`} id={`hunk-${index}`}>
+                <div key={`hunk-${hunk.oldStart}-${hunk.newStart}`} id={`hunk-${index}`} className={bookmarks?.includes(index) ? 'ring-2 ring-yellow-400 ring-offset-2' : ''}>
                     {/* Hunk header */}
                     <div className="px-4 py-1 bg-gray-100 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                         @@ -{hunk.oldStart},{hunk.oldLines} +{hunk.newStart},{hunk.newLines}{' '}
@@ -351,18 +531,6 @@ function InlineView({ diffResult }: { diffResult: DiffResult }) {
 
 // Tree view - hierarchical JSON structure
 function TreeView({ diffResult }: { diffResult: DiffResult }) {
-    const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
-
-    const toggleNode = (nodeId: string) => {
-        const newExpanded = new Set(expandedNodes);
-        if (newExpanded.has(nodeId)) {
-            newExpanded.delete(nodeId);
-        } else {
-            newExpanded.add(nodeId);
-        }
-        setExpandedNodes(newExpanded);
-    };
-
     return (
         <div className="text-sm font-mono p-4">
             {diffResult.hunks.map((hunk, index) => (
@@ -376,7 +544,7 @@ function TreeView({ diffResult }: { diffResult: DiffResult }) {
                     <div className="px-2">
                         {hunk.lines
                             .filter((line) => line.type !== 'unchanged')
-                            .slice(0, 5) // Show first few changed lines
+                            .slice(0, 5)
                             .map((line, lineIndex) => (
                                 <div key={`tree-line-${lineIndex}`} className="py-1">
                                     {line.type === 'addition' && (
@@ -403,6 +571,142 @@ function TreeView({ diffResult }: { diffResult: DiffResult }) {
                     </div>
                 </div>
             ))}
+        </div>
+    );
+}
+
+// Statistics Panel
+function StatisticsPanel({ diffResult, onClose }: { diffResult: DiffResult; onClose: () => void }) {
+    return (
+        <div className="w-80 border-l border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-4">
+            <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Statistics</h3>
+                <button
+                    onClick={onClose}
+                    className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                >
+                    <X className="h-4 w-4" />
+                </button>
+            </div>
+            <div className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Total Lines:</span>
+                    <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">{diffResult.lineCount}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Changes:</span>
+                    <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">
+                        {diffResult.additionCount + diffResult.deletionCount + diffResult.modificationCount}
+                    </span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-green-600 dark:text-green-400">Additions:</span>
+                    <span className="font-mono font-semibold text-green-700 dark:text-green-300">{diffResult.additionCount}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-red-600 dark:text-red-400">Deletions:</span>
+                    <span className="font-mono font-semibold text-red-700 dark:text-red-300">{diffResult.deletionCount}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-orange-600 dark:text-orange-400">Modifications:</span>
+                    <span className="font-mono font-semibold text-orange-700 dark:text-orange-300">{diffResult.modificationCount}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Hunks:</span>
+                    <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">{diffResult.hunks.length}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Changed:</span>
+                    <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">
+                        {((diffResult.additionCount + diffResult.deletionCount + diffResult.modificationCount) / diffResult.lineCount * 100).toFixed(1)}%
+                    </span>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// Validation Panel
+function ValidationPanel({ diffResult, onClose }: { diffResult: DiffResult; onClose: () => void }) {
+    const issues = diffResult.hunks.reduce<string[]>((acc, hunk, index) => {
+        if (hunk.lines.length === 0) {
+            return [...acc, `Hunk ${index + 1}: Empty hunk`];
+        }
+        return acc;
+    }, []);
+
+    return (
+        <div className="w-80 border-l border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-4">
+            <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Validation</h3>
+                <button
+                    onClick={onClose}
+                    className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                >
+                    <X className="h-4 w-4" />
+                </button>
+            </div>
+            <div className="space-y-2 text-sm">
+                {issues.length === 0 ? (
+                    <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                        <CheckCircle className="h-4 w-4" />
+                        <span>No issues found</span>
+                    </div>
+                ) : (
+                    issues.map((issue, index) => (
+                        <div key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                            <span className="text-red-500">{index + 1}.</span>
+                            <span>{issue}</span>
+                        </div>
+                    ))
+                )}
+            </div>
+        </div>
+    );
+}
+
+// Bookmarks Panel
+function BookmarksPanel({ bookmarks, hunks, onToggleBookmark, onClose }: {
+    bookmarks: number[];
+    hunks: DiffResult['hunks'];
+    onToggleBookmark: (index: number) => void;
+    onClose: () => void;
+}) {
+    return (
+        <div className="w-80 border-l border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-4">
+            <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Bookmarks</h3>
+                <button
+                    onClick={onClose}
+                    className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                >
+                    <X className="h-4 w-4" />
+                </button>
+            </div>
+            {bookmarks.length === 0 ? (
+                <p className="text-sm text-gray-500 dark:text-gray-400 italic">No bookmarks yet</p>
+            ) : (
+                <div className="space-y-1">
+                    {bookmarks.map((bookmarkIndex) => {
+                        const hunk = hunks[bookmarkIndex];
+                        return (
+                            <button
+                                key={bookmarkIndex}
+                                className="flex items-center gap-2 w-full px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-left"
+                                onClick={() => {
+                                    onToggleBookmark(bookmarkIndex);
+                                    document.getElementById(`hunk-${bookmarkIndex}`)?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                            >
+                                <span className="text-yellow-600 dark:text-yellow-400">⭐</span>
+                                <span className="text-xs text-gray-700 dark:text-gray-300">
+                                    Hunk {bookmarkIndex + 1} (lines {hunk.oldStart}-{hunk.oldStart + hunk.oldLines})
+                                </span>
+                            </button>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 }

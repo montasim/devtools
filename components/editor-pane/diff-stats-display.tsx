@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { Separator } from '../ui/separator';
 
 interface DiffStatsDisplayProps {
     additionCount: number;
@@ -57,6 +58,9 @@ export function DiffStatsDisplay({
             >
                 ~{modificationCount}
             </span>
+
+            <Separator orientation="vertical" />
+
             <span
                 className="font-medium text-gray-600 dark:text-gray-400"
                 aria-label="Percentage changed"
