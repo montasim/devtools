@@ -26,7 +26,7 @@ import {
 import type { ParseError } from './types';
 import type { JsonEditorProps } from './types';
 
-export function JsonEditor({ value, onChange, onError, label, readOnly = false }: JsonEditorProps) {
+export function JsonEditor({ value, onChange, onError, label, readOnly = false, customToolbar }: JsonEditorProps) {
     const editorRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<EditorView | null>(null);
     const valueRef = useRef(value);
@@ -93,16 +93,22 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                         fontFamily:
                             'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
                         overflow: 'auto',
+                        maxWidth: '100%',
                         height: '100%',
                     },
                     '.cm-content': {
                         padding: '12px',
+                        maxWidth: '100%',
+                        overflow: 'auto',
+                        whiteSpace: 'pre',
                     },
                     '.cm-focused': {
                         outline: 'none',
                     },
                     '.cm-line': {
                         padding: '0 0',
+                        maxWidth: '100%',
+                        overflow: 'auto',
                         whiteSpace: 'pre',
                     },
                     // Search highlighting
@@ -597,43 +603,47 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
     return (
         <div className="flex flex-col h-full py-2">
             {/* Header with label and validation status */}
-            <div className="flex items-center justify-between mb-2 shrink-0">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {label}
-                </label>
-                <div className="flex items-center gap-2">
-                    {/* Action buttons */}
-                    <EditorActions
-                        buttons={actionButtons}
-                        readOnly={readOnly}
-                        editorView={viewRef}
-                        content={value}
-                        onContentChange={onChange}
-                        onError={(error) => {
-                            if (error) {
-                                const parseError: ParseError = {
-                                    message: error,
-                                    line: 1,
-                                    column: 1,
-                                };
-                                onError(parseError);
-                            } else {
-                                onError(null);
-                            }
-                        }}
-                        onFormat={handleFormat}
-                        onMinify={handleMinify}
-                        onExpand={handleExpand}
-                        onCollapse={handleCollapse}
-                        onRemoveNulls={handleRemoveNulls}
-                        onRemoveEmptyStrings={handleRemoveEmptyStrings}
-                        onRemoveEmptyObjects={handleRemoveEmptyObjects}
-                        onSortKeys={handleSortKeys}
-                        onFormatDates={handleFormatDates}
-                        onEscapeUnicode={handleEscapeUnicode}
-                    />
+            {customToolbar ? (
+                customToolbar
+            ) : (
+                <div className="flex items-center justify-between mb-2 shrink-0">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {label}
+                    </label>
+                    <div className="flex items-center gap-2">
+                        {/* Action buttons */}
+                        <EditorActions
+                            buttons={actionButtons}
+                            readOnly={readOnly}
+                            editorView={viewRef}
+                            content={value}
+                            onContentChange={onChange}
+                            onError={(error) => {
+                                if (error) {
+                                    const parseError: ParseError = {
+                                        message: error,
+                                        line: 1,
+                                        column: 1,
+                                    };
+                                    onError(parseError);
+                                } else {
+                                    onError(null);
+                                }
+                            }}
+                            onFormat={handleFormat}
+                            onMinify={handleMinify}
+                            onExpand={handleExpand}
+                            onCollapse={handleCollapse}
+                            onRemoveNulls={handleRemoveNulls}
+                            onRemoveEmptyStrings={handleRemoveEmptyStrings}
+                            onRemoveEmptyObjects={handleRemoveEmptyObjects}
+                            onSortKeys={handleSortKeys}
+                            onFormatDates={handleFormatDates}
+                            onEscapeUnicode={handleEscapeUnicode}
+                        />
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Editor container with fixed height and scroll */}
             <div className="border border-gray-300 rounded-md dark:border-gray-600 shrink-0 overflow-hidden" style={{ height: '400px', width: '100%', position: 'relative' }}>

@@ -80,6 +80,7 @@ export interface JsonEditorProps {
     onError: (error: ParseError | null) => void;
     label: string;
     readOnly?: boolean;
+    customToolbar?: React.ReactNode;
 }
 
 // DiffPanel component props
