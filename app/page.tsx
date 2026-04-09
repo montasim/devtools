@@ -10,7 +10,7 @@ export default function Home() {
     const [ignoreWhitespace, setIgnoreWhitespace] = useState(false);
     const [semanticTypeDiff, setSemanticTypeDiff] = useState(false);
 
-    const handleCompare = (result: any) => {
+    const handleCompare = (result: { hunks: unknown[]; additionCount: number; deletionCount: number }) => {
         console.log('Diff result:', result);
     };
 
@@ -62,11 +62,7 @@ export default function Home() {
                 ]}
             />
 
-            <div className="container mx-auto px-4 py-8">
-                <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">
-                    JSON Diff Viewer
-                </h1>
-
+            <div className="mx-auto py-8">
                 <EditorPane
                     ignoreKeyOrder={ignoreKeyOrder}
                     prettyPrint={prettyPrint}
