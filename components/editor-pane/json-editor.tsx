@@ -2,10 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { EditorState } from '@codemirror/state';
-import { EditorView, keymap, placeholder as placeholderExt } from '@codemirror/view';
+import { EditorView, keymap, lineNumbers } from '@codemirror/view';
 import { json } from '@codemirror/lang-json';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
-import { autocompletion } from '@codemirror/autocomplete';
 import { debounce, validateJson } from './utils/validation';
 import type { ParseError } from './types';
 import type { JsonEditorProps } from './types';
@@ -39,11 +38,12 @@ export function JsonEditor({
         const state = EditorState.create({
             doc: value,
             extensions: [
-                json(),
+                lineNumbers(),
+                keymap.of(defaultKeymap),
+                keymap.of(historyKeymap),
                 history(),
-                keymap.of([...defaultKeymap, ...historyKeymap]),
-                autocompletion(),
-                placeholderExt(placeholder),
+                json(),
+                EditorView.lineWrapping,
                 EditorView.updateListener.of((update) => {
                     if (update.docChanged) {
                         const newValue = update.state.doc.toString();
