@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { HardDrive, Type, FileText, AlignLeft, Layers, GitBranch } from 'lucide-react';
+import { HardDrive, Type, FileText, AlignLeft, Layers, GitBranch, FileJson } from 'lucide-react';
 import type { ParseError } from './types';
 
 export interface EditorStats {
@@ -102,53 +102,46 @@ function calculateStats(content: string): EditorStats {
 export function EditorFooter({ content, error }: EditorFooterProps) {
     const stats = useMemo(() => calculateStats(content), [content]);
 
-    return (
-        <div className="flex items-center justify-between px-3 py-1.5 border-t border-gray-200 dark:border-gray-700">
-            {/* Left side: Statistics */}
-            <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
-                <span title="File size" className="flex items-center gap-1.5">
-                    <HardDrive className="h-3.5 w-3.5" />
-                    {stats.fileSize}
-                </span>
-                <span title="Characters" className="flex items-center gap-1.5">
-                    <Type className="h-3.5 w-3.5" />
-                    {stats.characterCount}
-                </span>
-                <span title="Words" className="flex items-center gap-1.5">
-                    <FileText className="h-3.5 w-3.5" />
-                    {stats.wordCount}
-                </span>
-                <span title="Lines" className="flex items-center gap-1.5">
-                    <AlignLeft className="h-3.5 w-3.5" />
-                    {stats.lineCount}
-                </span>
-                {stats.depth > 0 && (
-                    <span title="Max nesting depth" className="flex items-center gap-1.5">
-                        <Layers className="h-3.5 w-3.5" />
-                        {stats.depth}
-                    </span>
-                )}
-                {stats.paths.length > 0 && (
-                    <span title={`Found ${stats.paths.length} paths`} className="flex items-center gap-1.5">
-                        <GitBranch className="h-3.5 w-3.5" />
-                        {stats.paths.length}
-                    </span>
-                )}
-            </div>
+    const statistics = useMemo(
+        () => [
+            { icon: HardDrive, label: stats.fileSize, title: 'File size', emphasized: true },
+            { icon: Type, label: `${stats.characterCount} chars`, title: 'Characters' },
+            { icon: FileText, label: `${stats.wordCount} words`, title: 'Words' },
+            { icon: AlignLeft, label: `${stats.lineCount} lines`, title: 'Lines' },
+            ...(stats.depth > 0 ? [{ icon: Layers, label: `depth ${stats.depth}`, title: 'Max nesting depth', emphasized: true }] : []),
+            ...(stats.paths.length > 0 ? [{ icon: GitBranch, label: `${stats.paths.length} paths`, title: `${stats.paths.length} paths` }] : []),
+        ],
+        [stats]
+    );
 
-            {/* Right side: Validation status */}
-            <div className="flex items-center gap-2">
-                <span
-                    className={`text-xs font-medium ${
-                        error
-                            ? 'text-red-600 dark:text-red-400'
-                            : content.trim()
-                              ? 'text-green-600 dark:text-green-400'
-                              : 'text-gray-400 dark:text-gray-500'
-                    }`}
-                >
-                    {error ? 'Invalid JSON' : content.trim() ? 'Valid JSON' : 'Empty'}
-                </span>
+    return (
+        <div className="border-t border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between py-2">
+                {/* Left side: Statistics */}
+                <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                    {statistics.map((stat, index) => (
+                        <div key={index} title={stat.title} className="flex items-center gap-1.5">
+                            <stat.icon className="h-3.5 w-3.5 text-gray-500" />
+                            <span className={stat.emphasized ? 'font-medium' : ''}>{stat.label}</span>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Right side: Validation status */}
+                <div className="flex items-center gap-2">
+                    <div
+                        className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium ${
+                            error
+                                ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                                : content.trim()
+                                  ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                                  : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                        }`}
+                    >
+                        <FileJson className="h-3.5 w-3.5" />
+                        <span>{error ? 'Invalid' : content.trim() ? 'Valid' : 'Empty'}</span>
+                    </div>
+                </div>
             </div>
         </div>
     );
