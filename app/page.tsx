@@ -5,8 +5,9 @@ import { Toolbar } from '@/components/toolbar';
 import { EditorPane, type EditorPaneRef } from '@/components/editor-pane';
 import { FormatPane, FormatShareDialog } from '@/components/format-pane';
 import { MinifyPane, MinifyShareDialog } from '@/components/minify-pane';
+import { ViewerPane, ViewerShareDialog } from '@/components/viewer-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, GitCompare, Code, Minimize2, FileJson, Share2, Trash2 } from 'lucide-react';
+import { Settings, GitCompare, Code, Minimize2, FileJson, Share2, Trash2, Eye } from 'lucide-react';
 
 export default function Home() {
     const [ignoreKeyOrder, setIgnoreKeyOrder] = useState(true);
@@ -28,6 +29,12 @@ export default function Home() {
     const [canMinify, setCanMinify] = useState(false);
     const [minifyShareDialogOpen, setMinifyShareDialogOpen] = useState(false);
     const [minifyContent, setMinifyContent] = useState('');
+    const [viewerShowTypes, setViewerShowTypes] = useState(false);
+    const [viewerShowPaths, setViewerShowPaths] = useState(false);
+    const [viewerSortKeys, setViewerSortKeys] = useState(false);
+    const [canView, setCanView] = useState(false);
+    const [viewerShareDialogOpen, setViewerShareDialogOpen] = useState(false);
+    const [viewerContent, setViewerContent] = useState('');
 
     const editorPaneRef = useRef<EditorPaneRef>(null);
 
@@ -92,6 +99,28 @@ export default function Home() {
         return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
+    // Load viewer content from localStorage on mount and keep in sync
+    useEffect(() => {
+        const loadViewerContent = () => {
+            try {
+                const content = localStorage.getItem('json-viewer-content') || '';
+                setViewerContent(content);
+            } catch (error) {
+                console.error('Failed to load viewer content:', error);
+            }
+        };
+
+        loadViewerContent();
+
+        // Listen for storage changes
+        const handleStorageChange = () => {
+            loadViewerContent();
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+
     const handleClear = () => {
         // Reload page to clear all content
         window.location.reload();
@@ -129,6 +158,18 @@ export default function Home() {
         setMinifyShareDialogOpen(true);
     };
 
+    const handleViewerShare = () => {
+        // Get the viewer content from localStorage
+        const viewerContentData = localStorage.getItem('json-viewer-content');
+        if (!viewerContentData) {
+            alert('No content to share. Please enter some JSON first.');
+            return;
+        }
+
+        // Open the share dialog
+        setViewerShareDialogOpen(true);
+    };
+
     return (
         <div className="min-h-screen">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -140,6 +181,7 @@ export default function Home() {
                                     { value: 'diff', label: 'Diff', icon: GitCompare },
                                     { value: 'format', label: 'Format', icon: Code },
                                     { value: 'minify', label: 'Minify', icon: Minimize2 },
+                                    { value: 'viewer', label: 'Viewer', icon: Eye },
                                     { value: 'parser', label: 'Parser', icon: FileJson },
                                     { value: 'share', label: 'Share', icon: Share2 },
                                 ].map(({ value, label, icon: Icon }) => (
@@ -327,6 +369,12 @@ export default function Home() {
                     onOpenChange={setMinifyShareDialogOpen}
                 />
 
+                <ViewerShareDialog
+                    content={viewerContent}
+                    open={viewerShareDialogOpen}
+                    onOpenChange={setViewerShareDialogOpen}
+                />
+
                 <TabsContent value="minify" className="mt-0">
                     <div>
                         <Toolbar
@@ -368,6 +416,58 @@ export default function Home() {
                             removeWhitespace={minifyRemoveWhitespace}
                             onError={handleError}
                             onValidationChange={setCanMinify}
+                        />
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="viewer" className="mt-0">
+                    <div>
+                        <Toolbar
+                            toggles={[
+                                {
+                                    id: 'showTypes',
+                                    label: 'Show Types',
+                                    checked: viewerShowTypes,
+                                    onChange: setViewerShowTypes,
+                                },
+                                {
+                                    id: 'showPaths',
+                                    label: 'Show Paths',
+                                    checked: viewerShowPaths,
+                                    onChange: setViewerShowPaths,
+                                },
+                                {
+                                    id: 'sortKeys',
+                                    label: 'Sort Keys',
+                                    checked: viewerSortKeys,
+                                    onChange: setViewerSortKeys,
+                                },
+                            ]}
+                            actions={[
+                                {
+                                    id: 'clear',
+                                    label: 'Clear All',
+                                    onClick: handleClear,
+                                    variant: 'outline',
+                                    icon: <Trash2 className="h-4 w-4" />,
+                                },
+                                {
+                                    id: 'share',
+                                    label: 'Share',
+                                    onClick: handleViewerShare,
+                                    variant: 'outline',
+                                    icon: <Share2 className="h-4 w-4" />,
+                                },
+                            ]}
+                        />
+
+                        <ViewerPane
+                            className='mx-auto'
+                            showTypes={viewerShowTypes}
+                            showPaths={viewerShowPaths}
+                            sortKeys={viewerSortKeys}
+                            onError={handleError}
+                            onValidationChange={setCanView}
                         />
                     </div>
                 </TabsContent>
