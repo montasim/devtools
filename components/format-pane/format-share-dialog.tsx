@@ -127,7 +127,8 @@ export function FormatShareDialog({
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                             Shareable Link
                         </label>
-                        <div className="flex gap-2">
+
+                        <div className="flex gap-2 mt-2">
                             <Input
                                 value={generateShareUrl()}
                                 readOnly
