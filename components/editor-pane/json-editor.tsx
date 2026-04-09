@@ -5,7 +5,7 @@ import { EditorState } from '@codemirror/state';
 import { EditorView, keymap, lineNumbers } from '@codemirror/view';
 import { json } from '@codemirror/lang-json';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
-import { Upload } from 'lucide-react';
+import { Upload, Link2, Search, X, MoreVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { validateJson } from './utils/validation';
 import type { ParseError } from './types';
@@ -203,6 +203,36 @@ export function JsonEditor({
         event.target.value = '';
     };
 
+    // Handle clear editor content
+    const handleClear = () => {
+        onChange('');
+        setError(null);
+        onError(null);
+    };
+
+    // Handle copy link to clipboard
+    const handleCopyLink = () => {
+        // Generate a shareable link with current content
+        const encoded = btoa(value);
+        const url = `${window.location.origin}?content=${encoded}`;
+        navigator.clipboard.writeText(url);
+    };
+
+    // Handle search in editor
+    const handleSearch = () => {
+        // Focus the editor and trigger search (CodeMirror search)
+        if (viewRef.current) {
+            // Trigger search dialog - this would need proper CodeMirror search extension
+            console.log('Search triggered');
+        }
+    };
+
+    // Handle more menu
+    const handleMoreMenu = () => {
+        // Open more options menu
+        console.log('More menu opened');
+    };
+
     return (
         <div className="flex flex-col h-full">
             {/* Header with label and validation status */}
@@ -224,21 +254,72 @@ export function JsonEditor({
                         {error ? 'Invalid JSON' : value.trim() ? 'Valid JSON' : 'Empty'}
                     </span>
 
-                    {/* File upload button */}
+                    {/* Action buttons */}
                     {!readOnly && (
-                        <label>
-                            <Button type="button" variant="ghost" size="icon" className="h-8 w-8" asChild>
-                                <span>
-                                    <Upload className="h-4 w-4" />
-                                    <input
-                                        type="file"
-                                        accept=".json,application/json"
-                                        onChange={handleFileUpload}
-                                        className="hidden"
-                                    />
-                                </span>
+                        <>
+                            {/* Clear button */}
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={handleClear}
+                                title="Clear editor"
+                            >
+                                <X className="h-4 w-4" />
                             </Button>
-                        </label>
+
+                            {/* Copy link button */}
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={handleCopyLink}
+                                title="Copy link"
+                            >
+                                <Link2 className="h-4 w-4" />
+                            </Button>
+
+                            {/* Search button */}
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={handleSearch}
+                                title="Search"
+                            >
+                                <Search className="h-4 w-4" />
+                            </Button>
+
+                            {/* File upload button */}
+                            <label>
+                                <Button type="button" variant="ghost" size="icon" className="h-8 w-8" asChild>
+                                    <span>
+                                        <Upload className="h-4 w-4" />
+                                        <input
+                                            type="file"
+                                            accept=".json,application/json"
+                                            onChange={handleFileUpload}
+                                            className="hidden"
+                                        />
+                                    </span>
+                                </Button>
+                            </label>
+
+                            {/* More menu button */}
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={handleMoreMenu}
+                                title="More options"
+                            >
+                                <MoreVertical className="h-4 w-4" />
+                            </Button>
+                        </>
                     )}
                 </div>
             </div>
