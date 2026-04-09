@@ -7,8 +7,9 @@ import { FormatPane, FormatShareDialog } from '@/components/format-pane';
 import { MinifyPane, MinifyShareDialog } from '@/components/minify-pane';
 import { ViewerPane, ViewerShareDialog } from '@/components/viewer-pane';
 import { ParserPane, ParserShareDialog } from '@/components/parser-pane';
+import { ExportPane, ExportShareDialog } from '@/components/export-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, GitCompare, Code, Minimize2, FileJson, Share2, Trash2, Eye } from 'lucide-react';
+import { Settings, GitCompare, Code, Minimize2, FileJson, Share2, Trash2, Eye, FileDown } from 'lucide-react';
 
 export default function Home() {
     const [ignoreKeyOrder, setIgnoreKeyOrder] = useState(true);
@@ -42,6 +43,10 @@ export default function Home() {
     const [canParse, setCanParse] = useState(false);
     const [parserShareDialogOpen, setParserShareDialogOpen] = useState(false);
     const [parserContent, setParserContent] = useState('');
+    const [exportFormat, setExportFormat] = useState<'csv' | 'xml' | 'yaml' | 'toml' | 'json'>('csv');
+    const [canExport, setCanExport] = useState(false);
+    const [exportShareDialogOpen, setExportShareDialogOpen] = useState(false);
+    const [exportContent, setExportContent] = useState('');
 
     const editorPaneRef = useRef<EditorPaneRef>(null);
 
@@ -150,6 +155,28 @@ export default function Home() {
         return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
+    // Load export content from localStorage on mount and keep in sync
+    useEffect(() => {
+        const loadExportContent = () => {
+            try {
+                const content = localStorage.getItem('json-export-content') || '';
+                setExportContent(content);
+            } catch (error) {
+                console.error('Failed to load export content:', error);
+            }
+        };
+
+        loadExportContent();
+
+        // Listen for storage changes
+        const handleStorageChange = () => {
+            loadExportContent();
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+
     const handleClear = () => {
         // Reload page to clear all content
         window.location.reload();
@@ -211,6 +238,18 @@ export default function Home() {
         setParserShareDialogOpen(true);
     };
 
+    const handleExportShare = () => {
+        // Get the export content from localStorage
+        const exportContentData = localStorage.getItem('json-export-content');
+        if (!exportContentData) {
+            alert('No content to share. Please enter some JSON first.');
+            return;
+        }
+
+        // Open the share dialog
+        setExportShareDialogOpen(true);
+    };
+
     return (
         <div className="min-h-screen">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -227,6 +266,7 @@ export default function Home() {
                                     { value: 'minify', label: 'Minify', icon: Minimize2 },
                                     { value: 'viewer', label: 'Viewer', icon: Eye },
                                     { value: 'parser', label: 'Parser', icon: FileJson },
+                                    { value: 'export', label: 'Export', icon: FileDown },
                                     { value: 'share', label: 'Share', icon: Share2 },
                                 ].map(({ value, label, icon: Icon }) => (
                                     <TabsTrigger
@@ -434,6 +474,13 @@ export default function Home() {
                     onOpenChange={setParserShareDialogOpen}
                 />
 
+                <ExportShareDialog
+                    content={exportContent}
+                    format={exportFormat}
+                    open={exportShareDialogOpen}
+                    onOpenChange={setExportShareDialogOpen}
+                />
+
                 <TabsContent value="minify" className="mt-0">
                     <div>
                         <Toolbar
@@ -579,6 +626,36 @@ export default function Home() {
                             showStatistics={parserShowStatistics}
                             onError={handleError}
                             onValidationChange={setCanParse}
+                        />
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="export" className="mt-0">
+                    <div>
+                        <Toolbar
+                            toggles={[]}
+                            actions={[
+                                {
+                                    id: 'clear',
+                                    label: 'Clear All',
+                                    onClick: handleClear,
+                                    variant: 'outline',
+                                    icon: <Trash2 className="h-4 w-4" />,
+                                },
+                                {
+                                    id: 'share',
+                                    label: 'Share',
+                                    onClick: handleExportShare,
+                                    variant: 'outline',
+                                    icon: <Share2 className="h-4 w-4" />,
+                                },
+                            ]}
+                        />
+
+                        <ExportPane
+                            className='mx-auto'
+                            onError={handleError}
+                            onValidationChange={setCanExport}
                         />
                     </div>
                 </TabsContent>
