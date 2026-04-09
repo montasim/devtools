@@ -93,22 +93,16 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                         fontFamily:
                             'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
                         overflow: 'auto',
-                        maxWidth: '100%',
                         height: '100%',
                     },
                     '.cm-content': {
                         padding: '12px',
-                        maxWidth: '100%',
-                        overflow: 'auto',
-                        whiteSpace: 'pre',
                     },
                     '.cm-focused': {
                         outline: 'none',
                     },
                     '.cm-line': {
                         padding: '0 0',
-                        maxWidth: '100%',
-                        overflow: 'auto',
                         whiteSpace: 'pre',
                     },
                     // Search highlighting
