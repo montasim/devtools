@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { HardDrive, Type, FileText, AlignLeft, Layers, GitBranch, FileJson } from 'lucide-react';
+import { HardDrive, Type, FileText, AlignLeft, Layers, GitBranch, Check, X } from 'lucide-react';
 import type { ParseError } from './types';
 
 export interface EditorStats {
@@ -138,7 +138,13 @@ export function EditorFooter({ content, error }: EditorFooterProps) {
                                   : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
                         }`}
                     >
-                        <FileJson className="h-3.5 w-3.5" />
+                        {error ? (
+                            <X className="h-3.5 w-3.5" />
+                        ) : content.trim() ? (
+                            <Check className="h-3.5 w-3.5" />
+                        ) : (
+                            <span className="h-3.5 w-3.5" />
+                        )}
                         <span>{error ? 'Invalid' : content.trim() ? 'Valid' : 'Empty'}</span>
                     </div>
                 </div>
