@@ -5,13 +5,13 @@ import { Copy, Check, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+} from '@/components/ui/sheet';
 
 interface FormatShareDialogProps {
     content: string;
@@ -62,19 +62,19 @@ export function FormatShareDialog({
     };
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
+        <Sheet open={open} onOpenChange={onOpenChange}>
+            <SheetContent className="sm:max-w-md">
+                <SheetHeader>
+                    <SheetTitle className="flex items-center gap-2">
                         <Share2 className="h-5 w-5" />
                         Share Formatted JSON
-                    </DialogTitle>
-                    <DialogDescription>
+                    </SheetTitle>
+                    <SheetDescription>
                         Generate a shareable link to your formatted JSON. Anyone with the link can view and download your formatted JSON.
-                    </DialogDescription>
-                </DialogHeader>
+                    </SheetDescription>
+                </SheetHeader>
 
-                <div className="space-y-4 py-4">
+                <div className="space-y-4 p-4">
                     {/* Share URL Input */}
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Share Link</label>
@@ -118,12 +118,12 @@ export function FormatShareDialog({
                     </div>
                 </div>
 
-                <DialogFooter>
+                <SheetFooter>
                     <Button onClick={() => onOpenChange?.(false)}>
                         Done
                     </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                </SheetFooter>
+            </SheetContent>
+        </Sheet>
     );
 }
