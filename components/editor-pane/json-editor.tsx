@@ -5,6 +5,7 @@ import { EditorState } from '@codemirror/state';
 import { EditorView, keymap, lineNumbers } from '@codemirror/view';
 import { json } from '@codemirror/lang-json';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
+import { search, highlightSelectionMatches } from '@codemirror/search';
 import { X, Link2, Search, Upload, MoreVertical } from 'lucide-react';
 import { EditorActions } from './editor-actions';
 import { EditorFooter } from './editor-footer';
@@ -47,6 +48,8 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                 keymap.of(historyKeymap),
                 history(),
                 json(),
+                search({ top: true }),
+                highlightSelectionMatches(),
                 EditorView.updateListener.of((update) => {
                     if (update.docChanged) {
                         const newValue = update.state.doc.toString();
@@ -73,6 +76,18 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                     },
                     '.cm-line': {
                         padding: '0 0',
+                    },
+                    // Search highlighting
+                    '&.cm-json .cm-searchMatch': {
+                        backgroundColor: '#fef08a',
+                        color: 'inherit',
+                    },
+                    '&.cm-json .cm-searchMatch-selected': {
+                        backgroundColor: '#fbbf24',
+                        color: 'inherit',
+                    },
+                    '&.cm-json .cm-selectionMatch': {
+                        backgroundColor: '#fef08a80',
                     },
                     // JSON Syntax Highlighting
                     '&.cm-json .tok-propertyName': {
@@ -111,6 +126,18 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                     },
                     '.dark &.cm-json .tok-keyword': {
                         color: '#569cd6',
+                    },
+                    // Dark mode search highlighting
+                    '.dark &.cm-json .cm-searchMatch': {
+                        backgroundColor: '#854d0e',
+                        color: 'inherit',
+                    },
+                    '.dark &.cm-json .cm-searchMatch-selected': {
+                        backgroundColor: '#a16207',
+                        color: 'inherit',
+                    },
+                    '.dark &.cm-json .cm-selectionMatch': {
+                        backgroundColor: '#854d0e80',
                     },
                 }),
                 readOnly ? EditorState.readOnly.of(true) : [],
@@ -218,10 +245,13 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
 
     // Handle search in editor
     const handleSearch = useCallback(() => {
-        // Focus the editor and trigger search (CodeMirror search)
+        // Open CodeMirror's built-in search panel
         if (viewRef.current) {
-            // Trigger search dialog - this would need proper CodeMirror search extension
-            console.log('Search triggered');
+            const view = viewRef.current;
+            // Trigger search command to open the search panel
+            import('@codemirror/search').then(({ openSearchPanel }) => {
+                openSearchPanel(view);
+            });
         }
     }, []);
 
