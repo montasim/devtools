@@ -45,6 +45,16 @@ export interface EditorActionsProps {
     content?: string;
     onContentChange?: (newContent: string) => void;
     onError?: (error: string | null) => void;
+    onFormat?: () => void;
+    onMinify?: () => void;
+    onExpand?: () => void;
+    onCollapse?: () => void;
+    onRemoveNulls?: () => void;
+    onRemoveEmptyStrings?: () => void;
+    onRemoveEmptyObjects?: () => void;
+    onSortKeys?: () => void;
+    onFormatDates?: () => void;
+    onEscapeUnicode?: () => void;
 }
 
 function isFileUploadButton(button: EditorActionButtonConfig): button is EditorFileUploadButton {
@@ -62,6 +72,16 @@ export function EditorActions({
     content = '',
     onContentChange,
     onError,
+    onFormat,
+    onMinify,
+    onExpand,
+    onCollapse,
+    onRemoveNulls,
+    onRemoveEmptyStrings,
+    onRemoveEmptyObjects,
+    onSortKeys,
+    onFormatDates,
+    onEscapeUnicode,
 }: EditorActionsProps) {
     // Check if there's a more-menu button
     const hasMoreMenu = buttons.some(
@@ -97,6 +117,16 @@ export function EditorActions({
                                 content={content}
                                 onContentChange={onContentChange || (() => {})}
                                 onError={onError}
+                                onFormat={onFormat}
+                                onMinify={onMinify}
+                                onExpand={onExpand}
+                                onCollapse={onCollapse}
+                                onRemoveNulls={onRemoveNulls}
+                                onRemoveEmptyStrings={onRemoveEmptyStrings}
+                                onRemoveEmptyObjects={onRemoveEmptyObjects}
+                                onSortKeys={onSortKeys}
+                                onFormatDates={onFormatDates}
+                                onEscapeUnicode={onEscapeUnicode}
                             />
                         </DropdownMenu>
                     );

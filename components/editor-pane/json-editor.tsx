@@ -10,6 +10,19 @@ import { X, Link2, Search, Upload, MoreVertical } from 'lucide-react';
 import { EditorActions } from './editor-actions';
 import { EditorFooter } from './editor-footer';
 import { validateJson } from './utils/validation';
+import {
+    copyToClipboard,
+    formatJson,
+    minifyJson,
+    expandJson,
+    collapseJson,
+    removeNulls,
+    removeEmptyStrings,
+    removeEmptyObjects,
+    sortKeys,
+    formatDates,
+    escapeUnicode,
+} from './utils/json-operations';
 import type { ParseError } from './types';
 import type { JsonEditorProps } from './types';
 
@@ -261,6 +274,258 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
         console.log('More menu opened');
     }, []);
 
+    // JSON operation handlers
+    const handleFormat = useCallback(() => {
+        try {
+            const formatted = formatJson(value);
+            onChange(formatted);
+            setError(null);
+            onError(null);
+        } catch (error) {
+            const parseError: ParseError = {
+                message: 'Failed to format JSON',
+                line: 1,
+                column: 1,
+            };
+            setError(parseError);
+            onError(parseError);
+        }
+    }, [value, onChange, onError]);
+
+    const handleMinify = useCallback(() => {
+        try {
+            const minified = minifyJson(value);
+            onChange(minified);
+            setError(null);
+            onError(null);
+        } catch (error) {
+            const parseError: ParseError = {
+                message: 'Failed to minify JSON',
+                line: 1,
+                column: 1,
+            };
+            setError(parseError);
+            onError(parseError);
+        }
+    }, [value, onChange, onError]);
+
+    const handleExpand = useCallback(() => {
+        try {
+            const expanded = expandJson(value);
+            onChange(expanded);
+            setError(null);
+            onError(null);
+        } catch (error) {
+            const parseError: ParseError = {
+                message: 'Failed to expand JSON',
+                line: 1,
+                column: 1,
+            };
+            setError(parseError);
+            onError(parseError);
+        }
+    }, [value, onChange, onError]);
+
+    const handleCollapse = useCallback(() => {
+        try {
+            const collapsed = collapseJson(value);
+            onChange(collapsed);
+            setError(null);
+            onError(null);
+        } catch (error) {
+            const parseError: ParseError = {
+                message: 'Failed to collapse JSON',
+                line: 1,
+                column: 1,
+            };
+            setError(parseError);
+            onError(parseError);
+        }
+    }, [value, onChange, onError]);
+
+    const handleRemoveNulls = useCallback(() => {
+        try {
+            const cleaned = removeNulls(value);
+            onChange(cleaned);
+            setError(null);
+            onError(null);
+        } catch (error) {
+            const parseError: ParseError = {
+                message: 'Failed to remove nulls',
+                line: 1,
+                column: 1,
+            };
+            setError(parseError);
+            onError(parseError);
+        }
+    }, [value, onChange, onError]);
+
+    const handleRemoveEmptyStrings = useCallback(() => {
+        try {
+            const cleaned = removeEmptyStrings(value);
+            onChange(cleaned);
+            setError(null);
+            onError(null);
+        } catch (error) {
+            const parseError: ParseError = {
+                message: 'Failed to remove empty strings',
+                line: 1,
+                column: 1,
+            };
+            setError(parseError);
+            onError(parseError);
+        }
+    }, [value, onChange, onError]);
+
+    const handleRemoveEmptyObjects = useCallback(() => {
+        try {
+            const cleaned = removeEmptyObjects(value);
+            onChange(cleaned);
+            setError(null);
+            onError(null);
+        } catch (error) {
+            const parseError: ParseError = {
+                message: 'Failed to remove empty objects',
+                line: 1,
+                column: 1,
+            };
+            setError(parseError);
+            onError(parseError);
+        }
+    }, [value, onChange, onError]);
+
+    const handleSortKeys = useCallback(() => {
+        try {
+            const sorted = sortKeys(value);
+            onChange(sorted);
+            setError(null);
+            onError(null);
+        } catch (error) {
+            const parseError: ParseError = {
+                message: 'Failed to sort keys',
+                line: 1,
+                column: 1,
+            };
+            setError(parseError);
+            onError(parseError);
+        }
+    }, [value, onChange, onError]);
+
+    const handleFormatDates = useCallback(() => {
+        try {
+            const formatted = formatDates(value);
+            onChange(formatted);
+            setError(null);
+            onError(null);
+        } catch (error) {
+            const parseError: ParseError = {
+                message: 'Failed to format dates',
+                line: 1,
+                column: 1,
+            };
+            setError(parseError);
+            onError(parseError);
+        }
+    }, [value, onChange, onError]);
+
+    const handleEscapeUnicode = useCallback(() => {
+        try {
+            const escaped = escapeUnicode(value);
+            onChange(escaped);
+            setError(null);
+            onError(null);
+        } catch (error) {
+            const parseError: ParseError = {
+                message: 'Failed to escape unicode',
+                line: 1,
+                column: 1,
+            };
+            setError(parseError);
+            onError(parseError);
+        }
+    }, [value, onChange, onError]);
+
+    // Handle keyboard shortcuts
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            const cmdOrCtrl = isMac ? event.metaKey : event.ctrlKey;
+            const shift = event.shiftKey;
+            const alt = event.altKey;
+
+            // Format: Cmd+Shift+F (Mac) / Ctrl+Shift+F (Windows/Linux)
+            if (cmdOrCtrl && shift && event.key === 'F') {
+                event.preventDefault();
+                handleFormat();
+            }
+            // Minify: Cmd+Shift+M (Mac) / Ctrl+Shift+M (Windows/Linux)
+            else if (cmdOrCtrl && shift && event.key === 'M') {
+                event.preventDefault();
+                handleMinify();
+            }
+            // Expand: Cmd+Shift+E (Mac) / Ctrl+Shift+E (Windows/Linux)
+            else if (cmdOrCtrl && shift && event.key === 'E') {
+                event.preventDefault();
+                handleExpand();
+            }
+            // Collapse: Cmd+Shift+C (Mac) / Ctrl+Shift+C (Windows/Linux)
+            else if (cmdOrCtrl && shift && event.key === 'C') {
+                event.preventDefault();
+                handleCollapse();
+            }
+            // Remove Nulls: Cmd+Alt+N (Mac) / Ctrl+Alt+N (Windows/Linux)
+            else if (cmdOrCtrl && alt && event.key === 'n') {
+                event.preventDefault();
+                handleRemoveNulls();
+            }
+            // Remove Empty Strings: Cmd+Alt+S (Mac) / Ctrl+Alt+S (Windows/Linux)
+            else if (cmdOrCtrl && alt && event.key === 's') {
+                event.preventDefault();
+                handleRemoveEmptyStrings();
+            }
+            // Remove Empty Objects: Cmd+Alt+O (Mac) / Ctrl+Alt+O (Windows/Linux)
+            else if (cmdOrCtrl && alt && event.key === 'o') {
+                event.preventDefault();
+                handleRemoveEmptyObjects();
+            }
+            // Sort Keys: Cmd+Alt+K (Mac) / Ctrl+Alt+K (Windows/Linux)
+            else if (cmdOrCtrl && alt && event.key === 'k') {
+                event.preventDefault();
+                handleSortKeys();
+            }
+            // Format Dates: Cmd+Alt+D (Mac) / Ctrl+Alt+D (Windows/Linux)
+            else if (cmdOrCtrl && alt && event.key === 'd') {
+                event.preventDefault();
+                handleFormatDates();
+            }
+            // Escape Unicode: Cmd+Alt+U (Mac) / Ctrl+Alt+U (Windows/Linux)
+            else if (cmdOrCtrl && alt && event.key === 'u') {
+                event.preventDefault();
+                handleEscapeUnicode();
+            }
+        };
+
+        // Add event listener when editor is focused
+        const editorElement = editorRef.current;
+        if (editorElement) {
+            editorElement.addEventListener('keydown', handleKeyDown);
+            return () => {
+                editorElement.removeEventListener('keydown', handleKeyDown);
+            };
+        }
+    }, [
+        handleFormat,
+        handleMinify,
+        handleExpand,
+        handleCollapse,
+        handleRemoveNulls,
+        handleRemoveEmptyStrings,
+        handleRemoveEmptyObjects,
+        handleSortKeys,
+        handleFormatDates,
+        handleEscapeUnicode,
+    ]);
+
     // Define action buttons dynamically
     const actionButtons = useMemo(
         () => [
@@ -332,6 +597,16 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                                 onError(null);
                             }
                         }}
+                        onFormat={handleFormat}
+                        onMinify={handleMinify}
+                        onExpand={handleExpand}
+                        onCollapse={handleCollapse}
+                        onRemoveNulls={handleRemoveNulls}
+                        onRemoveEmptyStrings={handleRemoveEmptyStrings}
+                        onRemoveEmptyObjects={handleRemoveEmptyObjects}
+                        onSortKeys={handleSortKeys}
+                        onFormatDates={handleFormatDates}
+                        onEscapeUnicode={handleEscapeUnicode}
                     />
                 </div>
             </div>
