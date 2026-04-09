@@ -116,16 +116,6 @@ export const FormatPane = ({
 
     return (
         <div className={className}>
-            {/* Format Options Display */}
-            <div className="mb-4 px-4">
-                <div className="text-sm text-muted-foreground">
-                    Format Options: {formatOptions.indentation} spaces
-                    {formatOptions.sortKeys && ', Sort Keys'}
-                    {formatOptions.removeTrailingCommas && ', No Trailing Commas'}
-                    {formatOptions.escapeUnicode && ', Escape Unicode'}
-                </div>
-            </div>
-
             {/* Editor Panes */}
             <div className="flex flex-col md:flex-row gap-4">
                 <div className="w-full md:w-1/2">
@@ -148,27 +138,35 @@ export const FormatPane = ({
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                             Formatted JSON
                         </label>
-                        <div className="flex items-center gap-2">
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                onClick={handleCopy}
-                                disabled={isDisabled}
-                                title="Copy to clipboard"
-                            >
-                                <Copy className="h-4 w-4" />
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                onClick={handleDownload}
-                                disabled={isDisabled}
-                                title="Download as JSON"
-                            >
-                                <Download className="h-4 w-4" />
-                            </Button>
+                        <div className="flex items-center gap-3">
+                            <span className="text-sm text-muted-foreground">
+                                {formatOptions.indentation} spaces
+                                {formatOptions.sortKeys && ', Sort'}
+                                {formatOptions.removeTrailingCommas && ', No Commas'}
+                                {formatOptions.escapeUnicode && ', Unicode'}
+                            </span>
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-8 w-8"
+                                    onClick={handleCopy}
+                                    disabled={isDisabled}
+                                    title="Copy to clipboard"
+                                >
+                                    <Copy className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-8 w-8"
+                                    onClick={handleDownload}
+                                    disabled={isDisabled}
+                                    title="Download as JSON"
+                                >
+                                    <Download className="h-4 w-4" />
+                                </Button>
+                            </div>
                         </div>
                     </div>
 
