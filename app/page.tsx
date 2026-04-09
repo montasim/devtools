@@ -8,8 +8,21 @@ import { MinifyPane, MinifyShareDialog } from '@/components/minify-pane';
 import { ViewerPane, ViewerShareDialog } from '@/components/viewer-pane';
 import { ParserPane, ParserShareDialog } from '@/components/parser-pane';
 import { ExportPane, ExportShareDialog } from '@/components/export-pane';
+import { SchemaPane, SchemaShareDialog } from '@/components/schema-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, GitCompare, Code, Minimize2, FileJson, Share2, Trash2, Eye, FileDown } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+import {
+    Settings,
+    GitCompare,
+    Code,
+    Minimize2,
+    FileJson,
+    Share2,
+    Trash2,
+    Eye,
+    FileDown,
+} from 'lucide-react';
 
 export default function Home() {
     const [ignoreKeyOrder, setIgnoreKeyOrder] = useState(true);
@@ -23,36 +36,45 @@ export default function Home() {
     const [formatSortKeys, setFormatSortKeys] = useState(false);
     const [formatRemoveTrailingCommas, setFormatRemoveTrailingCommas] = useState(false);
     const [formatEscapeUnicode, setFormatEscapeUnicode] = useState(false);
-    const [canFormat, setCanFormat] = useState(false);
+    const [canFormat, setCanFormat] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
     const [shareDialogOpen, setShareDialogOpen] = useState(false);
     const [formatContent, setFormatContent] = useState('');
     const [minifySortKeys, setMinifySortKeys] = useState(false);
     const [minifyRemoveWhitespace, setMinifyRemoveWhitespace] = useState(true);
-    const [canMinify, setCanMinify] = useState(false);
+    const [canMinify, setCanMinify] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
     const [minifyShareDialogOpen, setMinifyShareDialogOpen] = useState(false);
     const [minifyContent, setMinifyContent] = useState('');
     const [viewerShowTypes, setViewerShowTypes] = useState(false);
     const [viewerShowPaths, setViewerShowPaths] = useState(false);
     const [viewerSortKeys, setViewerSortKeys] = useState(false);
-    const [canView, setCanView] = useState(false);
+    const [canView, setCanView] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
     const [viewerShareDialogOpen, setViewerShareDialogOpen] = useState(false);
     const [viewerContent, setViewerContent] = useState('');
     const [parserShowTypes, setParserShowTypes] = useState(true);
     const [parserShowPaths, setParserShowPaths] = useState(true);
     const [parserShowStatistics, setParserShowStatistics] = useState(true);
-    const [canParse, setCanParse] = useState(false);
+    const [canParse, setCanParse] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
     const [parserShareDialogOpen, setParserShareDialogOpen] = useState(false);
     const [parserContent, setParserContent] = useState('');
-    const [exportFormat, setExportFormat] = useState<'csv' | 'xml' | 'yaml' | 'toml' | 'json'>('csv');
-    const [canExport, setCanExport] = useState(false);
+    const [exportFormat, setExportFormat] = // eslint-disable-line @typescript-eslint/no-unused-vars
+        useState<'csv' | 'xml' | 'yaml' | 'toml' | 'json'>('csv');
+    const [canExport, setCanExport] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
     const [exportShareDialogOpen, setExportShareDialogOpen] = useState(false);
     const [exportContent, setExportContent] = useState('');
+    const [schemaMode, setSchemaMode] = useState<'generate' | 'validate'>('generate');
+    const [schemaStrictMode, setSchemaStrictMode] = useState(true); // eslint-disable-line @typescript-eslint/no-unused-vars
+    const [schemaVersion, setSchemaVersion] = useState<'draft-07' | '2020-12'>('draft-07'); // eslint-disable-line @typescript-eslint/no-unused-vars
+    const [schemaViewMode, setSchemaViewMode] = useState<'inline' | 'list'>('list'); // eslint-disable-line @typescript-eslint/no-unused-vars
+    const [canSchema, setCanSchema] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
+    const [schemaShareDialogOpen, setSchemaShareDialogOpen] = useState(false);
+    const [schemaContent, setSchemaContent] = useState('');
 
     const editorPaneRef = useRef<EditorPaneRef>(null);
 
     const handleCompare = useCallback(
-        (result: { hunks: unknown[]; additionCount: number; deletionCount: number }) => {
-            // console.log('Diff result:', result);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        (_result: { hunks: unknown[]; additionCount: number; deletionCount: number }) => {
+            // console.log('Diff result:', _result);
         },
         [],
     );
@@ -177,6 +199,27 @@ export default function Home() {
         return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
+    // Load schema content from localStorage on mount and keep in sync
+    useEffect(() => {
+        const loadSchemaContent = () => {
+            try {
+                const content = localStorage.getItem('json-schema-json-content') || '';
+                setSchemaContent(content);
+            } catch (error) {
+                console.error('Failed to load schema content:', error);
+            }
+        };
+
+        loadSchemaContent();
+
+        const handleStorageChange = () => {
+            loadSchemaContent();
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+
     const handleClear = () => {
         // Reload page to clear all content
         window.location.reload();
@@ -250,6 +293,18 @@ export default function Home() {
         setExportShareDialogOpen(true);
     };
 
+    const handleSchemaShare = () => {
+        // Get the schema content from localStorage
+        const schemaContentData = localStorage.getItem('json-schema-json-content');
+        if (!schemaContentData) {
+            alert('No content to share. Please enter some JSON first.');
+            return;
+        }
+
+        // Open the share dialog
+        setSchemaShareDialogOpen(true);
+    };
+
     return (
         <div className="min-h-screen">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -267,6 +322,7 @@ export default function Home() {
                                     { value: 'viewer', label: 'Viewer', icon: Eye },
                                     { value: 'parser', label: 'Parser', icon: FileJson },
                                     { value: 'export', label: 'Export', icon: FileDown },
+                                    { value: 'schema', label: 'Schema', icon: FileJson },
                                     { value: 'share', label: 'Share', icon: Share2 },
                                 ].map(({ value, label, icon: Icon }) => (
                                     <TabsTrigger
@@ -481,6 +537,13 @@ export default function Home() {
                     onOpenChange={setExportShareDialogOpen}
                 />
 
+                <SchemaShareDialog
+                    content={schemaContent}
+                    mode={schemaMode}
+                    open={schemaShareDialogOpen}
+                    onOpenChange={setSchemaShareDialogOpen}
+                />
+
                 <TabsContent value="minify" className="mt-0">
                     <div>
                         <Toolbar
@@ -653,9 +716,65 @@ export default function Home() {
                         />
 
                         <ExportPane
-                            className='mx-auto'
+                            className="mx-auto"
                             onError={handleError}
                             onValidationChange={setCanExport}
+                        />
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="schema" className="mt-0">
+                    <div>
+                        <div className="border-b py-2 flex items-center justify-between">
+                            <RadioGroup
+                                value={schemaMode}
+                                onValueChange={(value) =>
+                                    setSchemaMode(value as 'generate' | 'validate')
+                                }
+                            >
+                                <div className="flex gap-6">
+                                    <div className="flex items-center gap-2">
+                                        <RadioGroupItem value="generate" id="schema-generate" />
+                                        <Label htmlFor="schema-generate">Generate Schema</Label>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <RadioGroupItem value="validate" id="schema-validate" />
+                                        <Label htmlFor="schema-validate">Validate JSON</Label>
+                                    </div>
+                                </div>
+                            </RadioGroup>
+                            <div className="flex items-center gap-2">
+                                <Toolbar
+                                    toggles={[]}
+                                    actions={[
+                                        {
+                                            id: 'clear',
+                                            label: 'Clear All',
+                                            onClick: handleClear,
+                                            variant: 'outline',
+                                            icon: <Trash2 className="h-4 w-4" />,
+                                        },
+                                        {
+                                            id: 'share',
+                                            label: 'Share',
+                                            onClick: handleSchemaShare,
+                                            variant: 'outline',
+                                            icon: <Share2 className="h-4 w-4" />,
+                                        },
+                                    ]}
+                                />
+                            </div>
+                        </div>
+
+                        <SchemaPane
+                            mode={schemaMode}
+                            className="mx-auto"
+                            onError={handleError}
+                            onValidationChange={setCanSchema}
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            onContentChange={(jsonContent: string, _schemaContent: string) => {
+                                setSchemaContent(jsonContent);
+                            }}
                         />
                     </div>
                 </TabsContent>
