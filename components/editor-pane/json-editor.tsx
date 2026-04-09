@@ -26,7 +26,7 @@ import {
 import type { ParseError } from './types';
 import type { JsonEditorProps } from './types';
 
-export function JsonEditor({ value, onChange, onError, label, readOnly = false, customToolbar }: JsonEditorProps) {
+export function JsonEditor({ value, onChange, onError, label, readOnly = false, customToolbar, height = '400px' }: JsonEditorProps) {
     const editorRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<EditorView | null>(null);
     const valueRef = useRef(value);
@@ -84,7 +84,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false, 
                 EditorView.theme({
                     '&': {
                         fontSize: '14px',
-                        height: '400px',
+                        height: '100%',
                         width: '100%',
                         maxWidth: '100%',
                         overflow: 'hidden',
@@ -108,8 +108,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false, 
                     '.cm-line': {
                         padding: '0 0',
                         maxWidth: '100%',
-                        overflow: 'auto',
-                        whiteSpace: 'pre',
+                        overflow: 'visible',
                     },
                     // Search highlighting
                     '&.cm-json .cm-searchMatch': {
@@ -646,7 +645,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false, 
             )}
 
             {/* Editor container with fixed height and scroll */}
-            <div className="border border-gray-300 rounded-md dark:border-gray-600 shrink-0 overflow-hidden max-w-full" style={{ height: '400px', width: '100%', position: 'relative' }}>
+            <div className="border border-gray-300 rounded-md dark:border-gray-600 shrink-0 overflow-hidden max-w-full" style={{ height: height, width: '100%', position: 'relative' }}>
                 <div ref={editorRef} style={{ height: '100%', width: '100%' }} />
             </div>
 
