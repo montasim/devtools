@@ -92,15 +92,15 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false, 
                     '.cm-scroller': {
                         fontFamily:
                             'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
-                        overflow: 'auto',
+                        overflowX: 'hidden',
+                        overflowY: 'auto',
                         maxWidth: '100%',
                         height: '100%',
                     },
                     '.cm-content': {
                         padding: '12px',
                         maxWidth: '100%',
-                        overflow: 'auto',
-                        whiteSpace: 'pre',
+                        overflow: 'visible',
                     },
                     '.cm-focused': {
                         outline: 'none',
