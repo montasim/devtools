@@ -12,3 +12,4 @@ export type {
 } from './types';
 
 export { JsonEditor } from './json-editor';
+export { DiffPanel } from './diff-panel';
