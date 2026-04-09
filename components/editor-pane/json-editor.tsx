@@ -5,8 +5,7 @@ import { EditorState } from '@codemirror/state';
 import { EditorView, keymap, lineNumbers } from '@codemirror/view';
 import { json } from '@codemirror/lang-json';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
-import { Upload, Link2, Search, X, MoreVertical } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { EditorActions } from './editor-actions';
 import { validateJson } from './utils/validation';
 import type { ParseError } from './types';
 import type { JsonEditorProps } from './types';
@@ -255,72 +254,14 @@ export function JsonEditor({
                     </span>
 
                     {/* Action buttons */}
-                    {!readOnly && (
-                        <>
-                            {/* Clear button */}
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                onClick={handleClear}
-                                title="Clear editor"
-                            >
-                                <X className="h-4 w-4" />
-                            </Button>
-
-                            {/* Copy link button */}
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                onClick={handleCopyLink}
-                                title="Copy link"
-                            >
-                                <Link2 className="h-4 w-4" />
-                            </Button>
-
-                            {/* Search button */}
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                onClick={handleSearch}
-                                title="Search"
-                            >
-                                <Search className="h-4 w-4" />
-                            </Button>
-
-                            {/* File upload button */}
-                            <label>
-                                <Button type="button" variant="ghost" size="icon" className="h-8 w-8" asChild>
-                                    <span>
-                                        <Upload className="h-4 w-4" />
-                                        <input
-                                            type="file"
-                                            accept=".json,application/json"
-                                            onChange={handleFileUpload}
-                                            className="hidden"
-                                        />
-                                    </span>
-                                </Button>
-                            </label>
-
-                            {/* More menu button */}
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                onClick={handleMoreMenu}
-                                title="More options"
-                            >
-                                <MoreVertical className="h-4 w-4" />
-                            </Button>
-                        </>
-                    )}
+                    <EditorActions
+                        onClear={handleClear}
+                        onCopyLink={handleCopyLink}
+                        onSearch={handleSearch}
+                        onUpload={handleFileUpload}
+                        onMoreMenu={handleMoreMenu}
+                        readOnly={readOnly}
+                    />
                 </div>
             </div>
 
