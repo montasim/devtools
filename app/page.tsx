@@ -36,48 +36,35 @@ export default function Home() {
     const [formatSortKeys, setFormatSortKeys] = useState(false);
     const [formatRemoveTrailingCommas, setFormatRemoveTrailingCommas] = useState(false);
     const [formatEscapeUnicode, setFormatEscapeUnicode] = useState(false);
-    const [canFormat, setCanFormat] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
     const [shareDialogOpen, setShareDialogOpen] = useState(false);
     const [formatContent, setFormatContent] = useState('');
     const [minifySortKeys, setMinifySortKeys] = useState(false);
     const [minifyRemoveWhitespace, setMinifyRemoveWhitespace] = useState(true);
-    const [canMinify, setCanMinify] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
     const [minifyShareDialogOpen, setMinifyShareDialogOpen] = useState(false);
     const [minifyContent, setMinifyContent] = useState('');
     const [viewerShowTypes, setViewerShowTypes] = useState(false);
     const [viewerShowPaths, setViewerShowPaths] = useState(false);
     const [viewerSortKeys, setViewerSortKeys] = useState(false);
-    const [canView, setCanView] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
     const [viewerShareDialogOpen, setViewerShareDialogOpen] = useState(false);
     const [viewerContent, setViewerContent] = useState('');
     const [parserShowTypes, setParserShowTypes] = useState(true);
     const [parserShowPaths, setParserShowPaths] = useState(true);
     const [parserShowStatistics, setParserShowStatistics] = useState(true);
-    const [canParse, setCanParse] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
     const [parserShareDialogOpen, setParserShareDialogOpen] = useState(false);
     const [parserContent, setParserContent] = useState('');
-    const [exportFormat, setExportFormat] = // eslint-disable-line @typescript-eslint/no-unused-vars
-        useState<'csv' | 'xml' | 'yaml' | 'toml' | 'json'>('csv');
-    const [canExport, setCanExport] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
+    const [exportFormat] = useState<'csv' | 'xml' | 'yaml' | 'toml' | 'json'>('csv');
     const [exportShareDialogOpen, setExportShareDialogOpen] = useState(false);
     const [exportContent, setExportContent] = useState('');
     const [schemaMode, setSchemaMode] = useState<'generate' | 'validate'>('generate');
-    const [schemaStrictMode, setSchemaStrictMode] = useState(true); // eslint-disable-line @typescript-eslint/no-unused-vars
-    const [schemaVersion, setSchemaVersion] = useState<'draft-07' | '2020-12'>('draft-07'); // eslint-disable-line @typescript-eslint/no-unused-vars
-    const [schemaViewMode, setSchemaViewMode] = useState<'inline' | 'list'>('list'); // eslint-disable-line @typescript-eslint/no-unused-vars
-    const [canSchema, setCanSchema] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
+    const [, setCanSchema] = useState(false);
     const [schemaShareDialogOpen, setSchemaShareDialogOpen] = useState(false);
     const [schemaContent, setSchemaContent] = useState('');
 
     const editorPaneRef = useRef<EditorPaneRef>(null);
 
-    const handleCompare = useCallback(
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        (_result: { hunks: unknown[]; additionCount: number; deletionCount: number }) => {
-            // console.log('Diff result:', _result);
-        },
-        [],
-    );
+    const handleCompare = useCallback(() => {
+        // Diff result handling - reserved for future use
+    }, []);
 
     const handleError = (error: Error) => {
         console.error('Diff error:', error);
@@ -771,9 +758,8 @@ export default function Home() {
                             className="mx-auto"
                             onError={handleError}
                             onValidationChange={setCanSchema}
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            onContentChange={(jsonContent: string, _schemaContent: string) => {
-                                setSchemaContent(jsonContent);
+                            onContentChange={(jsonContent: string, schemaContent: string) => {
+                                setSchemaContent(schemaContent);
                             }}
                         />
                     </div>

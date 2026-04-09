@@ -2,21 +2,15 @@
 
 import { Copy, Download } from 'lucide-react';
 import { Button } from '../ui/button';
-import type { ValidationResult, ViewMode } from './types';
+import type { ValidationResult } from './types';
 
 interface ValidationResultsProps {
     result: ValidationResult;
-    viewMode: ViewMode;
     onCopy?: () => void;
     onDownload?: () => void;
 }
 
-export function ValidationResults({
-    result,
-    viewMode, // eslint-disable-line @typescript-eslint/no-unused-vars
-    onCopy,
-    onDownload,
-}: ValidationResultsProps) {
+export function ValidationResults({ result, onCopy, onDownload }: ValidationResultsProps) {
     const handleCopy = async () => {
         const text = result.isValid
             ? '✓ Valid JSON'

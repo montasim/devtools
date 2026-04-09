@@ -195,7 +195,7 @@ export const SchemaPane = ({
 
                     {/* Bottom: Validation Results (full width) */}
                     <div className="w-full">
-                        <ValidationResults result={validationResult} viewMode="list" />
+                        <ValidationResults result={validationResult} />
                     </div>
                 </div>
             )}
