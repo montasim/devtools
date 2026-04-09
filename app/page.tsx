@@ -72,17 +72,17 @@ export default function Home() {
                 ]}
                 actions={[
                     {
+                        id: 'clear',
+                        label: 'Clear All',
+                        onClick: handleClear,
+                        variant: 'outline',
+                    },
+                    {
                         id: 'compare',
                         label: isComputing ? 'Computing...' : 'Compare',
                         onClick: handleCompareClick,
                         variant: 'default',
                         disabled: !canCompare || isComputing,
-                    },
-                    {
-                        id: 'clear',
-                        label: 'Clear All',
-                        onClick: handleClear,
-                        variant: 'outline',
                     },
                 ]}
             />
