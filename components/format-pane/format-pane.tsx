@@ -5,6 +5,8 @@ import { Copy, Download } from 'lucide-react';
 import { JsonEditor } from '../editor-pane/json-editor';
 import { Separator } from '../ui/separator';
 import { Button } from '../ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Input } from '../ui/input';
 import { useFormatJson } from './use-format-json';
 import type { FormatPaneProps, FormatOptions } from './types';
 
@@ -15,10 +17,13 @@ export const FormatPane = ({
     escapeUnicode = false,
     onError,
     onValidationChange,
+    onIndentationChange,
     className,
 }: FormatPaneProps) => {
     const [leftContent, setLeftContent] = useState('');
     const [leftValid, setLeftValid] = useState(false);
+    const [customIndent, setCustomIndent] = useState('');
+    const [showCustomInput, setShowCustomInput] = useState(false);
 
     // Load format options from localStorage on mount
     const [formatOptions, setFormatOptions] = useState<FormatOptions>(() => {
@@ -112,6 +117,27 @@ export const FormatPane = ({
         }
     };
 
+    const handleIndentChange = (value: string) => {
+        if (value === 'custom') {
+            setShowCustomInput(true);
+        } else {
+            setShowCustomInput(false);
+            setCustomIndent('');
+            const indent = parseInt(value);
+            if (!isNaN(indent) && indent > 0) {
+                onIndentationChange?.(indent);
+            }
+        }
+    };
+
+    const handleCustomIndentChange = (value: string) => {
+        setCustomIndent(value);
+        const indent = parseInt(value);
+        if (!isNaN(indent) && indent > 0 && indent <= 10) {
+            onIndentationChange?.(indent);
+        }
+    };
+
     const isDisabled = !formatResult.isValid || !formatResult.formatted;
 
     return (
@@ -146,11 +172,36 @@ export const FormatPane = ({
                                 </label>
                                 <div className="flex items-center gap-3">
                                     <span className="text-sm text-muted-foreground">
-                                        {formatOptions.indentation} spaces
-                                        {formatOptions.sortKeys && ', Sort'}
-                                        {formatOptions.removeTrailingCommas && ', No Commas'}
-                                        {formatOptions.escapeUnicode && ', Unicode'}
+                                        {formatOptions.sortKeys && 'Sort'}
+                                        {formatOptions.sortKeys && (formatOptions.removeTrailingCommas || formatOptions.escapeUnicode) && ', '}
+                                        {formatOptions.removeTrailingCommas && 'No Commas'}
+                                        {formatOptions.removeTrailingCommas && formatOptions.escapeUnicode && ', '}
+                                        {formatOptions.escapeUnicode && 'Unicode'}
                                     </span>
+                                    <Select
+                                        value={showCustomInput ? 'custom' : String(formatOptions.indentation)}
+                                        onValueChange={handleIndentChange}
+                                    >
+                                        <SelectTrigger className="h-8 w-[120px] text-xs">
+                                            <SelectValue placeholder="Spaces" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="2">2 spaces</SelectItem>
+                                            <SelectItem value="4">4 spaces</SelectItem>
+                                            <SelectItem value="custom">Custom...</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    {showCustomInput && (
+                                        <Input
+                                            type="number"
+                                            placeholder="Spaces"
+                                            value={customIndent}
+                                            onChange={(e) => handleCustomIndentChange(e.target.value)}
+                                            className="h-8 w-[60px] text-xs"
+                                            min="1"
+                                            max="10"
+                                        />
+                                    )}
                                     <div className="flex items-center gap-2">
                                         <Button
                                             variant="ghost"

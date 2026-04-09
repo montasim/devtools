@@ -218,16 +218,16 @@ export default function Home() {
                             ]}
                         />
 
-                        <div className="mx-auto">
-                            <FormatPane
+                        <FormatPane
+                        className='mx-auto'
                                 indentation={formatIndentation}
                                 sortKeys={formatSortKeys}
                                 removeTrailingCommas={formatRemoveTrailingCommas}
                                 escapeUnicode={formatEscapeUnicode}
                                 onError={handleError}
                                 onValidationChange={setCanFormat}
+                                onIndentationChange={setFormatIndentation}
                             />
-                        </div>
                     </div>
                 </TabsContent>
 
