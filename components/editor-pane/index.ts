@@ -10,3 +10,5 @@ export type {
     UseJsonDiffOptions,
     UseJsonDiffReturn,
 } from './types';
+
+export { JsonEditor } from './json-editor';
