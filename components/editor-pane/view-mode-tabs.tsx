@@ -14,6 +14,7 @@ const VIEW_MODES: { value: ViewMode; label: string }[] = [
     { value: 'split', label: 'Split' },
     { value: 'unified', label: 'Unified' },
     { value: 'inline', label: 'Inline' },
+    { value: 'tree', label: 'Tree' },
 ];
 
 /**
@@ -23,6 +24,7 @@ const VIEW_MODES: { value: ViewMode; label: string }[] = [
  * - Split: Side-by-side comparison
  * - Unified: Combined view with changes inline
  * - Inline: Condensed single-line view
+ * - Tree: Hierarchical JSON structure view
  *
  * @example
  * ```tsx

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { DiffPanelProps, DiffResult, ViewMode } from './types';
 import { DiffPanelToolbar } from './diff-panel-toolbar';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ChevronDown } from 'lucide-react';
 
 /**
  * DiffPanel - Main component for displaying code diffs
@@ -122,6 +122,7 @@ export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
                     {viewMode === 'unified' && <UnifiedView diffResult={diffResult} />}
                     {viewMode === 'split' && <SplitView diffResult={diffResult} />}
                     {viewMode === 'inline' && <InlineView diffResult={diffResult} />}
+                    {viewMode === 'tree' && <TreeView diffResult={diffResult} />}
                 </div>
             </div>
         </div>
@@ -342,6 +343,64 @@ function InlineView({ diffResult }: { diffResult: DiffResult }) {
                             </div>
                         );
                     })}
+                </div>
+            ))}
+        </div>
+    );
+}
+
+// Tree view - hierarchical JSON structure
+function TreeView({ diffResult }: { diffResult: DiffResult }) {
+    const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
+
+    const toggleNode = (nodeId: string) => {
+        const newExpanded = new Set(expandedNodes);
+        if (newExpanded.has(nodeId)) {
+            newExpanded.delete(nodeId);
+        } else {
+            newExpanded.add(nodeId);
+        }
+        setExpandedNodes(newExpanded);
+    };
+
+    return (
+        <div className="text-sm font-mono p-4">
+            {diffResult.hunks.map((hunk, index) => (
+                <div key={`tree-hunk-${index}`} id={`hunk-${index}`} className="mb-4">
+                    {/* Hunk header */}
+                    <div className="px-4 py-1 bg-gray-100 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400 mb-2">
+                        @@ -{hunk.oldStart},{hunk.oldLines} +{hunk.newStart},{hunk.newLines} @@
+                    </div>
+
+                    {/* Tree structure from hunk content */}
+                    <div className="px-2">
+                        {hunk.lines
+                            .filter((line) => line.type !== 'unchanged')
+                            .slice(0, 5) // Show first few changed lines
+                            .map((line, lineIndex) => (
+                                <div key={`tree-line-${lineIndex}`} className="py-1">
+                                    {line.type === 'addition' && (
+                                        <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
+                                            <span className="text-green-600 dark:text-green-400 font-bold text-xs">+</span>
+                                            <span className="w-px h-px bg-green-600 dark:bg-green-400 flex-1" />
+                                            <span className="text-xs ml-2">{line.content}</span>
+                                        </div>
+                                    )}
+                                    {line.type === 'deletion' && (
+                                        <div className="flex items-center gap-2 text-red-700 dark:text-red-300">
+                                            <span className="text-red-600 dark:text-red-400 font-bold text-xs">-</span>
+                                            <span className="w-px h-px bg-red-600 dark:bg-red-400 flex-1" />
+                                            <span className="text-xs ml-2 line-through opacity-60">{line.content}</span>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        <div className="text-xs text-gray-500 italic mt-2">
+                            {hunk.lines.filter((l) => l.type !== 'unchanged').length > 5
+                                ? `+ ${hunk.lines.filter((l) => l.type !== 'unchanged').length - 5} more changes`
+                                : 'End of hunk'}
+                        </div>
+                    </div>
                 </div>
             ))}
         </div>

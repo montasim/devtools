@@ -107,7 +107,7 @@ export interface UseJsonDiffReturn {
 }
 
 // View modes for diff display
-export type ViewMode = 'split' | 'unified' | 'inline';
+export type ViewMode = 'split' | 'unified' | 'inline' | 'tree';
 
 // Export formats for the export menu
 export type ExportFormat =
