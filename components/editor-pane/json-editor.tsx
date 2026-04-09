@@ -646,7 +646,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false, 
             )}
 
             {/* Editor container with fixed height and scroll */}
-            <div className="border border-gray-300 rounded-md dark:border-gray-600 shrink-0 overflow-hidden" style={{ height: '400px', width: '100%', position: 'relative' }}>
+            <div className="border border-gray-300 rounded-md dark:border-gray-600 shrink-0 overflow-hidden max-w-full" style={{ height: '400px', width: '100%', position: 'relative' }}>
                 <div ref={editorRef} style={{ height: '100%', width: '100%' }} />
             </div>
 

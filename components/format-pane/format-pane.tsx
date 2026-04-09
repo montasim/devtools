@@ -144,7 +144,7 @@ export const FormatPane = ({
         <div className={className}>
             {/* Editor Panes */}
             <div className="flex flex-col md:flex-row gap-4">
-                <div className="w-full md:w-1/2">
+                <div className="w-full md:w-1/2 min-w-0">
                     <JsonEditor
                         label="Unformatted JSON"
                         value={leftContent}
@@ -158,7 +158,7 @@ export const FormatPane = ({
                 <Separator orientation="vertical" className="hidden md:block" />
                 <Separator orientation="horizontal" className="block md:hidden" />
 
-                <div className="w-full md:w-1/2">
+                <div className="w-full md:w-1/2 min-w-0">
                     <JsonEditor
                         label="Formatted JSON"
                         value={formatResult.formatted}
