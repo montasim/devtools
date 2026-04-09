@@ -25,6 +25,8 @@
         "@codemirror/view": "^6.41.0",
         "@radix-ui/react-visually-hidden": "^1.2.4",
         "@tabler/icons-react": "^3.41.1",
+        "ajv": "^8.18.0",
+        "ajv-formats": "^3.0.1",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "diff": "^8.0.4",
