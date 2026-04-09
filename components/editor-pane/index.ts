@@ -13,3 +13,4 @@ export type {
 
 export { JsonEditor } from './json-editor';
 export { DiffPanel } from './diff-panel';
+export { useJsonDiff } from './use-json-diff';
