@@ -84,22 +84,32 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                 EditorView.theme({
                     '&': {
                         fontSize: '14px',
-                        height: '100%',
+                        height: '400px',
+                        width: '100%',
+                        maxWidth: '100%',
+                        overflow: 'hidden',
                     },
                     '.cm-scroller': {
                         fontFamily:
                             'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
                         overflow: 'auto',
+                        maxWidth: '100%',
+                        height: '100%',
                     },
                     '.cm-content': {
                         padding: '12px',
-                        minHeight: '100%',
+                        maxWidth: '100%',
+                        overflow: 'auto',
+                        whiteSpace: 'pre',
                     },
                     '.cm-focused': {
                         outline: 'none',
                     },
                     '.cm-line': {
                         padding: '0 0',
+                        maxWidth: '100%',
+                        overflow: 'auto',
+                        whiteSpace: 'pre',
                     },
                     // Search highlighting
                     '&.cm-json .cm-searchMatch': {
@@ -632,8 +642,8 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
             </div>
 
             {/* Editor container with fixed height and scroll */}
-            <div className="border border-gray-300 rounded-md overflow-hidden dark:border-gray-600 shrink-0" style={{ height: '400px' }}>
-                <div ref={editorRef} className="h-full overflow-auto" />
+            <div className="border border-gray-300 rounded-md dark:border-gray-600 shrink-0 overflow-hidden" style={{ height: '400px', width: '100%', position: 'relative' }}>
+                <div ref={editorRef} style={{ height: '100%', width: '100%' }} />
             </div>
 
             {/* Error display */}

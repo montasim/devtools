@@ -88,7 +88,7 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
         <div className={className}>
             {/* Editor Panes */}
             <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex-1">
+                <div className="w-full md:w-1/2">
                     <JsonEditor
                         label="Original"
                         value={leftContent}
@@ -102,7 +102,7 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
                 <Separator orientation="vertical" className="hidden md:block" />
                 <Separator orientation="horizontal" className="block md:hidden" />
 
-                <div className="flex-1">
+                <div className="w-full md:w-1/2">
                     <JsonEditor
                         label="Modified"
                         value={rightContent}
