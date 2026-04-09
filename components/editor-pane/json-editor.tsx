@@ -44,7 +44,6 @@ export function JsonEditor({
                 keymap.of(historyKeymap),
                 history(),
                 json(),
-                EditorView.lineWrapping,
                 EditorView.updateListener.of((update) => {
                     if (update.docChanged) {
                         const newValue = update.state.doc.toString();
@@ -92,7 +91,7 @@ export function JsonEditor({
             view.destroy();
             viewRef.current = null;
         };
-    }, [onChange, onError, readOnly, value]);
+    }, [onChange, onError, readOnly]);
 
     // Update editor when value prop changes externally
     useEffect(() => {
