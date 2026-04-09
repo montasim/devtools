@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { DiffPanelProps, DiffResult, ViewMode, DiffLine } from './types';
 import { DiffPanelToolbar } from './diff-panel-toolbar';
 import { ShareDialog } from './share-dialog';
@@ -44,7 +44,130 @@ export function DiffPanel({
     const [showShareDialog, setShowShareDialog] = useState(false);
     const [bookmarks, setBookmarks] = useState<number[]>([]);
 
+    // Helper functions that need to be available before useEffect
+    const copyToClipboard = useCallback((text: string) => {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Copied to clipboard!');
+        });
+    }, []);
 
+    const generateJSONPatch = useCallback((diffResult: DiffResult) => {
+        return diffResult.hunks.map((hunk) => ({
+            op: 'replace',
+            path: '/path',
+            value: hunk.lines
+                .filter((l) => l.type === 'addition' || l.type === 'unchanged')
+                .map((l) => l.content)
+                .join(''),
+        }));
+    }, []);
+
+    const generateMergePatch = useCallback((diffResult: DiffResult) => {
+        return diffResult.hunks.map((hunk) => ({
+            conflict: 'modify',
+            file: '/path',
+            changes: hunk.lines.map((l) => l.content),
+        }));
+    }, []);
+
+    const downloadPatch = useCallback((diffResult: DiffResult) => {
+        const patch = diffResult.hunks
+            .map((hunk) => {
+                const header = `@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@`;
+                const lines = hunk.lines
+                    .map((line) => {
+                        const prefix =
+                            line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' ';
+                        return `${prefix}${line.content}`;
+                    })
+                    .join('\n');
+                return `${header}\n${lines}`;
+            })
+            .join('\n');
+
+        const blob = new Blob([patch], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'changes.patch';
+        a.click();
+        URL.revokeObjectURL(url);
+    }, []);
+
+    const generateHTMLReport = useCallback((diffResult: DiffResult) => {
+        const html = `<!DOCTYPE html>
+<html>
+<head>
+    <title>Diff Report</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        .addition { background: #d4edda; }
+        .deletion { background: #f8d7da; }
+        .hunk { margin-bottom: 20px; border: 1px solid #ddd; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Diff Report</h1>
+    <p><strong>Changes:</strong> ${diffResult.additionCount} additions, ${diffResult.deletionCount} deletions, ${diffResult.modificationCount} modifications</p>
+    ${diffResult.hunks
+        .map(
+            (hunk) => `
+        <div class="hunk">
+            <h2>@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@</h2>
+            ${hunk.lines
+                .map((line) => {
+                    const className =
+                        line.type === 'addition'
+                            ? 'addition'
+                            : line.type === 'deletion'
+                              ? 'deletion'
+                              : '';
+                    return `<div class="${className}">${line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' '} ${line.content}</div>`;
+                })
+                .join('')}
+        </div>
+    `,
+        )
+        .join('')}
+</body>
+</html>`;
+        const blob = new Blob([html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+    }, []);
+
+    const getJSONPaths = useCallback((diffResult: DiffResult) => {
+        const paths: string[] = [];
+        diffResult.hunks.forEach((hunk) => {
+            hunk.lines.forEach((line) => {
+                if (line.content.includes('/')) {
+                    const match = line.content.match(/"([^"]+)"/);
+                    if (match) paths.push(match[1]);
+                }
+            });
+        });
+        return [...new Set(paths)];
+    }, []);
+
+    const handleExport = useCallback((format: string, diffResult: DiffResult) => {
+        switch (format) {
+            case 'json-patch':
+                copyToClipboard(JSON.stringify(generateJSONPatch(diffResult), null, 2));
+                break;
+            case 'merge-patch':
+                copyToClipboard(JSON.stringify(generateMergePatch(diffResult), null, 2));
+                break;
+            case 'download-patch':
+                downloadPatch(diffResult);
+                break;
+            case 'html-report':
+                generateHTMLReport(diffResult);
+                break;
+            case 'json-paths':
+                copyToClipboard(JSON.stringify(getJSONPaths(diffResult), null, 2));
+                break;
+        }
+    }, [copyToClipboard, generateJSONPatch, generateMergePatch, downloadPatch, generateHTMLReport, getJSONPaths]);
 
     // Keyboard shortcuts handler
     useEffect(() => {
@@ -141,6 +264,7 @@ export function DiffPanel({
         showTreePanel,
         showStatistics,
         showValidation,
+        handleExport,
     ]);
 
     if (isLoading) {
@@ -170,133 +294,6 @@ export function DiffPanel({
     const scrollToHunk = (index: number) => {
         const element = document.getElementById(`hunk-${index}`);
         element?.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    const handleExport = (format: string, diffResult: DiffResult) => {
-        switch (format) {
-            case 'json-patch':
-                copyToClipboard(JSON.stringify(generateJSONPatch(diffResult), null, 2));
-                break;
-            case 'merge-patch':
-                copyToClipboard(JSON.stringify(generateMergePatch(diffResult), null, 2));
-                break;
-            case 'download-patch':
-                downloadPatch(diffResult);
-                break;
-            case 'html-report':
-                generateHTMLReport(diffResult);
-                break;
-            case 'json-paths':
-                copyToClipboard(JSON.stringify(getJSONPaths(diffResult), null, 2));
-                break;
-        }
-    };
-
-    const copyToClipboard = (text: string) => {
-        navigator.clipboard.writeText(text).then(() => {
-            alert('Copied to clipboard!');
-        });
-    };
-
-    const downloadPatch = (diffResult: DiffResult) => {
-        const patch = generateUnifiedDiff(diffResult);
-        const blob = new Blob([patch], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'changes.patch';
-        a.click();
-        URL.revokeObjectURL(url);
-    };
-
-    const generateJSONPatch = (diffResult: DiffResult) => {
-        return diffResult.hunks.map((hunk) => ({
-            op: 'replace',
-            path: '/path',
-            value: hunk.lines
-                .filter((l) => l.type === 'addition' || l.type === 'unchanged')
-                .map((l) => l.content)
-                .join(''),
-        }));
-    };
-
-    const generateMergePatch = (diffResult: DiffResult) => {
-        return diffResult.hunks.map((hunk) => ({
-            conflict: 'modify',
-            file: '/path',
-            changes: hunk.lines.map((l) => l.content),
-        }));
-    };
-
-    const generateUnifiedDiff = (diffResult: DiffResult) => {
-        return diffResult.hunks
-            .map((hunk) => {
-                const header = `@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@`;
-                const lines = hunk.lines
-                    .map((line) => {
-                        const prefix =
-                            line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' ';
-                        return `${prefix}${line.content}`;
-                    })
-                    .join('\n');
-                return `${header}\n${lines}`;
-            })
-            .join('\n');
-    };
-
-    const generateHTMLReport = (diffResult: DiffResult) => {
-        const html = `<!DOCTYPE html>
-<html>
-<head>
-    <title>Diff Report</title>
-    <style>
-        body { font-family: monospace; padding: 20px; }
-        .addition { background: #d4edda; }
-        .deletion { background: #f8d7da; }
-        .hunk { margin-bottom: 20px; border: 1px solid #ddd; padding: 10px; }
-    </style>
-</head>
-<body>
-    <h1>Diff Report</h1>
-    <p><strong>Changes:</strong> ${diffResult.additionCount} additions, ${diffResult.deletionCount} deletions, ${diffResult.modificationCount} modifications</p>
-    ${diffResult.hunks
-        .map(
-            (hunk) => `
-        <div class="hunk">
-            <h2>@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@</h2>
-            ${hunk.lines
-                .map((line) => {
-                    const className =
-                        line.type === 'addition'
-                            ? 'addition'
-                            : line.type === 'deletion'
-                              ? 'deletion'
-                              : '';
-                    return `<div class="${className}">${line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' '} ${line.content}</div>`;
-                })
-                .join('')}
-        </div>
-    `,
-        )
-        .join('')}
-</body>
-</html>`;
-        const blob = new Blob([html], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        window.open(url, '_blank');
-    };
-
-    const getJSONPaths = (diffResult: DiffResult) => {
-        const paths: string[] = [];
-        diffResult.hunks.forEach((hunk) => {
-            hunk.lines.forEach((line) => {
-                if (line.content.includes('/')) {
-                    const match = line.content.match(/"([^"]+)"/);
-                    if (match) paths.push(match[1]);
-                }
-            });
-        });
-        return [...new Set(paths)];
     };
 
     const toggleBookmark = (hunkIndex: number) => {
