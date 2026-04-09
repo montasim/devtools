@@ -56,7 +56,6 @@ export default function Home() {
     const [exportShareDialogOpen, setExportShareDialogOpen] = useState(false);
     const [exportContent, setExportContent] = useState('');
     const [schemaMode, setSchemaMode] = useState<'generate' | 'validate'>('generate');
-    const [, setCanSchema] = useState(false);
     const [schemaShareDialogOpen, setSchemaShareDialogOpen] = useState(false);
     const [schemaContent, setSchemaContent] = useState('');
 
@@ -487,7 +486,7 @@ export default function Home() {
                             removeTrailingCommas={formatRemoveTrailingCommas}
                             escapeUnicode={formatEscapeUnicode}
                             onError={handleError}
-                            onValidationChange={setCanFormat}
+                            onValidationChange={() => {}}
                             onIndentationChange={setFormatIndentation}
                         />
                     </div>
@@ -571,7 +570,7 @@ export default function Home() {
                             sortKeys={minifySortKeys}
                             removeWhitespace={minifyRemoveWhitespace}
                             onError={handleError}
-                            onValidationChange={setCanMinify}
+                            onValidationChange={() => {}}
                         />
                     </div>
                 </TabsContent>
@@ -623,7 +622,7 @@ export default function Home() {
                             showPaths={viewerShowPaths}
                             sortKeys={viewerSortKeys}
                             onError={handleError}
-                            onValidationChange={setCanView}
+                            onValidationChange={() => {}}
                         />
                     </div>
                 </TabsContent>
@@ -675,7 +674,7 @@ export default function Home() {
                             showPaths={parserShowPaths}
                             showStatistics={parserShowStatistics}
                             onError={handleError}
-                            onValidationChange={setCanParse}
+                            onValidationChange={() => {}}
                         />
                     </div>
                 </TabsContent>
@@ -705,7 +704,7 @@ export default function Home() {
                         <ExportPane
                             className="mx-auto"
                             onError={handleError}
-                            onValidationChange={setCanExport}
+                            onValidationChange={() => {}}
                         />
                     </div>
                 </TabsContent>
@@ -757,7 +756,7 @@ export default function Home() {
                             mode={schemaMode}
                             className="mx-auto"
                             onError={handleError}
-                            onValidationChange={setCanSchema}
+                            onValidationChange={() => {}}
                             onContentChange={(jsonContent: string, schemaContent: string) => {
                                 setSchemaContent(schemaContent);
                             }}

@@ -11,7 +11,6 @@ import { EditorActions } from './editor-actions';
 import { EditorFooter } from './editor-footer';
 import { validateJson } from './utils/validation';
 import {
-    copyToClipboard,
     formatJson,
     minifyJson,
     expandJson,
@@ -201,7 +200,6 @@ export function JsonEditor({
             view.destroy();
             viewRef.current = null;
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [readOnly]); // Note: onChange and onError intentionally omitted - using refs to avoid recreating editor on every render
 
     // Update editor when value prop changes externally
@@ -318,7 +316,7 @@ export function JsonEditor({
             onChange(formatted);
             setError(null);
             onError(null);
-        } catch (error) {
+        } catch {
             const parseError: ParseError = {
                 message: 'Failed to format JSON',
                 line: 1,
@@ -335,7 +333,7 @@ export function JsonEditor({
             onChange(minified);
             setError(null);
             onError(null);
-        } catch (error) {
+        } catch {
             const parseError: ParseError = {
                 message: 'Failed to minify JSON',
                 line: 1,
@@ -352,7 +350,7 @@ export function JsonEditor({
             onChange(expanded);
             setError(null);
             onError(null);
-        } catch (error) {
+        } catch {
             const parseError: ParseError = {
                 message: 'Failed to expand JSON',
                 line: 1,
@@ -369,7 +367,7 @@ export function JsonEditor({
             onChange(collapsed);
             setError(null);
             onError(null);
-        } catch (error) {
+        } catch {
             const parseError: ParseError = {
                 message: 'Failed to collapse JSON',
                 line: 1,
@@ -386,7 +384,7 @@ export function JsonEditor({
             onChange(cleaned);
             setError(null);
             onError(null);
-        } catch (error) {
+        } catch {
             const parseError: ParseError = {
                 message: 'Failed to remove nulls',
                 line: 1,
@@ -403,7 +401,7 @@ export function JsonEditor({
             onChange(cleaned);
             setError(null);
             onError(null);
-        } catch (error) {
+        } catch {
             const parseError: ParseError = {
                 message: 'Failed to remove empty strings',
                 line: 1,
@@ -420,7 +418,7 @@ export function JsonEditor({
             onChange(cleaned);
             setError(null);
             onError(null);
-        } catch (error) {
+        } catch {
             const parseError: ParseError = {
                 message: 'Failed to remove empty objects',
                 line: 1,
@@ -437,7 +435,7 @@ export function JsonEditor({
             onChange(sorted);
             setError(null);
             onError(null);
-        } catch (error) {
+        } catch {
             const parseError: ParseError = {
                 message: 'Failed to sort keys',
                 line: 1,
@@ -454,7 +452,7 @@ export function JsonEditor({
             onChange(formatted);
             setError(null);
             onError(null);
-        } catch (error) {
+        } catch {
             const parseError: ParseError = {
                 message: 'Failed to format dates',
                 line: 1,
@@ -471,7 +469,7 @@ export function JsonEditor({
             onChange(escaped);
             setError(null);
             onError(null);
-        } catch (error) {
+        } catch {
             const parseError: ParseError = {
                 message: 'Failed to escape unicode',
                 line: 1,
