@@ -1,0 +1,46 @@
+'use client';
+
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { ViewMode } from './types';
+
+interface ViewModeTabsProps {
+    currentMode: ViewMode;
+    onModeChange: (mode: ViewMode) => void;
+    className?: string;
+}
+
+const VIEW_MODES: { value: ViewMode; label: string }[] = [
+    { value: 'split', label: 'Split' },
+    { value: 'unified', label: 'Unified' },
+    { value: 'inline', label: 'Inline' },
+];
+
+export function ViewModeTabs({
+    currentMode,
+    onModeChange,
+    className,
+}: ViewModeTabsProps) {
+    return (
+        <div
+            className={cn('flex items-center gap-1', className)}
+            role="tablist"
+            aria-label="View mode"
+        >
+            {VIEW_MODES.map((mode) => (
+                <Button
+                    key={mode.value}
+                    variant={currentMode === mode.value ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => onModeChange(mode.value)}
+                    role="tab"
+                    aria-selected={currentMode === mode.value}
+                    aria-controls="diff-panel"
+                    className="whitespace-nowrap"
+                >
+                    {mode.label}
+                </Button>
+            ))}
+        </div>
+    );
+}
