@@ -118,9 +118,9 @@ export function EditorFooter({ content, error }: EditorFooterProps) {
         <div className="border-t border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between py-2">
                 {/* Left side: Statistics */}
-                <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400 overflow-x-auto scrollbar-hide flex-1">
                     {statistics.map((stat, index) => (
-                        <div key={index} title={stat.title} className="flex items-center gap-1.5">
+                        <div key={index} title={stat.title} className="flex items-center gap-1.5 shrink-0">
                             <stat.icon className="h-3.5 w-3.5 text-gray-500" />
                             <span className={stat.emphasized ? 'font-medium' : ''}>{stat.label}</span>
                         </div>
@@ -128,9 +128,9 @@ export function EditorFooter({ content, error }: EditorFooterProps) {
                 </div>
 
                 {/* Right side: Validation status */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 shrink-0">
                     <div
-                        className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium ${
+                        className={`flex items-center gap-1.5 py-1 rounded-md text-xs font-medium ${
                             error
                                 ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
                                 : content.trim()
