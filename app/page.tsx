@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { Toolbar } from '@/components/toolbar';
 import { EditorPane, type EditorPaneRef } from '@/components/editor-pane';
 import { FormatPane, FormatShareDialog } from '@/components/format-pane';
+import { MinifyPane, MinifyShareDialog } from '@/components/minify-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, GitCompare, Code, Minimize2, FileJson, Share2, Trash2 } from 'lucide-react';
 
@@ -22,6 +23,11 @@ export default function Home() {
     const [canFormat, setCanFormat] = useState(false);
     const [shareDialogOpen, setShareDialogOpen] = useState(false);
     const [formatContent, setFormatContent] = useState('');
+    const [minifySortKeys, setMinifySortKeys] = useState(false);
+    const [minifyRemoveWhitespace, setMinifyRemoveWhitespace] = useState(true);
+    const [canMinify, setCanMinify] = useState(false);
+    const [minifyShareDialogOpen, setMinifyShareDialogOpen] = useState(false);
+    const [minifyContent, setMinifyContent] = useState('');
 
     const editorPaneRef = useRef<EditorPaneRef>(null);
 
@@ -64,6 +70,28 @@ export default function Home() {
         return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
+    // Load minify content from localStorage on mount and keep in sync
+    useEffect(() => {
+        const loadMinifyContent = () => {
+            try {
+                const content = localStorage.getItem('json-minify-left-content') || '';
+                setMinifyContent(content);
+            } catch (error) {
+                console.error('Failed to load minify content:', error);
+            }
+        };
+
+        loadMinifyContent();
+
+        // Listen for storage changes
+        const handleStorageChange = () => {
+            loadMinifyContent();
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+
     const handleClear = () => {
         // Reload page to clear all content
         window.location.reload();
@@ -87,6 +115,18 @@ export default function Home() {
 
         // Open the share dialog
         setShareDialogOpen(true);
+    };
+
+    const handleMinifyShare = () => {
+        // Get the minified content from localStorage
+        const minifiedContent = localStorage.getItem('json-minify-left-content');
+        if (!minifiedContent) {
+            alert('No content to share. Please enter some JSON first.');
+            return;
+        }
+
+        // Open the share dialog
+        setMinifyShareDialogOpen(true);
     };
 
     return (
@@ -281,22 +321,54 @@ export default function Home() {
                     onOpenChange={setShareDialogOpen}
                 />
 
+                <MinifyShareDialog
+                    content={minifyContent}
+                    open={minifyShareDialogOpen}
+                    onOpenChange={setMinifyShareDialogOpen}
+                />
+
                 <TabsContent value="minify" className="mt-0">
-                    <div className="container mx-auto px-4 py-8">
-                        <div className="max-w-4xl">
-                            <h2 className="text-2xl font-bold mb-4">Minify JSON</h2>
-                            <p className="text-muted-foreground mb-6">
-                                Compress your JSON by removing unnecessary whitespace and formatting.
-                            </p>
-                            <div className="space-y-4">
-                                <div className="p-4 border rounded-lg">
-                                    <h3 className="font-semibold mb-2">JSON Minifier</h3>
-                                    <p className="text-sm text-muted-foreground">
-                                        Coming soon: Paste your JSON here to minify it for production use.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                    <div>
+                        <Toolbar
+                            toggles={[
+                                {
+                                    id: 'sortKeys',
+                                    label: 'Sort Keys',
+                                    checked: minifySortKeys,
+                                    onChange: setMinifySortKeys,
+                                },
+                                {
+                                    id: 'removeWhitespace',
+                                    label: 'Remove Whitespace',
+                                    checked: minifyRemoveWhitespace,
+                                    onChange: setMinifyRemoveWhitespace,
+                                },
+                            ]}
+                            actions={[
+                                {
+                                    id: 'clear',
+                                    label: 'Clear All',
+                                    onClick: handleClear,
+                                    variant: 'outline',
+                                    icon: <Trash2 className="h-4 w-4" />,
+                                },
+                                {
+                                    id: 'share',
+                                    label: 'Share',
+                                    onClick: handleMinifyShare,
+                                    variant: 'outline',
+                                    icon: <Share2 className="h-4 w-4" />,
+                                },
+                            ]}
+                        />
+
+                        <MinifyPane
+                            className='mx-auto'
+                            sortKeys={minifySortKeys}
+                            removeWhitespace={minifyRemoveWhitespace}
+                            onError={handleError}
+                            onValidationChange={setCanMinify}
+                        />
                     </div>
                 </TabsContent>
 
