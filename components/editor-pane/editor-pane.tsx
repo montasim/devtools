@@ -87,7 +87,7 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
     return (
         <div className={className}>
             {/* Editor Panes */}
-            <div className="flex flex-col md:flex-row gap-4 mb-4">
+            <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
                     <JsonEditor
                         label="Original"

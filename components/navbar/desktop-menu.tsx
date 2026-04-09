@@ -4,6 +4,7 @@ import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { MenuItem } from './types';
 import { DesktopMenuItem } from './menu-items';
+import { Separator } from '../ui/separator';
 
 interface DesktopMenuProps {
     menu: MenuItem[];
@@ -29,6 +30,9 @@ export const DesktopMenu = ({ menu, auth }: DesktopMenuProps) => (
         </div>
         <div className="flex items-center gap-2">
             <ThemeToggle />
+
+            <Separator orientation="vertical" />
+
             <Button asChild variant="outline" size="sm">
                 <a href={auth.login.url}>{auth.login.title}</a>
             </Button>

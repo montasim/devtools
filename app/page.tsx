@@ -90,7 +90,7 @@ export default function Home() {
                 ]}
             />
 
-            <div className="mx-auto py-8">
+            <div className="mx-auto">
                 <EditorPane
                     ref={editorPaneRef}
                     ignoreKeyOrder={ignoreKeyOrder}

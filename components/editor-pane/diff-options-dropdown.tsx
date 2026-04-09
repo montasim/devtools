@@ -20,6 +20,26 @@ interface DiffOptionsDropdownProps {
     onPanelToggle?: (panel: PanelType) => void;
 }
 
+/**
+ * DiffOptionsDropdown - Dropdown menu for additional diff options
+ *
+ * Provides access to:
+ * - Filter changes by type (all, additions, deletions, modifications)
+ * - Export options (JSON Patch, Merge Patch, download, HTML report, JSON paths)
+ * - Panel toggles (bookmarks, tree panel, statistics, validation)
+ *
+ * @example
+ * ```tsx
+ * <DiffOptionsDropdown
+ *   additionCount={5}
+ *   deletionCount={2}
+ *   modificationCount={3}
+ *   onExport={(format) => handleExport(format)}
+ *   onFilterChange={(filter) => setFilter(filter)}
+ *   onPanelToggle={(panel) => togglePanel(panel)}
+ * />
+ * ```
+ */
 export function DiffOptionsDropdown({
     additionCount,
     deletionCount,

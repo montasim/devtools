@@ -10,6 +10,22 @@ interface DiffStatsDisplayProps {
     className?: string;
 }
 
+/**
+ * DiffStatsDisplay - Displays diff statistics with color-coded counts
+ *
+ * Shows the number of additions, deletions, modifications, and the overall
+ * percentage changed. Each type is color-coded for quick visual recognition.
+ *
+ * @example
+ * ```tsx
+ * <DiffStatsDisplay
+ *   additionCount={5}
+ *   deletionCount={2}
+ *   modificationCount={3}
+ *   percentageChanged={10.5}
+ * />
+ * ```
+ */
 export function DiffStatsDisplay({
     additionCount,
     deletionCount,

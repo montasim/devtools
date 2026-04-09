@@ -4,6 +4,27 @@ import { useState } from 'react';
 import { DiffPanelProps, ViewMode } from './types';
 import { DiffPanelToolbar } from './diff-panel-toolbar';
 
+/**
+ * DiffPanel - Main component for displaying code diffs
+ *
+ * Renders a unified diff view with a toolbar containing statistics,
+ * view mode controls, and action buttons. Handles loading and empty states.
+ *
+ * Features:
+ * - Unified diff display with syntax highlighting
+ * - Configurable view modes (split, unified, inline)
+ * - Real-time statistics (additions, deletions, modifications)
+ * - Export and share functionality
+ * - Responsive design with dark mode support
+ *
+ * @example
+ * ```tsx
+ * <DiffPanel
+ *   diffResult={diffData}
+ *   isLoading={false}
+ * />
+ * ```
+ */
 export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
     const [viewMode, setViewMode] = useState<ViewMode>('unified');
 

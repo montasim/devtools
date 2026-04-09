@@ -306,7 +306,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
     );
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full py-2">
             {/* Header with label and validation status */}
             <div className="flex items-center justify-between mb-2">
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">

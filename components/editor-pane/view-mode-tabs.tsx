@@ -16,6 +16,22 @@ const VIEW_MODES: { value: ViewMode; label: string }[] = [
     { value: 'inline', label: 'Inline' },
 ];
 
+/**
+ * ViewModeTabs - Tab component for switching between diff view modes
+ *
+ * Provides buttons to toggle between different diff visualization modes:
+ * - Split: Side-by-side comparison
+ * - Unified: Combined view with changes inline
+ * - Inline: Condensed single-line view
+ *
+ * @example
+ * ```tsx
+ * <ViewModeTabs
+ *   currentMode="unified"
+ *   onModeChange={(mode) => setViewMode(mode)}
+ * />
+ * ```
+ */
 export function ViewModeTabs({
     currentMode,
     onModeChange,

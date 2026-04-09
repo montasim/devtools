@@ -8,6 +8,24 @@ import { ViewModeTabs } from './view-mode-tabs';
 import { DiffStatsDisplay } from './diff-stats-display';
 import { DiffOptionsDropdown } from './diff-options-dropdown';
 
+/**
+ * DiffPanelToolbar - Toolbar component for diff panels
+ *
+ * Displays diff statistics, view mode controls, and action buttons for diff panels.
+ * Provides quick access to view modes, statistics, sharing, and additional options.
+ *
+ * @example
+ * ```tsx
+ * <DiffPanelToolbar
+ *   viewMode={viewMode}
+ *   additionCount={5}
+ *   deletionCount={2}
+ *   modificationCount={3}
+ *   totalLines={100}
+ *   onViewModeChange={setViewMode}
+ * />
+ * ```
+ */
 export function DiffPanelToolbar({
     viewMode,
     additionCount,
