@@ -170,10 +170,10 @@ export const FormatPane = ({
     const isDisabled = !formatResult.isValid || !formatResult.formatted;
 
     return (
-        <div className={className}>
+        <div className={`${className} h-[calc(100vh-140px)]`}>
             {/* Editor Panes */}
-            <div className="flex flex-col md:flex-row gap-4">
-                <div className="w-full md:w-1/2 min-w-0">
+            <div className="flex flex-col md:flex-row gap-4 h-full">
+                <div className="w-full md:w-1/2 min-w-0 h-full">
                     <JsonEditor
                         label="Unformatted JSON"
                         value={leftContent}
@@ -181,19 +181,21 @@ export const FormatPane = ({
                         onError={(error) => {
                             setLeftValid(error === null && leftContent.trim().length > 0);
                         }}
+                        height="600px"
                     />
                 </div>
 
                 <Separator orientation="vertical" className="hidden md:block" />
                 <Separator orientation="horizontal" className="block md:hidden" />
 
-                <div className="w-full md:w-1/2 min-w-0">
+                <div className="w-full md:w-1/2 min-w-0 h-full">
                     <JsonEditor
                         label="Formatted JSON"
                         value={formatResult.formatted}
                         onChange={() => {}}
                         onError={() => {}}
                         readOnly={true}
+                        height="600px"
                         customToolbar={
                             <div className="flex items-center justify-between mb-2 shrink-0">
                                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
