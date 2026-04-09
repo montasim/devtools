@@ -5,7 +5,6 @@ import {
     FileCode,
     Minimize2,
     Expand,
-    ChevronRight,
     Trash2,
     MinusCircle,
     Package,
@@ -103,7 +102,6 @@ export function EditorOperationsMenu({ content, onContentChange, onError }: Edit
                 <DropdownMenuSubTrigger>
                     <Package className="mr-2 h-4 w-4" />
                     JSON Operations
-                    <ChevronRight className="ml-auto h-4 w-4" />
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent className="w-48">
                     <DropdownMenuItem onClick={() => handleOperation(removeNulls, 'remove nulls')}>
