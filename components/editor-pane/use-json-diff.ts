@@ -4,6 +4,25 @@ import { useState, useCallback } from 'react';
 import { diffLines } from 'diff';
 import { UseJsonDiffOptions, UseJsonDiffReturn, DiffResult, DiffHunk, DiffLine } from './types';
 
+function calculateModificationCount(hunks: DiffHunk[]): number {
+    let modifications = 0;
+    hunks.forEach((hunk) => {
+        for (let i = 0; i < hunk.lines.length - 1; i++) {
+            const current = hunk.lines[i];
+            const next = hunk.lines[i + 1];
+            // Count deletion followed by addition as a modification
+            if (
+                current.type === 'deletion' &&
+                next.type === 'addition' &&
+                current.oldLineNumber === next.newLineNumber
+            ) {
+                modifications++;
+            }
+        }
+    });
+    return modifications;
+}
+
 export function useJsonDiff(options: UseJsonDiffOptions): UseJsonDiffReturn {
     const [diff, setDiff] = useState<DiffResult | null>(null);
     const [error, setError] = useState<Error | null>(null);
@@ -135,11 +154,14 @@ export function useJsonDiff(options: UseJsonDiffOptions): UseJsonDiffReturn {
                 hunks.push(currentHunk as DiffHunk);
             }
 
+            const modificationCount = calculateModificationCount(hunks);
+
             const result: DiffResult = {
                 hunks,
                 lineCount: oldLineNumber + newLineNumber - 2,
                 additionCount,
                 deletionCount,
+                modificationCount,
             };
 
             setDiff(result);
