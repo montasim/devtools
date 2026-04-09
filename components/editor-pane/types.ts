@@ -86,6 +86,8 @@ export interface JsonEditorProps {
 export interface DiffPanelProps {
     diffResult: DiffResult | null;
     isLoading: boolean;
+    leftContent?: string;
+    rightContent?: string;
 }
 
 // useJsonDiff hook options

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { DiffPanelProps, DiffResult, ViewMode, DiffLine } from './types';
 import { DiffPanelToolbar } from './diff-panel-toolbar';
+import { ShareDialog } from './share-dialog';
 import { ChevronRight, ChevronDown, X, CheckCircle } from 'lucide-react';
 
 /**
@@ -26,13 +27,14 @@ import { ChevronRight, ChevronDown, X, CheckCircle } from 'lucide-react';
  * />
  * ```
  */
-export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
+export function DiffPanel({ diffResult, isLoading, leftContent = '', rightContent = '' }: DiffPanelProps) {
     const [viewMode, setViewMode] = useState<ViewMode>('unified');
     const [showTreePanel, setShowTreePanel] = useState(false);
     const [filter, setFilter] = useState<'all' | 'additions' | 'deletions' | 'modifications'>('all');
     const [showStatistics, setShowStatistics] = useState(false);
     const [showValidation, setShowValidation] = useState(false);
     const [showBookmarks, setShowBookmarks] = useState(false);
+    const [showShareDialog, setShowShareDialog] = useState(false);
     const [bookmarks, setBookmarks] = useState<number[]>([]);
 
     if (isLoading) {
@@ -236,7 +238,7 @@ export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
                 totalLines={diffResult.lineCount}
                 onViewModeChange={setViewMode}
                 onShare={() => {
-                    alert('Share functionality - coming soon!');
+                    setShowShareDialog(true);
                 }}
                 onExport={(format) => {
                     handleExport(format, diffResult);
@@ -305,6 +307,15 @@ export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
                     {viewMode === 'tree' && <TreeView diffResult={filteredDiff} />}
                 </div>
             </div>
+
+            {/* Share Dialog */}
+            <ShareDialog
+                diffResult={diffResult}
+                leftContent={leftContent}
+                rightContent={rightContent}
+                open={showShareDialog}
+                onOpenChange={setShowShareDialog}
+            />
         </div>
     );
 }

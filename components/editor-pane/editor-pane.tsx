@@ -115,7 +115,12 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
             </div>
 
             {/* Diff Panel */}
-            <DiffPanel diffResult={diff} isLoading={isComputing} />
+            <DiffPanel
+                diffResult={diff}
+                isLoading={isComputing}
+                leftContent={leftContent}
+                rightContent={rightContent}
+            />
         </div>
     );
 });
