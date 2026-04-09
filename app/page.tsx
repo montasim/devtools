@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Toolbar } from '@/components/toolbar';
 import { EditorPane, type EditorPaneRef } from '@/components/editor-pane';
-import { FormatPane } from '@/components/format-pane';
+import { FormatPane, FormatShareDialog } from '@/components/format-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, GitCompare, Code, Minimize2, FileJson, Share2, Trash2 } from 'lucide-react';
 
@@ -20,6 +20,8 @@ export default function Home() {
     const [formatRemoveTrailingCommas, setFormatRemoveTrailingCommas] = useState(false);
     const [formatEscapeUnicode, setFormatEscapeUnicode] = useState(false);
     const [canFormat, setCanFormat] = useState(false);
+    const [shareDialogOpen, setShareDialogOpen] = useState(false);
+    const [formatContent, setFormatContent] = useState('');
 
     const editorPaneRef = useRef<EditorPaneRef>(null);
 
@@ -38,6 +40,28 @@ export default function Home() {
         setCanCompare(isValid);
         // Update computing state from ref
         setIsComputing(editorPaneRef.current?.isComputing ?? false);
+    }, []);
+
+    // Load format content from localStorage on mount and keep in sync
+    useEffect(() => {
+        const loadFormatContent = () => {
+            try {
+                const content = localStorage.getItem('json-format-left-content') || '';
+                setFormatContent(content);
+            } catch (error) {
+                console.error('Failed to load format content:', error);
+            }
+        };
+
+        loadFormatContent();
+
+        // Listen for storage changes
+        const handleStorageChange = () => {
+            loadFormatContent();
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
     const handleClear = () => {
@@ -61,22 +85,8 @@ export default function Home() {
             return;
         }
 
-        try {
-            // Encode the JSON content
-            const encoded = btoa(encodeURIComponent(formattedContent));
-
-            // Create shareable URL
-            const url = new URL(window.location.href);
-            url.searchParams.set('content', encoded);
-            url.hash = 'format';
-
-            // Copy to clipboard
-            navigator.clipboard.writeText(url.toString());
-            alert('Share link copied to clipboard!');
-        } catch (error) {
-            console.error('Failed to generate share link:', error);
-            alert('Failed to generate share link. Please try again.');
-        }
+        // Open the share dialog
+        setShareDialogOpen(true);
     };
 
     return (
@@ -264,6 +274,12 @@ export default function Home() {
                             />
                     </div>
                 </TabsContent>
+
+                <FormatShareDialog
+                    content={formatContent}
+                    open={shareDialogOpen}
+                    onOpenChange={setShareDialogOpen}
+                />
 
                 <TabsContent value="minify" className="mt-0">
                     <div className="container mx-auto px-4 py-8">
