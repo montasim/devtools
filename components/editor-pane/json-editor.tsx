@@ -5,7 +5,7 @@ import { EditorState } from '@codemirror/state';
 import { EditorView, keymap, lineNumbers } from '@codemirror/view';
 import { json } from '@codemirror/lang-json';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
-import { debounce, validateJson } from './utils/validation';
+import { validateJson } from './utils/validation';
 import type { ParseError } from './types';
 import type { JsonEditorProps } from './types';
 
@@ -14,25 +14,26 @@ export function JsonEditor({
     onChange,
     onError,
     label,
-    placeholder = 'Enter or paste JSON here...',
     readOnly = false,
 }: JsonEditorProps) {
     const editorRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<EditorView | null>(null);
     const [error, setError] = useState<ParseError | null>(null);
 
-    // Debounced validation function
-    const debouncedValidate = useRef(
-        debounce((content: string) => {
-            const validationError = validateJson(content);
-            setError(validationError);
-            onError(validationError);
-        }, 300)
-    ).current;
-
     // Initialize CodeMirror editor
     useEffect(() => {
         if (!editorRef.current) return;
+
+        // Create debounced validation function
+        let timeout: ReturnType<typeof setTimeout> | null = null;
+        const debouncedValidate = (content: string) => {
+            if (timeout) clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                const validationError = validateJson(content);
+                setError(validationError);
+                onError(validationError);
+            }, 300);
+        };
 
         // Create editor state
         const state = EditorState.create({
@@ -87,10 +88,11 @@ export function JsonEditor({
 
         // Cleanup
         return () => {
+            if (timeout) clearTimeout(timeout);
             view.destroy();
             viewRef.current = null;
         };
-    }, []); // Empty deps array - initialize once
+    }, [onChange, onError, readOnly, value]);
 
     // Update editor when value prop changes externally
     useEffect(() => {
@@ -136,7 +138,10 @@ export function JsonEditor({
         reader.onload = (e) => {
             const content = e.target?.result as string;
             onChange(content);
-            debouncedValidate(content);
+            // Validate immediately for file upload
+            const validationError = validateJson(content);
+            setError(validationError);
+            onError(validationError);
         };
         reader.onerror = () => {
             const readError: ParseError = {
