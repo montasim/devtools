@@ -30,6 +30,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
     const editorRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<EditorView | null>(null);
     const valueRef = useRef(value);
+    const isUpdatingFromParent = useRef(false);
     const [error, setError] = useState<ParseError | null>(null);
 
     // Keep valueRef updated so it's always current when we need it
@@ -64,7 +65,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                 search({ top: true }),
                 highlightSelectionMatches(),
                 EditorView.updateListener.of((update) => {
-                    if (update.docChanged) {
+                    if (update.docChanged && !isUpdatingFromParent.current) {
                         const newValue = update.state.doc.toString();
                         onChange(newValue);
                         debouncedValidate(newValue);
@@ -181,12 +182,17 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
 
         const currentValue = viewRef.current.state.doc.toString();
         if (currentValue !== value) {
+            isUpdatingFromParent.current = true;
             viewRef.current.dispatch({
                 changes: {
                     from: 0,
                     to: currentValue.length,
                     insert: value,
                 },
+            });
+            // Reset the flag after the update is processed
+            requestAnimationFrame(() => {
+                isUpdatingFromParent.current = false;
             });
         }
     }, [value]);
