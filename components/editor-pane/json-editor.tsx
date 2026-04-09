@@ -30,13 +30,23 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
     const editorRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<EditorView | null>(null);
     const valueRef = useRef(value);
+    const onChangeRef = useRef(onChange);
+    const onErrorRef = useRef(onError);
     const isUpdatingFromParent = useRef(false);
     const [error, setError] = useState<ParseError | null>(null);
 
-    // Keep valueRef updated so it's always current when we need it
+    // Keep refs updated so they're always current when we need them
     useEffect(() => {
         valueRef.current = value;
     }, [value]);
+
+    useEffect(() => {
+        onChangeRef.current = onChange;
+    }, [onChange]);
+
+    useEffect(() => {
+        onErrorRef.current = onError;
+    }, [onError]);
 
     // Initialize CodeMirror editor
     useEffect(() => {
@@ -49,7 +59,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
             timeout = setTimeout(() => {
                 const validationError = validateJson(content);
                 setError(validationError);
-                onError(validationError);
+                onErrorRef.current(validationError);
             }, 300);
         };
 
@@ -67,7 +77,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                 EditorView.updateListener.of((update) => {
                     if (update.docChanged && !isUpdatingFromParent.current) {
                         const newValue = update.state.doc.toString();
-                        onChange(newValue);
+                        onChangeRef.current(newValue);
                         debouncedValidate(newValue);
                     }
                 }),
@@ -174,7 +184,8 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
             view.destroy();
             viewRef.current = null;
         };
-    }, [onChange, onError, readOnly]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [readOnly]); // Note: onChange and onError intentionally omitted - using refs to avoid recreating editor on every render
 
     // Update editor when value prop changes externally
     useEffect(() => {
