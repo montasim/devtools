@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { EditorState } from '@codemirror/state';
 import { EditorView, keymap, lineNumbers } from '@codemirror/view';
 import { json } from '@codemirror/lang-json';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
+import { X, Link2, Search, Upload, MoreVertical } from 'lucide-react';
 import { EditorActions } from './editor-actions';
 import { validateJson } from './utils/validation';
 import type { ParseError } from './types';
@@ -232,6 +233,49 @@ export function JsonEditor({
         console.log('More menu opened');
     };
 
+    // Define action buttons dynamically
+    const actionButtons = useMemo(
+        () => [
+            {
+                id: 'upload',
+                icon: Upload,
+                label: 'Upload file',
+                accept: '.json,application/json',
+                onChange: handleFileUpload,
+                title: 'Upload file',
+            },
+            {
+                id: 'copy-link',
+                icon: Link2,
+                label: 'Copy link',
+                onClick: handleCopyLink,
+                title: 'Copy link',
+            },
+            {
+                id: 'search',
+                icon: Search,
+                label: 'Search',
+                onClick: handleSearch,
+                title: 'Search',
+            },
+            {
+                id: 'clear',
+                icon: X,
+                label: 'Clear editor',
+                onClick: handleClear,
+                title: 'Clear editor',
+            },
+            {
+                id: 'more-menu',
+                icon: MoreVertical,
+                label: 'More options',
+                onClick: handleMoreMenu,
+                title: 'More options',
+            },
+        ],
+        [handleClear, handleCopyLink, handleSearch, handleFileUpload, handleMoreMenu]
+    );
+
     return (
         <div className="flex flex-col h-full">
             {/* Header with label and validation status */}
@@ -254,14 +298,7 @@ export function JsonEditor({
                     </span>
 
                     {/* Action buttons */}
-                    <EditorActions
-                        onClear={handleClear}
-                        onCopyLink={handleCopyLink}
-                        onSearch={handleSearch}
-                        onUpload={handleFileUpload}
-                        onMoreMenu={handleMoreMenu}
-                        readOnly={readOnly}
-                    />
+                    <EditorActions buttons={actionButtons} readOnly={readOnly} />
                 </div>
             </div>
 
