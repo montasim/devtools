@@ -3,6 +3,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Button } from '@/components/ui/button';
 import { Accordion } from '@/components/ui/accordion';
 import { Logo } from '@/components/logo';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { MenuItem } from './types';
 import { MobileMenuItem } from './menu-items';
 import Link from 'next/link';
@@ -39,6 +40,9 @@ export const MobileMenu = ({ menu, auth }: MobileMenuProps) => (
                                 <MobileMenuItem key={item.title} item={item} />
                             ))}
                         </Accordion>
+                        <div className="flex items-center gap-3">
+                            <ThemeToggle />
+                        </div>
                         <div className="flex flex-col gap-3">
                             <Button asChild variant="outline">
                                 <a href={auth.login.url}>{auth.login.title}</a>

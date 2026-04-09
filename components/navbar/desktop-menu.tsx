@@ -1,6 +1,7 @@
 import { NavigationMenu, NavigationMenuList } from '@/components/ui/navigation-menu';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { MenuItem } from './types';
 import { DesktopMenuItem } from './menu-items';
 
@@ -26,7 +27,8 @@ export const DesktopMenu = ({ menu, auth }: DesktopMenuProps) => (
                 </NavigationMenu>
             </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Button asChild variant="outline" size="sm">
                 <a href={auth.login.url}>{auth.login.title}</a>
             </Button>
