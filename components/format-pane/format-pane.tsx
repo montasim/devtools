@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { Copy, Download } from 'lucide-react';
 import { JsonEditor } from '../editor-pane/json-editor';
 import { Separator } from '../ui/separator';
-import { FormatActions } from './format-actions';
+import { Button } from '../ui/button';
 import { useFormatJson } from './use-format-json';
 import type { FormatPaneProps, FormatOptions } from './types';
 
@@ -85,24 +86,44 @@ export const FormatPane = ({
         onError?.(error);
     }, [onError]);
 
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(formatResult.formatted);
+            handleCopySuccess();
+        } catch (error) {
+            handleCopyError(error as Error);
+        }
+    };
+
+    const handleDownload = () => {
+        try {
+            const blob = new Blob([formatResult.formatted], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'formatted.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            handleDownloadSuccess();
+        } catch (error) {
+            handleDownloadError(error as Error);
+        }
+    };
+
+    const isDisabled = !formatResult.isValid || !formatResult.formatted;
+
     return (
         <div className={className}>
-            {/* Format Actions Toolbar */}
-            <div className="flex items-center justify-between mb-4 px-4">
+            {/* Format Options Display */}
+            <div className="mb-4 px-4">
                 <div className="text-sm text-muted-foreground">
                     Format Options: {formatOptions.indentation} spaces
                     {formatOptions.sortKeys && ', Sort Keys'}
                     {formatOptions.removeTrailingCommas && ', No Trailing Commas'}
                     {formatOptions.escapeUnicode && ', Escape Unicode'}
                 </div>
-                <FormatActions
-                    formattedContent={formatResult.formatted}
-                    isValid={formatResult.isValid}
-                    onCopySuccess={handleCopySuccess}
-                    onDownloadSuccess={handleDownloadSuccess}
-                    onCopyError={handleCopyError}
-                    onDownloadError={handleDownloadError}
-                />
             </div>
 
             {/* Editor Panes */}
@@ -121,9 +142,38 @@ export const FormatPane = ({
                 <Separator orientation="vertical" className="hidden md:block" />
                 <Separator orientation="horizontal" className="block md:hidden" />
 
-                <div className="w-full md:w-1/2">
+                <div className="w-full md:w-1/2 flex flex-col">
+                    {/* Custom header for Formatted JSON with action buttons */}
+                    <div className="flex items-center justify-between mb-2 shrink-0">
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Formatted JSON
+                        </label>
+                        <div className="flex gap-2">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={handleCopy}
+                                disabled={isDisabled}
+                                className="gap-2"
+                            >
+                                <Copy className="w-4 h-4" />
+                                Copy
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={handleDownload}
+                                disabled={isDisabled}
+                                className="gap-2"
+                            >
+                                <Download className="w-4 h-4" />
+                                Download
+                            </Button>
+                        </div>
+                    </div>
+
                     <JsonEditor
-                        label="Formatted JSON"
+                        label=""
                         value={formatResult.formatted}
                         onChange={() => {}}
                         onError={() => {}}
