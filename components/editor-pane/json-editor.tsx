@@ -76,6 +76,44 @@ export function JsonEditor({
                     '.cm-line': {
                         padding: '0 0',
                     },
+                    // JSON Syntax Highlighting
+                    '&.cm-json .tok-propertyName': {
+                        color: '#0451a5',
+                    },
+                    '&.cm-json .tok-string': {
+                        color: '#a31515',
+                    },
+                    '&.cm-json .tok-number': {
+                        color: '#098658',
+                    },
+                    '&.cm-json .tok-bool': {
+                        color: '#0000ff',
+                    },
+                    '&.cm-json .tok-null': {
+                        color: '#0000ff',
+                    },
+                    '&.cm-json .tok-keyword': {
+                        color: '#0000ff',
+                    },
+                    // Dark mode syntax highlighting
+                    '.dark &.cm-json .tok-propertyName': {
+                        color: '#9cdcfe',
+                    },
+                    '.dark &.cm-json .tok-string': {
+                        color: '#ce9178',
+                    },
+                    '.dark &.cm-json .tok-number': {
+                        color: '#b5cea8',
+                    },
+                    '.dark &.cm-json .tok-bool': {
+                        color: '#569cd6',
+                    },
+                    '.dark &.cm-json .tok-null': {
+                        color: '#569cd6',
+                    },
+                    '.dark &.cm-json .tok-keyword': {
+                        color: '#569cd6',
+                    },
                 }),
                 readOnly ? EditorState.readOnly.of(true) : [],
             ],
