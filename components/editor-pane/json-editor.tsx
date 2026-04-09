@@ -7,6 +7,7 @@ import { json } from '@codemirror/lang-json';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { X, Link2, Search, Upload, MoreVertical } from 'lucide-react';
 import { EditorActions } from './editor-actions';
+import { EditorFooter } from './editor-footer';
 import { validateJson } from './utils/validation';
 import type { ParseError } from './types';
 import type { JsonEditorProps } from './types';
@@ -281,19 +282,6 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                     {label}
                 </label>
                 <div className="flex items-center gap-2">
-                    {/* Validation status indicator */}
-                    <span
-                        className={`text-xs font-medium ${
-                            error
-                                ? 'text-red-600 dark:text-red-400'
-                                : value.trim()
-                                  ? 'text-green-600 dark:text-green-400'
-                                  : 'text-gray-400 dark:text-gray-500'
-                        }`}
-                    >
-                        {error ? 'Invalid JSON' : value.trim() ? 'Valid JSON' : 'Empty'}
-                    </span>
-
                     {/* Action buttons */}
                     <EditorActions buttons={actionButtons} readOnly={readOnly} />
                 </div>
@@ -308,11 +296,12 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
             {error && (
                 <div className="mt-2 p-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded dark:text-red-400 dark:bg-red-900/20 dark:border-red-800">
                     <div className="font-medium">{error.message}</div>
-                    <div className="text-xs mt-1">
-                        Line {error.line}, Column {error.column}
-                    </div>
+                    <div className="text-xs mt-1">Line {error.line}, Column {error.column}</div>
                 </div>
             )}
+
+            {/* Footer with statistics and validation */}
+            <EditorFooter content={value} error={error} />
         </div>
     );
 }
