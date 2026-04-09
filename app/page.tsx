@@ -97,8 +97,6 @@ export default function Home() {
                     prettyPrint={prettyPrint}
                     ignoreWhitespace={ignoreWhitespace}
                     semanticTypeDiff={semanticTypeDiff}
-                    initialLeftContent={`{\n  "name": "John Doe",\n  "age": 30\n}`}
-                    initialRightContent={`{\n  "age": 30,\n  "name": "John Doe"\n}`}
                     onCompare={handleCompare}
                     onError={handleError}
                     onValidationChange={handleValidationChange}
