@@ -148,26 +148,26 @@ export const FormatPane = ({
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                             Formatted JSON
                         </label>
-                        <div className="flex gap-2">
+                        <div className="flex items-center gap-2">
                             <Button
-                                variant="outline"
-                                size="sm"
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
                                 onClick={handleCopy}
                                 disabled={isDisabled}
-                                className="gap-2"
+                                title="Copy to clipboard"
                             >
-                                <Copy className="w-4 h-4" />
-                                Copy
+                                <Copy className="h-4 w-4" />
                             </Button>
                             <Button
-                                variant="outline"
-                                size="sm"
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
                                 onClick={handleDownload}
                                 disabled={isDisabled}
-                                className="gap-2"
+                                title="Download as JSON"
                             >
-                                <Download className="w-4 h-4" />
-                                Download
+                                <Download className="h-4 w-4" />
                             </Button>
                         </div>
                     </div>
