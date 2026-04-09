@@ -135,7 +135,7 @@ export function EditorFooter({ content, error }: EditorFooterProps) {
     );
 
     return (
-        <div className="border-t border-gray-200 dark:border-gray-700">
+        <div className="border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between py-2">
                 {/* Left side: Statistics */}
                 <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400 overflow-x-auto scrollbar-hide flex-1">
