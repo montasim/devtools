@@ -18,7 +18,13 @@ export function JsonEditor({
 }: JsonEditorProps) {
     const editorRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<EditorView | null>(null);
+    const valueRef = useRef(value);
     const [error, setError] = useState<ParseError | null>(null);
+
+    // Keep valueRef updated so it's always current when we need it
+    useEffect(() => {
+        valueRef.current = value;
+    }, [value]);
 
     // Initialize CodeMirror editor
     useEffect(() => {
@@ -37,7 +43,7 @@ export function JsonEditor({
 
         // Create editor state
         const state = EditorState.create({
-            doc: value,
+            doc: valueRef.current,
             extensions: [
                 lineNumbers(),
                 keymap.of(defaultKeymap),
@@ -83,7 +89,7 @@ export function JsonEditor({
         viewRef.current = view;
 
         // Initial validation
-        debouncedValidate(value);
+        debouncedValidate(valueRef.current);
 
         // Cleanup
         return () => {
