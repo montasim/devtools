@@ -13,6 +13,7 @@
 ## File Structure
 
 **Creating:**
+
 - `components/navbar/index.ts` - Barrel exports
 - `components/navbar/types.ts` - Type definitions
 - `components/navbar/constants.ts` - Default configurations
@@ -25,6 +26,7 @@
 - `components/navbar/mobile-nav.tsx` - Mobile navigation
 
 **Modifying:**
+
 - `components/navbar/navbar.tsx` - Transform into thin container
 
 ---
@@ -34,48 +36,49 @@
 ### Task 1: Create types.ts - Centralized Type Definitions
 
 **Files:**
+
 - Create: `components/navbar/types.ts`
 
 - [ ] **Step 1: Create types.ts with all interfaces**
 
 ```typescript
 export interface MenuItem {
-  title: string;
-  url: string;
-  description?: string;
-  icon?: React.ReactNode;
-  items?: MenuItem[];
+    title: string;
+    url: string;
+    description?: string;
+    icon?: React.ReactNode;
+    items?: MenuItem[];
 }
 
 export interface LogoConfig {
-  url: string;
-  src: string;
-  alt: string;
-  title: string;
-  className?: string;
+    url: string;
+    src: string;
+    alt: string;
+    title: string;
+    className?: string;
 }
 
 export interface AuthConfig {
-  login: {
-    title: string;
-    url: string;
-  };
-  signup: {
-    title: string;
-    url: string;
-  };
+    login: {
+        title: string;
+        url: string;
+    };
+    signup: {
+        title: string;
+        url: string;
+    };
 }
 
 export interface NavbarProps {
-  className?: string;
-  logo?: LogoConfig;
-  menu?: MenuItem[];
-  auth?: AuthConfig;
+    className?: string;
+    logo?: LogoConfig;
+    menu?: MenuItem[];
+    auth?: AuthConfig;
 }
 
 export interface NavContextValue {
-  animationDuration?: number;
-  theme?: 'light' | 'dark' | 'system';
+    animationDuration?: number;
+    theme?: 'light' | 'dark' | 'system';
 }
 
 export type NavVariant = 'desktop' | 'mobile';
@@ -104,6 +107,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ### Task 2: Create constants.ts - Default Configurations
 
 **Files:**
+
 - Create: `components/navbar/constants.ts`
 
 - [ ] **Step 1: Create constants.ts with default configs**
@@ -221,29 +225,30 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ### Task 3: Create nav-context.tsx - Context Provider
 
 **Files:**
+
 - Create: `components/navbar/nav-context.tsx`
 
 - [ ] **Step 1: Create nav-context.tsx**
 
 ```typescript
-"use client";
+'use client';
 
-import { createContext, useContext } from "react";
-import type { NavContextValue } from "./types";
+import { createContext, useContext } from 'react';
+import type { NavContextValue } from './types';
 
 const defaultValue: NavContextValue = {
-  animationDuration: 200,
-  theme: "system",
+    animationDuration: 200,
+    theme: 'system',
 };
 
 export const NavContext = createContext<NavContextValue>(defaultValue);
 
 export function useNavContext(): NavContextValue {
-  const context = useContext(NavContext);
-  if (!context) {
-    throw new Error("useNavContext must be used within NavContext.Provider");
-  }
-  return context;
+    const context = useContext(NavContext);
+    if (!context) {
+        throw new Error('useNavContext must be used within NavContext.Provider');
+    }
+    return context;
 }
 ```
 
@@ -274,26 +279,23 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ### Task 4: Create index.ts - Barrel Exports
 
 **Files:**
+
 - Create: `components/navbar/index.ts`
 
 - [ ] **Step 1: Create index.ts with public API**
 
 ```typescript
-export { Navbar } from "./navbar";
+export { Navbar } from './navbar';
 export type {
-  MenuItem,
-  LogoConfig,
-  AuthConfig,
-  NavbarProps,
-  NavContextValue,
-  NavVariant,
-} from "./types";
-export { NavContext, useNavContext } from "./nav-context";
-export {
-  defaultLogoConfig,
-  defaultAuthConfig,
-  defaultMenuItems,
-} from "./constants";
+    MenuItem,
+    LogoConfig,
+    AuthConfig,
+    NavbarProps,
+    NavContextValue,
+    NavVariant,
+} from './types';
+export { NavContext, useNavContext } from './nav-context';
+export { defaultLogoConfig, defaultAuthConfig, defaultMenuItems } from './constants';
 ```
 
 Note: This will error initially since we haven't created all exports yet. We'll update it incrementally.
@@ -302,19 +304,15 @@ Note: This will error initially since we haven't created all exports yet. We'll 
 
 ```typescript
 export type {
-  MenuItem,
-  LogoConfig,
-  AuthConfig,
-  NavbarProps,
-  NavContextValue,
-  NavVariant,
-} from "./types";
-export { NavContext, useNavContext } from "./nav-context";
-export {
-  defaultLogoConfig,
-  defaultAuthConfig,
-  defaultMenuItems,
-} from "./constants";
+    MenuItem,
+    LogoConfig,
+    AuthConfig,
+    NavbarProps,
+    NavContextValue,
+    NavVariant,
+} from './types';
+export { NavContext, useNavContext } from './nav-context';
+export { defaultLogoConfig, defaultAuthConfig, defaultMenuItems } from './constants';
 ```
 
 - [ ] **Step 3: Verify TypeScript compilation**
@@ -342,6 +340,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ### Task 5: Create sub-menu-item.tsx - Atomic Sub-Menu Component
 
 **Files:**
+
 - Create: `components/navbar/sub-menu-item.tsx`
 - Reference: `components/navbar/navbar.tsx:276-293`
 
@@ -386,6 +385,7 @@ Expected: No errors
 - [ ] **Step 3: Update navbar.tsx to import from new file**
 
 Modify `components/navbar/navbar.tsx`:
+
 - Remove lines 276-293 (SubMenuLink component)
 - Add import at top: `import { SubMenuItem } from "./sub-menu-item";`
 - Update line 233: Replace `<SubMenuLink` with `<SubMenuItem`
@@ -412,6 +412,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 - [ ] **Step 6: Visual regression test (optional but recommended)**
 
 If using Storybook or similar:
+
 ```bash
 # Create Storybook story for SubMenuItem
 cat > components/navbar/sub-menu-item.stories.tsx << 'EOF'
@@ -459,6 +460,7 @@ Expected: Component renders correctly in both variants
 ### Task 6: Create auth-buttons.tsx - Authentication Button Group
 
 **Files:**
+
 - Create: `components/navbar/auth-buttons.tsx`
 - Reference: `components/navbar/navbar.tsx:160-167` (desktop), `208-215` (mobile)
 
@@ -508,6 +510,7 @@ Expected: No errors
 - [ ] **Step 3: Update navbar.tsx to use AuthButtons**
 
 Modify `components/navbar/navbar.tsx`:
+
 - Add import: `import { AuthButtons } from "./auth-buttons";`
 - Replace lines 160-167 with: `<AuthButtons auth={auth} variant="desktop" />`
 - Replace lines 208-215 with: `<AuthButtons auth={auth} variant="mobile" />`
@@ -534,6 +537,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 - [ ] **Step 6: Visual regression test (optional but recommended)**
 
 If using Storybook or similar:
+
 ```bash
 # Create Storybook story for AuthButtons
 cat > components/navbar/auth-buttons.stories.tsx << 'EOF'
@@ -580,13 +584,14 @@ Expected: Both variants render correctly with proper button sizing
 ### Task 7: Update index.ts with component exports
 
 **Files:**
+
 - Modify: `components/navbar/index.ts`
 
 - [ ] **Step 1: Add component exports**
 
 ```typescript
-export { SubMenuItem } from "./sub-menu-item";
-export { AuthButtons } from "./auth-buttons";
+export { SubMenuItem } from './sub-menu-item';
+export { AuthButtons } from './auth-buttons';
 ```
 
 Add to existing exports.
@@ -615,6 +620,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ### Task 8: Create nav-menu-item.tsx - Individual Menu Item
 
 **Files:**
+
 - Create: `components/navbar/nav-menu-item.tsx`
 - Reference: `components/navbar/navbar.tsx:225-274`
 
@@ -706,6 +712,7 @@ Expected: No errors
 - [ ] **Step 3: Update navbar.tsx**
 
 Modify `components/navbar/navbar.tsx`:
+
 - Remove lines 225-274 (renderMenuItem and renderMobileMenuItem functions)
 - Add import: `import { NavMenuItem } from "./nav-menu-item";`
 - Update line 155: Replace `{menu.map((item) => renderMenuItem(item))}` with `{menu.map((item) => <NavMenuItem key={item.title} item={item} variant="desktop" />)}`
@@ -736,6 +743,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ### Task 9: Create nav-menu.tsx - Menu Container
 
 **Files:**
+
 - Create: `components/navbar/nav-menu.tsx`
 - Reference: `components/navbar/navbar.tsx:153-157`, `199-206`
 
@@ -795,6 +803,7 @@ Expected: No errors
 - [ ] **Step 3: Update navbar.tsx**
 
 Modify `components/navbar/navbar.tsx`:
+
 - Add import: `import { NavMenu } from "./nav-menu";`
 - Replace lines 153-157 with: `<NavMenu items={menu} variant="desktop" />`
 - Replace lines 199-206 with: `<NavMenu items={menu} variant="mobile" />`
@@ -823,13 +832,14 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ### Task 10: Update index.ts with new component exports
 
 **Files:**
+
 - Modify: `components/navbar/index.ts`
 
 - [ ] **Step 1: Add NavMenuItem and NavMenu exports**
 
 ```typescript
-export { NavMenuItem } from "./nav-menu-item";
-export { NavMenu } from "./nav-menu";
+export { NavMenuItem } from './nav-menu-item';
+export { NavMenu } from './nav-menu';
 ```
 
 - [ ] **Step 2: Verify TypeScript compilation**
@@ -856,6 +866,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ### Task 11: Create desktop-nav.tsx - Desktop Navigation
 
 **Files:**
+
 - Create: `components/navbar/desktop-nav.tsx`
 - Reference: `components/navbar/navbar.tsx:148-168`
 
@@ -907,6 +918,7 @@ Expected: "Logo component found"
 - [ ] **Step 3: Update navbar.tsx**
 
 Modify `components/navbar/navbar.tsx`:
+
 - Add import: `import { DesktopNav } from "./desktop-nav";`
 - Replace lines 149-168 (the inner nav element, not the section wrapper) with: `<DesktopNav menu={menu} auth={auth} />`
 
@@ -934,6 +946,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ### Task 12: Create mobile-nav.tsx - Mobile Navigation
 
 **Files:**
+
 - Create: `components/navbar/mobile-nav.tsx`
 - Reference: `components/navbar/navbar.tsx:171-220`
 
@@ -1014,6 +1027,7 @@ Expected: No errors
 - [ ] **Step 3: Update navbar.tsx**
 
 Modify `components/navbar/navbar.tsx`:
+
 - Add import: `import { MobileNav } from "./mobile-nav";`
 - Remove Menu import from lucide-react (no longer needed here)
 - Remove Sheet imports (no longer needed here)
@@ -1046,6 +1060,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ### Task 13: Transform navbar.tsx into Thin Container
 
 **Files:**
+
 - Modify: `components/navbar/navbar.tsx`
 
 - [ ] **Step 1: Simplify navbar.tsx to container component**
@@ -1087,6 +1102,7 @@ Note: NavContext removed following YAGNI principle - not currently used by any c
 - [ ] **Step 2: Remove unused imports**
 
 Remove from top of file (all should be removed in the replacement above, but verify):
+
 - `import { Book, Menu, Sunset, Trees, Zap } from "lucide-react";`
 - `import { Accordion, ... } from "@/components/ui/accordion";`
 - `import { Button } from "@/components/ui/button";`
@@ -1102,6 +1118,7 @@ Expected: No errors
 - [ ] **Step 4: Verify functionality in browser**
 
 Check:
+
 - Desktop navigation works
 - Mobile navigation works
 - Responsive switching works
@@ -1128,32 +1145,29 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ### Task 14: Final index.ts Update
 
 **Files:**
+
 - Modify: `components/navbar/index.ts`
 
 - [ ] **Step 1: Add all component exports**
 
 ```typescript
-export { Navbar } from "./navbar";
-export { DesktopNav } from "./desktop-nav";
-export { MobileNav } from "./mobile-nav";
-export { NavMenu } from "./nav-menu";
-export { NavMenuItem } from "./nav-menu-item";
-export { SubMenuItem } from "./sub-menu-item";
-export { AuthButtons } from "./auth-buttons";
+export { Navbar } from './navbar';
+export { DesktopNav } from './desktop-nav';
+export { MobileNav } from './mobile-nav';
+export { NavMenu } from './nav-menu';
+export { NavMenuItem } from './nav-menu-item';
+export { SubMenuItem } from './sub-menu-item';
+export { AuthButtons } from './auth-buttons';
 export type {
-  MenuItem,
-  LogoConfig,
-  AuthConfig,
-  NavbarProps,
-  NavContextValue,
-  NavVariant,
-} from "./types";
-export { NavContext, useNavContext } from "./nav-context";
-export {
-  defaultLogoConfig,
-  defaultAuthConfig,
-  defaultMenuItems,
-} from "./constants";
+    MenuItem,
+    LogoConfig,
+    AuthConfig,
+    NavbarProps,
+    NavContextValue,
+    NavVariant,
+} from './types';
+export { NavContext, useNavContext } from './nav-context';
+export { defaultLogoConfig, defaultAuthConfig, defaultMenuItems } from './constants';
 ```
 
 Note: NavContext exports are included for future use but are not currently utilized in the implementation (YAGNI). They can be removed if not needed.
@@ -1166,6 +1180,7 @@ Expected: No errors
 - [ ] **Step 3: Verify imports work from consuming code**
 
 If there's existing code importing from navbar, verify it still works:
+
 ```bash
 # Check if anything imports from navbar
 grep -r "from.*navbar" app/ components/ --exclude-dir=navbar
@@ -1194,6 +1209,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ### Task 15: Comprehensive Testing & Verification
 
 **Files:**
+
 - All navbar components
 
 - [ ] **Step 1: Run TypeScript compilation**
@@ -1217,25 +1233,25 @@ Expected: Build succeeds with no errors
 1. Open application in browser
 2. Resize to desktop width (≥1024px)
 3. Verify:
-   - Logo is visible
-   - All menu items are visible horizontally
-   - Hovering over "Products" shows dropdown with icons
-   - Hovering over "Resources" shows dropdown
-   - Login and Sign up buttons are visible
-   - Clicking menu items navigates correctly
+    - Logo is visible
+    - All menu items are visible horizontally
+    - Hovering over "Products" shows dropdown with icons
+    - Hovering over "Resources" shows dropdown
+    - Login and Sign up buttons are visible
+    - Clicking menu items navigates correctly
 
 - [ ] **Step 4: Manual smoke test - Mobile**
 
 1. Resize browser to mobile width (<1024px)
 2. Verify:
-   - Hamburger menu icon is visible
-   - Logo is visible
-   - Clicking hamburger icon opens sheet/drawer
-   - Menu items are displayed vertically
-   - Tapping "Products" expands accordion
-   - Sub-menu items show with icons and descriptions
-   - Login and Sign up buttons are at bottom
-   - Closing sheet works correctly
+    - Hamburger menu icon is visible
+    - Logo is visible
+    - Clicking hamburger icon opens sheet/drawer
+    - Menu items are displayed vertically
+    - Tapping "Products" expands accordion
+    - Sub-menu items show with icons and descriptions
+    - Login and Sign up buttons are at bottom
+    - Closing sheet works correctly
 
 - [ ] **Step 5: Manual smoke test - Responsive**
 
@@ -1255,6 +1271,7 @@ Expected: Build succeeds with no errors
 - [ ] **Step 7: Check console for errors**
 
 Open browser DevTools and verify:
+
 - No console errors
 - No console warnings
 - All network requests succeed (if any)

@@ -11,6 +11,7 @@ Create a dual-pane JSON diff viewer component for the devtools application. The 
 ## Requirements
 
 ### Functional Requirements
+
 - **FR1:** Display two side-by-side editor panes for JSON input
 - **FR2:** Support direct text input/editing in both panes
 - **FR3:** Support file upload (.json files) for both panes
@@ -18,13 +19,14 @@ Create a dual-pane JSON diff viewer component for the devtools application. The 
 - **FR5:** Manual diff computation via "Compare" button (no auto-diff)
 - **FR6:** Unified diff panel below editors with +/- style output
 - **FR7:** Four toggle behaviors affect diff computation:
-  - Ignore Key Order
-  - Pretty Print
-  - Ignore Whitespace
-  - Semantic Type Diff
+    - Ignore Key Order
+    - Pretty Print
+    - Ignore Whitespace
+    - Semantic Type Diff
 - **FR8:** Compare button disabled until both panes contain valid JSON
 
 ### Non-Functional Requirements
+
 - **NFR1:** Minimal bundle size impact (<200KB gzipped)
 - **NFR2:** Fast diff computation (<2 seconds for 1MB files)
 - **NFR3:** Responsive UI (no freezing on large files)
@@ -75,6 +77,7 @@ User Input → JsonEditor → EditorPane State → Compare Click → useJsonDiff
 **Purpose:** Manages application state, coordinates child components, handles file uploads.
 
 **Responsibilities:**
+
 - Maintain state for both editor panes
 - Validate JSON content in real-time
 - Coordinate diff computation
@@ -82,61 +85,63 @@ User Input → JsonEditor → EditorPane State → Compare Click → useJsonDiff
 - Enable/disable Compare button based on validation
 
 **Props Interface:**
+
 ```typescript
 interface EditorPaneProps {
-  // Toggle states (from Toolbar)
-  ignoreKeyOrder: boolean;
-  prettyPrint: boolean;
-  ignoreWhitespace: boolean;
-  semanticTypeDiff: boolean;
+    // Toggle states (from Toolbar)
+    ignoreKeyOrder: boolean;
+    prettyPrint: boolean;
+    ignoreWhitespace: boolean;
+    semanticTypeDiff: boolean;
 
-  // Initial content (optional)
-  initialLeftContent?: string;
-  initialRightContent?: string;
+    // Initial content (optional)
+    initialLeftContent?: string;
+    initialRightContent?: string;
 
-  // Event handlers
-  onCompare?: (result: DiffResult) => void;
-  onError?: (error: Error) => void;
+    // Event handlers
+    onCompare?: (result: DiffResult) => void;
+    onError?: (error: Error) => void;
 
-  // Styling
-  className?: string;
+    // Styling
+    className?: string;
 }
 ```
 
 **State Interface:**
+
 ```typescript
 interface EditorPaneState {
-  // Content
-  leftContent: string;
-  rightContent: string;
+    // Content
+    leftContent: string;
+    rightContent: string;
 
-  // Validation
-  leftValid: boolean;
-  rightValid: boolean;
-  leftError: ParseError | null;
-  rightError: ParseError | null;
+    // Validation
+    leftValid: boolean;
+    rightValid: boolean;
+    leftError: ParseError | null;
+    rightError: ParseError | null;
 
-  // Diff state
-  diffResult: DiffResult | null;
-  isComputing: boolean;
+    // Diff state
+    diffResult: DiffResult | null;
+    isComputing: boolean;
 
-  // UI state
-  showLineNumbers: boolean;
-  leftEditorFocused: boolean;
-  rightEditorFocused: boolean;
+    // UI state
+    showLineNumbers: boolean;
+    leftEditorFocused: boolean;
+    rightEditorFocused: boolean;
 }
 
 interface ParseError {
-  message: string;
-  line: number;
-  column: number;
+    message: string;
+    line: number;
+    column: number;
 }
 
 interface DiffResult {
-  hunks: DiffHunk[];
-  lineCount: number;
-  additionCount: number;
-  deletionCount: number;
+    hunks: DiffHunk[];
+    lineCount: number;
+    additionCount: number;
+    deletionCount: number;
 }
 ```
 
@@ -145,6 +150,7 @@ interface DiffResult {
 **Purpose:** Single editor pane with validation and syntax highlighting.
 
 **Responsibilities:**
+
 - Render CodeMirror instance with line numbers
 - Apply Shiki syntax highlighting
 - Validate JSON on change (debounced 300ms)
@@ -152,18 +158,20 @@ interface DiffResult {
 - Handle file input trigger
 
 **Props Interface:**
+
 ```typescript
 interface JsonEditorProps {
-  value: string;
-  onChange: (value: string) => void;
-  onError: (error: ParseError | null) => void;
-  label: string;
-  placeholder?: string;
-  readOnly?: boolean;
+    value: string;
+    onChange: (value: string) => void;
+    onError: (error: ParseError | null) => void;
+    label: string;
+    placeholder?: string;
+    readOnly?: boolean;
 }
 ```
 
 **CodeMirror Extensions:**
+
 - `@codemirror/view` - line numbers, basic setup
 - `@codemirror/state` - editor state management
 - `@codemirror/commands` - history (undo/redo)
@@ -175,6 +183,7 @@ interface JsonEditorProps {
 **Purpose:** Display unified diff output with line numbers and color coding.
 
 **Responsibilities:**
+
 - Render unified diff format (+/- lines)
 - Show line numbers for original and modified
 - Color-code additions (green) and deletions (red)
@@ -182,14 +191,16 @@ interface JsonEditorProps {
 - Display diff statistics
 
 **Props Interface:**
+
 ```typescript
 interface DiffPanelProps {
-  diffResult: DiffResult | null;
-  isLoading: boolean;
+    diffResult: DiffResult | null;
+    isLoading: boolean;
 }
 ```
 
 **Diff Output Format:**
+
 ```
   Line 1: Unchanged content
 - Line 2: Removed content (red background)
@@ -202,33 +213,35 @@ interface DiffPanelProps {
 **Purpose:** Encapsulate diff computation logic with toggle-based preprocessing.
 
 **Hook Interface:**
+
 ```typescript
 interface UseJsonDiffOptions {
-  leftContent: string;
-  rightContent: string;
-  ignoreKeyOrder: boolean;
-  prettyPrint: boolean;
-  ignoreWhitespace: boolean;
-  semanticTypeDiff: boolean;
+    leftContent: string;
+    rightContent: string;
+    ignoreKeyOrder: boolean;
+    prettyPrint: boolean;
+    ignoreWhitespace: boolean;
+    semanticTypeDiff: boolean;
 }
 
 interface UseJsonDiffReturn {
-  diff: DiffResult | null;
-  error: Error | null;
-  isComputing: boolean;
-  computeDiff: () => Promise<void>;
+    diff: DiffResult | null;
+    error: Error | null;
+    isComputing: boolean;
+    computeDiff: () => Promise<void>;
 }
 
-function useJsonDiff(options: UseJsonDiffOptions): UseJsonDiffReturn
+function useJsonDiff(options: UseJsonDiffOptions): UseJsonDiffReturn;
 ```
 
 **Diff Pipeline:**
+
 1. Validate JSON (parse both inputs)
 2. Apply toggles:
-   - **Pretty Print:** Format with 2-space indent
-   - **Ignore Whitespace:** Normalize whitespace
-   - **Ignore Key Order:** Recursively sort object keys
-   - **Semantic Type Diff:** Coerce types (string "123" ↔ number 123)
+    - **Pretty Print:** Format with 2-space indent
+    - **Ignore Whitespace:** Normalize whitespace
+    - **Ignore Key Order:** Recursively sort object keys
+    - **Semantic Type Diff:** Coerce types (string "123" ↔ number 123)
 3. Convert to string representation
 4. Compute diff using `diff` npm package
 5. Format unified diff output
@@ -240,32 +253,33 @@ function useJsonDiff(options: UseJsonDiffOptions): UseJsonDiffReturn
 
 ```json
 {
-  "diff": "^7.0.0",
-  "@codemirror/view": "^6.28.0",
-  "@codemirror/state": "^6.4.0",
-  "@codemirror/commands": "^6.6.0",
-  "@codemirror/language": "^6.10.0",
-  "@codemirror/autocomplete": "^6.18.0",
-  "shiki": "^1.10.0"
+    "diff": "^7.0.0",
+    "@codemirror/view": "^6.28.0",
+    "@codemirror/state": "^6.4.0",
+    "@codemirror/commands": "^6.6.0",
+    "@codemirror/language": "^6.10.0",
+    "@codemirror/autocomplete": "^6.18.0",
+    "shiki": "^1.10.0"
 }
 ```
 
 **Installation:**
+
 ```bash
 npm install diff @codemirror/view @codemirror/state @codemirror/commands @codemirror/language @codemirror/autocomplete shiki
 ```
 
 ### Dependency Rationale
 
-| Package | Purpose | Why |
-|---------|---------|-----|
-| `diff` | Text/word/line diffing | Battle-tested, handles edge cases, unified format |
-| `@codemirror/view` | Minimal editor | Modular, tree-sitter based, lighter than Monaco |
-| `@codemirror/state` | Editor state | Required by CodeMirror 6 |
-| `@codemirror/commands` | Basic commands | Undo/redo, selection |
-| `@codemirror/language` | Language support | JSON syntax (future: XML, CSV) |
-| `@codemirror/autocomplete` | Bracket matching | Lightweight completion |
-| `shiki` | Syntax highlighting | VS Code's highlighter, RSC compatible, accurate |
+| Package                    | Purpose                | Why                                               |
+| -------------------------- | ---------------------- | ------------------------------------------------- |
+| `diff`                     | Text/word/line diffing | Battle-tested, handles edge cases, unified format |
+| `@codemirror/view`         | Minimal editor         | Modular, tree-sitter based, lighter than Monaco   |
+| `@codemirror/state`        | Editor state           | Required by CodeMirror 6                          |
+| `@codemirror/commands`     | Basic commands         | Undo/redo, selection                              |
+| `@codemirror/language`     | Language support       | JSON syntax (future: XML, CSV)                    |
+| `@codemirror/autocomplete` | Bracket matching       | Lightweight completion                            |
+| `shiki`                    | Syntax highlighting    | VS Code's highlighter, RSC compatible, accurate   |
 
 **Bundle Impact:** ~150KB gzipped (vs ~500KB for full editor)
 
@@ -279,29 +293,29 @@ npm install diff @codemirror/view @codemirror/state @codemirror/commands @codemi
 
 ### Error Scenarios
 
-| Scenario | Behavior |
-|----------|----------|
-| Invalid JSON paste | Show error banner, highlight error line, disable Compare |
-| Invalid JSON file upload | Toast error, don't populate editor |
-| Huge file (>10MB) | Warning toast, load but may be slow |
-| Diff fails unexpectedly | Error message in DiffPanel, retry button |
-| Shiki load fails | Fallback to plain text with warning |
+| Scenario                 | Behavior                                                 |
+| ------------------------ | -------------------------------------------------------- |
+| Invalid JSON paste       | Show error banner, highlight error line, disable Compare |
+| Invalid JSON file upload | Toast error, don't populate editor                       |
+| Huge file (>10MB)        | Warning toast, load but may be slow                      |
+| Diff fails unexpectedly  | Error message in DiffPanel, retry button                 |
+| Shiki load fails         | Fallback to plain text with warning                      |
 
 ### Validation Implementation
 
 ```typescript
 // Debounced validation (300ms)
 const validateJson = (content: string): ParseError | null => {
-  try {
-    JSON.parse(content);
-    return null;
-  } catch (error) {
-    return {
-      message: error.message,
-      line: extractLineNumber(error),
-      column: extractColumnNumber(error)
-    };
-  }
+    try {
+        JSON.parse(content);
+        return null;
+    } catch (error) {
+        return {
+            message: error.message,
+            line: extractLineNumber(error),
+            column: extractColumnNumber(error),
+        };
+    }
 };
 ```
 
@@ -319,26 +333,26 @@ const validateJson = (content: string): ParseError | null => {
 
 ```typescript
 const handleFileUpload = async (file: File) => {
-  // Check file size
-  if (file.size > 50 * 1024 * 1024) {
-    toast.error('File too large (max 50MB)');
-    return;
-  }
+    // Check file size
+    if (file.size > 50 * 1024 * 1024) {
+        toast.error('File too large (max 50MB)');
+        return;
+    }
 
-  if (file.size > 10 * 1024 * 1024) {
-    toast.warning('Large file may be slow to process');
-  }
+    if (file.size > 10 * 1024 * 1024) {
+        toast.warning('Large file may be slow to process');
+    }
 
-  // Read file
-  const text = await file.text();
+    // Read file
+    const text = await file.text();
 
-  // Validate
-  try {
-    JSON.parse(text);
-    onChange(text);
-  } catch (error) {
-    toast.error(`Invalid JSON: ${error.message}`);
-  }
+    // Validate
+    try {
+        JSON.parse(text);
+        onChange(text);
+    } catch (error) {
+        toast.error(`Invalid JSON: ${error.message}`);
+    }
 };
 ```
 
@@ -349,10 +363,11 @@ const handleFileUpload = async (file: File) => {
 **Purpose:** Format JSON with consistent indentation before comparing.
 
 **Implementation:**
+
 ```typescript
 if (prettyPrint) {
-  const parsed = JSON.parse(content);
-  content = JSON.stringify(parsed, null, 2);
+    const parsed = JSON.parse(content);
+    content = JSON.stringify(parsed, null, 2);
 }
 ```
 
@@ -361,12 +376,13 @@ if (prettyPrint) {
 **Purpose:** Normalize whitespace to ignore formatting differences.
 
 **Implementation:**
+
 ```typescript
 if (ignoreWhitespace) {
-  content = content
-    .replace(/\s+/g, ' ')      // Collapse multiple spaces
-    .replace(/\s*\n\s*/g, '')  // Remove line breaks
-    .trim();
+    content = content
+        .replace(/\s+/g, ' ') // Collapse multiple spaces
+        .replace(/\s*\n\s*/g, '') // Remove line breaks
+        .trim();
 }
 ```
 
@@ -375,25 +391,26 @@ if (ignoreWhitespace) {
 **Purpose:** Treat objects as equal regardless of key ordering.
 
 **Implementation:**
+
 ```typescript
 const sortObjectKeys = (obj: any): any => {
-  if (Array.isArray(obj)) {
-    return obj.map(sortObjectKeys);
-  }
-  if (obj !== null && typeof obj === 'object') {
-    return Object.keys(obj)
-      .sort()
-      .reduce((sorted, key) => {
-        sorted[key] = sortObjectKeys(obj[key]);
-        return sorted;
-      }, {} as any);
-  }
-  return obj;
+    if (Array.isArray(obj)) {
+        return obj.map(sortObjectKeys);
+    }
+    if (obj !== null && typeof obj === 'object') {
+        return Object.keys(obj)
+            .sort()
+            .reduce((sorted, key) => {
+                sorted[key] = sortObjectKeys(obj[key]);
+                return sorted;
+            }, {} as any);
+    }
+    return obj;
 };
 
 if (ignoreKeyOrder) {
-  leftContent = JSON.stringify(sortObjectKeys(JSON.parse(leftContent)));
-  rightContent = JSON.stringify(sortObjectKeys(JSON.parse(rightContent)));
+    leftContent = JSON.stringify(sortObjectKeys(JSON.parse(leftContent)));
+    rightContent = JSON.stringify(sortObjectKeys(JSON.parse(rightContent)));
 }
 ```
 
@@ -402,28 +419,29 @@ if (ignoreKeyOrder) {
 **Purpose:** Treat semantically equivalent values as equal (type coercion).
 
 **Implementation:**
+
 ```typescript
 const coerceValue = (value: any): any => {
-  // String "123" → Number 123
-  if (typeof value === 'string' && /^\d+$/.test(value)) {
-    return Number(value);
-  }
+    // String "123" → Number 123
+    if (typeof value === 'string' && /^\d+$/.test(value)) {
+        return Number(value);
+    }
 
-  // String "true"/"false" → Boolean
-  if (value === 'true') return true;
-  if (value === 'false') return false;
+    // String "true"/"false" → Boolean
+    if (value === 'true') return true;
+    if (value === 'false') return false;
 
-  // String "null" → null
-  if (value === 'null') return null;
+    // String "null" → null
+    if (value === 'null') return null;
 
-  return value;
+    return value;
 };
 
 const compareWithCoercion = (left: any, right: any): boolean => {
-  if (typeof left !== typeof right) {
-    return JSON.stringify(coerceValue(left)) === JSON.stringify(coerceValue(right));
-  }
-  return JSON.stringify(left) === JSON.stringify(right);
+    if (typeof left !== typeof right) {
+        return JSON.stringify(coerceValue(left)) === JSON.stringify(coerceValue(right));
+    }
+    return JSON.stringify(left) === JSON.stringify(right);
 };
 ```
 
@@ -432,18 +450,21 @@ const compareWithCoercion = (left: any, right: any): boolean => {
 ### Unit Tests
 
 **useJsonDiff Hook:**
+
 - Toggle combinations (16 scenarios)
 - Valid JSON comparisons
 - Invalid JSON handling
 - Empty content edge cases
 
 **JsonEditor Component:**
+
 - Renders CodeMirror instance
 - onChange callback fires
 - Error state displays correctly
 - File upload triggers onChange
 
 **DiffPanel Component:**
+
 - Renders unified diff correctly
 - Line numbers match content
 - Color coding is accurate
@@ -452,6 +473,7 @@ const compareWithCoercion = (left: any, right: any): boolean => {
 ### Integration Tests
 
 **EditorPane Full Flow:**
+
 - User types in both editors
 - Validation states update
 - Compare button enables/disables
@@ -459,12 +481,14 @@ const compareWithCoercion = (left: any, right: any): boolean => {
 - Toggles change diff result
 
 **Error Scenarios:**
+
 - Invalid JSON shows error
 - Invalid file upload rejected
 - Diff failure displays error
 - Huge file warning shows
 
 **Keyboard Navigation:**
+
 - Tab between editors
 - Ctrl+Enter triggers Compare
 - Escape clears errors
@@ -489,6 +513,7 @@ const compareWithCoercion = (left: any, right: any): boolean => {
 ## Implementation Phases
 
 ### Phase 1: Foundation (Core Components)
+
 1. Install dependencies
 2. Create file structure
 3. Implement JsonEditor component (CodeMirror + validation)
@@ -497,18 +522,21 @@ const compareWithCoercion = (left: any, right: any): boolean => {
 6. Basic integration (two panes, Compare button)
 
 ### Phase 2: Diff Logic
+
 1. Implement useJsonDiff hook
 2. Implement Pretty Print toggle
 3. Implement Ignore Whitespace toggle
 4. Test basic diff functionality
 
 ### Phase 3: Advanced Toggles
+
 1. Implement Ignore Key Order (custom tree-walker)
 2. Implement Semantic Type Diff (coercion logic)
 3. Test toggle combinations
 4. Performance testing (large files)
 
 ### Phase 4: Polish
+
 1. Add file upload functionality
 2. Add drag-and-drop support
 3. Improve error messages
@@ -517,6 +545,7 @@ const compareWithCoercion = (left: any, right: any): boolean => {
 6. Full test coverage
 
 ### Phase 5: Integration & Testing
+
 1. Integrate with Toolbar component
 2. Connect toggle states
 3. End-to-end testing
@@ -537,23 +566,27 @@ const compareWithCoercion = (left: any, right: any): boolean => {
 ## Design Decisions
 
 ### Why CodeMirror 6 vs Monaco/Ace?
+
 - **Modular:** Only load what we need (line numbers, no heavy IDE)
 - **Lightweight:** ~150KB vs ~500KB for Monaco
 - **Tree-sitter:** Modern, accurate parsing
 - **RSC Compatible:** Works with Next.js App Router
 
 ### Why Shiki vs Prism/Highlight.js?
+
 - **Tree-sitter based:** More accurate syntax highlighting
 - **RSC compatible:** Works in React Server Components
 - **Lightweight:** Smaller than Prism/HLJS
 - **VS Code's engine:** Battle-tested, actively maintained
 
 ### Why Manual Diff vs Auto-diff?
+
 - **Performance:** Large files could cause lag on every keystroke
 - **User control:** Explicit Compare action is more predictable
 - **Clear workflow:** Edit → Review → Compare → See results
 
 ### Why Unified Diff vs Side-by-Side?
+
 - **User preference:** Based on provided screenshot
 - **Simpler implementation:** Single panel vs synchronized scrolling
 - **Mobile friendly:** Easier to view on narrow screens

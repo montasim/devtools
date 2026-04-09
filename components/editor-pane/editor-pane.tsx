@@ -33,7 +33,12 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
     const [rightValid, setRightValid] = useState<boolean>(false);
 
     // Diff hook
-    const { diff, error: diffError, isComputing, computeDiff } = useJsonDiff({
+    const {
+        diff,
+        error: diffError,
+        isComputing,
+        computeDiff,
+    } = useJsonDiff({
         leftContent,
         rightContent,
         ignoreKeyOrder,
@@ -86,14 +91,18 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
                     label="Original"
                     value={leftContent}
                     onChange={setLeftContent}
-                    onError={(error) => setLeftValid(error === null && leftContent.trim().length > 0)}
+                    onError={(error) =>
+                        setLeftValid(error === null && leftContent.trim().length > 0)
+                    }
                 />
 
                 <JsonEditor
                     label="Modified"
                     value={rightContent}
                     onChange={setRightContent}
-                    onError={(error) => setRightValid(error === null && rightContent.trim().length > 0)}
+                    onError={(error) =>
+                        setRightValid(error === null && rightContent.trim().length > 0)
+                    }
                 />
             </div>
 

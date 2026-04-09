@@ -14,9 +14,12 @@ export default function Home() {
 
     const editorPaneRef = useRef<EditorPaneRef>(null);
 
-    const handleCompare = useCallback((result: { hunks: unknown[]; additionCount: number; deletionCount: number }) => {
-        console.log('Diff result:', result);
-    }, []);
+    const handleCompare = useCallback(
+        (result: { hunks: unknown[]; additionCount: number; deletionCount: number }) => {
+            console.log('Diff result:', result);
+        },
+        [],
+    );
 
     const handleError = (error: Error) => {
         console.error('Diff error:', error);

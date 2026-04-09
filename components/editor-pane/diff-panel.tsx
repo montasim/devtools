@@ -48,7 +48,8 @@ export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
                         <div key={`hunk-${hunk.oldStart}-${hunk.newStart}`}>
                             {/* Hunk header */}
                             <div className="px-4 py-1 bg-gray-100 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                                @@ -{hunk.oldStart},{hunk.oldLines} +{hunk.newStart},{hunk.newLines} @@
+                                @@ -{hunk.oldStart},{hunk.oldLines} +{hunk.newStart},{hunk.newLines}{' '}
+                                @@
                             </div>
 
                             {/* Hunk lines */}
@@ -68,21 +69,29 @@ export function DiffPanel({ diffResult, isLoading }: DiffPanelProps) {
                                         className="w-12 text-right text-gray-400 select-none mr-4 text-xs dark:text-gray-500"
                                         aria-hidden="true"
                                     >
-                                        {line.oldLineNumber !== undefined ? line.oldLineNumber : ' '}
+                                        {line.oldLineNumber !== undefined
+                                            ? line.oldLineNumber
+                                            : ' '}
                                     </span>
                                     <span
                                         className="w-12 text-right text-gray-400 select-none mr-4 text-xs dark:text-gray-500"
                                         aria-hidden="true"
                                     >
-                                        {line.newLineNumber !== undefined ? line.newLineNumber : ' '}
+                                        {line.newLineNumber !== undefined
+                                            ? line.newLineNumber
+                                            : ' '}
                                     </span>
 
                                     {/* Line marker */}
                                     <span className="w-4 mr-2 select-none">
                                         {line.type === 'addition' ? (
-                                            <span className="text-green-600 dark:text-green-400">+</span>
+                                            <span className="text-green-600 dark:text-green-400">
+                                                +
+                                            </span>
                                         ) : line.type === 'deletion' ? (
-                                            <span className="text-red-600 dark:text-red-400">-</span>
+                                            <span className="text-red-600 dark:text-red-400">
+                                                -
+                                            </span>
                                         ) : (
                                             <span> </span>
                                         )}

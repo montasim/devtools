@@ -29,6 +29,7 @@ components/editor-pane/
 ## Task 1: Install Dependencies
 
 **Files:**
+
 - Modify: `package.json`
 
 - [ ] **Step 1: Install required packages**
@@ -57,6 +58,7 @@ git commit -m "feat(editor-pane): install CodeMirror, Shiki, and diff dependenci
 ## Task 2: Create Type Definitions
 
 **Files:**
+
 - Create: `components/editor-pane/types.ts`
 
 - [ ] **Step 1: Write type definitions file**
@@ -64,109 +66,109 @@ git commit -m "feat(editor-pane): install CodeMirror, Shiki, and diff dependenci
 ```typescript
 // Parse error details from JSON.parse
 export interface ParseError {
-  message: string;
-  line: number;
-  column: number;
+    message: string;
+    line: number;
+    column: number;
 }
 
 // Individual diff hunk (unified format)
 export interface DiffHunk {
-  oldStart: number;
-  oldLines: number;
-  newStart: number;
-  newLines: number;
-  lines: DiffLine[];
+    oldStart: number;
+    oldLines: number;
+    newStart: number;
+    newLines: number;
+    lines: DiffLine[];
 }
 
 export interface DiffLine {
-  type: 'addition' | 'deletion' | 'unchanged';
-  content: string;
-  oldLineNumber?: number;
-  newLineNumber?: number;
+    type: 'addition' | 'deletion' | 'unchanged';
+    content: string;
+    oldLineNumber?: number;
+    newLineNumber?: number;
 }
 
 // Complete diff result
 export interface DiffResult {
-  hunks: DiffHunk[];
-  lineCount: number;
-  additionCount: number;
-  deletionCount: number;
+    hunks: DiffHunk[];
+    lineCount: number;
+    additionCount: number;
+    deletionCount: number;
 }
 
 // EditorPane component props
 export interface EditorPaneProps {
-  // Toggle states (from Toolbar)
-  ignoreKeyOrder: boolean;
-  prettyPrint: boolean;
-  ignoreWhitespace: boolean;
-  semanticTypeDiff: boolean;
+    // Toggle states (from Toolbar)
+    ignoreKeyOrder: boolean;
+    prettyPrint: boolean;
+    ignoreWhitespace: boolean;
+    semanticTypeDiff: boolean;
 
-  // Initial content (optional)
-  initialLeftContent?: string;
-  initialRightContent?: string;
+    // Initial content (optional)
+    initialLeftContent?: string;
+    initialRightContent?: string;
 
-  // Event handlers
-  onCompare?: (result: DiffResult) => void;
-  onError?: (error: Error) => void;
+    // Event handlers
+    onCompare?: (result: DiffResult) => void;
+    onError?: (error: Error) => void;
 
-  // Styling
-  className?: string;
+    // Styling
+    className?: string;
 }
 
 // EditorPane internal state
 export interface EditorPaneState {
-  // Content
-  leftContent: string;
-  rightContent: string;
+    // Content
+    leftContent: string;
+    rightContent: string;
 
-  // Validation
-  leftValid: boolean;
-  rightValid: boolean;
-  leftError: ParseError | null;
-  rightError: ParseError | null;
+    // Validation
+    leftValid: boolean;
+    rightValid: boolean;
+    leftError: ParseError | null;
+    rightError: ParseError | null;
 
-  // Diff state
-  diffResult: DiffResult | null;
-  isComputing: boolean;
+    // Diff state
+    diffResult: DiffResult | null;
+    isComputing: boolean;
 
-  // UI state
-  showLineNumbers: boolean;
-  leftEditorFocused: boolean;
-  rightEditorFocused: boolean;
+    // UI state
+    showLineNumbers: boolean;
+    leftEditorFocused: boolean;
+    rightEditorFocused: boolean;
 }
 
 // JsonEditor component props
 export interface JsonEditorProps {
-  value: string;
-  onChange: (value: string) => void;
-  onError: (error: ParseError | null) => void;
-  label: string;
-  placeholder?: string;
-  readOnly?: boolean;
+    value: string;
+    onChange: (value: string) => void;
+    onError: (error: ParseError | null) => void;
+    label: string;
+    placeholder?: string;
+    readOnly?: boolean;
 }
 
 // DiffPanel component props
 export interface DiffPanelProps {
-  diffResult: DiffResult | null;
-  isLoading: boolean;
+    diffResult: DiffResult | null;
+    isLoading: boolean;
 }
 
 // useJsonDiff hook options
 export interface UseJsonDiffOptions {
-  leftContent: string;
-  rightContent: string;
-  ignoreKeyOrder: boolean;
-  prettyPrint: boolean;
-  ignoreWhitespace: boolean;
-  semanticTypeDiff: boolean;
+    leftContent: string;
+    rightContent: string;
+    ignoreKeyOrder: boolean;
+    prettyPrint: boolean;
+    ignoreWhitespace: boolean;
+    semanticTypeDiff: boolean;
 }
 
 // useJsonDiff hook return
 export interface UseJsonDiffReturn {
-  diff: DiffResult | null;
-  error: Error | null;
-  isComputing: boolean;
-  computeDiff: () => Promise<void>;
+    diff: DiffResult | null;
+    error: Error | null;
+    isComputing: boolean;
+    computeDiff: () => Promise<void>;
 }
 ```
 
@@ -180,16 +182,16 @@ touch components/editor-pane/index.ts
 
 ```typescript
 export type {
-  ParseError,
-  DiffHunk,
-  DiffLine,
-  DiffResult,
-  EditorPaneProps,
-  EditorPaneState,
-  JsonEditorProps,
-  DiffPanelProps,
-  UseJsonDiffOptions,
-  UseJsonDiffReturn,
+    ParseError,
+    DiffHunk,
+    DiffLine,
+    DiffResult,
+    EditorPaneProps,
+    EditorPaneState,
+    JsonEditorProps,
+    DiffPanelProps,
+    UseJsonDiffOptions,
+    UseJsonDiffReturn,
 } from './types';
 ```
 
@@ -213,6 +215,7 @@ git commit -m "feat(editor-pane): add TypeScript type definitions"
 ## Task 3: Create JSON Validation Utility
 
 **Files:**
+
 - Create: `components/editor-pane/utils/validation.ts`
 
 - [ ] **Step 1: Create utils directory**
@@ -230,22 +233,22 @@ import { ParseError } from '../types';
  * Validates JSON string and returns detailed error if invalid
  */
 export function validateJson(content: string): ParseError | null {
-  if (!content || content.trim().length === 0) {
-    return null; // Empty is valid (will show placeholder)
-  }
+    if (!content || content.trim().length === 0) {
+        return null; // Empty is valid (will show placeholder)
+    }
 
-  try {
-    JSON.parse(content);
-    return null;
-  } catch (error) {
-    const err = error as Error;
-    const parseError = parseJsonError(err.message);
-    return {
-      message: parseError.message || 'Invalid JSON',
-      line: parseError.line || 1,
-      column: parseError.column || 1,
-    };
-  }
+    try {
+        JSON.parse(content);
+        return null;
+    } catch (error) {
+        const err = error as Error;
+        const parseError = parseJsonError(err.message);
+        return {
+            message: parseError.message || 'Invalid JSON',
+            line: parseError.line || 1,
+            column: parseError.column || 1,
+        };
+    }
 }
 
 /**
@@ -254,48 +257,48 @@ export function validateJson(content: string): ParseError | null {
  * or "Expected property name or '}' in JSON at line 2 column 3"
  */
 function parseJsonError(message: string): { message?: string; line?: number; column?: number } {
-  // Try to extract line/column from error message
-  const lineMatch = message.match(/line (\d+)/i);
-  const columnMatch = message.match(/column (\d+)/i);
-  const positionMatch = message.match(/position (\d+)/i);
+    // Try to extract line/column from error message
+    const lineMatch = message.match(/line (\d+)/i);
+    const columnMatch = message.match(/column (\d+)/i);
+    const positionMatch = message.match(/position (\d+)/i);
 
-  const line = lineMatch ? parseInt(lineMatch[1], 10) : undefined;
-  const column = columnMatch ? parseInt(columnMatch[1], 10) : undefined;
+    const line = lineMatch ? parseInt(lineMatch[1], 10) : undefined;
+    const column = columnMatch ? parseInt(columnMatch[1], 10) : undefined;
 
-  if (line && column) {
-    return { message, line, column };
-  }
+    if (line && column) {
+        return { message, line, column };
+    }
 
-  if (positionMatch) {
-    // Calculate line/column from position
-    const position = parseInt(positionMatch[1], 10);
-    return { message, line: 1, column: position + 1 };
-  }
+    if (positionMatch) {
+        // Calculate line/column from position
+        const position = parseInt(positionMatch[1], 10);
+        return { message, line: 1, column: position + 1 };
+    }
 
-  // Default to line 1, column 1
-  return { message, line: 1, column: 1 };
+    // Default to line 1, column 1
+    return { message, line: 1, column: 1 };
 }
 
 /**
  * Debounce utility function
  */
 export function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  wait: number
+    func: T,
+    wait: number,
 ): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout | null = null;
+    let timeout: NodeJS.Timeout | null = null;
 
-  return function executedFunction(...args: Parameters<T>) {
-    const later = () => {
-      timeout = null;
-      func(...args);
+    return function executedFunction(...args: Parameters<T>) {
+        const later = () => {
+            timeout = null;
+            func(...args);
+        };
+
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(later, wait);
     };
-
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-    timeout = setTimeout(later, wait);
-  };
 }
 ```
 
@@ -312,28 +315,28 @@ import { describe, it, expect } from 'vitest';
 import { validateJson } from '../validation';
 
 describe('validateJson', () => {
-  it('should return null for valid JSON', () => {
-    const result = validateJson('{"name": "John"}');
-    expect(result).toBeNull();
-  });
+    it('should return null for valid JSON', () => {
+        const result = validateJson('{"name": "John"}');
+        expect(result).toBeNull();
+    });
 
-  it('should return null for empty string', () => {
-    const result = validateJson('');
-    expect(result).toBeNull();
-  });
+    it('should return null for empty string', () => {
+        const result = validateJson('');
+        expect(result).toBeNull();
+    });
 
-  it('should return error for invalid JSON', () => {
-    const result = validateJson('{"name": "John"');
-    expect(result).not.toBeNull();
-    expect(result?.message).toContain('JSON');
-  });
+    it('should return error for invalid JSON', () => {
+        const result = validateJson('{"name": "John"');
+        expect(result).not.toBeNull();
+        expect(result?.message).toContain('JSON');
+    });
 
-  it('should extract line and column from error', () => {
-    const result = validateJson('{"name": "John"\n"age": }');
-    expect(result).not.toBeNull();
-    expect(result?.line).toBeGreaterThan(0);
-    expect(result?.column).toBeGreaterThan(0);
-  });
+    it('should extract line and column from error', () => {
+        const result = validateJson('{"name": "John"\n"age": }');
+        expect(result).not.toBeNull();
+        expect(result?.line).toBeGreaterThan(0);
+        expect(result?.column).toBeGreaterThan(0);
+    });
 });
 ```
 
@@ -357,6 +360,7 @@ git commit -m "feat(editor-pane): add JSON validation utility with tests"
 ## Task 4: Implement JsonEditor Component (Basic Structure)
 
 **Files:**
+
 - Create: `components/editor-pane/json-editor.tsx`
 
 - [ ] **Step 1: Write JsonEditor component with CodeMirror setup**
@@ -575,6 +579,7 @@ git commit -m "feat(editor-pane): implement JsonEditor component with CodeMirror
 ## Task 5: Implement DiffPanel Component
 
 **Files:**
+
 - Create: `components/editor-pane/diff-panel.tsx`
 
 - [ ] **Step 1: Write DiffPanel component**
@@ -705,6 +710,7 @@ git commit -m "feat(editor-pane): implement DiffPanel component"
 ## Task 6: Implement useJsonDiff Hook (Basic Diff)
 
 **Files:**
+
 - Create: `components/editor-pane/use-json-diff.ts`
 
 - [ ] **Step 1: Write useJsonDiff hook with basic diff implementation**
@@ -717,156 +723,164 @@ import { diffLines } from 'diff';
 import { UseJsonDiffOptions, UseJsonDiffReturn, DiffResult, DiffHunk, DiffLine } from './types';
 
 export function useJsonDiff(options: UseJsonDiffOptions): UseJsonDiffReturn {
-  const [diff, setDiff] = useState<DiffResult | null>(null);
-  const [error, setError] = useState<Error | null>(null);
-  const [isComputing, setIsComputing] = useState(false);
+    const [diff, setDiff] = useState<DiffResult | null>(null);
+    const [error, setError] = useState<Error | null>(null);
+    const [isComputing, setIsComputing] = useState(false);
 
-  const computeDiff = useCallback(async () => {
-    setIsComputing(true);
-    setError(null);
+    const computeDiff = useCallback(async () => {
+        setIsComputing(true);
+        setError(null);
 
-    try {
-      // Parse JSON
-      const leftParsed = JSON.parse(options.leftContent);
-      const rightParsed = JSON.parse(options.rightContent);
+        try {
+            // Parse JSON
+            const leftParsed = JSON.parse(options.leftContent);
+            const rightParsed = JSON.parse(options.rightContent);
 
-      // Apply toggles
-      let leftStr = JSON.stringify(leftParsed);
-      let rightStr = JSON.stringify(rightParsed);
+            // Apply toggles
+            let leftStr = JSON.stringify(leftParsed);
+            let rightStr = JSON.stringify(rightParsed);
 
-      // Pretty Print
-      if (options.prettyPrint) {
-        leftStr = JSON.stringify(JSON.parse(leftStr), null, 2);
-        rightStr = JSON.stringify(JSON.parse(rightStr), null, 2);
-      }
+            // Pretty Print
+            if (options.prettyPrint) {
+                leftStr = JSON.stringify(JSON.parse(leftStr), null, 2);
+                rightStr = JSON.stringify(JSON.parse(rightStr), null, 2);
+            }
 
-      // Ignore Whitespace
-      if (options.ignoreWhitespace) {
-        leftStr = leftStr.replace(/\s+/g, ' ').replace(/\s*\n\s*/g, '').trim();
-        rightStr = rightStr.replace(/\s+/g, ' ').replace(/\s*\n\s*/g, '').trim();
-      }
+            // Ignore Whitespace
+            if (options.ignoreWhitespace) {
+                leftStr = leftStr
+                    .replace(/\s+/g, ' ')
+                    .replace(/\s*\n\s*/g, '')
+                    .trim();
+                rightStr = rightStr
+                    .replace(/\s+/g, ' ')
+                    .replace(/\s*\n\s*/g, '')
+                    .trim();
+            }
 
-      // Ignore Key Order (simplified - will be expanded in Task 8)
-      if (options.ignoreKeyOrder) {
-        const sorted = (obj: any): any => {
-          if (Array.isArray(obj)) return obj.map(sorted);
-          if (obj !== null && typeof obj === 'object') {
-            return Object.keys(obj)
-              .sort()
-              .reduce((sorted: any, key) => {
-                sorted[key] = sortObjectKeys(obj[key]);
-                return sorted;
-              }, {});
-          }
-          return obj;
-        };
+            // Ignore Key Order (simplified - will be expanded in Task 8)
+            if (options.ignoreKeyOrder) {
+                const sorted = (obj: any): any => {
+                    if (Array.isArray(obj)) return obj.map(sorted);
+                    if (obj !== null && typeof obj === 'object') {
+                        return Object.keys(obj)
+                            .sort()
+                            .reduce((sorted: any, key) => {
+                                sorted[key] = sortObjectKeys(obj[key]);
+                                return sorted;
+                            }, {});
+                    }
+                    return obj;
+                };
 
-        const sortObjectKeys = (obj: any): any => {
-          if (Array.isArray(obj)) return obj.map(sortObjectKeys);
-          if (obj !== null && typeof obj === 'object') {
-            return Object.keys(obj)
-              .sort()
-              .reduce((sorted: any, key) => {
-                sorted[key] = sortObjectKeys(obj[key]);
-                return sorted;
-              }, {});
-          }
-          return obj;
-        };
+                const sortObjectKeys = (obj: any): any => {
+                    if (Array.isArray(obj)) return obj.map(sortObjectKeys);
+                    if (obj !== null && typeof obj === 'object') {
+                        return Object.keys(obj)
+                            .sort()
+                            .reduce((sorted: any, key) => {
+                                sorted[key] = sortObjectKeys(obj[key]);
+                                return sorted;
+                            }, {});
+                    }
+                    return obj;
+                };
 
-        leftStr = JSON.stringify(sortObjectKeys(JSON.parse(leftStr)), null, 2);
-        rightStr = JSON.stringify(sortObjectKeys(JSON.parse(rightStr)), null, 2);
-      }
+                leftStr = JSON.stringify(sortObjectKeys(JSON.parse(leftStr)), null, 2);
+                rightStr = JSON.stringify(sortObjectKeys(JSON.parse(rightStr)), null, 2);
+            }
 
-      // Semantic Type Diff (simplified - will be expanded in Task 9)
-      if (options.semanticTypeDiff) {
-        // For now, just compare as-is
-        // Full implementation will handle type coercion
-      }
+            // Semantic Type Diff (simplified - will be expanded in Task 9)
+            if (options.semanticTypeDiff) {
+                // For now, just compare as-is
+                // Full implementation will handle type coercion
+            }
 
-      // Compute diff using diff package
-      const differences = diffLines(leftStr, rightStr);
+            // Compute diff using diff package
+            const differences = diffLines(leftStr, rightStr);
 
-      // Convert to our format
-      const hunks: DiffHunk[] = [];
-      let currentHunk: Partial<DiffHunk> | null = null;
-      let oldLineNumber = 1;
-      let newLineNumber = 1;
-      let additionCount = 0;
-      let deletionCount = 0;
+            // Convert to our format
+            const hunks: DiffHunk[] = [];
+            let currentHunk: Partial<DiffHunk> | null = null;
+            let oldLineNumber = 1;
+            let newLineNumber = 1;
+            let additionCount = 0;
+            let deletionCount = 0;
 
-      differences.forEach((part) => {
-        const lines = part.value.split('\n').filter((l) => l.length > 0 || part.added || part.removed);
+            differences.forEach((part) => {
+                const lines = part.value
+                    .split('\n')
+                    .filter((l) => l.length > 0 || part.added || part.removed);
 
-        lines.forEach((line) => {
-          if (!currentHunk) {
-            currentHunk = {
-              oldStart: oldLineNumber,
-              newStart: newLineNumber,
-              oldLines: 0,
-              newLines: 0,
-              lines: [],
+                lines.forEach((line) => {
+                    if (!currentHunk) {
+                        currentHunk = {
+                            oldStart: oldLineNumber,
+                            newStart: newLineNumber,
+                            oldLines: 0,
+                            newLines: 0,
+                            lines: [],
+                        };
+                    }
+
+                    if (part.added) {
+                        currentHunk.lines?.push({
+                            type: 'addition',
+                            content: line,
+                            newLineNumber,
+                        });
+                        currentHunk.newLines = (currentHunk.newLines || 0) + 1;
+                        newLineNumber++;
+                        additionCount++;
+                    } else if (part.removed) {
+                        currentHunk.lines?.push({
+                            type: 'deletion',
+                            content: line,
+                            oldLineNumber,
+                        });
+                        currentHunk.oldLines = (currentHunk.oldLines || 0) + 1;
+                        oldLineNumber++;
+                        deletionCount++;
+                    } else {
+                        currentHunk.lines?.push({
+                            type: 'unchanged',
+                            content: line,
+                            oldLineNumber,
+                            newLineNumber,
+                        });
+                        currentHunk.oldLines = (currentHunk.oldLines || 0) + 1;
+                        currentHunk.newLines = (currentHunk.newLines || 0) + 1;
+                        oldLineNumber++;
+                        newLineNumber++;
+                    }
+                });
+            });
+
+            if (currentHunk) {
+                hunks.push(currentHunk as DiffHunk);
+            }
+
+            const result: DiffResult = {
+                hunks,
+                lineCount: oldLineNumber + newLineNumber - 2,
+                additionCount,
+                deletionCount,
             };
-          }
 
-          if (part.added) {
-            currentHunk.lines?.push({
-              type: 'addition',
-              content: line,
-              newLineNumber,
-            });
-            currentHunk.newLines = (currentHunk.newLines || 0) + 1;
-            newLineNumber++;
-            additionCount++;
-          } else if (part.removed) {
-            currentHunk.lines?.push({
-              type: 'deletion',
-              content: line,
-              oldLineNumber,
-            });
-            currentHunk.oldLines = (currentHunk.oldLines || 0) + 1;
-            oldLineNumber++;
-            deletionCount++;
-          } else {
-            currentHunk.lines?.push({
-              type: 'unchanged',
-              content: line,
-              oldLineNumber,
-              newLineNumber,
-            });
-            currentHunk.oldLines = (currentHunk.oldLines || 0) + 1;
-            currentHunk.newLines = (currentHunk.newLines || 0) + 1;
-            oldLineNumber++;
-            newLineNumber++;
-          }
-        });
-      });
+            setDiff(result);
+        } catch (err) {
+            setError(err as Error);
+        } finally {
+            setIsComputing(false);
+        }
+    }, [options]);
 
-      if (currentHunk) {
-        hunks.push(currentHunk as DiffHunk);
-      }
-
-      const result: DiffResult = {
-        hunks,
-        lineCount: oldLineNumber + newLineNumber - 2,
-        additionCount,
-        deletionCount,
-      };
-
-      setDiff(result);
-    } catch (err) {
-      setError(err as Error);
-    } finally {
-      setIsComputing(false);
-    }
-  }, [options]);
-
-  return {
-    diff,
-    error,
-    isComputing,
-    computeDiff,
-  };
+    return {
+        diff,
+        error,
+        isComputing,
+        computeDiff,
+    };
 }
 ```
 
@@ -884,43 +898,43 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { useJsonDiff } from '../use-json-diff';
 
 describe('useJsonDiff', () => {
-  it('should detect no differences for identical JSON', async () => {
-    const { result } = renderHook(() =>
-      useJsonDiff({
-        leftContent: '{"name": "John"}',
-        rightContent: '{"name": "John"}',
-        ignoreKeyOrder: false,
-        prettyPrint: false,
-        ignoreWhitespace: false,
-        semanticTypeDiff: false,
-      })
-    );
+    it('should detect no differences for identical JSON', async () => {
+        const { result } = renderHook(() =>
+            useJsonDiff({
+                leftContent: '{"name": "John"}',
+                rightContent: '{"name": "John"}',
+                ignoreKeyOrder: false,
+                prettyPrint: false,
+                ignoreWhitespace: false,
+                semanticTypeDiff: false,
+            }),
+        );
 
-    await result.current.computeDiff();
+        await result.current.computeDiff();
 
-    expect(result.current.diff).not.toBeNull();
-    expect(result.current.diff?.additionCount).toBe(0);
-    expect(result.current.diff?.deletionCount).toBe(0);
-  });
+        expect(result.current.diff).not.toBeNull();
+        expect(result.current.diff?.additionCount).toBe(0);
+        expect(result.current.diff?.deletionCount).toBe(0);
+    });
 
-  it('should detect differences for different JSON', async () => {
-    const { result } = renderHook(() =>
-      useJsonDiff({
-        leftContent: '{"name": "John"}',
-        rightContent: '{"name": "Jane"}',
-        ignoreKeyOrder: false,
-        prettyPrint: false,
-        ignoreWhitespace: false,
-        semanticTypeDiff: false,
-      })
-    );
+    it('should detect differences for different JSON', async () => {
+        const { result } = renderHook(() =>
+            useJsonDiff({
+                leftContent: '{"name": "John"}',
+                rightContent: '{"name": "Jane"}',
+                ignoreKeyOrder: false,
+                prettyPrint: false,
+                ignoreWhitespace: false,
+                semanticTypeDiff: false,
+            }),
+        );
 
-    await result.current.computeDiff();
+        await result.current.computeDiff();
 
-    expect(result.current.diff).not.toBeNull();
-    expect(result.current.diff?.additionCount).toBeGreaterThan(0);
-    expect(result.current.diff?.deletionCount).toBeGreaterThan(0);
-  });
+        expect(result.current.diff).not.toBeNull();
+        expect(result.current.diff?.additionCount).toBeGreaterThan(0);
+        expect(result.current.diff?.deletionCount).toBeGreaterThan(0);
+    });
 });
 ```
 
@@ -950,6 +964,7 @@ git commit -m "feat(editor-pane): implement useJsonDiff hook with basic diff log
 ## Task 7: Implement EditorPane Orchestrator
 
 **Files:**
+
 - Create: `components/editor-pane/editor-pane.tsx`
 
 - [ ] **Step 1: Write EditorPane orchestrator component**
@@ -1082,6 +1097,7 @@ git commit -m "feat(editor-pane): implement EditorPane orchestrator component"
 ## Task 8: Add Shiki Syntax Highlighting to JsonEditor
 
 **Files:**
+
 - Modify: `components/editor-pane/json-editor.tsx`
 
 - [ ] **Step 1: Update JsonEditor to use Shiki for syntax highlighting**
@@ -1159,6 +1175,7 @@ git commit -m "feat(editor-pane): add syntax highlighting to JsonEditor"
 ## Task 9: Enhance useJsonDiff with Advanced Toggle Logic
 
 **Files:**
+
 - Modify: `components/editor-pane/use-json-diff.ts`
 
 - [ ] **Step 1: Enhance Ignore Key Order logic**
@@ -1167,22 +1184,22 @@ Replace the sortObjectKeys function with a more robust implementation:
 
 ```typescript
 const sortObjectKeys = (obj: any): any => {
-  if (obj === null || typeof obj !== 'object') {
-    return obj;
-  }
+    if (obj === null || typeof obj !== 'object') {
+        return obj;
+    }
 
-  if (Array.isArray(obj)) {
-    return obj.map(sortObjectKeys);
-  }
+    if (Array.isArray(obj)) {
+        return obj.map(sortObjectKeys);
+    }
 
-  const sorted = Object.keys(obj)
-    .sort()
-    .reduce((acc: any, key) => {
-      acc[key] = sortObjectKeys(obj[key]);
-      return acc;
-    }, {});
+    const sorted = Object.keys(obj)
+        .sort()
+        .reduce((acc: any, key) => {
+            acc[key] = sortObjectKeys(obj[key]);
+            return acc;
+        }, {});
 
-  return sorted;
+    return sorted;
 };
 ```
 
@@ -1193,69 +1210,69 @@ Replace the simplified semantic type diff with full implementation:
 ```typescript
 // Semantic Type Diff: Coerce types for comparison
 const coerceValue = (value: any): any => {
-  // String to number
-  if (typeof value === 'string' && /^\d+$/.test(value)) {
-    return Number(value);
-  }
+    // String to number
+    if (typeof value === 'string' && /^\d+$/.test(value)) {
+        return Number(value);
+    }
 
-  // String to boolean
-  if (value === 'true') return true;
-  if (value === 'false') return false;
+    // String to boolean
+    if (value === 'true') return true;
+    if (value === 'false') return false;
 
-  // String to null
-  if (value === 'null') return null;
+    // String to null
+    if (value === 'null') return null;
 
-  return value;
+    return value;
 };
 
 const compareWithCoercion = (left: any, right: any): boolean => {
-  const leftCoerced = coerceValue(left);
-  const rightCoerced = coerceValue(right);
+    const leftCoerced = coerceValue(left);
+    const rightCoerced = coerceValue(right);
 
-  if (typeof leftCoerced !== typeof rightCoerced) {
+    if (typeof leftCoerced !== typeof rightCoerced) {
+        return JSON.stringify(leftCoerced) === JSON.stringify(rightCoerced);
+    }
+
     return JSON.stringify(leftCoerced) === JSON.stringify(rightCoerced);
-  }
-
-  return JSON.stringify(leftCoerced) === JSON.stringify(rightCoerced);
 };
 
 const applySemanticDiff = (left: any, right: any): boolean => {
-  // Deep comparison with type coercion
-  const normalize = (obj: any): any => {
-    if (obj === null || typeof obj !== 'object') {
-      return coerceValue(obj);
-    }
+    // Deep comparison with type coercion
+    const normalize = (obj: any): any => {
+        if (obj === null || typeof obj !== 'object') {
+            return coerceValue(obj);
+        }
 
-    if (Array.isArray(obj)) {
-      return obj.map(normalize);
-    }
+        if (Array.isArray(obj)) {
+            return obj.map(normalize);
+        }
 
-    const normalized: any = {};
-    for (const key of Object.keys(obj)) {
-      normalized[key] = normalize(obj[key]);
-    }
+        const normalized: any = {};
+        for (const key of Object.keys(obj)) {
+            normalized[key] = normalize(obj[key]);
+        }
 
-    return normalized;
-  };
+        return normalized;
+    };
 
-  const normalizedLeft = normalize(left);
-  const normalizedRight = normalize(right);
+    const normalizedLeft = normalize(left);
+    const normalizedRight = normalize(right);
 
-  return JSON.stringify(normalizedLeft) === JSON.stringify(normalizedRight);
+    return JSON.stringify(normalizedLeft) === JSON.stringify(normalizedRight);
 };
 
 // Use in computeDiff function:
 if (options.semanticTypeDiff) {
-  if (applySemanticDiff(leftParsed, rightParsed)) {
-    // Objects are semantically equal
-    setDiff({
-      hunks: [],
-      lineCount: 0,
-      additionCount: 0,
-      deletionCount: 0,
-    });
-    return;
-  }
+    if (applySemanticDiff(leftParsed, rightParsed)) {
+        // Objects are semantically equal
+        setDiff({
+            hunks: [],
+            lineCount: 0,
+            additionCount: 0,
+            deletionCount: 0,
+        });
+        return;
+    }
 }
 ```
 
@@ -1271,6 +1288,7 @@ git commit -m "feat(editor-pane): enhance Ignore Key Order and Semantic Type Dif
 ## Task 10: Integration Test with App Page
 
 **Files:**
+
 - Modify: `app/page.tsx`
 
 - [ ] **Step 1: Update page.tsx to integrate EditorPane with Toolbar**
@@ -1370,18 +1388,18 @@ npm run dev
 Expected: Application starts, EditorPane displays with Toolbar toggles
 
 - [ ] **Step 3: Manual testing checklist**
-  - Type valid JSON in both editors
-  - Verify "Valid ✓" indicator appears
-  - Click Compare button
-  - Verify diff appears in DiffPanel
-  - Test each toggle:
-    - Enable Ignore Key Order → diff should disappear
-    - Enable Pretty Print → diff reformats
-    - Enable Ignore Whitespace → whitespace differences ignored
-    - Enable Semantic Type Diff → type coercion applied
-  - Test invalid JSON → error message appears
-  - Test file upload → upload valid JSON file
-  - Test keyboard navigation (Tab between editors)
+    - Type valid JSON in both editors
+    - Verify "Valid ✓" indicator appears
+    - Click Compare button
+    - Verify diff appears in DiffPanel
+    - Test each toggle:
+        - Enable Ignore Key Order → diff should disappear
+        - Enable Pretty Print → diff reformats
+        - Enable Ignore Whitespace → whitespace differences ignored
+        - Enable Semantic Type Diff → type coercion applied
+    - Test invalid JSON → error message appears
+    - Test file upload → upload valid JSON file
+    - Test keyboard navigation (Tab between editors)
 
 - [ ] **Step 4: Commit integration**
 
@@ -1395,6 +1413,7 @@ git commit -m "feat(editor-pane): integrate EditorPane with Toolbar on homepage"
 ## Task 11: Final Polish and Testing
 
 **Files:**
+
 - Various
 
 - [ ] **Step 1: Run full test suite**
@@ -1434,15 +1453,15 @@ Expected: Build succeeds, analyze bundle size
 Check that bundle size increase is <200KB gzipped
 
 - [ ] **Step 6: Accessibility check**
-  - Keyboard navigation works
-  - Screen reader announces errors
-  - Focus indicators visible
-  - ARIA labels present
+    - Keyboard navigation works
+    - Screen reader announces errors
+    - Focus indicators visible
+    - ARIA labels present
 
 - [ ] **Step 7: Performance check**
-  - Large files (1MB+) don't freeze UI
-  - Diff computation completes in <2 seconds
-  - No memory leaks on re-renders
+    - Large files (1MB+) don't freeze UI
+    - Diff computation completes in <2 seconds
+    - No memory leaks on re-renders
 
 - [ ] **Step 8: Final commit**
 

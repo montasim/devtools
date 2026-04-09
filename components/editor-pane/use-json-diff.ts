@@ -49,8 +49,14 @@ export function useJsonDiff(options: UseJsonDiffOptions): UseJsonDiffReturn {
 
             // Ignore Whitespace
             if (options.ignoreWhitespace) {
-                leftStr = leftStr.replace(/\s+/g, ' ').replace(/\s*\n\s*/g, '').trim();
-                rightStr = rightStr.replace(/\s+/g, ' ').replace(/\s*\n\s*/g, '').trim();
+                leftStr = leftStr
+                    .replace(/\s+/g, ' ')
+                    .replace(/\s*\n\s*/g, '')
+                    .trim();
+                rightStr = rightStr
+                    .replace(/\s+/g, ' ')
+                    .replace(/\s*\n\s*/g, '')
+                    .trim();
             }
 
             // Ignore Key Order
@@ -77,7 +83,9 @@ export function useJsonDiff(options: UseJsonDiffOptions): UseJsonDiffReturn {
             let deletionCount = 0;
 
             differences.forEach((part) => {
-                const lines = part.value.split('\n').filter((l) => l.length > 0 || part.added || part.removed);
+                const lines = part.value
+                    .split('\n')
+                    .filter((l) => l.length > 0 || part.added || part.removed);
 
                 lines.forEach((line) => {
                     if (!currentHunk) {

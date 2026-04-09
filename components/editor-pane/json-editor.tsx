@@ -11,13 +11,7 @@ import { validateJson } from './utils/validation';
 import type { ParseError } from './types';
 import type { JsonEditorProps } from './types';
 
-export function JsonEditor({
-    value,
-    onChange,
-    onError,
-    label,
-    readOnly = false,
-}: JsonEditorProps) {
+export function JsonEditor({ value, onChange, onError, label, readOnly = false }: JsonEditorProps) {
     const editorRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<EditorView | null>(null);
     const valueRef = useRef(value);
@@ -65,7 +59,8 @@ export function JsonEditor({
                         height: '100%',
                     },
                     '.cm-scroller': {
-                        fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
+                        fontFamily:
+                            'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
                         overflow: 'auto',
                     },
                     '.cm-content': {
@@ -176,7 +171,9 @@ export function JsonEditor({
         }
 
         if (file.size > WARNING_SIZE) {
-            console.warn(`Large file detected (${(file.size / 1024 / 1024).toFixed(2)}MB). Upload may take a moment.`);
+            console.warn(
+                `Large file detected (${(file.size / 1024 / 1024).toFixed(2)}MB). Upload may take a moment.`,
+            );
         }
 
         const reader = new FileReader();
@@ -273,7 +270,7 @@ export function JsonEditor({
                 title: 'More options',
             },
         ],
-        [handleClear, handleCopyLink, handleSearch, handleFileUpload, handleMoreMenu]
+        [handleClear, handleCopyLink, handleSearch, handleFileUpload, handleMoreMenu],
     );
 
     return (

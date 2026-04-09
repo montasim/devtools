@@ -13,14 +13,17 @@
 ## File Structure
 
 ### New Files
+
 - `components/ui/switch.tsx` - shadcn/ui Switch component (add via CLI)
 - `components/toolbar/toolbar.tsx` - Main ToolBar component
 - `components/toolbar/index.tsx` - Public API exports
 
 ### Modified Files
+
 - `app/globals.css` - Add scrollbar-hide utility
 
 ### Dependencies
+
 - Existing: `@/components/ui/button`, `@/lib/utils`, Tabler Icons
 - New: `@/components/ui/switch` (Radix UI Switch primitive)
 
@@ -29,6 +32,7 @@
 ## Task 1: Add Switch Component from shadcn/ui
 
 **Files:**
+
 - Create: `components/ui/switch.tsx` (via shadcn CLI)
 
 - [ ] **Step 1: Run shadcn CLI to add Switch component**
@@ -36,6 +40,7 @@
 Run: `npx shadcn@latest add switch`
 
 Expected output:
+
 ```
 ✔️️ Preflight checks.
 ✔️️ Verifying framework. Found Next.js.
@@ -52,6 +57,7 @@ Why: Switch component is required for toggle functionality. Using shadcn CLI ens
 ## Task 2: Add Scrollbar Hide Utility
 
 **Files:**
+
 - Modify: `app/globals.css`
 
 - [ ] **Step 1: Add scrollbar-hide utility class to globals.css**
@@ -61,12 +67,12 @@ Add to end of `app/globals.css`:
 ```css
 /* Scrollbar hide utility for horizontal scrolling */
 .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari and Opera */
+    display: none; /* Chrome, Safari and Opera */
 }
 ```
 
@@ -96,6 +102,7 @@ Why: Horizontal scrolling on left side requires hidden scrollbar for clean appea
 ## Task 3: Create Toolbar Directory Structure
 
 **Files:**
+
 - Create: `components/toolbar/`
 
 - [ ] **Step 1: Create toolbar directory**
@@ -117,6 +124,7 @@ Why: Organized component structure follows established patterns in the codebase 
 ## Task 4: Implement ToolBar Component with Types
 
 **Files:**
+
 - Create: `components/toolbar/toolbar.tsx`
 
 - [ ] **Step 1: Write ToolBar component with TypeScript types**
@@ -326,6 +334,7 @@ Why: This is the main component implementation. Includes all TypeScript types, s
 ## Task 5: Create Public API Export
 
 **Files:**
+
 - Create: `components/toolbar/index.tsx`
 
 - [ ] **Step 1: Create index.tsx with exports**
@@ -333,12 +342,8 @@ Why: This is the main component implementation. Includes all TypeScript types, s
 Create `components/toolbar/index.tsx`:
 
 ```typescript
-export { ToolBar } from './toolbar'
-export type {
-    ToolBarProps,
-    ToggleButtonConfig,
-    ActionButtonConfig
-} from './toolbar'
+export { ToolBar } from './toolbar';
+export type { ToolBarProps, ToggleButtonConfig, ActionButtonConfig } from './toolbar';
 ```
 
 - [ ] **Step 2: Verify TypeScript compilation**
@@ -376,6 +381,7 @@ Why: Clean public API allows consumers to import from `@/components/toolbar` rat
 ## Task 6: Create Demo/Test Page
 
 **Files:**
+
 - Create: `app/toolbar-demo/page.tsx`
 
 - [ ] **Step 1: Create demo page to test ToolBar**
@@ -558,6 +564,7 @@ Why: Demo page provides interactive testing environment for all ToolBar features
 ## Task 7: Development Build Verification
 
 **Files:**
+
 - Build: Next.js development server
 
 - [ ] **Step 1: Start development server**
@@ -575,6 +582,7 @@ Expected: Page renders without errors, ToolBar visible
 - [ ] **Step 3: Test toggle functionality**
 
 Actions:
+
 1. Click each toggle switch
 2. Verify state changes in "Current State" display
 3. Verify icon + label visible
@@ -585,6 +593,7 @@ Expected: All toggles respond to clicks, state updates correctly
 - [ ] **Step 4: Test button functionality**
 
 Actions:
+
 1. Click "Compare" button
 2. Verify loading spinner appears
 3. Wait 2 seconds for async operation
@@ -597,6 +606,7 @@ Expected: All buttons work, loading state shows correctly
 - [ ] **Step 5: Test keyboard navigation**
 
 Actions:
+
 1. Press <kbd>Tab</kbd> to navigate between controls
 2. Press <kbd>Enter</kbd> or <kbd>Space</kbd> to activate
 3. Verify visible focus indicators
@@ -606,6 +616,7 @@ Expected: Keyboard navigation works, focus visible, controls activate
 - [ ] **Step 6: Test responsive behavior**
 
 Actions:
+
 1. Resize browser to tablet width (640-767px)
 2. Verify left side becomes scrollable
 3. Resize to mobile width (< 640px)
@@ -627,6 +638,7 @@ Why: Manual testing verifies all functionality works as designed before producti
 ## Task 8: Production Build Verification
 
 **Files:**
+
 - Build: Production Next.js build
 
 - [ ] **Step 1: Run production build**
@@ -634,6 +646,7 @@ Why: Manual testing verifies all functionality works as designed before producti
 Run: `npm run build`
 
 Expected output:
+
 ```
    LING  ... (build steps)
    ✓ Compiled successfully
@@ -665,6 +678,7 @@ Expected: Production server starts on http://localhost:3000
 - [ ] **Step 4: Quick smoke test in production**
 
 Actions:
+
 1. Navigate to http://localhost:3000/toolbar-demo
 2. Verify page loads
 3. Test toggles and buttons
@@ -702,11 +716,13 @@ Why: Production build verifies no runtime errors, TypeScript compilation passes,
 ## Task 9: Documentation and Success Criteria
 
 **Files:**
+
 - Documentation: Update README or create component documentation (optional)
 
 - [ ] **Step 1: Verify all success criteria met**
 
 Checklist:
+
 - [✓] Component renders without errors (Task 7)
 - [✓] All props are properly typed (Task 4, 5)
 - [✓] Toggles reflect parent state correctly (Task 7, Step 3)
@@ -721,7 +737,7 @@ Checklist:
 
 If you want to add documentation, create `components/toolbar/README.md`:
 
-```markdown
+````markdown
 # ToolBar Component
 
 Flexible two-column toolbar for displaying toggle switches and action buttons.
@@ -732,6 +748,7 @@ Flexible two-column toolbar for displaying toggle switches and action buttons.
 # Already installed in components/toolbar
 import { ToolBar } from '@/components/toolbar'
 ```
+````
 
 ## Usage
 
@@ -763,7 +780,8 @@ See `/toolbar-demo` for interactive example.
 - `onClick`: Click handler
 - `disabled?`: Disable button
 - `isLoading?`: Show loading spinner
-```
+
+````
 
 Why: Verifies all requirements from specification are met. Optional documentation helps future developers.
 
@@ -804,7 +822,7 @@ import { IconKey, IconCode, IconArrowsDiff } from '@tabler/icons-react'
     }
   ]}
 />
-```
+````
 
 ### Next Steps
 

@@ -12,7 +12,7 @@ describe('useJsonDiff', () => {
                 prettyPrint: false,
                 ignoreWhitespace: false,
                 semanticTypeDiff: false,
-            })
+            }),
         );
 
         await result.current.computeDiff();
@@ -31,7 +31,7 @@ describe('useJsonDiff', () => {
                 prettyPrint: false,
                 ignoreWhitespace: false,
                 semanticTypeDiff: false,
-            })
+            }),
         );
 
         await result.current.computeDiff();
@@ -50,7 +50,7 @@ describe('useJsonDiff', () => {
                 prettyPrint: false,
                 ignoreWhitespace: false,
                 semanticTypeDiff: false,
-            })
+            }),
         );
 
         await result.current.computeDiff();
@@ -69,7 +69,7 @@ describe('useJsonDiff', () => {
                 prettyPrint: true,
                 ignoreWhitespace: false,
                 semanticTypeDiff: false,
-            })
+            }),
         );
 
         await result.current.computeDiff();
@@ -89,7 +89,7 @@ describe('useJsonDiff', () => {
                 prettyPrint: false,
                 ignoreWhitespace: true,
                 semanticTypeDiff: false,
-            })
+            }),
         );
 
         await result.current.computeDiff();
@@ -108,7 +108,7 @@ describe('useJsonDiff', () => {
                 prettyPrint: false,
                 ignoreWhitespace: false,
                 semanticTypeDiff: false,
-            })
+            }),
         );
 
         await result.current.computeDiff();
@@ -126,7 +126,7 @@ describe('useJsonDiff', () => {
                 prettyPrint: false,
                 ignoreWhitespace: false,
                 semanticTypeDiff: false,
-            })
+            }),
         );
 
         const computePromise = result.current.computeDiff();
@@ -145,7 +145,7 @@ describe('useJsonDiff', () => {
                 prettyPrint: false,
                 ignoreWhitespace: false,
                 semanticTypeDiff: false,
-            })
+            }),
         );
 
         await result.current.computeDiff();

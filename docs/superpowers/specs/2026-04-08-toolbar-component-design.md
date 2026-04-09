@@ -12,6 +12,7 @@ A flexible, two-column toolbar component for displaying toggle switches and acti
 ## Requirements
 
 ### Functional Requirements
+
 - Display toggle switches on the left side for configuration options
 - Display action buttons on the right side for primary actions
 - Support horizontal scrolling on smaller screens
@@ -20,6 +21,7 @@ A flexible, two-column toolbar component for displaying toggle switches and acti
 - Fully accessible with keyboard navigation
 
 ### Non-Functional Requirements
+
 - TypeScript with full type safety
 - Responsive design (desktop, tablet, mobile)
 - WCAG 2.1 AA accessibility compliance
@@ -55,33 +57,33 @@ ToolBar (container)
 
 ```typescript
 interface ToolBarProps {
-  // Left side toggle switches
-  leftButtons: ToggleButtonConfig[]
+    // Left side toggle switches
+    leftButtons: ToggleButtonConfig[];
 
-  // Right side action buttons
-  rightButtons: ActionButtonConfig[]
+    // Right side action buttons
+    rightButtons: ActionButtonConfig[];
 
-  // Layout options
-  fullWidth?: boolean        // Default: true
-  className?: string         // Additional CSS classes
+    // Layout options
+    fullWidth?: boolean; // Default: true
+    className?: string; // Additional CSS classes
 }
 
 interface ToggleButtonConfig {
-  id: string
-  label: string
-  icon: React.ComponentType<{ className?: string }>
-  checked: boolean            // Current state (controlled by parent)
-  onChange: (checked: boolean) => void
+    id: string;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    checked: boolean; // Current state (controlled by parent)
+    onChange: (checked: boolean) => void;
 }
 
 interface ActionButtonConfig {
-  id: string
-  label: string
-  icon?: React.ComponentType<{ className?: string }>
-  variant: 'primary' | 'outline'
-  onClick: () => void
-  disabled?: boolean          // Default: false
-  isLoading?: boolean         // Default: false
+    id: string;
+    label: string;
+    icon?: React.ComponentType<{ className?: string }>;
+    variant: 'primary' | 'outline';
+    onClick: () => void;
+    disabled?: boolean; // Default: false
+    isLoading?: boolean; // Default: false
 }
 ```
 
@@ -151,6 +153,7 @@ function JsonDiffPage() {
 ### Layout Specifications
 
 **Container:**
+
 - Height: `h-14` (56px)
 - Padding: `px-4 py-2`
 - Background: `bg-background`
@@ -158,6 +161,7 @@ function JsonDiffPage() {
 - Flex: `flex items-center justify-between gap-4`
 
 **Left Side - Toggle Switches:**
+
 - Container: `flex items-center gap-3 overflow-x-auto`
 - Toggle height: `h-8`
 - Icon size: 16px
@@ -165,6 +169,7 @@ function JsonDiffPage() {
 - Flex behavior: `flex-1 min-w-0` to allow shrinking
 
 **Right Side - Action Buttons:**
+
 - Container: `flex items-center gap-2 flex-shrink-0`
 - Button size: `h-8` (small variant)
 - Spacing: `gap-2` between buttons
@@ -180,6 +185,7 @@ function JsonDiffPage() {
 ### Color Scheme
 
 Uses existing shadcn/ui theme tokens:
+
 - Toggles: Primary color when checked, neutral when unchecked
 - Primary buttons: `bg-primary text-primary-foreground`
 - Outline buttons: `border-border bg-background`
@@ -191,16 +197,19 @@ Uses existing shadcn/ui theme tokens:
 ### Breakpoints
 
 **Desktop (≥ 768px):**
+
 - Full two-column layout
 - All content visible
 - Natural spacing maintained
 
 **Tablet (640px - 767px):**
+
 - Two-column layout maintained
 - Left side scrollable when needed
 - Right side maintains visibility
 
 **Mobile (< 640px):**
+
 - Primary: Horizontal scroll on left side
 - Left side: `flex-1 min-w-0`
 - Right side: `flex-shrink-0` (priority visibility)
@@ -210,11 +219,11 @@ Uses existing shadcn/ui theme tokens:
 
 ```css
 .scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 ```
 
@@ -241,6 +250,7 @@ The ToolBar is a **controlled component** - all state is managed by the parent.
 ### Internal State
 
 Minimal internal state (UI only):
+
 - No toggle/button state stored internally
 - Scroll position handled by CSS
 - No derived state or calculations
