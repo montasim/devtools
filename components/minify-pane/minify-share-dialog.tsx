@@ -130,7 +130,7 @@ export function MinifyShareDialog({
 
                         <div className="flex gap-2 mt-2">
                             <Input
-                                value={generateShareUrl()}
+                                value={shareUrl}
                                 readOnly
                                 placeholder="Generating link..."
                                 className="flex-1 text-xs"
@@ -138,7 +138,7 @@ export function MinifyShareDialog({
                             <Button
                                 size="sm"
                                 onClick={copyShareUrl}
-                                disabled={!generateShareUrl()}
+                                disabled={!shareUrl}
                                 className="shrink-0"
                             >
                                 {copied ? (
