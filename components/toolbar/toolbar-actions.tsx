@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ToolbarAction } from './types';
-import { RefreshCcw, Trash2 } from 'lucide-react';
+import { RefreshCcw, Trash2, Share2 } from 'lucide-react';
 
 interface ToolbarActionsProps {
     items: ToolbarAction[];
@@ -12,6 +12,9 @@ const getDefaultIcon = (label: string) => {
     }
     if (label.toLowerCase().includes('clear') || label.toLowerCase().includes('delete')) {
         return <Trash2 className="h-4 w-4" />;
+    }
+    if (label.toLowerCase().includes('share')) {
+        return <Share2 className="h-4 w-4" />;
     }
     return undefined;
 };

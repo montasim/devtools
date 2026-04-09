@@ -5,7 +5,7 @@ import { Toolbar } from '@/components/toolbar';
 import { EditorPane, type EditorPaneRef } from '@/components/editor-pane';
 import { FormatPane } from '@/components/format-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, GitCompare, Code, Minimize2, FileJson, Share2 } from 'lucide-react';
+import { Settings, GitCompare, Code, Minimize2, FileJson, Share2, Trash2 } from 'lucide-react';
 
 export default function Home() {
     const [ignoreKeyOrder, setIgnoreKeyOrder] = useState(true);
@@ -50,6 +50,32 @@ export default function Home() {
             setIsComputing(true);
             await editorPaneRef.current.triggerCompare();
             setIsComputing(false);
+        }
+    };
+
+    const handleFormatShare = () => {
+        // Get the formatted content from localStorage
+        const formattedContent = localStorage.getItem('json-format-left-content');
+        if (!formattedContent) {
+            alert('No content to share. Please enter some JSON first.');
+            return;
+        }
+
+        try {
+            // Encode the JSON content
+            const encoded = btoa(encodeURIComponent(formattedContent));
+
+            // Create shareable URL
+            const url = new URL(window.location.href);
+            url.searchParams.set('content', encoded);
+            url.hash = 'format';
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(url.toString());
+            alert('Share link copied to clipboard!');
+        } catch (error) {
+            console.error('Failed to generate share link:', error);
+            alert('Failed to generate share link. Please try again.');
         }
     };
 
@@ -214,6 +240,14 @@ export default function Home() {
                                     label: 'Clear All',
                                     onClick: handleClear,
                                     variant: 'outline',
+                                    icon: <Trash2 className="h-4 w-4" />,
+                                },
+                                {
+                                    id: 'share',
+                                    label: 'Share',
+                                    onClick: handleFormatShare,
+                                    variant: 'outline',
+                                    icon: <Share2 className="h-4 w-4" />,
                                 },
                             ]}
                         />
