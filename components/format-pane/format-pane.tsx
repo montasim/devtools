@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Copy, Download } from 'lucide-react';
 import { JsonEditor } from '../editor-pane/json-editor';
 import { Separator } from '../ui/separator';
@@ -18,12 +18,41 @@ export const FormatPane = ({
     onError,
     onValidationChange,
     onIndentationChange,
+    initialLeftContent = '',
     className,
 }: FormatPaneProps) => {
-    const [leftContent, setLeftContent] = useState('');
+    // State with lazy initialization from localStorage
+    const [leftContent, setLeftContent] = useState<string>(() => {
+        if (initialLeftContent !== '') return initialLeftContent;
+        try {
+            return localStorage.getItem('json-format-left-content') || initialLeftContent;
+        } catch {
+            return initialLeftContent;
+        }
+    });
+
     const [leftValid, setLeftValid] = useState(false);
     const [customIndent, setCustomIndent] = useState('');
     const [showCustomInput, setShowCustomInput] = useState(false);
+
+    // Track initial content to avoid saving it to localStorage
+    const initialLeftContentRef = useRef(initialLeftContent);
+
+    useEffect(() => {
+        initialLeftContentRef.current = initialLeftContent;
+    }, [initialLeftContent]);
+
+    // Save to localStorage whenever content changes (but not on initial render)
+    useEffect(() => {
+        // Only save if content is different from initial props
+        if (leftContent !== initialLeftContentRef.current) {
+            try {
+                localStorage.setItem('json-format-left-content', leftContent);
+            } catch (error) {
+                console.error('Failed to save left content to localStorage:', error);
+            }
+        }
+    }, [leftContent]);
 
     // Load format options from localStorage on mount
     const [formatOptions, setFormatOptions] = useState<FormatOptions>(() => {
