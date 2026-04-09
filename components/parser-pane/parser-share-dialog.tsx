@@ -20,11 +20,7 @@ interface ParserShareDialogProps {
     onOpenChange?: (open: boolean) => void;
 }
 
-export function ParserShareDialog({
-    content,
-    open,
-    onOpenChange,
-}: ParserShareDialogProps) {
+export function ParserShareDialog({ content, open, onOpenChange }: ParserShareDialogProps) {
     const [copied, setCopied] = useState(false);
 
     // Generate shareable URL

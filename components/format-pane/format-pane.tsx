@@ -109,16 +109,22 @@ export const FormatPane = ({
     }, []);
 
     // Handle copy error
-    const handleCopyError = useCallback((error: Error) => {
-        console.error('Failed to copy:', error);
-        onError?.(error);
-    }, [onError]);
+    const handleCopyError = useCallback(
+        (error: Error) => {
+            console.error('Failed to copy:', error);
+            onError?.(error);
+        },
+        [onError],
+    );
 
     // Handle download error
-    const handleDownloadError = useCallback((error: Error) => {
-        console.error('Failed to download:', error);
-        onError?.(error);
-    }, [onError]);
+    const handleDownloadError = useCallback(
+        (error: Error) => {
+            console.error('Failed to download:', error);
+            onError?.(error);
+        },
+        [onError],
+    );
 
     const handleCopy = async () => {
         try {
@@ -204,13 +210,22 @@ export const FormatPane = ({
                                 <div className="flex items-center gap-3">
                                     <span className="text-sm text-muted-foreground">
                                         {formatOptions.sortKeys && 'Sort'}
-                                        {formatOptions.sortKeys && (formatOptions.removeTrailingCommas || formatOptions.escapeUnicode) && ', '}
+                                        {formatOptions.sortKeys &&
+                                            (formatOptions.removeTrailingCommas ||
+                                                formatOptions.escapeUnicode) &&
+                                            ', '}
                                         {formatOptions.removeTrailingCommas && 'No Commas'}
-                                        {formatOptions.removeTrailingCommas && formatOptions.escapeUnicode && ', '}
+                                        {formatOptions.removeTrailingCommas &&
+                                            formatOptions.escapeUnicode &&
+                                            ', '}
                                         {formatOptions.escapeUnicode && 'Unicode'}
                                     </span>
                                     <Select
-                                        value={showCustomInput ? 'custom' : String(formatOptions.indentation)}
+                                        value={
+                                            showCustomInput
+                                                ? 'custom'
+                                                : String(formatOptions.indentation)
+                                        }
                                         onValueChange={handleIndentChange}
                                     >
                                         <SelectTrigger className="h-8 w-[120px] text-xs">
@@ -227,7 +242,9 @@ export const FormatPane = ({
                                             type="number"
                                             placeholder="Spaces"
                                             value={customIndent}
-                                            onChange={(e) => handleCustomIndentChange(e.target.value)}
+                                            onChange={(e) =>
+                                                handleCustomIndentChange(e.target.value)
+                                            }
                                             className="h-8 w-[60px] text-xs"
                                             min="1"
                                             max="10"

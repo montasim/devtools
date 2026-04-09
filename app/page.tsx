@@ -216,7 +216,10 @@ export default function Home() {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <div className="border-b">
                     <div className="mx-auto py-4">
-                        <TabsList variant="line" className="h-auto p-0 bg-transparent border-0 w-full justify-between">
+                        <TabsList
+                            variant="line"
+                            className="h-auto p-0 bg-transparent border-0 w-full justify-between"
+                        >
                             <div className="flex gap-2">
                                 {[
                                     { value: 'diff', label: 'Diff', icon: GitCompare },
@@ -226,21 +229,29 @@ export default function Home() {
                                     { value: 'parser', label: 'Parser', icon: FileJson },
                                     { value: 'share', label: 'Share', icon: Share2 },
                                 ].map(({ value, label, icon: Icon }) => (
-                                    <TabsTrigger key={value} value={value} className="gap-2 data-[icon=true]:pr-4">
+                                    <TabsTrigger
+                                        key={value}
+                                        value={value}
+                                        className="gap-2 data-[icon=true]:pr-4"
+                                    >
                                         <Icon data-icon="true" className="w-4 h-4" />
                                         {label}
                                     </TabsTrigger>
                                 ))}
                             </div>
                             <div className="flex gap-2">
-                                {[
-                                    { value: 'options', label: 'Options', icon: Settings },
-                                ].map(({ value, label, icon: Icon }) => (
-                                    <TabsTrigger key={value} value={value} className="gap-2 data-[icon=true]:pr-4">
-                                        <Icon data-icon="true" className="w-4 h-4" />
-                                        {label}
-                                    </TabsTrigger>
-                                ))}
+                                {[{ value: 'options', label: 'Options', icon: Settings }].map(
+                                    ({ value, label, icon: Icon }) => (
+                                        <TabsTrigger
+                                            key={value}
+                                            value={value}
+                                            className="gap-2 data-[icon=true]:pr-4"
+                                        >
+                                            <Icon data-icon="true" className="w-4 h-4" />
+                                            {label}
+                                        </TabsTrigger>
+                                    ),
+                                )}
                             </div>
                         </TabsList>
                     </div>
@@ -346,7 +357,8 @@ export default function Home() {
                                     id: 'indentation',
                                     label: 'Indentation',
                                     checked: formatIndentation === 4,
-                                    onChange: () => setFormatIndentation(formatIndentation === 2 ? 4 : 2),
+                                    onChange: () =>
+                                        setFormatIndentation(formatIndentation === 2 ? 4 : 2),
                                 },
                                 {
                                     id: 'sortKeys',
@@ -386,15 +398,15 @@ export default function Home() {
                         />
 
                         <FormatPane
-                        className='mx-auto'
-                                indentation={formatIndentation}
-                                sortKeys={formatSortKeys}
-                                removeTrailingCommas={formatRemoveTrailingCommas}
-                                escapeUnicode={formatEscapeUnicode}
-                                onError={handleError}
-                                onValidationChange={setCanFormat}
-                                onIndentationChange={setFormatIndentation}
-                            />
+                            className="mx-auto"
+                            indentation={formatIndentation}
+                            sortKeys={formatSortKeys}
+                            removeTrailingCommas={formatRemoveTrailingCommas}
+                            escapeUnicode={formatEscapeUnicode}
+                            onError={handleError}
+                            onValidationChange={setCanFormat}
+                            onIndentationChange={setFormatIndentation}
+                        />
                     </div>
                 </TabsContent>
 
@@ -458,7 +470,7 @@ export default function Home() {
                         />
 
                         <MinifyPane
-                            className='mx-auto'
+                            className="mx-auto"
                             sortKeys={minifySortKeys}
                             removeWhitespace={minifyRemoveWhitespace}
                             onError={handleError}
@@ -509,7 +521,7 @@ export default function Home() {
                         />
 
                         <ViewerPane
-                            className='mx-auto'
+                            className="mx-auto"
                             showTypes={viewerShowTypes}
                             showPaths={viewerShowPaths}
                             sortKeys={viewerSortKeys}
@@ -561,7 +573,7 @@ export default function Home() {
                         />
 
                         <ParserPane
-                            className='mx-auto'
+                            className="mx-auto"
                             showTypes={parserShowTypes}
                             showPaths={parserShowPaths}
                             showStatistics={parserShowStatistics}
@@ -576,25 +588,29 @@ export default function Home() {
                         <div className="max-w-4xl">
                             <h2 className="text-2xl font-bold mb-4">Share JSON</h2>
                             <p className="text-muted-foreground mb-6">
-                                Share your JSON data with others through shareable links and collaborative features.
+                                Share your JSON data with others through shareable links and
+                                collaborative features.
                             </p>
                             <div className="space-y-4">
                                 <div className="p-4 border rounded-lg">
                                     <h3 className="font-semibold mb-2">Generate Share Link</h3>
                                     <p className="text-sm text-muted-foreground">
-                                        Coming soon: Create a unique shareable link for your JSON data.
+                                        Coming soon: Create a unique shareable link for your JSON
+                                        data.
                                     </p>
                                 </div>
                                 <div className="p-4 border rounded-lg">
                                     <h3 className="font-semibold mb-2">Export Options</h3>
                                     <p className="text-sm text-muted-foreground">
-                                        Coming soon: Export JSON to various formats (JSON, CSV, XML, YAML).
+                                        Coming soon: Export JSON to various formats (JSON, CSV, XML,
+                                        YAML).
                                     </p>
                                 </div>
                                 <div className="p-4 border rounded-lg">
                                     <h3 className="font-semibold mb-2">Collaborative Editing</h3>
                                     <p className="text-sm text-muted-foreground">
-                                        Coming soon: Real-time collaboration features for JSON editing.
+                                        Coming soon: Real-time collaboration features for JSON
+                                        editing.
                                     </p>
                                 </div>
                             </div>

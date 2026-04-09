@@ -13,18 +13,21 @@ Implement a real-time JSON formatter tab with a 2-column editor layout. Users pa
 ### Component Structure
 
 **Primary Component: FormatPane**
+
 - Location: `/components/format-pane/format-pane.tsx`
 - Manages two JsonEditor instances side-by-side
 - Handles real-time formatting with debouncing
 - Coordinates format options and error handling
 
 **Supporting Components:**
+
 - `FormatActions`: Copy and download buttons for output
 - Reuse existing `JsonEditor` component
 - Reuse existing `Toolbar` component
 - Format options integrated into toolbar
 
 ### File Structure
+
 ```
 /components/format-pane/
   ├── format-pane.tsx          # Main container component
@@ -35,17 +38,20 @@ Implement a real-time JSON formatter tab with a 2-column editor layout. Users pa
 ## Data Flow & State Management
 
 ### Formatting Flow
+
 1. User types in left editor → `leftContent` state updates
 2. `useEffect` detects change → debounced format function (300ms)
 3. Format function processes JSON → `rightContent` state updates
 4. Right editor re-renders with formatted output
 
 ### Custom Hook: useFormatJson
+
 - Input: leftContent, format options
 - Output: formattedContent, error, isFormatting
 - Handles JSON parsing and formatting with options
 
 ### Persistence
+
 - Save format preferences to localStorage (indent size, sort keys, etc.)
 - Restore preferences on component mount
 - Don't persist actual JSON content (transient tool)
@@ -55,19 +61,21 @@ Implement a real-time JSON formatter tab with a 2-column editor layout. Users pa
 ### FormatPane Component
 
 **Props:**
+
 ```typescript
 interface FormatPaneProps {
-  indentation?: number;           // 2 or 4 spaces
-  sortKeys?: boolean;             // Sort object keys alphabetically
-  removeTrailingCommas?: boolean; // Remove trailing commas
-  escapeUnicode?: boolean;        // Escape Unicode characters
-  onError?: (error: Error) => void;
-  onValidationChange?: (isValid: boolean) => void;
-  className?: string;
+    indentation?: number; // 2 or 4 spaces
+    sortKeys?: boolean; // Sort object keys alphabetically
+    removeTrailingCommas?: boolean; // Remove trailing commas
+    escapeUnicode?: boolean; // Escape Unicode characters
+    onError?: (error: Error) => void;
+    onValidationChange?: (isValid: boolean) => void;
+    className?: string;
 }
 ```
 
 **State:**
+
 - `leftContent`: Unformatted JSON input
 - `rightContent`: Formatted JSON output
 - `leftValid`: Is left JSON valid?
@@ -75,6 +83,7 @@ interface FormatPaneProps {
 - `isFormatting`: Loading state for large JSON
 
 **Features:**
+
 - Real-time formatting with 300ms debounce
 - Error handling with detailed syntax errors
 - Copy formatted output to clipboard
@@ -85,6 +94,7 @@ interface FormatPaneProps {
 ### FormatActions Component
 
 **Actions:**
+
 - Copy to clipboard button
 - Download as .json file button
 - Both disabled when output has errors or is empty
@@ -92,11 +102,13 @@ interface FormatPaneProps {
 ## Error Handling & User Feedback
 
 ### Error Display
+
 - **Syntax Error:** Invalid JSON → Show parser error with line/column
 - **Format Error:** Valid JSON but formatting fails → Show generic error
 - **Empty State:** Left editor empty → Right shows placeholder message
 
 ### User Feedback
+
 - Loading indicator for large JSON (>100KB)
 - Success toast for copy/download operations
 - Error toast for failed operations
@@ -106,17 +118,20 @@ interface FormatPaneProps {
 ## UI/UX Design
 
 ### Layout
+
 - Same 2-column responsive layout as diff tab
 - Side-by-side on desktop, stacked on mobile
 - Vertical separator between editors (md breakpoint)
 - Toolbar above editors with format options
 
 ### Visual Hierarchy
+
 - Left editor: "Unformatted JSON" label (editable)
 - Right editor: "Formatted JSON" label (read-only)
 - Clear visual distinction for output panel
 
 ### Toolbar Controls
+
 - **Indentation:** Dropdown (2 spaces / 4 spaces)
 - **Sort Keys:** Toggle switch
 - **Remove Trailing Commas:** Toggle switch
@@ -124,11 +139,13 @@ interface FormatPaneProps {
 - **Actions:** Clear All button
 
 ### Responsive Design
+
 - Mobile: Editors stack vertically
 - Desktop: Side-by-side with separator
 - Toolbar adapts to screen width
 
 ### Accessibility
+
 - Keyboard navigation for toolbar controls
 - Proper ARIA labels for all controls
 - Error messages screen reader friendly
@@ -136,12 +153,14 @@ interface FormatPaneProps {
 ## Format Options
 
 ### Available Options
+
 1. **Indentation Size:** 2 or 4 spaces (default: 2)
 2. **Sort Keys:** Alphabetically sort object keys (default: false)
 3. **Remove Trailing Commas:** Clean up trailing commas (default: false)
 4. **Escape Unicode:** Escape Unicode characters (default: false)
 
 ### Default Settings
+
 ```javascript
 {
   indentation: 2,
@@ -154,18 +173,21 @@ interface FormatPaneProps {
 ## Testing Strategy
 
 ### Unit Tests
+
 - FormatPane component rendering and state management
 - Format operations with various JSON structures
 - Error handling for invalid JSON
 - Format options application
 
 ### Integration Tests
+
 - Real-time formatting flow (left → right)
 - Toolbar controls update formatting correctly
 - Copy and download functionality
 - localStorage persistence
 
 ### Edge Cases
+
 - Very large JSON files (>1MB)
 - Deeply nested objects
 - Arrays with mixed types
@@ -174,6 +196,7 @@ interface FormatPaneProps {
 - Malformed JSON with various error types
 
 ### Performance
+
 - Debouncing prevents excessive re-formatting
 - Large JSON formatting shows loading indicator
 - No UI blocking during format operations
@@ -181,17 +204,19 @@ interface FormatPaneProps {
 ## Implementation Notes
 
 ### Real-time Formatting Logic
+
 ```javascript
 useEffect(() => {
-  const timer = setTimeout(() => {
-    const formatted = formatJson(leftContent, options);
-    setRightContent(formatted);
-  }, 300);
-  return () => clearTimeout(timer);
+    const timer = setTimeout(() => {
+        const formatted = formatJson(leftContent, options);
+        setRightContent(formatted);
+    }, 300);
+    return () => clearTimeout(timer);
 }, [leftContent, options]);
 ```
 
 ### Key Dependencies
+
 - Existing `JsonEditor` component
 - Existing `Toolbar` component
 - Format utilities from `./utils/json-operations`
@@ -200,24 +225,29 @@ useEffect(() => {
 ## Integration with Main App
 
 ### App Page Integration
+
 Update `/app/page.tsx`:
+
 - Replace format tab placeholder content with FormatPane component
 - Add format-specific toolbar controls
 - Handle format option state at page level
 - Pass format options to FormatPane
 
 ### Toolbar Integration
+
 ```jsx
 <Toolbar
-  toggles={[
-    { id: 'indentation', label: 'Indentation', options: [2, 4] },
-    { id: 'sortKeys', label: 'Sort Keys', checked: sortKeys },
-    { id: 'removeTrailingCommas', label: 'Remove Trailing Commas', checked: removeTrailingCommas },
-    { id: 'escapeUnicode', label: 'Escape Unicode', checked: escapeUnicode },
-  ]}
-  actions={[
-    { id: 'clear', label: 'Clear All', onClick: handleClear },
-  ]}
+    toggles={[
+        { id: 'indentation', label: 'Indentation', options: [2, 4] },
+        { id: 'sortKeys', label: 'Sort Keys', checked: sortKeys },
+        {
+            id: 'removeTrailingCommas',
+            label: 'Remove Trailing Commas',
+            checked: removeTrailingCommas,
+        },
+        { id: 'escapeUnicode', label: 'Escape Unicode', checked: escapeUnicode },
+    ]}
+    actions={[{ id: 'clear', label: 'Clear All', onClick: handleClear }]}
 />
 ```
 

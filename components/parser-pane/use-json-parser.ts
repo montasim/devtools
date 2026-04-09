@@ -81,7 +81,7 @@ export function useJsonParser(json: string, options: ParserOptions): ParsedData 
                         paths.push(path);
                     }
 
-                    Object.keys(obj).forEach(key => {
+                    Object.keys(obj).forEach((key) => {
                         stats.totalKeys++;
                         analyze(obj[key], `${path}.${key}`, depth + 1);
                     });

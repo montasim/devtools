@@ -38,43 +38,51 @@ export function useJsonTree(json: string, options: ViewerOptions): JsonTreeResul
 
 function buildTree(value: any, path: string, options: ViewerOptions): TreeNode[] {
     if (value === null) {
-        return [{
-            key: path === '$' ? 'root' : path,
-            value: null,
-            type: 'null',
-            path,
-            isExpanded: true,
-        }];
+        return [
+            {
+                key: path === '$' ? 'root' : path,
+                value: null,
+                type: 'null',
+                path,
+                isExpanded: true,
+            },
+        ];
     }
 
     if (typeof value === 'boolean') {
-        return [{
-            key: path === '$' ? 'root' : path,
-            value,
-            type: 'boolean',
-            path,
-            isExpanded: true,
-        }];
+        return [
+            {
+                key: path === '$' ? 'root' : path,
+                value,
+                type: 'boolean',
+                path,
+                isExpanded: true,
+            },
+        ];
     }
 
     if (typeof value === 'number') {
-        return [{
-            key: path === '$' ? 'root' : path,
-            value,
-            type: 'number',
-            path,
-            isExpanded: true,
-        }];
+        return [
+            {
+                key: path === '$' ? 'root' : path,
+                value,
+                type: 'number',
+                path,
+                isExpanded: true,
+            },
+        ];
     }
 
     if (typeof value === 'string') {
-        return [{
-            key: path === '$' ? 'root' : path,
-            value,
-            type: 'string',
-            path,
-            isExpanded: true,
-        }];
+        return [
+            {
+                key: path === '$' ? 'root' : path,
+                value,
+                type: 'string',
+                path,
+                isExpanded: true,
+            },
+        ];
     }
 
     if (Array.isArray(value)) {
@@ -101,7 +109,7 @@ function buildTree(value: any, path: string, options: ViewerOptions): TreeNode[]
             type: 'object',
             path,
             isExpanded: true,
-            children: keys.map(key => {
+            children: keys.map((key) => {
                 const itemPath = `${path}.${key}`;
                 const childNodes = buildTree(value[key], itemPath, options);
                 return childNodes[0];
@@ -110,11 +118,13 @@ function buildTree(value: any, path: string, options: ViewerOptions): TreeNode[]
         return [node];
     }
 
-    return [{
-        key: path === '$' ? 'root' : path,
-        value: String(value),
-        type: 'string',
-        path,
-        isExpanded: true,
-    }];
+    return [
+        {
+            key: path === '$' ? 'root' : path,
+            value: String(value),
+            type: 'string',
+            path,
+            isExpanded: true,
+        },
+    ];
 }

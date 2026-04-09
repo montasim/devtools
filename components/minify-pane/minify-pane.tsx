@@ -100,16 +100,22 @@ export const MinifyPane = ({
     }, []);
 
     // Handle copy error
-    const handleCopyError = useCallback((error: Error) => {
-        console.error('Failed to copy:', error);
-        onError?.(error);
-    }, [onError]);
+    const handleCopyError = useCallback(
+        (error: Error) => {
+            console.error('Failed to copy:', error);
+            onError?.(error);
+        },
+        [onError],
+    );
 
     // Handle download error
-    const handleDownloadError = useCallback((error: Error) => {
-        console.error('Failed to download:', error);
-        onError?.(error);
-    }, [onError]);
+    const handleDownloadError = useCallback(
+        (error: Error) => {
+            console.error('Failed to download:', error);
+            onError?.(error);
+        },
+        [onError],
+    );
 
     const handleCopy = async () => {
         try {

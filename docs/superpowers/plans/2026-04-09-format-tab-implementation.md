@@ -13,12 +13,14 @@
 ## File Structure
 
 **New Files:**
+
 - `components/format-pane/types.ts` - TypeScript interfaces
 - `components/format-pane/use-format-json.ts` - Custom formatting hook
 - `components/format-pane/format-actions.tsx` - Copy/download buttons
 - `components/format-pane/format-pane.tsx` - Main container component
 
 **Modified Files:**
+
 - `app/page.tsx` - Integrate FormatPane into format tab
 
 ---
@@ -26,6 +28,7 @@
 ## Task 1: Create TypeScript Interfaces
 
 **Files:**
+
 - Create: `components/format-pane/types.ts`
 
 - [ ] **Step 1: Write the interface file**
@@ -72,6 +75,7 @@ for the format tab feature."
 ## Task 2: Create Custom Formatting Hook
 
 **Files:**
+
 - Create: `components/format-pane/use-format-json.ts`
 
 - [ ] **Step 1: Check if format utilities exist**
@@ -92,7 +96,12 @@ import { useFormatJson } from './use-format-json';
 
 test('should format valid JSON', () => {
     const { result } = renderHook(() =>
-        useFormatJson('{"a":1,"b":2}', { indentation: 2, sortKeys: false, removeTrailingCommas: false, escapeUnicode: false })
+        useFormatJson('{"a":1,"b":2}', {
+            indentation: 2,
+            sortKeys: false,
+            removeTrailingCommas: false,
+            escapeUnicode: false,
+        }),
     );
 
     expect(result.current.formatted).toBe('{\n  "a": 1,\n  "b": 2\n}');
@@ -102,7 +111,12 @@ test('should format valid JSON', () => {
 
 test('should handle invalid JSON', () => {
     const { result } = renderHook(() =>
-        useFormatJson('{"a":1,', { indentation: 2, sortKeys: false, removeTrailingCommas: false, escapeUnicode: false })
+        useFormatJson('{"a":1,', {
+            indentation: 2,
+            sortKeys: false,
+            removeTrailingCommas: false,
+            escapeUnicode: false,
+        }),
     );
 
     expect(result.current.isValid).toBe(false);
@@ -128,10 +142,7 @@ import type { FormatOptions, FormatResult } from './types';
 import { validateJson } from '../editor-pane/utils/validation';
 
 // Format utilities - will import or implement
-const formatJsonWith = (
-    json: string,
-    options: FormatOptions
-): string => {
+const formatJsonWith = (json: string, options: FormatOptions): string => {
     try {
         const parsed = JSON.parse(json);
 
@@ -152,8 +163,9 @@ const formatJsonWith = (
 
         // Apply escape unicode if enabled
         if (options.escapeUnicode) {
-            result = result.replace(/[\u007F-\uFFFF]/g, (c) =>
-                '\\u' + ('0000' + c.charCodeAt(0).toString(16)).slice(-4)
+            result = result.replace(
+                /[\u007F-\uFFFF]/g,
+                (c) => '\\u' + ('0000' + c.charCodeAt(0).toString(16)).slice(-4),
             );
         }
 
@@ -262,6 +274,7 @@ Includes 300ms debounce and error handling."
 ## Task 3: Create FormatActions Component
 
 **Files:**
+
 - Create: `components/format-pane/format-actions.tsx`
 
 - [ ] **Step 1: Write the FormatActions component**
@@ -359,6 +372,7 @@ Buttons disabled when content is invalid or empty."
 ## Task 4: Create FormatPane Container Component
 
 **Files:**
+
 - Create: `components/format-pane/format-pane.tsx`
 
 - [ ] **Step 1: Write the FormatPane component**
@@ -526,6 +540,7 @@ persistence, and error handling."
 ## Task 5: Integrate FormatPane into App Page
 
 **Files:**
+
 - Modify: `app/page.tsx`
 
 - [ ] **Step 1: Add format option state**
@@ -613,6 +628,7 @@ npm run dev
 ```
 
 Navigate to http://localhost:3000, click "Format" tab, and verify:
+
 - Two editors display side-by-side
 - Toolbar controls work
 - Typing in left editor updates right editor
@@ -633,6 +649,7 @@ Add toolbar controls for format options and state management."
 ## Task 6: Verify Existing Utilities
 
 **Files:**
+
 - Check: `components/editor-pane/utils/json-operations.ts`
 - Check: `components/editor-pane/utils/validation.ts`
 
@@ -686,6 +703,7 @@ instead of duplicating implementations."
 ## Task 7: Add Toast Notifications (Optional Enhancement)
 
 **Files:**
+
 - Modify: `components/format-pane/format-pane.tsx`
 - Modify: `components/format-pane/format-actions.tsx`
 
@@ -721,6 +739,7 @@ downloading formatted JSON."
 ## Task 8: Responsive Layout Testing
 
 **Files:**
+
 - No changes needed
 
 - [ ] **Step 1: Test mobile layout**
@@ -730,6 +749,7 @@ npm run dev
 ```
 
 Open browser DevTools, enable mobile view (iPhone SE size):
+
 - Verify editors stack vertically
 - Verify toolbar controls are accessible
 - Verify separator changes from vertical to horizontal
@@ -737,12 +757,14 @@ Open browser DevTools, enable mobile view (iPhone SE size):
 - [ ] **Step 2: Test tablet layout**
 
 Set viewport to iPad size (768px):
+
 - Verify editors are side-by-side
 - Verify layout is responsive
 
 - [ ] **Step 3: Test desktop layout**
 
 Set viewport to 1920px:
+
 - Verify editors are side-by-side with proper spacing
 - Verify toolbar is centered
 
@@ -764,6 +786,7 @@ Add CSS fixes for mobile, tablet, and desktop layouts."
 ## Task 9: Accessibility Testing
 
 **Files:**
+
 - No changes needed
 
 - [ ] **Step 1: Test keyboard navigation**
@@ -775,6 +798,7 @@ Add CSS fixes for mobile, tablet, and desktop layouts."
 - [ ] **Step 2: Test screen reader compatibility**
 
 Enable screen reader (VoiceOver/NVDA):
+
 - Verify editor labels are announced
 - Verify toolbar controls are properly labeled
 - Verify error messages are announced
@@ -797,11 +821,13 @@ Add ARIA labels and improve keyboard navigation."
 ## Task 10: Performance Testing
 
 **Files:**
+
 - No changes needed
 
 - [ ] **Step 1: Test with large JSON**
 
 Create test file with 1MB JSON:
+
 - Paste into left editor
 - Verify debounce prevents lag
 - Verify right editor updates smoothly
@@ -810,12 +836,14 @@ Create test file with 1MB JSON:
 - [ ] **Step 2: Test with deeply nested objects**
 
 Create deeply nested JSON (10+ levels):
+
 - Verify formatting completes
 - Verify no stack overflow errors
 
 - [ ] **Step 3: Test with special characters**
 
 Create JSON with Unicode, emojis, escape sequences:
+
 - Verify characters display correctly
 - Verify escape unicode option works
 
@@ -838,6 +866,7 @@ documents and deeply nested objects."
 ## Task 11: Final Integration Testing
 
 **Files:**
+
 - No changes needed
 
 - [ ] **Step 1: Run full test suite**

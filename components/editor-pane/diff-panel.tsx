@@ -149,25 +149,35 @@ export function DiffPanel({
         return [...new Set(paths)];
     }, []);
 
-    const handleExport = useCallback((format: string, diffResult: DiffResult) => {
-        switch (format) {
-            case 'json-patch':
-                copyToClipboard(JSON.stringify(generateJSONPatch(diffResult), null, 2));
-                break;
-            case 'merge-patch':
-                copyToClipboard(JSON.stringify(generateMergePatch(diffResult), null, 2));
-                break;
-            case 'download-patch':
-                downloadPatch(diffResult);
-                break;
-            case 'html-report':
-                generateHTMLReport(diffResult);
-                break;
-            case 'json-paths':
-                copyToClipboard(JSON.stringify(getJSONPaths(diffResult), null, 2));
-                break;
-        }
-    }, [copyToClipboard, generateJSONPatch, generateMergePatch, downloadPatch, generateHTMLReport, getJSONPaths]);
+    const handleExport = useCallback(
+        (format: string, diffResult: DiffResult) => {
+            switch (format) {
+                case 'json-patch':
+                    copyToClipboard(JSON.stringify(generateJSONPatch(diffResult), null, 2));
+                    break;
+                case 'merge-patch':
+                    copyToClipboard(JSON.stringify(generateMergePatch(diffResult), null, 2));
+                    break;
+                case 'download-patch':
+                    downloadPatch(diffResult);
+                    break;
+                case 'html-report':
+                    generateHTMLReport(diffResult);
+                    break;
+                case 'json-paths':
+                    copyToClipboard(JSON.stringify(getJSONPaths(diffResult), null, 2));
+                    break;
+            }
+        },
+        [
+            copyToClipboard,
+            generateJSONPatch,
+            generateMergePatch,
+            downloadPatch,
+            generateHTMLReport,
+            getJSONPaths,
+        ],
+    );
 
     // Keyboard shortcuts handler
     useEffect(() => {

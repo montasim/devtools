@@ -20,11 +20,7 @@ interface ViewerShareDialogProps {
     onOpenChange?: (open: boolean) => void;
 }
 
-export function ViewerShareDialog({
-    content,
-    open,
-    onOpenChange,
-}: ViewerShareDialogProps) {
+export function ViewerShareDialog({ content, open, onOpenChange }: ViewerShareDialogProps) {
     const [copied, setCopied] = useState(false);
 
     // Generate shareable URL

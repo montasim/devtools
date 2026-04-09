@@ -12,7 +12,13 @@ interface JsonTreeViewProps {
     height?: string;
 }
 
-export function JsonTreeView({ nodes, showTypes = false, showPaths = false, level = 0, height = '400px' }: JsonTreeViewProps) {
+export function JsonTreeView({
+    nodes,
+    showTypes = false,
+    showPaths = false,
+    level = 0,
+    height = '400px',
+}: JsonTreeViewProps) {
     return (
         <div className="font-mono text-sm" style={{ height }}>
             {nodes.map((node, index) => (
@@ -105,9 +111,7 @@ function TreeNodeComponent({ node, showTypes, showPaths, level }: TreeNodeCompon
 
                 {/* Key */}
                 {node.path !== '$' && (
-                    <span className="text-blue-600 dark:text-blue-400 font-medium">
-                        {node.key}
-                    </span>
+                    <span className="text-blue-600 dark:text-blue-400 font-medium">{node.key}</span>
                 )}
 
                 {/* Colon for object properties */}
@@ -116,14 +120,10 @@ function TreeNodeComponent({ node, showTypes, showPaths, level }: TreeNodeCompon
                 )}
 
                 {/* Array index */}
-                {node.path.match(/\[\d+\]$/) && (
-                    <span className="text-gray-500">:</span>
-                )}
+                {node.path.match(/\[\d+\]$/) && <span className="text-gray-500">:</span>}
 
                 {/* Value */}
-                <span className={getTypeColor(node.type)}>
-                    {formatValue()}
-                </span>
+                <span className={getTypeColor(node.type)}>{formatValue()}</span>
 
                 {/* Type Badge */}
                 {showTypes && (

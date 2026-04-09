@@ -20,11 +20,7 @@ interface MinifyShareDialogProps {
     onOpenChange?: (open: boolean) => void;
 }
 
-export function MinifyShareDialog({
-    content,
-    open,
-    onOpenChange,
-}: MinifyShareDialogProps) {
+export function MinifyShareDialog({ content, open, onOpenChange }: MinifyShareDialogProps) {
     const [copied, setCopied] = useState(false);
 
     // Generate shareable URL

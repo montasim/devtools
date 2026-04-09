@@ -20,11 +20,7 @@ interface FormatShareDialogProps {
     onOpenChange?: (open: boolean) => void;
 }
 
-export function FormatShareDialog({
-    content,
-    open,
-    onOpenChange,
-}: FormatShareDialogProps) {
+export function FormatShareDialog({ content, open, onOpenChange }: FormatShareDialogProps) {
     const [copied, setCopied] = useState(false);
 
     // Generate shareable URL

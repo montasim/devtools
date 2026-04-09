@@ -12,9 +12,7 @@ describe('useFormatJson', () => {
     });
 
     it('should format JSON with default options', async () => {
-        const { result } = renderHook(() =>
-            useFormatJson('{"name":"John","age":30}'),
-        );
+        const { result } = renderHook(() => useFormatJson('{"name":"John","age":30}'));
 
         // Initial state should have the unformatted content
         expect(result.current.formatted).toBe('{"name":"John","age":30}');
@@ -32,9 +30,7 @@ describe('useFormatJson', () => {
     });
 
     it('should format JSON with custom indentation', async () => {
-        const { result } = renderHook(() =>
-            useFormatJson('{"name":"John"}', { indentation: 4 }),
-        );
+        const { result } = renderHook(() => useFormatJson('{"name":"John"}', { indentation: 4 }));
 
         await act(async () => {
             vi.advanceTimersByTime(300);
@@ -68,9 +64,7 @@ describe('useFormatJson', () => {
     });
 
     it('should handle invalid JSON', async () => {
-        const { result } = renderHook(() =>
-            useFormatJson('{"name":"John"'),
-        );
+        const { result } = renderHook(() => useFormatJson('{"name":"John"'));
 
         await act(async () => {
             vi.advanceTimersByTime(300);
@@ -82,9 +76,7 @@ describe('useFormatJson', () => {
     });
 
     it('should debounce formatting with 300ms delay', async () => {
-        const { result } = renderHook(() =>
-            useFormatJson('{"name":"John"}'),
-        );
+        const { result } = renderHook(() => useFormatJson('{"name":"John"}'));
 
         // Change content multiple times rapidly
         await act(async () => {
@@ -110,9 +102,7 @@ describe('useFormatJson', () => {
     });
 
     it('should update format options and re-format', async () => {
-        const { result } = renderHook(() =>
-            useFormatJson('{"z":1,"a":2}', { sortKeys: false }),
-        );
+        const { result } = renderHook(() => useFormatJson('{"z":1,"a":2}', { sortKeys: false }));
 
         await act(async () => {
             vi.advanceTimersByTime(300);
@@ -130,9 +120,7 @@ describe('useFormatJson', () => {
     });
 
     it('should update content and re-format', async () => {
-        const { result } = renderHook(() =>
-            useFormatJson('{"name":"John"}'),
-        );
+        const { result } = renderHook(() => useFormatJson('{"name":"John"}'));
 
         await act(async () => {
             vi.advanceTimersByTime(300);
@@ -150,9 +138,7 @@ describe('useFormatJson', () => {
     });
 
     it('should handle empty string', async () => {
-        const { result } = renderHook(() =>
-            useFormatJson(''),
-        );
+        const { result } = renderHook(() => useFormatJson(''));
 
         await act(async () => {
             vi.advanceTimersByTime(300);
@@ -163,9 +149,7 @@ describe('useFormatJson', () => {
     });
 
     it('should handle whitespace-only string', async () => {
-        const { result } = renderHook(() =>
-            useFormatJson('   '),
-        );
+        const { result } = renderHook(() => useFormatJson('   '));
 
         await act(async () => {
             vi.advanceTimersByTime(300);
@@ -176,9 +160,7 @@ describe('useFormatJson', () => {
     });
 
     it('should handle valid JSON arrays', async () => {
-        const { result } = renderHook(() =>
-            useFormatJson('[1,2,3]'),
-        );
+        const { result } = renderHook(() => useFormatJson('[1,2,3]'));
 
         await act(async () => {
             vi.advanceTimersByTime(300);
@@ -197,14 +179,14 @@ describe('useFormatJson', () => {
             vi.advanceTimersByTime(300);
         });
 
-        expect(result.current.formatted).toBe('{\n  "user": {\n    "name": "John",\n    "age": 30\n  },\n  "tags": [\n    "a",\n    "b"\n  ]\n}');
+        expect(result.current.formatted).toBe(
+            '{\n  "user": {\n    "name": "John",\n    "age": 30\n  },\n  "tags": [\n    "a",\n    "b"\n  ]\n}',
+        );
         expect(result.current.isValid).toBe(true);
     });
 
     it('should format on initial mount', async () => {
-        const { result } = renderHook(() =>
-            useFormatJson('{"name":"John"}'),
-        );
+        const { result } = renderHook(() => useFormatJson('{"name":"John"}'));
 
         // Should have initial content immediately
         expect(result.current.formatted).toBe('{"name":"John"}');

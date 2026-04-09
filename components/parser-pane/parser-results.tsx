@@ -26,38 +26,48 @@ export function ParserResults({
                     <div className="grid grid-cols-2 gap-3 text-sm">
                         <div>
                             <span className="text-gray-600 dark:text-gray-400">Total Keys:</span>
-                            <span className="ml-2 font-mono font-medium">{parsedData.statistics.totalKeys}</span>
+                            <span className="ml-2 font-mono font-medium">
+                                {parsedData.statistics.totalKeys}
+                            </span>
                         </div>
                         <div>
                             <span className="text-gray-600 dark:text-gray-400">Total Values:</span>
-                            <span className="ml-2 font-mono font-medium">{parsedData.statistics.totalValues}</span>
+                            <span className="ml-2 font-mono font-medium">
+                                {parsedData.statistics.totalValues}
+                            </span>
                         </div>
                         <div>
                             <span className="text-gray-600 dark:text-gray-400">Max Depth:</span>
-                            <span className="ml-2 font-mono font-medium">{parsedData.statistics.maxDepth}</span>
+                            <span className="ml-2 font-mono font-medium">
+                                {parsedData.statistics.maxDepth}
+                            </span>
                         </div>
                     </div>
                 </div>
             )}
 
             {/* Types Distribution */}
-            {showTypes && parsedData.isValid && Object.keys(parsedData.statistics.types).length > 0 && (
-                <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <h3 className="text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300">
-                        Type Distribution
-                    </h3>
-                    <div className="space-y-2 text-sm">
-                        {Object.entries(parsedData.statistics.types)
-                            .sort(([, a], [, b]) => b - a)
-                            .map(([type, count]) => (
-                                <div key={type} className="flex justify-between">
-                                    <span className="text-gray-600 dark:text-gray-400 capitalize">{type}:</span>
-                                    <span className="font-mono font-medium">{count}</span>
-                                </div>
-                            ))}
+            {showTypes &&
+                parsedData.isValid &&
+                Object.keys(parsedData.statistics.types).length > 0 && (
+                    <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                        <h3 className="text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300">
+                            Type Distribution
+                        </h3>
+                        <div className="space-y-2 text-sm">
+                            {Object.entries(parsedData.statistics.types)
+                                .sort(([, a], [, b]) => b - a)
+                                .map(([type, count]) => (
+                                    <div key={type} className="flex justify-between">
+                                        <span className="text-gray-600 dark:text-gray-400 capitalize">
+                                            {type}:
+                                        </span>
+                                        <span className="font-mono font-medium">{count}</span>
+                                    </div>
+                                ))}
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
 
             {/* Paths Section */}
             {showPaths && parsedData.isValid && parsedData.paths.length > 0 && (

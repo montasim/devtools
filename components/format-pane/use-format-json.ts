@@ -6,10 +6,7 @@ import { validateJson } from '../editor-pane/utils/validation';
 import { formatJson, sortKeys, escapeUnicode } from '../editor-pane/utils/json-operations';
 
 // Format JSON with options
-const formatJsonWith = (
-    json: string,
-    options: FormatOptions
-): string => {
+const formatJsonWith = (json: string, options: FormatOptions): string => {
     try {
         const parsed = JSON.parse(json);
 
@@ -30,8 +27,9 @@ const formatJsonWith = (
 
         // Apply escape unicode if enabled
         if (options.escapeUnicode) {
-            result = result.replace(/[\u007F-\uFFFF]/g, (c) =>
-                '\\u' + ('0000' + c.charCodeAt(0).toString(16)).slice(-4)
+            result = result.replace(
+                /[\u007F-\uFFFF]/g,
+                (c) => '\\u' + ('0000' + c.charCodeAt(0).toString(16)).slice(-4),
             );
         }
 
