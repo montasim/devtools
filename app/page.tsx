@@ -3,6 +3,8 @@
 import { useState, useRef, useCallback } from 'react';
 import { Toolbar } from '@/components/toolbar';
 import { EditorPane, type EditorPaneRef } from '@/components/editor-pane';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Settings, GitCompare, Code, Minimize2, FileJson, Share2 } from 'lucide-react';
 
 export default function Home() {
     const [ignoreKeyOrder, setIgnoreKeyOrder] = useState(true);
@@ -11,6 +13,7 @@ export default function Home() {
     const [semanticTypeDiff, setSemanticTypeDiff] = useState(false);
     const [canCompare, setCanCompare] = useState(false);
     const [isComputing, setIsComputing] = useState(false);
+    const [activeTab, setActiveTab] = useState('diff');
 
     const editorPaneRef = useRef<EditorPaneRef>(null);
 
@@ -46,62 +49,230 @@ export default function Home() {
 
     return (
         <div className="min-h-screen">
-            <Toolbar
-                toggles={[
-                    {
-                        id: 'ignoreKeyOrder',
-                        label: 'Ignore Key Order',
-                        checked: ignoreKeyOrder,
-                        onChange: setIgnoreKeyOrder,
-                    },
-                    {
-                        id: 'prettyPrint',
-                        label: 'Pretty Print',
-                        checked: prettyPrint,
-                        onChange: setPrettyPrint,
-                    },
-                    {
-                        id: 'ignoreWhitespace',
-                        label: 'Ignore Whitespace',
-                        checked: ignoreWhitespace,
-                        onChange: setIgnoreWhitespace,
-                    },
-                    {
-                        id: 'semanticTypeDiff',
-                        label: 'Semantic Type Diff',
-                        checked: semanticTypeDiff,
-                        onChange: setSemanticTypeDiff,
-                    },
-                ]}
-                actions={[
-                    {
-                        id: 'clear',
-                        label: 'Clear All',
-                        onClick: handleClear,
-                        variant: 'outline',
-                    },
-                    {
-                        id: 'compare',
-                        label: isComputing ? 'Computing...' : 'Compare',
-                        onClick: handleCompareClick,
-                        variant: 'default',
-                        disabled: !canCompare || isComputing,
-                    },
-                ]}
-            />
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <div className="border-b">
+                    <div className="mx-auto py-4">
+                        <TabsList variant="line" className="h-auto p-0 bg-transparent border-0 w-full justify-between">
+                            <div className="flex gap-2">
+                                {[
+                                    { value: 'diff', label: 'Diff', icon: GitCompare },
+                                    { value: 'format', label: 'Format', icon: Code },
+                                    { value: 'minify', label: 'Minify', icon: Minimize2 },
+                                    { value: 'parser', label: 'Parser', icon: FileJson },
+                                    { value: 'share', label: 'Share', icon: Share2 },
+                                ].map(({ value, label, icon: Icon }) => (
+                                    <TabsTrigger key={value} value={value} className="gap-2 data-[icon=true]:pr-4">
+                                        <Icon data-icon="true" className="w-4 h-4" />
+                                        {label}
+                                    </TabsTrigger>
+                                ))}
+                            </div>
+                            <div className="flex gap-2">
+                                {[
+                                    { value: 'options', label: 'Options', icon: Settings },
+                                ].map(({ value, label, icon: Icon }) => (
+                                    <TabsTrigger key={value} value={value} className="gap-2 data-[icon=true]:pr-4">
+                                        <Icon data-icon="true" className="w-4 h-4" />
+                                        {label}
+                                    </TabsTrigger>
+                                ))}
+                            </div>
+                        </TabsList>
+                    </div>
+                </div>
 
-            <div className="mx-auto">
-                <EditorPane
-                    ref={editorPaneRef}
-                    ignoreKeyOrder={ignoreKeyOrder}
-                    prettyPrint={prettyPrint}
-                    ignoreWhitespace={ignoreWhitespace}
-                    semanticTypeDiff={semanticTypeDiff}
-                    onCompare={handleCompare}
-                    onError={handleError}
-                    onValidationChange={handleValidationChange}
-                />
-            </div>
+                <TabsContent value="options" className="mt-0">
+                    <div className="container mx-auto px-4 py-8">
+                        <div className="max-w-2xl">
+                            <h2 className="text-2xl font-bold mb-4">Options</h2>
+                            <p className="text-muted-foreground mb-6">
+                                Configure default settings for JSON operations across all tools.
+                            </p>
+                            <div className="space-y-4">
+                                <div className="p-4 border rounded-lg">
+                                    <h3 className="font-semibold mb-2">Diff Options</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Configure how JSON differences are computed and displayed.
+                                    </p>
+                                </div>
+                                <div className="p-4 border rounded-lg">
+                                    <h3 className="font-semibold mb-2">Format Options</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Set indentation preferences and formatting rules.
+                                    </p>
+                                </div>
+                                <div className="p-4 border rounded-lg">
+                                    <h3 className="font-semibold mb-2">Minify Options</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Configure JSON compression and minification settings.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="diff" className="mt-0">
+                    <div>
+                        <Toolbar
+                            toggles={[
+                                {
+                                    id: 'ignoreKeyOrder',
+                                    label: 'Ignore Key Order',
+                                    checked: ignoreKeyOrder,
+                                    onChange: setIgnoreKeyOrder,
+                                },
+                                {
+                                    id: 'prettyPrint',
+                                    label: 'Pretty Print',
+                                    checked: prettyPrint,
+                                    onChange: setPrettyPrint,
+                                },
+                                {
+                                    id: 'ignoreWhitespace',
+                                    label: 'Ignore Whitespace',
+                                    checked: ignoreWhitespace,
+                                    onChange: setIgnoreWhitespace,
+                                },
+                                {
+                                    id: 'semanticTypeDiff',
+                                    label: 'Semantic Type Diff',
+                                    checked: semanticTypeDiff,
+                                    onChange: setSemanticTypeDiff,
+                                },
+                            ]}
+                            actions={[
+                                {
+                                    id: 'clear',
+                                    label: 'Clear All',
+                                    onClick: handleClear,
+                                    variant: 'outline',
+                                },
+                                {
+                                    id: 'compare',
+                                    label: isComputing ? 'Computing...' : 'Compare',
+                                    onClick: handleCompareClick,
+                                    variant: 'default',
+                                    disabled: !canCompare || isComputing,
+                                },
+                            ]}
+                        />
+
+                        <div className="mx-auto">
+                            <EditorPane
+                                ref={editorPaneRef}
+                                ignoreKeyOrder={ignoreKeyOrder}
+                                prettyPrint={prettyPrint}
+                                ignoreWhitespace={ignoreWhitespace}
+                                semanticTypeDiff={semanticTypeDiff}
+                                onCompare={handleCompare}
+                                onError={handleError}
+                                onValidationChange={handleValidationChange}
+                            />
+                        </div>
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="format" className="mt-0">
+                    <div className="container mx-auto px-4 py-8">
+                        <div className="max-w-4xl">
+                            <h2 className="text-2xl font-bold mb-4">Format JSON</h2>
+                            <p className="text-muted-foreground mb-6">
+                                Format and beautify your JSON code with proper indentation and spacing.
+                            </p>
+                            <div className="space-y-4">
+                                <div className="p-4 border rounded-lg">
+                                    <h3 className="font-semibold mb-2">JSON Formatter</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Coming soon: Paste your JSON here to format it with proper indentation.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="minify" className="mt-0">
+                    <div className="container mx-auto px-4 py-8">
+                        <div className="max-w-4xl">
+                            <h2 className="text-2xl font-bold mb-4">Minify JSON</h2>
+                            <p className="text-muted-foreground mb-6">
+                                Compress your JSON by removing unnecessary whitespace and formatting.
+                            </p>
+                            <div className="space-y-4">
+                                <div className="p-4 border rounded-lg">
+                                    <h3 className="font-semibold mb-2">JSON Minifier</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Coming soon: Paste your JSON here to minify it for production use.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="parser" className="mt-0">
+                    <div className="container mx-auto px-4 py-8">
+                        <div className="max-w-4xl">
+                            <h2 className="text-2xl font-bold mb-4">JSON Parser</h2>
+                            <p className="text-muted-foreground mb-6">
+                                Parse and validate JSON data with detailed error reporting and structure visualization.
+                            </p>
+                            <div className="space-y-4">
+                                <div className="p-4 border rounded-lg">
+                                    <h3 className="font-semibold mb-2">JSON Parser</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Coming soon: Parse JSON to validate structure and visualize data hierarchy.
+                                    </p>
+                                </div>
+                                <div className="p-4 border rounded-lg">
+                                    <h3 className="font-semibold mb-2">Path Explorer</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Coming soon: Navigate and explore JSON paths with dot notation support.
+                                    </p>
+                                </div>
+                                <div className="p-4 border rounded-lg">
+                                    <h3 className="font-semibold mb-2">Type Inspector</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Coming soon: Inspect data types and validate JSON schema compliance.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="share" className="mt-0">
+                    <div className="container mx-auto px-4 py-8">
+                        <div className="max-w-4xl">
+                            <h2 className="text-2xl font-bold mb-4">Share JSON</h2>
+                            <p className="text-muted-foreground mb-6">
+                                Share your JSON data with others through shareable links and collaborative features.
+                            </p>
+                            <div className="space-y-4">
+                                <div className="p-4 border rounded-lg">
+                                    <h3 className="font-semibold mb-2">Generate Share Link</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Coming soon: Create a unique shareable link for your JSON data.
+                                    </p>
+                                </div>
+                                <div className="p-4 border rounded-lg">
+                                    <h3 className="font-semibold mb-2">Export Options</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Coming soon: Export JSON to various formats (JSON, CSV, XML, YAML).
+                                    </p>
+                                </div>
+                                <div className="p-4 border rounded-lg">
+                                    <h3 className="font-semibold mb-2">Collaborative Editing</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Coming soon: Real-time collaboration features for JSON editing.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </TabsContent>
+            </Tabs>
         </div>
     );
 }
