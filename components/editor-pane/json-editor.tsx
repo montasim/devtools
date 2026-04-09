@@ -593,7 +593,7 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
     return (
         <div className="flex flex-col h-full py-2">
             {/* Header with label and validation status */}
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-2 shrink-0">
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     {label}
                 </label>
@@ -631,14 +631,14 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
                 </div>
             </div>
 
-            {/* Editor container */}
-            <div className="flex-1 border border-gray-300 rounded-md overflow-hidden dark:border-gray-600">
-                <div ref={editorRef} className="h-full" />
+            {/* Editor container with fixed height and scroll */}
+            <div className="border border-gray-300 rounded-md overflow-hidden dark:border-gray-600 shrink-0" style={{ height: '400px' }}>
+                <div ref={editorRef} className="h-full overflow-auto" />
             </div>
 
             {/* Error display */}
             {error && (
-                <div className="mt-2 p-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded dark:text-red-400 dark:bg-red-900/20 dark:border-red-800">
+                <div className="mt-2 p-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded dark:text-red-400 dark:bg-red-900/20 dark:border-red-800 shrink-0">
                     <div className="font-medium">{error.message}</div>
                     <div className="text-xs mt-1">
                         Line {error.line}, Column {error.column}
@@ -647,7 +647,9 @@ export function JsonEditor({ value, onChange, onError, label, readOnly = false }
             )}
 
             {/* Footer with statistics and validation */}
-            <EditorFooter content={value} error={error} />
+            <div className="shrink-0">
+                <EditorFooter content={value} error={error} />
+            </div>
         </div>
     );
 }
