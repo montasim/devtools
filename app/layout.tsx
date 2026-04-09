@@ -35,7 +35,7 @@ export default function RootLayout({
                 <ThemeProvider>
                     <Navbar />
 
-                    <main className="py-4 sm:py-6 lg:py-8">{children}</main>
+                    <main className="">{children}</main>
 
                     <Footer />
                 </ThemeProvider>
