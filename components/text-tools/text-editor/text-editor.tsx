@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
 import { Link2, Upload, Search, MoreVertical } from 'lucide-react';
 import { TextareaFooter } from './textarea-footer';
 import { TextOperationsMenu } from './text-operations-menu';
@@ -28,6 +29,7 @@ export function TextEditor({
     // Handle copy to clipboard
     const handleCopy = useCallback(() => {
         navigator.clipboard.writeText(value);
+        toast.success('Copied to clipboard');
     }, [value]);
 
     // Handle file upload

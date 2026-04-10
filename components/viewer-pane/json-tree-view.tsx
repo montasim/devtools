@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { ChevronRight, ChevronDown, Copy, Check } from 'lucide-react';
 import type { TreeNode } from './types';
 
@@ -46,14 +47,16 @@ function TreeNodeComponent({ node, showTypes, showPaths, level }: TreeNodeCompon
     const [copied, setCopied] = useState(false);
     const hasChildren = node.children && node.children.length > 0;
 
-    const handleCopy = async (value: any) => {
+    const handleCopy = async (value: unknown) => {
         try {
             const textToCopy = typeof value === 'string' ? value : JSON.stringify(value);
             await navigator.clipboard.writeText(textToCopy);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Copied to clipboard');
         } catch (error) {
             console.error('Failed to copy:', error);
+            toast.error('Failed to copy to clipboard');
         }
     };
 

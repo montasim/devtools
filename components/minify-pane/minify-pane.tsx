@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 import { Copy, Download } from 'lucide-react';
 import { JsonEditor } from '../editor-pane/json-editor';
 import { Separator } from '../ui/separator';
@@ -91,7 +92,7 @@ export const MinifyPane = ({
 
     // Handle copy success
     const handleCopySuccess = useCallback(() => {
-        console.log('Copied to clipboard');
+        toast.success('Copied to clipboard');
     }, []);
 
     // Handle download success

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 import { JsonEditor } from '../editor-pane/json-editor';
 import { Separator } from '../ui/separator';
 import { useJsonSchemaGenerator } from './use-json-schema-generator';
@@ -109,9 +110,10 @@ export const SchemaPane = ({
     const handleCopySchema = useCallback(async () => {
         try {
             await navigator.clipboard.writeText(generationResult.schema);
-            console.log('Schema copied to clipboard');
+            toast.success('Schema copied to clipboard');
         } catch (error) {
             console.error('Failed to copy schema:', error);
+            toast.error('Failed to copy schema to clipboard');
             onError?.(error as Error);
         }
     }, [generationResult.schema, onError]);

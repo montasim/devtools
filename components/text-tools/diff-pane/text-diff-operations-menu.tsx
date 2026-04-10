@@ -1,5 +1,6 @@
 'use client';
 
+import { toast } from 'sonner';
 import { Copy, Trash2, ArrowUpDown } from 'lucide-react';
 import {
     DropdownMenuContent,
@@ -26,16 +27,18 @@ export function TextDiffOperationsMenu({
     const handleCopyLeft = async () => {
         try {
             await navigator.clipboard.writeText(leftText);
+            toast.success('Left text copied to clipboard');
         } catch {
-            alert('Failed to copy to clipboard');
+            toast.error('Failed to copy to clipboard');
         }
     };
 
     const handleCopyRight = async () => {
         try {
             await navigator.clipboard.writeText(rightText);
+            toast.success('Right text copied to clipboard');
         } catch {
-            alert('Failed to copy to clipboard');
+            toast.error('Failed to copy to clipboard');
         }
     };
 

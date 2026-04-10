@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { toast } from 'sonner';
 import { EditorState } from '@codemirror/state';
 import { EditorView, keymap, lineNumbers } from '@codemirror/view';
 import { json } from '@codemirror/lang-json';
@@ -289,6 +290,7 @@ export function JsonEditor({
         const encoded = btoa(value);
         const url = `${window.location.origin}?content=${encoded}`;
         navigator.clipboard.writeText(url);
+        toast.success('Share link copied to clipboard');
     }, [value]);
 
     // Handle search in editor
