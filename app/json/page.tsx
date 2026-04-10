@@ -24,6 +24,7 @@ import { SchemaTab } from './tabs/schema-tab';
 import { OptionsTab } from './tabs/options-tab';
 import { HistoryTab } from './tabs/history-tab';
 import { ShareTab } from './tabs/share-tab';
+import { InvalidTabState } from '@/components/ui/invalid-tab-state';
 
 type TabValue = (typeof VALID_TABS)[number];
 
@@ -46,11 +47,17 @@ function JsonPageContent() {
     const pathname = usePathname();
     const isInitializingRef = useRef(true);
     const previousTabRef = useRef<string | null>(null);
+    const [invalidTab, setInvalidTab] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<TabValue>(() => {
         // Initialize from URL during state creation
         const tabFromUrl = searchParams.get('tab');
-        if (tabFromUrl && VALID_TABS.includes(tabFromUrl as TabValue)) {
-            return tabFromUrl as TabValue;
+        if (tabFromUrl) {
+            if (VALID_TABS.includes(tabFromUrl as TabValue)) {
+                return tabFromUrl as TabValue;
+            } else {
+                // Return the invalid tab as the active tab so Tabs component shows it selected
+                return tabFromUrl as TabValue;
+            }
         }
         return 'diff';
     });
@@ -59,14 +66,22 @@ function JsonPageContent() {
     useLayoutEffect(() => {
         if (isInitializingRef.current) {
             const tabFromUrl = searchParams.get('tab');
-            if (!tabFromUrl || !VALID_TABS.includes(tabFromUrl as TabValue)) {
-                // Set default tab in URL if none specified
+            if (tabFromUrl) {
+                if (VALID_TABS.includes(tabFromUrl as TabValue)) {
+                    // Valid tab - track it
+                    previousTabRef.current = tabFromUrl;
+                } else {
+                    // Invalid tab - store it for error display
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    setInvalidTab(tabFromUrl);
+                }
+            } else {
+                // No tab specified - set default
                 const params = new URLSearchParams();
                 params.set('tab', activeTab);
                 router.replace(`${pathname}?${params.toString()}`, { scroll: false });
             }
             isInitializingRef.current = false;
-            previousTabRef.current = activeTab;
         }
     }, [searchParams, pathname, router, activeTab]);
 
@@ -81,12 +96,16 @@ function JsonPageContent() {
             const newTab = tab as TabValue;
             setActiveTab(newTab);
             previousTabRef.current = newTab;
+            // Clear invalid tab state when user selects a valid tab
+            if (invalidTab) {
+                setInvalidTab(null);
+            }
             // Update URL without causing a page reload
             const params = new URLSearchParams(searchParams.toString());
             params.set('tab', newTab);
             router.replace(`${pathname}?${params.toString()}`, { scroll: false });
         },
-        [searchParams, pathname, router],
+        [searchParams, pathname, router, invalidTab],
     );
 
     // Sync URL changes with state (for browser back/forward navigation)
@@ -195,6 +214,12 @@ function JsonPageContent() {
                 <TabsContent value="schema" className="mt-0">
                     <SchemaTab onClear={handleClear} />
                 </TabsContent>
+
+                {invalidTab && (
+                    <TabsContent value={invalidTab} className="mt-0">
+                        <InvalidTabState invalidTab={invalidTab} />
+                    </TabsContent>
+                )}
             </Tabs>
         </>
     );
