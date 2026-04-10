@@ -7,7 +7,7 @@ export const Toolbar = ({ toggles = [], actions = [], className }: ToolbarProps)
     return (
         <div
             className={cn(
-                'flex items-center justify-between gap-4 bg-background border-b py-2',
+                'flex items-center justify-between gap-4 bg-background border-b pb-2',
                 className,
             )}
         >
