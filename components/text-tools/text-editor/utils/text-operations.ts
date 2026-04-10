@@ -1,8 +1,12 @@
+import { toast } from 'sonner';
+
 export function copyToClipboard(text: string): boolean {
     try {
         navigator.clipboard.writeText(text);
+        toast.success('Copied to clipboard');
         return true;
     } catch {
+        toast.error('Failed to copy to clipboard');
         return false;
     }
 }

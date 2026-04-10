@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { Trash2, Copy, Download, Share2 } from 'lucide-react';
 import { TextEditor } from '../text-editor/text-editor';
 import { TextareaFooter } from '../text-editor/textarea-footer';
@@ -51,9 +52,10 @@ export function ConvertPane() {
     const handleCopy = async () => {
         try {
             await navigator.clipboard.writeText(outputText);
+            toast.success('Copied to clipboard');
         } catch (error) {
             console.error('Failed to copy:', error);
-            alert('Failed to copy to clipboard');
+            toast.error('Failed to copy to clipboard');
         }
     };
 

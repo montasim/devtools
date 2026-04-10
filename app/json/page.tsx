@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { toast } from 'sonner';
 import { Toolbar } from '@/components/toolbar';
 import { EditorPane, type EditorPaneRef } from '@/components/editor-pane';
 import { FormatPane, FormatShareDialog } from '@/components/format-pane';
@@ -633,6 +634,9 @@ export default function Home() {
                                                                     onClick: () => {
                                                                         navigator.clipboard.writeText(
                                                                             content,
+                                                                        );
+                                                                        toast.success(
+                                                                            'Copied to clipboard',
                                                                         );
                                                                     },
                                                                     title: 'Copy to clipboard',

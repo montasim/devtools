@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { toast } from 'sonner';
 import { Copy, Check, Download, FileText, FileCode, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -64,8 +65,10 @@ export function ConvertShareDialog({
             await navigator.clipboard.writeText(url);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Share URL copied to clipboard');
         } catch (error) {
             console.error('Failed to copy URL:', error);
+            toast.error('Failed to copy URL');
         }
     }, [generateShareUrl]);
 
@@ -77,8 +80,10 @@ export function ConvertShareDialog({
             await navigator.clipboard.writeText(outputContent);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Copied to clipboard');
         } catch (error) {
             console.error('Failed to copy output:', error);
+            toast.error('Failed to copy to clipboard');
         }
     }, [outputContent]);
 

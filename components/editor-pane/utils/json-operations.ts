@@ -3,14 +3,18 @@
  * Provides various JSON manipulation and formatting operations
  */
 
+import { toast } from 'sonner';
+
 /**
  * Copy JSON content to clipboard
  */
 export async function copyToClipboard(content: string): Promise<boolean> {
     try {
         await navigator.clipboard.writeText(content);
+        toast.success('Copied to clipboard');
         return true;
     } catch {
+        toast.error('Failed to copy to clipboard');
         return false;
     }
 }
