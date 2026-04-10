@@ -6,7 +6,18 @@
 
 ## Overview
 
-Implement a text tools page at `/text` with two tabs: Diff and Transform. The implementation will reuse existing components from the JSON tools (EditorPane, Toolbar, share dialogs) while creating minimal new components specific to text operations.
+Implement a text tools page at `/text` with two tabs: Diff and Transform. The implementation will reuse existing UI patterns from the JSON tools (Tabs, Toolbar) while creating new components specific to text operations.
+
+## Dependencies
+
+```json
+{
+    "diff": "^5.1.0",
+    "react-diff-viewer-continued": "^3.2.6"
+}
+```
+
+**Note**: We cannot reuse `EditorPane` for text diffing as it's tightly coupled to JSON validation. We'll create a new `TextDiffPane` component.
 
 ## Requirements
 
@@ -48,6 +59,11 @@ Implement a text tools page at `/text` with two tabs: Diff and Transform. The im
 ```
 app/text/page.tsx                    # Main page with tab orchestration
 components/text-tools/
+├── diff-pane/                       # Text comparison component
+│   ├── diff-pane.tsx
+│   ├── diff-results.tsx
+│   ├── use-text-diff.ts
+│   └── types.ts
 └── transform-pane/                  # Text transformation component
     ├── transform-pane.tsx
     ├── transform-actions.tsx        # Transformation button groups
@@ -83,10 +99,9 @@ User enters text → useState(input) → localStorage save (debounced)
 
 ### Diff Tab
 
-**Reused Components:**
+**New Component: TextDiffPane**
 
-- `EditorPane` for side-by-side text areas
-- `Toolbar` for toggles and action buttons
+**Why not EditorPane?** The existing `EditorPane` is tightly coupled to JSON validation (uses `JsonEditor` component with JSON-specific logic). Text diff needs plain textareas.
 
 **State:**
 
@@ -94,61 +109,121 @@ User enters text → useState(input) → localStorage save (debounced)
 - `ignoreWhitespace`: boolean (default: false)
 - `canCompare`: boolean (validation state)
 - `isComputing`: boolean (comparison in progress)
+- `leftText`: string
+- `rightText`: string
+- `diffResult`: DiffResult | null
 
 **Features:**
 
+- Two plain textareas (left/right) with real-time validation
 - Toggle switches for case and whitespace options
-- Compare button (disabled until validation passes)
+- Compare button (disabled until both panes have content)
 - Clear All button to reset both panes
-- Diff results with color-coded highlighting
-- Error handling for empty inputs and large texts
+- Diff results using `react-diff-viewer-continued` with:
+    - Green highlighting for additions
+    - Red highlighting for deletions
+    - Split view (side-by-side) display
+- Line-level diffs (not character-level)
+- Error handling for empty inputs and large texts (>1MB)
 
 ### Transform Tab
 
 **New Component: TextTransformPane**
 
+**Layout:** Side-by-side split pane (like Format tab in JSON tools) - input on left, output on right.
+
 **State:**
 
 - `inputText`: string
 - `outputText`: string (transformed result)
-- `selectedTransform`: string
+
+**Transformation Functions:**
+
+**Case Conversions:**
+
+- `toUpperCase()`: "hello" → "HELLO"
+- `toLowerCase()`: "HELLO" → "hello"
+- `toTitleCase()`: "hello world" → "Hello World" (capitalize first letter of each word)
+- `toSentenceCase()`: "hello world" → "Hello world" (capitalize first letter only)
+
+**Encoding/Decoding:**
+
+- `base64Encode()`: "hello" → "aGVsbG8="
+- `base64Decode()`: "aGVsbG8=" → "hello" (throws if invalid Base64)
+- `urlEncode()`: "hello world" → "hello%20world"
+- `urlDecode()`: "hello%20world" → "hello world" (throws if malformed)
+
+**Whitespace:**
+
+- `trim()`: " hello " → "hello"
+- `normalizeSpaces()`: "hello world" → "hello world" (collapse multiple spaces to one)
+- `removeExtraLines()`: Removes consecutive blank lines (max one empty line between paragraphs)
+
+**Other:**
+
+- `reverseText()`: "hello" → "olleh"
+- `shuffleWords()`: "hello world" → "world hello" (random word order)
 
 **Features:**
 
-- Single large textarea for input
-- Transformation buttons organized by category (Case, Encoding, Whitespace, Other)
-- Real-time transformation on button click
-- Output display in read-only textarea
-- Copy button for output
+- Two large textareas (input/output) in split view
+- Transformation toolbar above with buttons organized by category
+- Real-time transformation on button click (not automatic - user must click)
+- Output in read-only textarea with Copy button
 - Clear All button
-- Error messages for failed transformations
+- Error messages for failed transformations (e.g., "Invalid Base64 string", "Text exceeds 1MB limit")
 
 ## Error Handling
 
 ### Input Validation
 
-- Empty input detection with helpful messages
-- Character/size limits (1MB max) to prevent performance issues
-- Invalid encoding detection for decode operations
+**Diff Tab:**
+
+- Empty input: "Please enter text in both panes to compare"
+- Size limit: "Text exceeds 1MB limit (current: {size}MB). Large texts may cause performance issues."
+
+**Transform Tab:**
+
+- Empty input: "Please enter text to transform"
+- Size limit: "Text exceeds 1MB limit (current: {size}MB). Large texts may cause performance issues."
 
 ### Processing Errors
 
-- Try-catch blocks around transformation operations
-- User-friendly error messages explaining what went wrong
-- Graceful fallback if transformation fails
+**Encoding/Decoding Errors:**
+
+- Base64 decode: "Invalid Base64 string: unable to decode"
+- URL decode: "URL decode failed: malformed percent encoding at position {pos}"
+- General transform: "Transformation failed: {error.message}"
+
+**Display:** Errors shown in red alert banner above the relevant pane.
 
 ### Storage Errors
 
-- localStorage quota exceeded handling
-- Backup to in-memory state if storage fails
-- Clear error messaging with retry suggestions
+- localStorage quota exceeded: "Warning: Unable to save to browser storage (quota exceeded). Your work is not being saved."
+- Fallback: Continue with in-memory state, show warning
+- Retry: "Try clearing your browser data or using smaller texts"
 
-## localStorage Keys
+### localStorage Strategy
+
+**Pattern:** Follow `format-pane.tsx` (lines 46-55) - save on input change with 500ms debouncing.
+
+**When to Save:**
+
+- Diff tab: Save left/right text on every keystroke (debounced 500ms)
+- Transform tab: Save input text on every keystroke (debounced 500ms)
+
+**Storage Keys:**
 
 - `text-diff-left-content`: Left pane input for Diff tab
 - `text-diff-right-content`: Right pane input for Diff tab
 - `text-transform-input`: Input text for Transform tab
-- `text-transform-output`: Output text for Transform tab
+- `text-transform-output`: Output text for Transform tab (optional - mainly for debugging)
+
+## Share Functionality
+
+**Decision:** Share dialogs are **out of scope** for MVP. Focus on core diff and transform functionality first.
+
+**Future Enhancement:** Add share dialogs similar to JSON tools (FormatShareDialog, etc.) if users request it.
 
 ## Styling
 
@@ -161,22 +236,39 @@ User enters text → useState(input) → localStorage save (debounced)
 
 ### Phase 1: Foundation
 
-- Set up app/text/page.tsx with tab structure
-- Add Diff tab with reused EditorPane component
-- Implement state management and localStorage
+- Install dependencies: `diff` and `react-diff-viewer-continued`
+- Set up app/text/page.tsx with tab structure (Diff, Transform)
+- Create components/text-tools directory structure
+- Add TypeScript interfaces and types
 
-### Phase 2: Transform Tab
+### Phase 2: Diff Tab
 
-- Create TextTransformPane component
-- Implement transformation functions (case, encoding, whitespace)
-- Add toolbar with transformation buttons
-- Integrate localStorage persistence
+- Create TextDiffPane component with two plain textareas
+- Implement diff logic using `diff` library
+- Add diff viewer using `react-diff-viewer-continued`
+- Implement state management and localStorage (debounced saves)
+- Add Toolbar with ignore case/ignore whitespace toggles
+- Add Compare button (disabled until both panes have content)
+- Add Clear All button
 
-### Phase 3: Polish
+### Phase 3: Transform Tab
 
-- Add error handling and validation
+- Create TextTransformPane component with split view layout
+- Implement transformation utility functions:
+    - Case conversions (toUpperCase, toLowerCase, toTitleCase, toSentenceCase)
+    - Encoding/decoding (base64Encode, base64Decode, urlEncode, urlDecode)
+    - Whitespace operations (trim, normalizeSpaces, removeExtraLines)
+    - Other (reverseText, shuffleWords)
+- Add toolbar with transformation buttons organized by category
+- Integrate localStorage persistence (debounced saves)
+- Add Copy button for output
+
+### Phase 4: Polish
+
+- Add error handling and validation (specific error messages)
 - Test with large texts (1MB+)
-- Ensure responsive design works
+- Ensure responsive design works on mobile
+- Add loading states and disabled states
 - Final testing and bug fixes
 
 ## Development Guidelines
