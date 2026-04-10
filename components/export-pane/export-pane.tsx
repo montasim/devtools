@@ -5,7 +5,6 @@ import { toast } from 'sonner';
 import { Copy, Download, FileDown } from 'lucide-react';
 import { JsonEditor } from '../editor-pane/json-editor';
 import { Separator } from '../ui/separator';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Button } from '../ui/button';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { useJsonExport } from './use-json-export';
@@ -16,6 +15,8 @@ export const ExportPane = ({
     onValidationChange,
     initialContent = '',
     className,
+    exportFormat: propExportFormat,
+    onExportFormatChange,
 }: ExportPaneProps) => {
     // State with lazy initialization from localStorage
     const [leftContent, setLeftContent] = useState<string>(() => {
@@ -46,8 +47,16 @@ export const ExportPane = ({
         }
     }, [leftContent]);
 
-    // Export options state
-    const [exportFormat, setExportFormat] = useState<ExportFormat>('csv');
+    // Export options state - use prop if provided, otherwise use local state
+    const [localExportFormat, setLocalExportFormat] = useState<ExportFormat>('csv');
+    const exportFormat = propExportFormat ?? localExportFormat;
+    const handleExportFormatChange = (format: ExportFormat) => {
+        if (onExportFormatChange) {
+            onExportFormatChange(format);
+        } else {
+            setLocalExportFormat(format);
+        }
+    };
 
     // Export JSON
     const exportResult = useJsonExport(leftContent, { format: exportFormat });
@@ -97,14 +106,6 @@ export const ExportPane = ({
 
     const isDisabled = !exportResult.isValid || !exportResult.converted;
 
-    const formatOptions: { value: ExportFormat; label: string; extension: string }[] = [
-        { value: 'csv', label: 'CSV', extension: 'csv' },
-        { value: 'xml', label: 'XML', extension: 'xml' },
-        { value: 'yaml', label: 'YAML', extension: 'yaml' },
-        { value: 'toml', label: 'TOML', extension: 'toml' },
-        { value: 'json', label: 'JSON', extension: 'json' },
-    ];
-
     return (
         <div className={className}>
             {/* Editor Panes */}
@@ -128,44 +129,27 @@ export const ExportPane = ({
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                             Exported Output
                         </label>
-                        <div className="flex items-center gap-3">
-                            <Select
-                                value={exportFormat}
-                                onValueChange={(value) => setExportFormat(value as ExportFormat)}
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={handleCopy}
+                                disabled={isDisabled}
+                                title="Copy to clipboard"
                             >
-                                <SelectTrigger className="h-8 w-[120px] text-xs">
-                                    <SelectValue placeholder="Format" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {formatOptions.map((option) => (
-                                        <SelectItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <div className="flex items-center gap-2">
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={handleCopy}
-                                    disabled={isDisabled}
-                                    title="Copy to clipboard"
-                                >
-                                    <Copy className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={handleDownload}
-                                    disabled={isDisabled}
-                                    title="Download file"
-                                >
-                                    <Download className="h-4 w-4" />
-                                </Button>
-                            </div>
+                                <Copy className="h-4 w-4" />
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={handleDownload}
+                                disabled={isDisabled}
+                                title="Download file"
+                            >
+                                <Download className="h-4 w-4" />
+                            </Button>
                         </div>
                     </div>
 

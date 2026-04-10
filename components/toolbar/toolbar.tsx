@@ -2,8 +2,18 @@ import { cn } from '@/lib/utils';
 import { ToolbarProps } from './types';
 import { ToolbarToggle } from './toolbar-toggle';
 import { ToolbarActions } from './toolbar-actions';
+import { ReactNode } from 'react';
 
-export const Toolbar = ({ toggles = [], actions = [], className }: ToolbarProps) => {
+interface ExtendedToolbarProps extends ToolbarProps {
+    leftContent?: ReactNode;
+}
+
+export const Toolbar = ({
+    toggles = [],
+    actions = [],
+    className,
+    leftContent,
+}: ExtendedToolbarProps) => {
     return (
         <div
             className={cn(
@@ -12,6 +22,7 @@ export const Toolbar = ({ toggles = [], actions = [], className }: ToolbarProps)
             )}
         >
             <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+                {leftContent}
                 <ToolbarToggle items={toggles} />
             </div>
 

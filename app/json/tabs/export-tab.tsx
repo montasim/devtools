@@ -6,13 +6,15 @@ import { Toolbar } from '@/components/toolbar';
 import { ExportPane, ExportShareDialog } from '@/components/export-pane';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Trash2, Share2 } from 'lucide-react';
+import { Combobox } from '@/components/ui/combobox';
+import type { ExportFormat } from '@/components/export-pane/types';
 
 interface ExportTabProps {
     onClear: () => void;
 }
 
 export function ExportTab({ onClear }: ExportTabProps) {
-    const [exportFormat] = useState<'csv' | 'xml' | 'yaml' | 'toml' | 'json'>('csv');
+    const [exportFormat, setExportFormat] = useState<ExportFormat>('csv');
     const [exportShareDialogOpen, setExportShareDialogOpen] = useState(false);
     const [exportContent, setExportContent] = useState('');
     const [showClearDialog, setShowClearDialog] = useState(false);
@@ -64,11 +66,29 @@ export function ExportTab({ onClear }: ExportTabProps) {
         onClear();
     };
 
+    const formatOptions: { value: ExportFormat; label: string; extension: string }[] = [
+        { value: 'csv', label: 'CSV', extension: 'csv' },
+        { value: 'xml', label: 'XML', extension: 'xml' },
+        { value: 'yaml', label: 'YAML', extension: 'yaml' },
+        { value: 'toml', label: 'TOML', extension: 'toml' },
+        { value: 'json', label: 'JSON', extension: 'json' },
+    ];
+
+    const formatSelector = (
+        <Combobox
+            options={formatOptions.map((opt) => ({ value: opt.value, label: opt.label }))}
+            value={exportFormat}
+            onChange={(value) => setExportFormat(value as ExportFormat)}
+            placeholder="Format"
+        />
+    );
+
     return (
         <>
             <div>
                 <Toolbar
                     toggles={[]}
+                    leftContent={formatSelector}
                     actions={[
                         {
                             id: 'clear',
@@ -91,6 +111,8 @@ export function ExportTab({ onClear }: ExportTabProps) {
                     className="mx-auto"
                     onError={handleError}
                     onValidationChange={() => {}}
+                    exportFormat={exportFormat}
+                    onExportFormatChange={setExportFormat}
                 />
             </div>
 

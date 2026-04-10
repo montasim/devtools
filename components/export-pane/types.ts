@@ -16,6 +16,8 @@ export interface ExportPaneProps {
     onValidationChange?: (isValid: boolean) => void;
     initialContent?: string;
     className?: string;
+    exportFormat?: ExportFormat;
+    onExportFormatChange?: (format: ExportFormat) => void;
 }
 
 // Export result
