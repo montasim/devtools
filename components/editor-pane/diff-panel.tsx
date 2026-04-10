@@ -6,6 +6,7 @@ import { DiffPanelProps, DiffResult, ViewMode, DiffLine } from './types';
 import { DiffPanelToolbar } from './diff-panel-toolbar';
 import { ShareDialog } from './share-dialog';
 import { ChevronRight, ChevronDown, X, CheckCircle } from 'lucide-react';
+import { EmptyState } from '@/components/ui/empty-state';
 
 /**
  * DiffPanel - Main component for displaying code diffs
@@ -291,15 +292,7 @@ export function DiffPanel({
     }
 
     if (!diffResult || diffResult.hunks.length === 0) {
-        return (
-            <div
-                className="border border-gray-300 rounded-md p-8 text-center text-gray-500 dark:border-gray-600 dark:text-gray-400"
-                role="status"
-                aria-live="polite"
-            >
-                No differences found
-            </div>
-        );
+        return <EmptyState icon={CheckCircle}>No differences found</EmptyState>;
     }
 
     const scrollToHunk = (index: number) => {

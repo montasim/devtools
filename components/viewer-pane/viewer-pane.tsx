@@ -2,10 +2,11 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
-import { Copy, Download } from 'lucide-react';
+import { Copy, Download, TreeDeciduous } from 'lucide-react';
 import { JsonEditor } from '../editor-pane/json-editor';
 import { Separator } from '../ui/separator';
 import { Button } from '../ui/button';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { useJsonTree } from './use-json-tree';
 import { JsonTreeView } from './json-tree-view';
 import type { ViewerPaneProps, ViewerOptions } from './types';
@@ -155,9 +156,11 @@ export const ViewerPane = ({
                                 showPaths={viewerOptions.showPaths}
                             />
                         ) : (
-                            <div className="text-gray-400 text-center py-8">
-                                Enter valid JSON to see tree view
-                            </div>
+                            <EmptyEditorPrompt
+                                icon={TreeDeciduous}
+                                title="No tree view available"
+                                description="Enter valid JSON in the editor to see the tree structure"
+                            />
                         )}
                     </div>
                 </div>

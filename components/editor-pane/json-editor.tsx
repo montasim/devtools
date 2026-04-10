@@ -7,9 +7,10 @@ import { EditorView, keymap, lineNumbers } from '@codemirror/view';
 import { json } from '@codemirror/lang-json';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { search, highlightSelectionMatches } from '@codemirror/search';
-import { X, Link2, Search, Upload, MoreVertical } from 'lucide-react';
+import { X, Link2, Search, Upload, MoreVertical, FileJson } from 'lucide-react';
 import { EditorActions } from './editor-actions';
 import { EditorFooter } from './editor-footer';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { validateJson } from './utils/validation';
 import {
     formatJson,
@@ -654,10 +655,18 @@ export function JsonEditor({
 
             {/* Editor container with fixed height and scroll */}
             <div
-                className="border border-gray-300 rounded-md dark:border-gray-600 shrink-0 overflow-hidden max-w-full"
+                className="border border-gray-300 rounded-md dark:border-gray-600 shrink-0 overflow-hidden max-w-full relative"
                 style={{ height: height, width: '100%', position: 'relative' }}
             >
-                <div ref={editorRef} style={{ height: '100%', width: '100%' }} />
+                {!value || value.trim() === '' ? (
+                    <EmptyEditorPrompt
+                        icon={FileJson}
+                        title={`No ${label.toLowerCase()} data`}
+                        description={`Add JSON content to the ${label.toLowerCase()} editor to get started`}
+                    />
+                ) : (
+                    <div ref={editorRef} style={{ height: '100%', width: '100%' }} />
+                )}
             </div>
 
             {/* Error display */}

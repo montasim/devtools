@@ -2,11 +2,12 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
-import { Copy, Download } from 'lucide-react';
+import { Copy, Download, FileDown } from 'lucide-react';
 import { JsonEditor } from '../editor-pane/json-editor';
 import { Separator } from '../ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Button } from '../ui/button';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { useJsonExport } from './use-json-export';
 import type { ExportPaneProps, ExportFormat } from './types';
 
@@ -174,17 +175,17 @@ export const ExportPane = ({
                             <pre className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-all font-mono">
                                 {exportResult.converted}
                             </pre>
-                        ) : (
-                            <div className="text-gray-400 text-center py-8">
-                                {exportResult.error ? (
-                                    <div className="text-red-500">
-                                        <div className="font-medium">Invalid JSON</div>
-                                        <div className="text-sm mt-1">{exportResult.error}</div>
-                                    </div>
-                                ) : (
-                                    'Enter JSON to export to different formats'
-                                )}
+                        ) : exportResult.error ? (
+                            <div className="text-red-500 text-center py-8">
+                                <div className="font-medium">Invalid JSON</div>
+                                <div className="text-sm mt-1">{exportResult.error}</div>
                             </div>
+                        ) : (
+                            <EmptyEditorPrompt
+                                icon={FileDown}
+                                title="No export data"
+                                description="Enter JSON in the editor to export to different formats"
+                            />
                         )}
                     </div>
                 </div>

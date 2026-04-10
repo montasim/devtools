@@ -2,10 +2,11 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
-import { Copy, Download } from 'lucide-react';
+import { Copy, Download, ScanSearch } from 'lucide-react';
 import { JsonEditor } from '../editor-pane/json-editor';
 import { Separator } from '../ui/separator';
 import { Button } from '../ui/button';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { useJsonParser } from './use-json-parser';
 import { ParserResults } from './parser-results';
 import type { ParserPaneProps } from './types';
@@ -152,17 +153,17 @@ export const ParserPane = ({
                                 showPaths={showPaths}
                                 showStatistics={showStatistics}
                             />
-                        ) : (
-                            <div className="text-gray-400 text-center py-8">
-                                {parsedData.error ? (
-                                    <div className="text-red-500">
-                                        <div className="font-medium">Invalid JSON</div>
-                                        <div className="text-sm mt-1">{parsedData.error}</div>
-                                    </div>
-                                ) : (
-                                    'Enter JSON to parse and analyze'
-                                )}
+                        ) : parsedData.error ? (
+                            <div className="text-red-500 text-center py-8">
+                                <div className="font-medium">Invalid JSON</div>
+                                <div className="text-sm mt-1">{parsedData.error}</div>
                             </div>
+                        ) : (
+                            <EmptyEditorPrompt
+                                icon={ScanSearch}
+                                title="No parsed data"
+                                description="Enter JSON in the editor to parse and analyze its structure"
+                            />
                         )}
                     </div>
                 </div>

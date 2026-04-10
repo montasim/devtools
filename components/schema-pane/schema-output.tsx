@@ -1,7 +1,8 @@
 'use client';
 
-import { Copy, Download } from 'lucide-react';
+import { Copy, Download, FileJson } from 'lucide-react';
 import { Button } from '../ui/button';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 
 interface SchemaOutputProps {
     schema: string;
@@ -71,17 +72,17 @@ export function SchemaOutput({ schema, isValid, error, onCopy, onDownload }: Sch
                     <pre className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-all font-mono">
                         {schema}
                     </pre>
-                ) : (
-                    <div className="text-gray-400 text-center py-8">
-                        {error ? (
-                            <div className="text-red-500">
-                                <div className="font-medium">Invalid JSON</div>
-                                <div className="text-sm mt-1">{error}</div>
-                            </div>
-                        ) : (
-                            'Enter JSON to generate schema'
-                        )}
+                ) : error ? (
+                    <div className="text-red-500 text-center py-8">
+                        <div className="font-medium">Invalid JSON</div>
+                        <div className="text-sm mt-1">{error}</div>
                     </div>
+                ) : (
+                    <EmptyEditorPrompt
+                        icon={FileJson}
+                        title="No schema generated"
+                        description="Enter JSON in the editor to generate a JSON schema"
+                    />
                 )}
             </div>
         </div>
