@@ -132,8 +132,6 @@ export default function Home() {
                                 {[
                                     { value: 'diff', label: 'Diff', icon: GitCompare },
                                     { value: 'convert', label: 'Convert', icon: Repeat },
-                                    { value: 'format', label: 'Format', icon: Code },
-                                    { value: 'parser', label: 'Parser', icon: FileJson },
                                 ].map(({ value, label, icon: Icon }) => (
                                     <TabsTrigger
                                         key={value}
@@ -220,67 +218,6 @@ export default function Home() {
                     </div>
                 </TabsContent>
 
-                <TabsContent value="format" className="mt-0">
-                    <div>
-                        <Toolbar
-                            toggles={[
-                                {
-                                    id: 'indentation',
-                                    label: 'Indentation',
-                                    checked: formatIndentation === 4,
-                                    onChange: () =>
-                                        setFormatIndentation(formatIndentation === 2 ? 4 : 2),
-                                },
-                                {
-                                    id: 'sortKeys',
-                                    label: 'Sort Keys',
-                                    checked: formatSortKeys,
-                                    onChange: setFormatSortKeys,
-                                },
-                                {
-                                    id: 'removeTrailingCommas',
-                                    label: 'Remove Trailing Commas',
-                                    checked: formatRemoveTrailingCommas,
-                                    onChange: setFormatRemoveTrailingCommas,
-                                },
-                                {
-                                    id: 'escapeUnicode',
-                                    label: 'Escape Unicode',
-                                    checked: formatEscapeUnicode,
-                                    onChange: setFormatEscapeUnicode,
-                                },
-                            ]}
-                            actions={[
-                                {
-                                    id: 'clear',
-                                    label: 'Clear All',
-                                    onClick: handleClear,
-                                    variant: 'outline',
-                                    icon: <Trash2 className="h-4 w-4" />,
-                                },
-                                {
-                                    id: 'share',
-                                    label: 'Share',
-                                    onClick: handleFormatShare,
-                                    variant: 'outline',
-                                    icon: <Share2 className="h-4 w-4" />,
-                                },
-                            ]}
-                        />
-
-                        <FormatPane
-                            className="mx-auto"
-                            indentation={formatIndentation}
-                            sortKeys={formatSortKeys}
-                            removeTrailingCommas={formatRemoveTrailingCommas}
-                            escapeUnicode={formatEscapeUnicode}
-                            onError={handleError}
-                            onValidationChange={() => {}}
-                            onIndentationChange={setFormatIndentation}
-                        />
-                    </div>
-                </TabsContent>
-
                 <FormatShareDialog
                     content={formatContent}
                     open={shareDialogOpen}
@@ -292,58 +229,6 @@ export default function Home() {
                     open={parserShareDialogOpen}
                     onOpenChange={setParserShareDialogOpen}
                 />
-
-                <TabsContent value="parser" className="mt-0">
-                    <div>
-                        <Toolbar
-                            toggles={[
-                                {
-                                    id: 'showTypes',
-                                    label: 'Show Types',
-                                    checked: parserShowTypes,
-                                    onChange: setParserShowTypes,
-                                },
-                                {
-                                    id: 'showPaths',
-                                    label: 'Show Paths',
-                                    checked: parserShowPaths,
-                                    onChange: setParserShowPaths,
-                                },
-                                {
-                                    id: 'showStatistics',
-                                    label: 'Show Statistics',
-                                    checked: parserShowStatistics,
-                                    onChange: setParserShowStatistics,
-                                },
-                            ]}
-                            actions={[
-                                {
-                                    id: 'clear',
-                                    label: 'Clear All',
-                                    onClick: handleClear,
-                                    variant: 'outline',
-                                    icon: <Trash2 className="h-4 w-4" />,
-                                },
-                                {
-                                    id: 'share',
-                                    label: 'Share',
-                                    onClick: handleParserShare,
-                                    variant: 'outline',
-                                    icon: <Share2 className="h-4 w-4" />,
-                                },
-                            ]}
-                        />
-
-                        <ParserPane
-                            className="mx-auto"
-                            showTypes={parserShowTypes}
-                            showPaths={parserShowPaths}
-                            showStatistics={parserShowStatistics}
-                            onError={handleError}
-                            onValidationChange={() => {}}
-                        />
-                    </div>
-                </TabsContent>
             </Tabs>
         </div>
     );
