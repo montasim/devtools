@@ -396,10 +396,10 @@ export function DiffPanel({
             />
 
             {/* Main content area with panels */}
-            <div className="flex">
+            <div className="flex flex-col lg:flex-row">
                 {/* Left Sidebar - Tree Panel */}
                 {showTreePanel && (
-                    <div className="w-64 border-r border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 p-4">
+                    <div className="w-full lg:w-64 border-r border-b lg:border-b-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 p-3 lg:p-4 order-2 lg:order-1">
                         <div className="flex items-center justify-between mb-3">
                             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 File Structure
@@ -411,18 +411,18 @@ export function DiffPanel({
                                 <X className="h-4 w-4" />
                             </button>
                         </div>
-                        <div className="space-y-1">
+                        <div className="space-y-1 max-h-48 lg:max-h-none overflow-y-auto">
                             {diffResult.hunks.map((hunk, index) => (
                                 <div key={index} className="text-xs">
                                     <button
                                         className="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-800 px-2 py-1 rounded w-full text-left"
                                         onClick={() => scrollToHunk(index)}
                                     >
-                                        <ChevronRight className="h-3 w-3" />
-                                        <span className="text-gray-600 dark:text-gray-400">
+                                        <ChevronRight className="h-3 w-3 shrink-0" />
+                                        <span className="text-gray-600 dark:text-gray-400 truncate">
                                             Hunk {index + 1}
                                         </span>
-                                        <span className="text-gray-400 dark:text-gray-500 text-[10px] ml-auto">
+                                        <span className="text-gray-400 dark:text-gray-500 text-[10px] ml-auto shrink-0">
                                             {hunk.oldStart}-{hunk.oldStart + hunk.oldLines}
                                         </span>
                                     </button>
@@ -455,7 +455,7 @@ export function DiffPanel({
                 )}
 
                 {/* Main diff content */}
-                <div className="flex-1 overflow-auto max-h-96">
+                <div className="flex-1 overflow-auto max-h-[50vh] lg:max-h-96 order-1 lg:order-2">
                     {viewMode === 'unified' && (
                         <UnifiedView diffResult={filteredDiff} bookmarks={bookmarks} />
                     )}
@@ -480,7 +480,7 @@ export function DiffPanel({
 // Unified view - standard diff format
 function UnifiedView({ diffResult, bookmarks }: { diffResult: DiffResult; bookmarks?: number[] }) {
     return (
-        <pre className="text-sm font-mono">
+        <pre className="text-xs sm:text-sm font-mono">
             {diffResult.hunks.map((hunk, index) => (
                 <div
                     key={`hunk-${hunk.oldStart}-${hunk.newStart}`}
@@ -490,7 +490,7 @@ function UnifiedView({ diffResult, bookmarks }: { diffResult: DiffResult; bookma
                     }
                 >
                     {/* Hunk header */}
-                    <div className="px-4 py-1 bg-gray-100 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                    <div className="px-2 sm:px-4 py-1 bg-gray-100 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                         @@ -{hunk.oldStart},{hunk.oldLines} +{hunk.newStart},{hunk.newLines} @@
                     </div>
 
@@ -498,7 +498,7 @@ function UnifiedView({ diffResult, bookmarks }: { diffResult: DiffResult; bookma
                     {hunk.lines.map((line, lineIndex) => (
                         <div
                             key={`line-${line.oldLineNumber || 'new'}-${line.newLineNumber || 'old'}-${lineIndex}`}
-                            className={`flex px-4 py-0.5 ${
+                            className={`flex px-2 sm:px-4 py-0.5 ${
                                 line.type === 'addition'
                                     ? 'bg-green-50 dark:bg-green-900/20'
                                     : line.type === 'deletion'
@@ -506,13 +506,13 @@ function UnifiedView({ diffResult, bookmarks }: { diffResult: DiffResult; bookma
                                       : ''
                             }`}
                         >
-                            <span className="w-12 text-right text-gray-400 select-none mr-4 text-xs dark:text-gray-500">
+                            <span className="w-8 sm:w-12 text-right text-gray-400 select-none mr-2 sm:mr-4 text-xs dark:text-gray-500 shrink-0 hidden sm:inline">
                                 {line.oldLineNumber !== undefined ? line.oldLineNumber : ' '}
                             </span>
-                            <span className="w-12 text-right text-gray-400 select-none mr-4 text-xs dark:text-gray-500">
+                            <span className="w-8 sm:w-12 text-right text-gray-400 select-none mr-2 sm:mr-4 text-xs dark:text-gray-500 shrink-0">
                                 {line.newLineNumber !== undefined ? line.newLineNumber : ' '}
                             </span>
-                            <span className="w-4 mr-2 select-none">
+                            <span className="w-4 mr-2 select-none shrink-0">
                                 {line.type === 'addition' ? (
                                     <span className="text-green-600 dark:text-green-400">+</span>
                                 ) : line.type === 'deletion' ? (
@@ -522,13 +522,13 @@ function UnifiedView({ diffResult, bookmarks }: { diffResult: DiffResult; bookma
                                 )}
                             </span>
                             <span
-                                className={
+                                className={`break-all ${
                                     line.type === 'addition'
                                         ? 'text-green-700 dark:text-green-300'
                                         : line.type === 'deletion'
                                           ? 'text-red-700 dark:text-red-300'
                                           : 'text-gray-700 dark:text-gray-300'
-                                }
+                                }`}
                             >
                                 {line.content}
                             </span>
@@ -543,34 +543,34 @@ function UnifiedView({ diffResult, bookmarks }: { diffResult: DiffResult; bookma
 // Split view - side by side comparison
 function SplitView({ diffResult }: { diffResult: DiffResult }) {
     return (
-        <div className="text-sm font-mono">
+        <div className="text-xs sm:text-sm font-mono">
             {diffResult.hunks.map((hunk, index) => (
                 <div key={`split-hunk-${index}`} id={`hunk-${index}`}>
                     {/* Hunk header */}
-                    <div className="px-4 py-1 bg-gray-100 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400 flex">
-                        <span className="flex-1">
+                    <div className="px-2 sm:px-4 py-1 bg-gray-100 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400 flex">
+                        <span className="flex-1 truncate">
                             @@ -{hunk.oldStart},{hunk.oldLines} +{hunk.newStart},{hunk.newLines} @@
                         </span>
                     </div>
 
-                    <div className="flex">
+                    <div className="flex flex-col sm:flex-row">
                         {/* Old file */}
-                        <div className="flex-1 border-r border-gray-300 dark:border-gray-600">
+                        <div className="flex-1 border-b sm:border-b-0 sm:border-r border-gray-300 dark:border-gray-600">
                             {hunk.lines
                                 .filter((line) => line.type !== 'addition')
                                 .map((line, lineIndex) => (
                                     <div
                                         key={`old-${lineIndex}`}
-                                        className={`flex px-4 py-0.5 ${
+                                        className={`flex px-2 sm:px-4 py-0.5 ${
                                             line.type === 'deletion'
                                                 ? 'bg-red-50 dark:bg-red-900/20'
                                                 : ''
                                         }`}
                                     >
-                                        <span className="w-12 text-right text-gray-400 select-none mr-4 text-xs dark:text-gray-500">
+                                        <span className="w-8 sm:w-12 text-right text-gray-400 select-none mr-2 sm:mr-4 text-xs dark:text-gray-500 shrink-0">
                                             {line.oldLineNumber || ' '}
                                         </span>
-                                        <span className="w-4 mr-2 select-none">
+                                        <span className="w-4 mr-2 select-none shrink-0">
                                             {line.type === 'deletion' ? (
                                                 <span className="text-red-600 dark:text-red-400">
                                                     -
@@ -580,11 +580,11 @@ function SplitView({ diffResult }: { diffResult: DiffResult }) {
                                             )}
                                         </span>
                                         <span
-                                            className={
+                                            className={`truncate ${
                                                 line.type === 'deletion'
                                                     ? 'text-red-700 dark:text-red-300'
                                                     : 'text-gray-700 dark:text-gray-300'
-                                            }
+                                            }`}
                                         >
                                             {line.content}
                                         </span>
@@ -599,16 +599,16 @@ function SplitView({ diffResult }: { diffResult: DiffResult }) {
                                 .map((line, lineIndex) => (
                                     <div
                                         key={`new-${lineIndex}`}
-                                        className={`flex px-4 py-0.5 ${
+                                        className={`flex px-2 sm:px-4 py-0.5 ${
                                             line.type === 'addition'
                                                 ? 'bg-green-50 dark:bg-green-900/20'
                                                 : ''
                                         }`}
                                     >
-                                        <span className="w-12 text-right text-gray-400 select-none mr-4 text-xs dark:text-gray-500">
+                                        <span className="w-8 sm:w-12 text-right text-gray-400 select-none mr-2 sm:mr-4 text-xs dark:text-gray-500 shrink-0">
                                             {line.newLineNumber || ' '}
                                         </span>
-                                        <span className="w-4 mr-2 select-none">
+                                        <span className="w-4 mr-2 select-none shrink-0">
                                             {line.type === 'addition' ? (
                                                 <span className="text-green-600 dark:text-green-400">
                                                     +
@@ -618,11 +618,11 @@ function SplitView({ diffResult }: { diffResult: DiffResult }) {
                                             )}
                                         </span>
                                         <span
-                                            className={
+                                            className={`truncate ${
                                                 line.type === 'addition'
                                                     ? 'text-green-700 dark:text-green-300'
                                                     : 'text-gray-700 dark:text-gray-300'
-                                            }
+                                            }`}
                                         >
                                             {line.content}
                                         </span>
@@ -761,8 +761,8 @@ function TreeView({ diffResult }: { diffResult: DiffResult }) {
 // Statistics Panel
 function StatisticsPanel({ diffResult, onClose }: { diffResult: DiffResult; onClose: () => void }) {
     return (
-        <div className="w-80 border-l border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-4">
-            <div className="flex items-center justify-between mb-4">
+        <div className="w-full lg:w-80 border-l border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-3 lg:p-4 order-3">
+            <div className="flex items-center justify-between mb-3 lg:mb-4">
                 <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Statistics
                 </h3>
@@ -773,7 +773,7 @@ function StatisticsPanel({ diffResult, onClose }: { diffResult: DiffResult; onCl
                     <X className="h-4 w-4" />
                 </button>
             </div>
-            <div className="space-y-3 text-sm">
+            <div className="space-y-2 lg:space-y-3 text-xs lg:text-sm">
                 <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">Total Lines:</span>
                     <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">
@@ -840,8 +840,8 @@ function ValidationPanel({ diffResult, onClose }: { diffResult: DiffResult; onCl
     }, []);
 
     return (
-        <div className="w-80 border-l border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-4">
-            <div className="flex items-center justify-between mb-4">
+        <div className="w-full lg:w-80 border-l border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-3 lg:p-4 order-3">
+            <div className="flex items-center justify-between mb-3 lg:mb-4">
                 <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Validation
                 </h3>
@@ -852,7 +852,7 @@ function ValidationPanel({ diffResult, onClose }: { diffResult: DiffResult; onCl
                     <X className="h-4 w-4" />
                 </button>
             </div>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-2 text-xs lg:text-sm">
                 {issues.length === 0 ? (
                     <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
                         <CheckCircle className="h-4 w-4" />
@@ -864,8 +864,8 @@ function ValidationPanel({ diffResult, onClose }: { diffResult: DiffResult; onCl
                             key={index}
                             className="flex items-start gap-2 text-gray-700 dark:text-gray-300"
                         >
-                            <span className="text-red-500">{index + 1}.</span>
-                            <span>{issue}</span>
+                            <span className="text-red-500 shrink-0">{index + 1}.</span>
+                            <span className="break-words">{issue}</span>
                         </div>
                     ))
                 )}
@@ -887,8 +887,8 @@ function BookmarksPanel({
     onClose: () => void;
 }) {
     return (
-        <div className="w-80 border-l border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-4">
-            <div className="flex items-center justify-between mb-4">
+        <div className="w-full lg:w-80 border-l border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-3 lg:p-4 order-3">
+            <div className="flex items-center justify-between mb-3 lg:mb-4">
                 <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Bookmarks
                 </h3>
@@ -900,7 +900,9 @@ function BookmarksPanel({
                 </button>
             </div>
             {bookmarks.length === 0 ? (
-                <p className="text-sm text-gray-500 dark:text-gray-400 italic">No bookmarks yet</p>
+                <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 italic">
+                    No bookmarks yet
+                </p>
             ) : (
                 <div className="space-y-1">
                     {bookmarks.map((bookmarkIndex) => {
@@ -916,8 +918,10 @@ function BookmarksPanel({
                                         ?.scrollIntoView({ behavior: 'smooth' });
                                 }}
                             >
-                                <span className="text-yellow-600 dark:text-yellow-400">⭐</span>
-                                <span className="text-xs text-gray-700 dark:text-gray-300">
+                                <span className="text-yellow-600 dark:text-yellow-400 text-sm">
+                                    ⭐
+                                </span>
+                                <span className="text-xs text-gray-700 dark:text-gray-300 truncate">
                                     Hunk {bookmarkIndex + 1} (lines {hunk.oldStart}-
                                     {hunk.oldStart + hunk.oldLines})
                                 </span>

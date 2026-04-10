@@ -137,8 +137,8 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
     return (
         <div className={className}>
             {/* Editor Panes */}
-            <div className="flex flex-col md:flex-row gap-4">
-                <div className="w-full md:w-1/2">
+            <div className="flex flex-col lg:flex-row gap-3 lg:gap-4">
+                <div className="w-full lg:w-1/2 min-w-0">
                     <JsonEditor
                         label="Original"
                         value={leftContent}
@@ -146,13 +146,14 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
                         onError={(error) =>
                             setLeftValid(error === null && leftContent.trim().length > 0)
                         }
+                        height="300px"
                     />
                 </div>
 
-                <Separator orientation="vertical" className="hidden md:block" />
-                <Separator orientation="horizontal" className="block md:hidden" />
+                <Separator orientation="vertical" className="hidden lg:block" />
+                <Separator orientation="horizontal" className="block lg:hidden" />
 
-                <div className="w-full md:w-1/2">
+                <div className="w-full lg:w-1/2 min-w-0">
                     <JsonEditor
                         label="Modified"
                         value={rightContent}
@@ -160,6 +161,7 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
                         onError={(error) =>
                             setRightValid(error === null && rightContent.trim().length > 0)
                         }
+                        height="300px"
                     />
                 </div>
             </div>

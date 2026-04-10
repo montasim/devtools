@@ -176,10 +176,10 @@ export const FormatPane = ({
     const isDisabled = !formatResult.isValid || !formatResult.formatted;
 
     return (
-        <div className={`${className} h-[calc(100vh-140px)]`}>
+        <div className={className}>
             {/* Editor Panes */}
-            <div className="flex flex-col md:flex-row gap-4 h-full">
-                <div className="w-full md:w-1/2 min-w-0 h-full">
+            <div className="flex flex-col md:flex-row gap-4">
+                <div className="w-full md:w-1/2 min-w-0">
                     <JsonEditor
                         label="Unformatted JSON"
                         value={leftContent}
@@ -194,7 +194,7 @@ export const FormatPane = ({
                 <Separator orientation="vertical" className="hidden md:block" />
                 <Separator orientation="horizontal" className="block md:hidden" />
 
-                <div className="w-full md:w-1/2 min-w-0 h-full">
+                <div className="w-full md:w-1/2 min-w-0">
                     <JsonEditor
                         label="Formatted JSON"
                         value={formatResult.formatted}
@@ -204,11 +204,11 @@ export const FormatPane = ({
                         height="600px"
                         showEmptyPrompt={true}
                         customToolbar={
-                            <div className="flex items-center justify-between mb-2 shrink-0">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2 shrink-0">
                                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Formatted JSON
                                 </label>
-                                <div className="flex items-center gap-3">
+                                <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
                                     <span className="text-sm text-muted-foreground">
                                         {formatOptions.sortKeys && 'Sort'}
                                         {formatOptions.sortKeys &&
@@ -229,7 +229,7 @@ export const FormatPane = ({
                                         }
                                         onValueChange={handleIndentChange}
                                     >
-                                        <SelectTrigger className="h-8 w-[120px] text-xs">
+                                        <SelectTrigger className="h-8 w-[100px] sm:w-[120px] text-xs">
                                             <SelectValue placeholder="Spaces" />
                                         </SelectTrigger>
                                         <SelectContent>

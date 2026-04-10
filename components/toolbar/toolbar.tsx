@@ -17,16 +17,16 @@ export const Toolbar = ({
     return (
         <div
             className={cn(
-                'flex items-center justify-between gap-4 bg-background border-b pb-2',
+                'flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 bg-background border-b pb-2',
                 className,
             )}
         >
-            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide w-full sm:w-auto">
                 {leftContent}
                 <ToolbarToggle items={toggles} />
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto scrollbar-hide">
                 <ToolbarActions items={actions} />
             </div>
         </div>
