@@ -109,6 +109,7 @@ export const ViewerPane = ({
                         onChange={setLeftContent}
                         onError={() => {}}
                         height="600px"
+                        showEmptyPrompt={true}
                     />
                 </div>
 
@@ -148,7 +149,7 @@ export const ViewerPane = ({
                     </div>
 
                     {/* Tree View */}
-                    <div className="border border-gray-300 rounded-md dark:border-gray-600 p-4 overflow-auto max-w-full flex-1">
+                    <div className="border border-gray-300 rounded-md dark:border-gray-600 p-4 overflow-auto max-w-full flex-1 relative">
                         {treeResult.isValid && treeResult.tree.length > 0 ? (
                             <JsonTreeView
                                 nodes={treeResult.tree}
@@ -158,8 +159,9 @@ export const ViewerPane = ({
                         ) : (
                             <EmptyEditorPrompt
                                 icon={TreeDeciduous}
-                                title="No tree view available"
-                                description="Enter valid JSON in the editor to see the tree structure"
+                                title="Start adding JSON data"
+                                description="Type, paste, or drag & drop JSON content in the editor to see the tree structure"
+                                showActions={false}
                             />
                         )}
                     </div>

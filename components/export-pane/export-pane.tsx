@@ -185,6 +185,7 @@ export const ExportPane = ({
                                 icon={FileDown}
                                 title="No export data"
                                 description="Enter JSON in the editor to export to different formats"
+                                showActions={false}
                             />
                         )}
                     </div>

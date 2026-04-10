@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 export function useDebouncedSave(value: string, key: string, delay = 500) {
-    const timeoutRef = useRef<NodeJS.Timeout>();
+    const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
     useEffect(() => {
         timeoutRef.current = setTimeout(() => {

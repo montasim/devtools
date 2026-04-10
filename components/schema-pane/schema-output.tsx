@@ -82,6 +82,7 @@ export function SchemaOutput({ schema, isValid, error, onCopy, onDownload }: Sch
                         icon={FileJson}
                         title="No schema generated"
                         description="Enter JSON in the editor to generate a JSON schema"
+                        showActions={false}
                     />
                 )}
             </div>

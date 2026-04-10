@@ -163,6 +163,7 @@ export const ParserPane = ({
                                 icon={ScanSearch}
                                 title="No parsed data"
                                 description="Enter JSON in the editor to parse and analyze its structure"
+                                showActions={false}
                             />
                         )}
                     </div>

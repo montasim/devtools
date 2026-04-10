@@ -95,7 +95,7 @@ function inferType(
         };
     }
 
-    if (typeof value === 'object') {
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
         const keys = Object.keys(value);
         if (keys.length === 0) {
             return { type: 'object', properties: {} };
@@ -103,7 +103,11 @@ function inferType(
 
         const properties: Record<string, unknown> = {};
         keys.forEach((key) => {
-            properties[key] = inferType(value[key], mode, `${path}/${key}`);
+            properties[key] = inferType(
+                (value as Record<string, unknown>)[key],
+                mode,
+                `${path}/${key}`,
+            );
         });
 
         return {
@@ -118,23 +122,23 @@ function inferType(
 
 function applyConstraints(schema: Record<string, unknown>, options: ConstraintOptions): void {
     // Apply pattern constraints
-    if (Object.keys(options.patterns).length > 0) {
-        applyPatternConstraints(schema.properties, options.patterns);
+    if (Object.keys(options.patterns).length > 0 && schema.properties) {
+        applyPatternConstraints(schema.properties as Record<string, unknown>, options.patterns);
     }
 
     // Apply range constraints
-    if (Object.keys(options.ranges).length > 0) {
-        applyRangeConstraints(schema.properties, options.ranges);
+    if (Object.keys(options.ranges).length > 0 && schema.properties) {
+        applyRangeConstraints(schema.properties as Record<string, unknown>, options.ranges);
     }
 
     // Apply enum constraints
-    if (Object.keys(options.enums).length > 0) {
-        applyEnumConstraints(schema.properties, options.enums);
+    if (Object.keys(options.enums).length > 0 && schema.properties) {
+        applyEnumConstraints(schema.properties as Record<string, unknown>, options.enums);
     }
 
     // Apply required fields
     if (options.required.length > 0 && schema.properties) {
-        const existingRequired = schema.required || [];
+        const existingRequired = (schema.required as string[]) || [];
         schema.required = [...new Set([...existingRequired, ...options.required])];
     }
 }
@@ -147,17 +151,19 @@ function applyPatternConstraints(
 
     Object.keys(patterns).forEach((field) => {
         const parts = field.split('.');
-        let current = properties;
+        let current: Record<string, unknown> = properties;
 
         for (let i = 0; i < parts.length - 1; i++) {
-            if (current[parts[i]] && current[parts[i]].properties) {
-                current = current[parts[i]].properties;
+            const prop = current[parts[i]] as Record<string, unknown> | undefined;
+            if (prop && prop.properties) {
+                current = prop.properties as Record<string, unknown>;
             }
         }
 
         const lastPart = parts[parts.length - 1];
-        if (current[lastPart]) {
-            current[lastPart].pattern = patterns[field];
+        const lastProp = current[lastPart] as Record<string, unknown> | undefined;
+        if (lastProp) {
+            lastProp.pattern = patterns[field];
         }
     });
 }
@@ -170,21 +176,23 @@ function applyRangeConstraints(
 
     Object.keys(ranges).forEach((field) => {
         const parts = field.split('.');
-        let current = properties;
+        let current: Record<string, unknown> = properties;
 
         for (let i = 0; i < parts.length - 1; i++) {
-            if (current[parts[i]] && current[parts[i]].properties) {
-                current = current[parts[i]].properties;
+            const prop = current[parts[i]] as Record<string, unknown> | undefined;
+            if (prop && prop.properties) {
+                current = prop.properties as Record<string, unknown>;
             }
         }
 
         const lastPart = parts[parts.length - 1];
-        if (current[lastPart]) {
+        const lastProp = current[lastPart] as Record<string, unknown> | undefined;
+        if (lastProp) {
             if (ranges[field].min !== undefined) {
-                current[lastPart].minimum = ranges[field].min;
+                lastProp.minimum = ranges[field].min;
             }
             if (ranges[field].max !== undefined) {
-                current[lastPart].maximum = ranges[field].max;
+                lastProp.maximum = ranges[field].max;
             }
         }
     });
@@ -198,17 +206,19 @@ function applyEnumConstraints(
 
     Object.keys(enums).forEach((field) => {
         const parts = field.split('.');
-        let current = properties;
+        let current: Record<string, unknown> = properties;
 
         for (let i = 0; i < parts.length - 1; i++) {
-            if (current[parts[i]] && current[parts[i]].properties) {
-                current = current[parts[i]].properties;
+            const prop = current[parts[i]] as Record<string, unknown> | undefined;
+            if (prop && prop.properties) {
+                current = prop.properties as Record<string, unknown>;
             }
         }
 
         const lastPart = parts[parts.length - 1];
-        if (current[lastPart]) {
-            current[lastPart].enum = enums[field];
+        const lastProp = current[lastPart] as Record<string, unknown> | undefined;
+        if (lastProp) {
+            lastProp.enum = enums[field];
         }
     });
 }

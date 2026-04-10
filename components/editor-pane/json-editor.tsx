@@ -659,14 +659,19 @@ export function JsonEditor({
                 className="border border-gray-300 rounded-md dark:border-gray-600 shrink-0 overflow-hidden max-w-full relative"
                 style={{ height: height, width: '100%', position: 'relative' }}
             >
-                {showEmptyPrompt && (!value || value.trim() === '') ? (
-                    <EmptyEditorPrompt
-                        icon={FileJson}
-                        title={`No ${label.toLowerCase()} data`}
-                        description={`Add JSON content to the ${label.toLowerCase()} editor to get started`}
-                    />
-                ) : (
-                    <div ref={editorRef} style={{ height: '100%', width: '100%' }} />
+                {/* Always render the editor */}
+                <div ref={editorRef} style={{ height: '100%', width: '100%' }} />
+
+                {/* Empty state overlay - shown on top when editor is empty */}
+                {showEmptyPrompt && (!value || value.trim() === '') && (
+                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                        <EmptyEditorPrompt
+                            icon={FileJson}
+                            title={`Start adding ${label.toLowerCase()} data`}
+                            description={`Begin typing, paste content, or upload a JSON file`}
+                            showActions={!readOnly}
+                        />
+                    </div>
                 )}
             </div>
 
