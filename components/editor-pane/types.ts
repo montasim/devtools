@@ -83,6 +83,7 @@ export interface JsonEditorProps {
     customToolbar?: React.ReactNode;
     height?: string;
     showEmptyPrompt?: boolean;
+    emptyStateIcon?: React.ComponentType<{ className?: string }>;
 }
 
 // DiffPanel component props

@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
-import { Copy, Download } from 'lucide-react';
+import { Copy, Download, FileCode, FileJson } from 'lucide-react';
 import { JsonEditor } from '../editor-pane/json-editor';
 import { Separator } from '../ui/separator';
 import { Button } from '../ui/button';
@@ -32,7 +32,6 @@ export const FormatPane = ({
         }
     });
 
-    const [leftValid, setLeftValid] = useState(false);
     const [customIndent, setCustomIndent] = useState('');
     const [showCustomInput, setShowCustomInput] = useState(false);
 
@@ -56,7 +55,7 @@ export const FormatPane = ({
     }, [leftContent]);
 
     // Load format options from localStorage on mount
-    const [formatOptions, setFormatOptions] = useState<FormatOptions>(() => {
+    const [formatOptions] = useState<FormatOptions>(() => {
         if (typeof window === 'undefined') {
             return { indentation: indentation || 2, sortKeys, removeTrailingCommas, escapeUnicode };
         }
@@ -72,15 +71,6 @@ export const FormatPane = ({
 
         return { indentation: indentation || 2, sortKeys, removeTrailingCommas, escapeUnicode };
     });
-
-    // Save format options to localStorage when they change
-    useEffect(() => {
-        try {
-            localStorage.setItem('format-options', JSON.stringify(formatOptions));
-        } catch (error) {
-            console.error('Failed to save format options:', error);
-        }
-    }, [formatOptions]);
 
     // Format JSON
     const formatResult = useFormatJson(leftContent, formatOptions);
@@ -184,10 +174,9 @@ export const FormatPane = ({
                         label="Unformatted JSON"
                         value={leftContent}
                         onChange={setLeftContent}
-                        onError={(error) => {
-                            setLeftValid(error === null && leftContent.trim().length > 0);
-                        }}
+                        onError={() => {}}
                         height="600px"
+                        emptyStateIcon={FileJson}
                     />
                 </div>
 
@@ -203,6 +192,7 @@ export const FormatPane = ({
                         readOnly={true}
                         height="600px"
                         showEmptyPrompt={true}
+                        emptyStateIcon={FileCode}
                         customToolbar={
                             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2 shrink-0">
                                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">

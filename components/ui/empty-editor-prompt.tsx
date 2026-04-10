@@ -1,9 +1,8 @@
-import { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface EmptyEditorPromptProps {
-    icon?: LucideIcon;
+    icon?: React.ComponentType<{ className?: string }>;
     title?: string;
     description?: string;
     actionLabel?: string;

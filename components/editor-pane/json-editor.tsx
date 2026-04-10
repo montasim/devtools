@@ -36,6 +36,7 @@ export function JsonEditor({
     customToolbar,
     height = '400px',
     showEmptyPrompt = true,
+    emptyStateIcon = FileJson,
 }: JsonEditorProps) {
     const editorRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<EditorView | null>(null);
@@ -666,7 +667,7 @@ export function JsonEditor({
                 {showEmptyPrompt && (!value || value.trim() === '') && (
                     <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
                         <EmptyEditorPrompt
-                            icon={FileJson}
+                            icon={emptyStateIcon}
                             title={`Start adding ${label.toLowerCase()} data`}
                             description={`Begin typing, paste content, or upload a JSON file`}
                             showActions={!readOnly}

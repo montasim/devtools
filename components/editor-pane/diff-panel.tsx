@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { DiffPanelProps, DiffResult, ViewMode, DiffLine } from './types';
 import { DiffPanelToolbar } from './diff-panel-toolbar';
 import { ShareDialog } from './share-dialog';
-import { ChevronRight, ChevronDown, X, CheckCircle } from 'lucide-react';
+import { ChevronRight, X, CheckCircle, Loader2, Bookmark } from 'lucide-react';
 import { EmptyState } from '@/components/ui/empty-state';
 
 /**
@@ -286,7 +286,10 @@ export function DiffPanel({
                 role="status"
                 aria-live="polite"
             >
-                Computing diff...
+                <div className="flex items-center justify-center gap-2">
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    <span>Computing diff...</span>
+                </div>
             </div>
         );
     }
@@ -900,9 +903,12 @@ function BookmarksPanel({
                 </button>
             </div>
             {bookmarks.length === 0 ? (
-                <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 italic">
-                    No bookmarks yet
-                </p>
+                <div className="flex items-center justify-center gap-2 py-4">
+                    <Bookmark className="h-4 w-4 text-gray-400" />
+                    <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 italic">
+                        No bookmarks yet
+                    </p>
+                </div>
             ) : (
                 <div className="space-y-1">
                     {bookmarks.map((bookmarkIndex) => {

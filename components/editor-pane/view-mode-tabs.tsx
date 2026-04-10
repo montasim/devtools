@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ViewMode } from './types';
+import { Columns, FileDiff, AlignLeft, FolderTree } from 'lucide-react';
 
 interface ViewModeTabsProps {
     currentMode: ViewMode;
@@ -10,11 +11,15 @@ interface ViewModeTabsProps {
     className?: string;
 }
 
-const VIEW_MODES: { value: ViewMode; label: string }[] = [
-    { value: 'split', label: 'Split' },
-    { value: 'unified', label: 'Unified' },
-    { value: 'inline', label: 'Inline' },
-    { value: 'tree', label: 'Tree' },
+const VIEW_MODES: {
+    value: ViewMode;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+}[] = [
+    { value: 'split', label: 'Split', icon: Columns },
+    { value: 'unified', label: 'Unified', icon: FileDiff },
+    { value: 'inline', label: 'Inline', icon: AlignLeft },
+    { value: 'tree', label: 'Tree', icon: FolderTree },
 ];
 
 /**
@@ -41,20 +46,24 @@ export function ViewModeTabs({ currentMode, onModeChange, className }: ViewModeT
             role="tablist"
             aria-label="View mode"
         >
-            {VIEW_MODES.map((mode) => (
-                <Button
-                    key={mode.value}
-                    variant={currentMode === mode.value ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => onModeChange(mode.value)}
-                    role="tab"
-                    aria-selected={currentMode === mode.value}
-                    aria-controls="diff-panel"
-                    className="whitespace-nowrap"
-                >
-                    {mode.label}
-                </Button>
-            ))}
+            {VIEW_MODES.map((mode) => {
+                const Icon = mode.icon;
+                return (
+                    <Button
+                        key={mode.value}
+                        variant={currentMode === mode.value ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => onModeChange(mode.value)}
+                        role="tab"
+                        aria-selected={currentMode === mode.value}
+                        aria-controls="diff-panel"
+                        className="whitespace-nowrap gap-2"
+                    >
+                        <Icon className="h-4 w-4" />
+                        {mode.label}
+                    </Button>
+                );
+            })}
         </div>
     );
 }

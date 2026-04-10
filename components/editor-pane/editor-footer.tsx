@@ -1,7 +1,17 @@
 'use client';
 
 import { useMemo } from 'react';
-import { HardDrive, Type, FileText, AlignLeft, Layers, GitBranch, Check, X } from 'lucide-react';
+import {
+    HardDrive,
+    Type,
+    FileText,
+    AlignLeft,
+    Layers,
+    GitBranch,
+    Check,
+    X,
+    Circle,
+} from 'lucide-react';
 import type { ParseError } from './types';
 
 export interface EditorStats {
@@ -169,7 +179,7 @@ export function EditorFooter({ content, error }: EditorFooterProps) {
                         ) : content.trim() ? (
                             <Check className="h-3.5 w-3.5" />
                         ) : (
-                            <span className="h-3.5 w-3.5" />
+                            <Circle className="h-3.5 w-3.5" />
                         )}
                         <span>{error ? 'Invalid' : content.trim() ? 'Valid' : 'Empty'}</span>
                     </div>
