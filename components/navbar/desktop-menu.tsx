@@ -19,7 +19,7 @@ export const DesktopMenu = ({ menu, auth }: DesktopMenuProps) => (
         <div className="flex items-center gap-6">
             <Logo />
             <div className="flex items-center">
-                <NavigationMenu>
+                <NavigationMenu viewport={false}>
                     <NavigationMenuList>
                         {menu.map((item) => (
                             <DesktopMenuItem key={item.title} item={item} />

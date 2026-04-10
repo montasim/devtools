@@ -13,14 +13,16 @@ interface SubMenuLinkProps {
 
 export const SubMenuLink = ({ item }: SubMenuLinkProps) => (
     <a
-        className="flex min-w-80 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
+        className="flex flex-row gap-3 sm:gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground w-full"
         href={item.url}
     >
-        <div className="text-foreground">{item.icon}</div>
-        <div>
+        <div className="text-foreground shrink-0">{item.icon}</div>
+        <div className="min-w-0 flex-1">
             <div className="text-sm font-semibold">{item.title}</div>
             {item.description && (
-                <p className="text-sm leading-snug text-muted-foreground">{item.description}</p>
+                <p className="text-xs sm:text-sm leading-snug text-muted-foreground">
+                    {item.description}
+                </p>
             )}
         </div>
     </a>
