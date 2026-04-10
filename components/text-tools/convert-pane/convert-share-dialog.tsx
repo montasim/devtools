@@ -176,13 +176,6 @@ export function ConvertShareDialog({
                 </SheetHeader>
 
                 <div className="flex flex-col gap-4 p-4">
-                    {/* Conversion Type Info */}
-                    {conversionType && (
-                        <div className="p-3 bg-muted rounded-lg">
-                            <p className="text-sm font-medium">Conversion: {conversionType}</p>
-                        </div>
-                    )}
-
                     {/* Share URL Section */}
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">

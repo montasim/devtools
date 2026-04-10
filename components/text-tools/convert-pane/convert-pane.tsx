@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { Trash2, Copy, Download, Share2 } from 'lucide-react';
 import { TextEditor } from '../text-editor/text-editor';
+import { TextareaFooter } from '../text-editor/textarea-footer';
 import { useDebouncedSave } from '../shared/use-debounced-save';
 import { ConvertShareDialog } from './convert-share-dialog';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import {
     toUpperCase,
@@ -27,14 +27,16 @@ export function ConvertPane() {
     });
     const [outputText, setOutputText] = useState('');
     const [conversionType, setConversionType] = useState<string | null>(null);
+    const [selectedConversion, setSelectedConversion] = useState<string | null>(null);
     const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
     // Debounced save to localStorage
     useDebouncedSave(inputText, 'text-convert-input-content');
 
-    const handleConvert = (operation: (text: string) => string, type: string) => {
+    const handleConvert = (operation: (text: string) => string, type: string, name: string) => {
         setOutputText(operation(inputText));
         setConversionType(type);
+        setSelectedConversion(name);
     };
 
     const handleCopy = async () => {
@@ -75,6 +77,7 @@ export function ConvertPane() {
         setInputText('');
         setOutputText('');
         setConversionType(null);
+        setSelectedConversion(null);
         try {
             localStorage.removeItem('text-convert-input-content');
         } catch (error) {
@@ -92,7 +95,7 @@ export function ConvertPane() {
     ];
 
     return (
-        <div className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col gap-4">
             {/* Toolbar with conversion buttons and action buttons */}
             <div className="flex items-center justify-between gap-2">
                 {/* Left side: Conversion buttons */}
@@ -100,9 +103,9 @@ export function ConvertPane() {
                     {conversions.map(({ name, operation, type }) => (
                         <Button
                             key={name}
-                            variant="outline"
+                            variant={selectedConversion === name ? 'default' : 'outline'}
                             size="sm"
-                            onClick={() => handleConvert(operation, type)}
+                            onClick={() => handleConvert(operation, type, name)}
                             disabled={!inputText}
                             className="whitespace-nowrap"
                         >
@@ -113,36 +116,16 @@ export function ConvertPane() {
 
                 {/* Right side: Action buttons */}
                 <div className="flex items-center gap-2">
-                    {/* Conversion type badge */}
-                    {conversionType && (
-                        <>
-                            <Badge variant="secondary" className="shrink-0">
-                                {conversionType}
-                            </Badge>
-                            <Separator orientation="vertical" className="h-6" />
-                        </>
-                    )}
-
-                    {/* Copy output button */}
+                    {/* Clear all button */}
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={handleCopy}
-                        disabled={!outputText}
-                        title="Copy output to clipboard"
+                        onClick={handleClear}
+                        disabled={!inputText && !outputText}
+                        title="Clear all content"
                     >
-                        <Copy className="h-4 w-4" />
-                    </Button>
-
-                    {/* Download output button */}
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleDownload}
-                        disabled={!outputText}
-                        title="Download output as file"
-                    >
-                        <Download className="h-4 w-4" />
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Clear All
                     </Button>
 
                     {/* Share button */}
@@ -153,26 +136,14 @@ export function ConvertPane() {
                         disabled={!outputText}
                         title="Share converted text"
                     >
-                        <Share2 className="h-4 w-4" />
-                    </Button>
-
-                    <Separator orientation="vertical" className="h-6" />
-
-                    {/* Clear all button */}
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleClear}
-                        disabled={!inputText && !outputText}
-                        title="Clear all content"
-                    >
-                        <Trash2 className="h-4 w-4" />
+                        <Share2 className="h-4 w-4 mr-2" />
+                        Share
                     </Button>
                 </div>
             </div>
 
             {/* Text editors */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t">
                 <TextEditor
                     label="Input"
                     value={inputText}
@@ -180,14 +151,53 @@ export function ConvertPane() {
                     onError={() => {}}
                     height="500px"
                 />
-                <TextEditor
-                    label="Output"
-                    value={outputText}
-                    onChange={setOutputText}
-                    onError={() => {}}
-                    readOnly
-                    height="500px"
-                />
+                <div className="flex flex-col h-full py-2">
+                    {/* Output header with toolbar */}
+                    <div className="flex items-center justify-between mb-2 shrink-0">
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Output
+                        </label>
+                        <div className="flex items-center gap-2">
+                            {/* Action buttons - matching TextEditor button styling */}
+                            <button
+                                type="button"
+                                className="h-8 w-8 inline-flex items-center justify-center rounded-md hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                onClick={handleCopy}
+                                disabled={!outputText}
+                                title="Copy output to clipboard"
+                            >
+                                <Copy className="h-4 w-4" />
+                            </button>
+                            <button
+                                type="button"
+                                className="h-8 w-8 inline-flex items-center justify-center rounded-md hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                onClick={handleDownload}
+                                disabled={!outputText}
+                                title="Download output as file"
+                            >
+                                <Download className="h-4 w-4" />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Output textarea */}
+                    <div
+                        className="border border-input rounded-md shrink-0 overflow-hidden"
+                        style={{ height: '500px' }}
+                    >
+                        <textarea
+                            value={outputText}
+                            readOnly
+                            className="w-full h-full resize-none p-3 font-mono text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                            style={{ minHeight: '500px' }}
+                        />
+                    </div>
+
+                    {/* Output footer */}
+                    <div className="shrink-0">
+                        <TextareaFooter content={outputText} error={null} />
+                    </div>
+                </div>
             </div>
 
             {/* Share dialog */}
