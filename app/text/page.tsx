@@ -5,8 +5,9 @@ import { Toolbar } from '@/components/toolbar';
 import { FormatPane, FormatShareDialog } from '@/components/format-pane';
 import { ParserPane, ParserShareDialog } from '@/components/parser-pane';
 import { TextDiffPane } from '@/components/text-tools/diff-pane/diff-pane';
+import { ConvertPane } from '@/components/text-tools/convert-pane/convert-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, GitCompare, Code, FileJson, Share2, Trash2 } from 'lucide-react';
+import { Settings, GitCompare, Code, FileJson, Share2, Trash2, Repeat } from 'lucide-react';
 
 export default function Home() {
     const [activeTab, setActiveTab] = useState('diff');
@@ -75,6 +76,7 @@ export default function Home() {
         const keys = [
             'text-diff-left-content',
             'text-diff-right-content',
+            'text-convert-input-content',
             'json-format-left-content',
             'json-minify-left-content',
             'json-viewer-content',
@@ -129,6 +131,7 @@ export default function Home() {
                             <div className="flex gap-2">
                                 {[
                                     { value: 'diff', label: 'Diff', icon: GitCompare },
+                                    { value: 'convert', label: 'Convert', icon: Repeat },
                                     { value: 'format', label: 'Format', icon: Code },
                                     { value: 'parser', label: 'Parser', icon: FileJson },
                                 ].map(({ value, label, icon: Icon }) => (
@@ -208,6 +211,12 @@ export default function Home() {
                         <div className="mx-auto">
                             <TextDiffPane />
                         </div>
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="convert" className="mt-0">
+                    <div>
+                        <ConvertPane />
                     </div>
                 </TabsContent>
 
