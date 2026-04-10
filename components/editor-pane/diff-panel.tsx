@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
 import { DiffPanelProps, DiffResult, ViewMode, DiffLine } from './types';
 import { DiffPanelToolbar } from './diff-panel-toolbar';
 import { ShareDialog } from './share-dialog';
@@ -47,7 +48,7 @@ export function DiffPanel({
     // Helper functions that need to be available before useEffect
     const copyToClipboard = useCallback((text: string) => {
         navigator.clipboard.writeText(text).then(() => {
-            alert('Copied to clipboard!');
+            toast.success('Copied to clipboard!');
         });
     }, []);
 

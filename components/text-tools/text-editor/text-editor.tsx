@@ -60,7 +60,7 @@ export function TextEditor({
                 .toLowerCase()
                 .includes(searchText.toLowerCase());
             if (!found) {
-                alert('Text not found');
+                toast.error('Text not found');
             } else {
                 // Select the first occurrence
                 const index = textareaRef.current.value

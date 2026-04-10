@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import { Toolbar } from '@/components/toolbar';
 import { FormatPane, FormatShareDialog } from '@/components/format-pane';
 import { ParserPane, ParserShareDialog } from '@/components/parser-pane';
@@ -99,7 +100,7 @@ export default function Home() {
         // Get the formatted content from localStorage
         const formattedContent = localStorage.getItem('json-format-left-content');
         if (!formattedContent) {
-            alert('No content to share. Please enter some JSON first.');
+            toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
@@ -111,7 +112,7 @@ export default function Home() {
         // Get the parser content from localStorage
         const parserContentData = localStorage.getItem('json-parser-content');
         if (!parserContentData) {
-            alert('No content to share. Please enter some JSON first.');
+            toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 

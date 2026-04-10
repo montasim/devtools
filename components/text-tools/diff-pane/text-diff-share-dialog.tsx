@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { toast } from 'sonner';
 import { Copy, Check, Download, MessageCircle, FileText, FileCode } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -262,7 +263,7 @@ export function TextDiffShareDialog({
     // Share using Web Share API (if available)
     const shareNative = useCallback(async () => {
         if (typeof navigator.share !== 'function') {
-            alert('Native sharing is not supported in this browser.');
+            toast.error('Native sharing is not supported in this browser.');
             return;
         }
 

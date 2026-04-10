@@ -242,7 +242,7 @@ export default function Home() {
         // Get the formatted content from localStorage
         const formattedContent = localStorage.getItem('json-format-left-content');
         if (!formattedContent) {
-            alert('No content to share. Please enter some JSON first.');
+            toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
@@ -254,7 +254,7 @@ export default function Home() {
         // Get the minified content from localStorage
         const minifiedContent = localStorage.getItem('json-minify-left-content');
         if (!minifiedContent) {
-            alert('No content to share. Please enter some JSON first.');
+            toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
@@ -266,7 +266,7 @@ export default function Home() {
         // Get the viewer content from localStorage
         const viewerContentData = localStorage.getItem('json-viewer-content');
         if (!viewerContentData) {
-            alert('No content to share. Please enter some JSON first.');
+            toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
@@ -278,7 +278,7 @@ export default function Home() {
         // Get the parser content from localStorage
         const parserContentData = localStorage.getItem('json-parser-content');
         if (!parserContentData) {
-            alert('No content to share. Please enter some JSON first.');
+            toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
@@ -290,7 +290,7 @@ export default function Home() {
         // Get the export content from localStorage
         const exportContentData = localStorage.getItem('json-export-content');
         if (!exportContentData) {
-            alert('No content to share. Please enter some JSON first.');
+            toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
@@ -302,7 +302,7 @@ export default function Home() {
         // Get the schema content from localStorage
         const schemaContentData = localStorage.getItem('json-schema-json-content');
         if (!schemaContentData) {
-            alert('No content to share. Please enter some JSON first.');
+            toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
@@ -362,7 +362,7 @@ export default function Home() {
             refreshHistory();
         } catch (error) {
             console.error(`Failed to clear history for ${key}:`, error);
-            alert('Failed to clear history item');
+            toast.error('Failed to clear history item');
         }
     };
 
@@ -371,7 +371,7 @@ export default function Home() {
         try {
             const content = localStorage.getItem(key);
             if (!content) {
-                alert('No content to restore');
+                toast.error('No content to restore');
                 return;
             }
 
@@ -394,7 +394,7 @@ export default function Home() {
             }
         } catch (error) {
             console.error('Failed to restore history item:', error);
-            alert('Failed to restore history item');
+            toast.error('Failed to restore history item');
         }
     };
 
@@ -424,7 +424,7 @@ export default function Home() {
         });
 
         setHistoryData({});
-        alert('All history has been cleared');
+        toast.success('All history has been cleared');
     };
 
     // Get tool info from key

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { toast } from 'sonner';
 import { Share2, MoreVertical } from 'lucide-react';
 import { TextEditor } from '../text-editor/text-editor';
 import { DiffResults } from './diff-results';
@@ -51,7 +52,7 @@ export function TextDiffPane() {
 
     const handleShare = () => {
         if (!leftText && !rightText) {
-            alert('No content to share. Please enter some text first.');
+            toast.error('No content to share. Please enter some text first.');
             return;
         }
         setShareDialogOpen(true);

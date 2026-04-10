@@ -152,7 +152,7 @@ export function ConvertShareDialog({
     // Share using Web Share API (if available)
     const shareNative = useCallback(async () => {
         if (typeof navigator.share !== 'function') {
-            alert('Native sharing is not supported in this browser.');
+            toast.error('Native sharing is not supported in this browser.');
             return;
         }
 

@@ -72,13 +72,13 @@ export function ConvertPane() {
             URL.revokeObjectURL(url);
         } catch (error) {
             console.error('Failed to download:', error);
-            alert('Failed to download file');
+            toast.error('Failed to download file');
         }
     };
 
     const handleShare = () => {
         if (!outputText) {
-            alert('No content to share. Please convert some text first.');
+            toast.error('No content to share. Please convert some text first.');
             return;
         }
         setShareDialogOpen(true);
