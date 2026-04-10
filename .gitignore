@@ -65,6 +65,9 @@ next-env.d.ts
 .cache/
 .eslintcache
 
+# Git worktrees
+.worktrees/
+
 # Generated docs
 /documentation/
 
