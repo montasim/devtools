@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useLayoutEffect, useRef, Suspense } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
     Settings,
@@ -24,21 +25,90 @@ import { OptionsTab } from './tabs/options-tab';
 import { HistoryTab } from './tabs/history-tab';
 import { ShareTab } from './tabs/share-tab';
 
-export default function Home() {
-    const [activeTab, setActiveTab] = useState('diff');
+type TabValue = (typeof VALID_TABS)[number];
+
+const VALID_TABS = [
+    'diff',
+    'format',
+    'minify',
+    'viewer',
+    'parser',
+    'export',
+    'schema',
+    'options',
+    'shared',
+    'history',
+] as const;
+
+function JsonPageContent() {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
+    const isInitializingRef = useRef(true);
+    const previousTabRef = useRef<string | null>(null);
+    const [activeTab, setActiveTab] = useState<TabValue>(() => {
+        // Initialize from URL during state creation
+        const tabFromUrl = searchParams.get('tab');
+        if (tabFromUrl && VALID_TABS.includes(tabFromUrl as TabValue)) {
+            return tabFromUrl as TabValue;
+        }
+        return 'diff';
+    });
+
+    // Set default URL on mount if needed
+    useLayoutEffect(() => {
+        if (isInitializingRef.current) {
+            const tabFromUrl = searchParams.get('tab');
+            if (!tabFromUrl || !VALID_TABS.includes(tabFromUrl as TabValue)) {
+                // Set default tab in URL if none specified
+                const params = new URLSearchParams();
+                params.set('tab', activeTab);
+                router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+            }
+            isInitializingRef.current = false;
+            previousTabRef.current = activeTab;
+        }
+    }, [searchParams, pathname, router, activeTab]);
 
     const handleClear = () => {
         // Reload page to clear all content
         window.location.reload();
     };
 
-    // Handle tab changes with history loading
-    const handleTabChange = useCallback((tab: string) => {
-        setActiveTab(tab);
-    }, []);
+    // Handle tab changes with URL update
+    const handleTabChange = useCallback(
+        (tab: string) => {
+            const newTab = tab as TabValue;
+            setActiveTab(newTab);
+            previousTabRef.current = newTab;
+            // Update URL without causing a page reload
+            const params = new URLSearchParams(searchParams.toString());
+            params.set('tab', newTab);
+            router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+        },
+        [searchParams, pathname, router],
+    );
+
+    // Sync URL changes with state (for browser back/forward navigation)
+    useEffect(() => {
+        if (!isInitializingRef.current) {
+            const currentTab = searchParams.get('tab');
+            // Only update if the URL actually changed (not from our own updates)
+            if (
+                currentTab &&
+                currentTab !== previousTabRef.current &&
+                VALID_TABS.includes(currentTab as TabValue) &&
+                currentTab !== activeTab
+            ) {
+                // eslint-disable-next-line react-hooks/set-state-in-effect
+                setActiveTab(currentTab as TabValue);
+                previousTabRef.current = currentTab;
+            }
+        }
+    }, [searchParams, activeTab]);
 
     return (
-        <div className="min-h-screen">
+        <>
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
                 <div className="border-b">
                     <div className="mx-auto py-4">
@@ -126,6 +196,16 @@ export default function Home() {
                     <SchemaTab onClear={handleClear} />
                 </TabsContent>
             </Tabs>
+        </>
+    );
+}
+
+export default function Home() {
+    return (
+        <div className="min-h-screen">
+            <Suspense fallback={<div className="min-h-screen" />}>
+                <JsonPageContent />
+            </Suspense>
         </div>
     );
 }
