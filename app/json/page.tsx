@@ -143,28 +143,59 @@ function JsonPageContent() {
                             variant="line"
                             className="h-auto p-0 bg-transparent border-0 w-full justify-start overflow-x-auto scrollbar-hide"
                         >
-                            <div className="flex gap-2 min-w-max">
-                                {[
-                                    { value: 'diff', label: 'Diff', icon: GitCompare },
-                                    { value: 'format', label: 'Format', icon: Code },
-                                    { value: 'minify', label: 'Minify', icon: Minimize2 },
-                                    { value: 'viewer', label: 'Viewer', icon: Eye },
-                                    { value: 'parser', label: 'Parser', icon: FileJson },
-                                    { value: 'export', label: 'Export', icon: FileDown },
-                                    { value: 'schema', label: 'Schema', icon: FileJson },
-                                    { value: 'options', label: 'Options', icon: Settings },
-                                    { value: 'shared', label: 'Shared', icon: Share2 },
-                                    { value: 'history', label: 'History', icon: History },
-                                ].map(({ value, label, icon: Icon }) => (
-                                    <TabsTrigger
-                                        key={value}
-                                        value={value}
-                                        className="gap-2 data-[icon=true]:pr-4 whitespace-nowrap"
-                                    >
-                                        <Icon data-icon="true" className="w-4 h-4 shrink-0" />
-                                        {label}
-                                    </TabsTrigger>
-                                ))}
+                            <div className="flex gap-2 min-w-max w-full justify-between">
+                                <div className="flex gap-2 min-w-max">
+                                    {[
+                                        { value: 'diff', label: 'Diff', icon: GitCompare },
+                                        { value: 'format', label: 'Format', icon: Code },
+                                        { value: 'minify', label: 'Minify', icon: Minimize2 },
+                                        { value: 'viewer', label: 'Viewer', icon: Eye },
+                                        { value: 'parser', label: 'Parser', icon: FileJson },
+                                        { value: 'export', label: 'Export', icon: FileDown },
+                                        { value: 'schema', label: 'Schema', icon: FileJson },
+                                    ].map(({ value, label, icon: Icon }) => (
+                                        <TabsTrigger
+                                            key={value}
+                                            value={value}
+                                            className="gap-2 data-[icon=true]:pr-4 whitespace-nowrap"
+                                        >
+                                            <Icon data-icon="true" className="w-4 h-4 shrink-0" />
+                                            {label}
+                                        </TabsTrigger>
+                                    ))}
+                                </div>
+                                <div className="hidden md:flex gap-2 min-w-max">
+                                    {[
+                                        { value: 'options', label: 'Options', icon: Settings },
+                                        { value: 'shared', label: 'Shared', icon: Share2 },
+                                        { value: 'history', label: 'History', icon: History },
+                                    ].map(({ value, label, icon: Icon }) => (
+                                        <TabsTrigger
+                                            key={value}
+                                            value={value}
+                                            className="gap-2 data-[icon=true]:pr-4 whitespace-nowrap"
+                                        >
+                                            <Icon data-icon="true" className="w-4 h-4 shrink-0" />
+                                            {label}
+                                        </TabsTrigger>
+                                    ))}
+                                </div>
+                                <div className="flex md:hidden gap-2 min-w-max">
+                                    {[
+                                        { value: 'options', label: 'Options', icon: Settings },
+                                        { value: 'shared', label: 'Shared', icon: Share2 },
+                                        { value: 'history', label: 'History', icon: History },
+                                    ].map(({ value, label, icon: Icon }) => (
+                                        <TabsTrigger
+                                            key={value}
+                                            value={value}
+                                            className="gap-2 data-[icon=true]:pr-4 whitespace-nowrap"
+                                        >
+                                            <Icon data-icon="true" className="w-4 h-4 shrink-0" />
+                                            {label}
+                                        </TabsTrigger>
+                                    ))}
+                                </div>
                             </div>
                         </TabsList>
                     </div>
