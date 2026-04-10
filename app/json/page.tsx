@@ -10,6 +10,8 @@ import { ViewerPane, ViewerShareDialog } from '@/components/viewer-pane';
 import { ParserPane, ParserShareDialog } from '@/components/parser-pane';
 import { ExportPane, ExportShareDialog } from '@/components/export-pane';
 import { SchemaPane, SchemaShareDialog } from '@/components/schema-pane';
+import { JsonStats } from '@/components/json-stats';
+import { ActionButtonGroup } from '@/components/ui/action-button-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import {
@@ -427,6 +429,45 @@ export default function Home() {
         toast.success('All history has been cleared');
     };
 
+    // Restore all history
+    const restoreAllHistory = () => {
+        if (Object.keys(historyData).length === 0) {
+            toast.error('No history to restore');
+            return;
+        }
+
+        try {
+            // Find the first available history item with content
+            const firstHistoryKey = Object.keys(historyData).find(
+                (key) => historyData[key] && historyData[key].trim() !== '',
+            );
+
+            if (firstHistoryKey) {
+                // Map the history key to the appropriate tab
+                const keyToTabMap: Record<string, string> = {
+                    'json-diff-left-content': 'diff',
+                    'json-diff-right-content': 'diff',
+                    'json-format-left-content': 'format',
+                    'json-minify-left-content': 'minify',
+                    'json-viewer-content': 'viewer',
+                    'json-parser-content': 'parser',
+                    'json-export-content': 'export',
+                    'json-schema-json-content': 'schema',
+                };
+
+                const tab = keyToTabMap[firstHistoryKey];
+                if (tab) {
+                    handleTabChange(tab);
+                }
+            }
+
+            toast.success('All history has been restored');
+        } catch (error) {
+            console.error('Failed to restore all history:', error);
+            toast.error('Failed to restore all history');
+        }
+    };
+
     // Get tool info from key
     const getToolInfo = (key: string) => {
         const toolMap: Record<
@@ -558,16 +599,28 @@ export default function Home() {
                                 </p>
                             </div>
                             {Object.keys(historyData).length > 0 && (
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={clearAllHistory}
-                                    className="gap-2 sm:self-start"
-                                >
-                                    <Trash className="h-4 w-4" />
-                                    <span className="hidden sm:inline">Clear All History</span>
-                                    <span className="sm:hidden">Clear All</span>
-                                </Button>
+                                <div className="flex gap-2 sm:self-start">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={restoreAllHistory}
+                                        className="gap-2"
+                                    >
+                                        <RotateCcw className="h-4 w-4" />
+                                        <span className="hidden sm:inline">Restore All</span>
+                                        <span className="sm:hidden">Restore</span>
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={clearAllHistory}
+                                        className="gap-2"
+                                    >
+                                        <Trash className="h-4 w-4" />
+                                        <span className="hidden sm:inline">Clear All</span>
+                                        <span className="sm:hidden">Clear</span>
+                                    </Button>
+                                </div>
                             )}
                         </div>
 
@@ -598,20 +651,17 @@ export default function Home() {
                                             <div className="flex flex-col sm:flex-row sm:items-start gap-3">
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                                                        <div className="flex items-center gap-2 min-w-0">
+                                                        <div className="flex items-center gap-4 min-w-0">
                                                             <h3 className="flex items-center gap-1 font-semibold truncate">
-                                                                <Icon
-                                                                    className={`h-5 w-5 ${toolInfo.color}`}
-                                                                />
+                                                                <Icon className="w-5 h-5" />
                                                                 {toolInfo.name}
                                                             </h3>
-                                                            <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded shrink-0">
-                                                                {content.length} chars
-                                                            </span>
+
+                                                            <JsonStats content={content} />
                                                         </div>
 
-                                                        <div className="flex gap-2 shrink-0">
-                                                            {[
+                                                        <ActionButtonGroup
+                                                            actions={[
                                                                 {
                                                                     icon: Eye,
                                                                     onClick: () =>
@@ -620,14 +670,12 @@ export default function Home() {
                                                                             content,
                                                                         }),
                                                                     title: 'View full content',
-                                                                    className: '',
                                                                 },
                                                                 {
                                                                     icon: RotateCcw,
                                                                     onClick: () =>
                                                                         restoreHistoryItem(key),
                                                                     title: 'Restore to tool',
-                                                                    className: '',
                                                                 },
                                                                 {
                                                                     icon: Copy,
@@ -640,7 +688,6 @@ export default function Home() {
                                                                         );
                                                                     },
                                                                     title: 'Copy to clipboard',
-                                                                    className: '',
                                                                 },
                                                                 {
                                                                     icon: Trash,
@@ -650,26 +697,8 @@ export default function Home() {
                                                                     className:
                                                                         'text-destructive hover:text-destructive',
                                                                 },
-                                                            ].map(
-                                                                ({
-                                                                    icon: Icon,
-                                                                    onClick,
-                                                                    title,
-                                                                    className,
-                                                                }) => (
-                                                                    <Button
-                                                                        key={title}
-                                                                        variant="outline"
-                                                                        size="sm"
-                                                                        onClick={onClick}
-                                                                        className={`gap-2 ${className}`}
-                                                                        title={title}
-                                                                    >
-                                                                        <Icon className="h-4 w-4" />
-                                                                    </Button>
-                                                                ),
-                                                            )}
-                                                        </div>
+                                                            ]}
+                                                        />
                                                     </div>
 
                                                     <pre className="text-xs sm:text-sm p-3 rounded-md overflow-x-auto max-h-32 overflow-y-auto">
