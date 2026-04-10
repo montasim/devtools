@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Copy, Download, Share2 } from 'lucide-react';
 import { TextEditor } from '../text-editor/text-editor';
 import { useDebouncedSave } from '../shared/use-debounced-save';
+import { ConvertShareDialog } from './convert-share-dialog';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
@@ -26,6 +27,7 @@ export function ConvertPane() {
     });
     const [outputText, setOutputText] = useState('');
     const [conversionType, setConversionType] = useState<string | null>(null);
+    const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
     // Debounced save to localStorage
     useDebouncedSave(inputText, 'text-convert-input-content');
@@ -33,6 +35,40 @@ export function ConvertPane() {
     const handleConvert = (operation: (text: string) => string, type: string) => {
         setOutputText(operation(inputText));
         setConversionType(type);
+    };
+
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(outputText);
+        } catch (error) {
+            console.error('Failed to copy:', error);
+            alert('Failed to copy to clipboard');
+        }
+    };
+
+    const handleDownload = () => {
+        if (!outputText) return;
+
+        try {
+            const blob = new Blob([outputText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `converted-${conversionType?.toLowerCase().replace(/\s+/g, '-') || 'text'}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Failed to download:', error);
+            alert('Failed to download file');
+        }
+    };
+
+    const handleShare = () => {
+        if (!outputText) {
+            alert('No content to share. Please convert some text first.');
+            return;
+        }
+        setShareDialogOpen(true);
     };
 
     const handleClear = () => {
@@ -57,8 +93,9 @@ export function ConvertPane() {
 
     return (
         <div className="flex flex-col gap-4 p-4">
-            {/* Toolbar with conversion buttons and clear button */}
+            {/* Toolbar with conversion buttons and action buttons */}
             <div className="flex items-center justify-between gap-2">
+                {/* Left side: Conversion buttons */}
                 <div className="flex items-center gap-2 flex-wrap">
                     {conversions.map(({ name, operation, type }) => (
                         <Button
@@ -72,24 +109,66 @@ export function ConvertPane() {
                             {name}
                         </Button>
                     ))}
+                </div>
+
+                {/* Right side: Action buttons */}
+                <div className="flex items-center gap-2">
+                    {/* Conversion type badge */}
+                    {conversionType && (
+                        <>
+                            <Badge variant="secondary" className="shrink-0">
+                                {conversionType}
+                            </Badge>
+                            <Separator orientation="vertical" className="h-6" />
+                        </>
+                    )}
+
+                    {/* Copy output button */}
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCopy}
+                        disabled={!outputText}
+                        title="Copy output to clipboard"
+                    >
+                        <Copy className="h-4 w-4" />
+                    </Button>
+
+                    {/* Download output button */}
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleDownload}
+                        disabled={!outputText}
+                        title="Download output as file"
+                    >
+                        <Download className="h-4 w-4" />
+                    </Button>
+
+                    {/* Share button */}
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleShare}
+                        disabled={!outputText}
+                        title="Share converted text"
+                    >
+                        <Share2 className="h-4 w-4" />
+                    </Button>
+
                     <Separator orientation="vertical" className="h-6" />
+
+                    {/* Clear all button */}
                     <Button
                         variant="outline"
                         size="sm"
                         onClick={handleClear}
                         disabled={!inputText && !outputText}
+                        title="Clear all content"
                     >
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Clear All
+                        <Trash2 className="h-4 w-4" />
                     </Button>
                 </div>
-
-                {/* Stats */}
-                {conversionType && (
-                    <Badge variant="secondary" className="shrink-0">
-                        {conversionType}
-                    </Badge>
-                )}
             </div>
 
             {/* Text editors */}
@@ -110,6 +189,15 @@ export function ConvertPane() {
                     height="500px"
                 />
             </div>
+
+            {/* Share dialog */}
+            <ConvertShareDialog
+                inputContent={inputText}
+                outputContent={outputText}
+                conversionType={conversionType}
+                open={shareDialogOpen}
+                onOpenChange={setShareDialogOpen}
+            />
         </div>
     );
 }
