@@ -10,6 +10,14 @@ import { ParserPane, ParserShareDialog } from '@/components/parser-pane';
 import { ExportPane, ExportShareDialog } from '@/components/export-pane';
 import { SchemaPane, SchemaShareDialog } from '@/components/schema-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import {
     Settings,
     GitCompare,
@@ -20,8 +28,11 @@ import {
     Trash2,
     Eye,
     FileDown,
-    Wand2,
-    ShieldCheck,
+    History,
+    Clock,
+    Trash,
+    RotateCcw,
+    Copy,
 } from 'lucide-react';
 
 export default function Home() {
@@ -58,6 +69,13 @@ export default function Home() {
     const [schemaMode, setSchemaMode] = useState<'generate' | 'validate'>('generate');
     const [schemaShareDialogOpen, setSchemaShareDialogOpen] = useState(false);
     const [schemaContent, setSchemaContent] = useState('');
+
+    // History state
+    const [historyData, setHistoryData] = useState<Record<string, string>>({});
+    const [viewingHistoryItem, setViewingHistoryItem] = useState<{
+        key: string;
+        content: string;
+    } | null>(null);
 
     const editorPaneRef = useRef<EditorPaneRef>(null);
 
@@ -291,9 +309,167 @@ export default function Home() {
         setSchemaShareDialogOpen(true);
     };
 
+    // Load history from localStorage
+    const loadHistory = useCallback(() => {
+        const historyKeys = [
+            'json-diff-left-content',
+            'json-diff-right-content',
+            'json-format-left-content',
+            'json-minify-left-content',
+            'json-viewer-content',
+            'json-parser-content',
+            'json-export-content',
+            'json-schema-json-content',
+        ];
+
+        const history: Record<string, string> = {};
+        historyKeys.forEach((key) => {
+            try {
+                const content = localStorage.getItem(key);
+                if (content) {
+                    history[key] = content;
+                }
+            } catch (error) {
+                console.error(`Failed to load history for ${key}:`, error);
+            }
+        });
+
+        return history;
+    }, []);
+
+    // Refresh history data
+    const refreshHistory = useCallback(() => {
+        const history = loadHistory();
+        setHistoryData(history);
+    }, [loadHistory]);
+
+    // Handle tab changes with history loading
+    const handleTabChange = useCallback(
+        (tab: string) => {
+            setActiveTab(tab);
+            if (tab === 'history') {
+                refreshHistory();
+            }
+        },
+        [refreshHistory],
+    );
+
+    // Clear specific history item
+    const clearHistoryItem = (key: string) => {
+        try {
+            localStorage.removeItem(key);
+            refreshHistory();
+        } catch (error) {
+            console.error(`Failed to clear history for ${key}:`, error);
+            alert('Failed to clear history item');
+        }
+    };
+
+    // Restore history item to current tool
+    const restoreHistoryItem = (key: string) => {
+        try {
+            const content = localStorage.getItem(key);
+            if (!content) {
+                alert('No content to restore');
+                return;
+            }
+
+            // Map the history key to the appropriate tab and storage key
+            const keyToTabMap: Record<string, string> = {
+                'json-diff-left-content': 'diff',
+                'json-diff-right-content': 'diff',
+                'json-format-left-content': 'format',
+                'json-minify-left-content': 'minify',
+                'json-viewer-content': 'viewer',
+                'json-parser-content': 'parser',
+                'json-export-content': 'export',
+                'json-schema-json-content': 'schema',
+            };
+
+            const tab = keyToTabMap[key];
+            if (tab) {
+                handleTabChange(tab);
+                // The content will be loaded by the respective tool's useEffect
+            }
+        } catch (error) {
+            console.error('Failed to restore history item:', error);
+            alert('Failed to restore history item');
+        }
+    };
+
+    // Clear all history
+    const clearAllHistory = () => {
+        if (!confirm('Are you sure you want to clear all history? This cannot be undone.')) {
+            return;
+        }
+
+        const historyKeys = [
+            'json-diff-left-content',
+            'json-diff-right-content',
+            'json-format-left-content',
+            'json-minify-left-content',
+            'json-viewer-content',
+            'json-parser-content',
+            'json-export-content',
+            'json-schema-json-content',
+        ];
+
+        historyKeys.forEach((key) => {
+            try {
+                localStorage.removeItem(key);
+            } catch (error) {
+                console.error(`Failed to clear history for ${key}:`, error);
+            }
+        });
+
+        setHistoryData({});
+        alert('All history has been cleared');
+    };
+
+    // Get tool info from key
+    const getToolInfo = (key: string) => {
+        const toolMap: Record<
+            string,
+            { name: string; icon: React.ComponentType<{ className?: string }>; color: string }
+        > = {
+            'json-diff-left-content': {
+                name: 'Diff (Left)',
+                icon: GitCompare,
+                color: 'text-blue-500',
+            },
+            'json-diff-right-content': {
+                name: 'Diff (Right)',
+                icon: GitCompare,
+                color: 'text-blue-500',
+            },
+            'json-format-left-content': { name: 'Format', icon: Code, color: 'text-green-500' },
+            'json-minify-left-content': {
+                name: 'Minify',
+                icon: Minimize2,
+                color: 'text-purple-500',
+            },
+            'json-viewer-content': { name: 'Viewer', icon: Eye, color: 'text-orange-500' },
+            'json-parser-content': { name: 'Parser', icon: FileJson, color: 'text-pink-500' },
+            'json-export-content': { name: 'Export', icon: FileDown, color: 'text-cyan-500' },
+            'json-schema-json-content': {
+                name: 'Schema',
+                icon: FileJson,
+                color: 'text-indigo-500',
+            },
+        };
+
+        return toolMap[key] || { name: 'Unknown', icon: FileJson, color: 'text-gray-500' };
+    };
+
+    // Truncate content for preview
+    const truncateContent = (content: string, maxLength = 100) => {
+        if (content.length <= maxLength) return content;
+        return content.substring(0, maxLength) + '...';
+    };
+
     return (
         <div className="min-h-screen">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
                 <div className="border-b">
                     <div className="mx-auto py-4">
                         <TabsList
@@ -322,18 +498,19 @@ export default function Home() {
                                 ))}
                             </div>
                             <div className="flex gap-2">
-                                {[{ value: 'options', label: 'Options', icon: Settings }].map(
-                                    ({ value, label, icon: Icon }) => (
-                                        <TabsTrigger
-                                            key={value}
-                                            value={value}
-                                            className="gap-2 data-[icon=true]:pr-4"
-                                        >
-                                            <Icon data-icon="true" className="w-4 h-4" />
-                                            {label}
-                                        </TabsTrigger>
-                                    ),
-                                )}
+                                {[
+                                    { value: 'options', label: 'Options', icon: Settings },
+                                    { value: 'history', label: 'History', icon: History },
+                                ].map(({ value, label, icon: Icon }) => (
+                                    <TabsTrigger
+                                        key={value}
+                                        value={value}
+                                        className="gap-2 data-[icon=true]:pr-4"
+                                    >
+                                        <Icon data-icon="true" className="w-4 h-4" />
+                                        {label}
+                                    </TabsTrigger>
+                                ))}
                             </div>
                         </TabsList>
                     </div>
@@ -367,6 +544,140 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="history" className="mt-0">
+                    <div className="mx-auto py-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                            <div>
+                                <h2 className="text-2xl font-bold mb-2">History</h2>
+                                <p className="text-muted-foreground">
+                                    View and restore your recent JSON operations
+                                </p>
+                            </div>
+                            {Object.keys(historyData).length > 0 && (
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={clearAllHistory}
+                                    className="gap-2 sm:self-start"
+                                >
+                                    <Trash className="h-4 w-4" />
+                                    <span className="hidden sm:inline">Clear All History</span>
+                                    <span className="sm:hidden">Clear All</span>
+                                </Button>
+                            )}
+                        </div>
+
+                        {Object.keys(historyData).length === 0 ? (
+                            <div className="text-center py-8 sm:py-12 border rounded-lg border-dashed px-4">
+                                <Clock className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-4 text-muted-foreground" />
+                                <h3 className="text-base sm:text-lg font-semibold mb-2">
+                                    No History Yet
+                                </h3>
+                                <p className="text-sm text-muted-foreground mb-4">
+                                    Start using the JSON tools to build up your history
+                                </p>
+                                <Button variant="outline" onClick={() => handleTabChange('diff')}>
+                                    Get Started
+                                </Button>
+                            </div>
+                        ) : (
+                            <div className="grid gap-4">
+                                {Object.entries(historyData).map(([key, content]) => {
+                                    const toolInfo = getToolInfo(key);
+                                    const Icon = toolInfo.icon;
+
+                                    return (
+                                        <div
+                                            key={key}
+                                            className="border rounded-lg p-3 sm:p-4 hover:border-primary/50 transition-colors"
+                                        >
+                                            <div className="flex flex-col sm:flex-row sm:items-start gap-3">
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                                                        <div className="flex items-center gap-2 min-w-0">
+                                                            <h3 className="flex items-center gap-1 font-semibold truncate">
+                                                                <Icon
+                                                                    className={`h-5 w-5 ${toolInfo.color}`}
+                                                                />
+                                                                {toolInfo.name}
+                                                            </h3>
+                                                            <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded shrink-0">
+                                                                {content.length} chars
+                                                            </span>
+                                                        </div>
+
+                                                        <div className="flex gap-2 shrink-0">
+                                                            {[
+                                                                {
+                                                                    icon: Eye,
+                                                                    onClick: () =>
+                                                                        setViewingHistoryItem({
+                                                                            key,
+                                                                            content,
+                                                                        }),
+                                                                    title: 'View full content',
+                                                                    className: '',
+                                                                },
+                                                                {
+                                                                    icon: RotateCcw,
+                                                                    onClick: () =>
+                                                                        restoreHistoryItem(key),
+                                                                    title: 'Restore to tool',
+                                                                    className: '',
+                                                                },
+                                                                {
+                                                                    icon: Copy,
+                                                                    onClick: () => {
+                                                                        navigator.clipboard.writeText(
+                                                                            content,
+                                                                        );
+                                                                    },
+                                                                    title: 'Copy to clipboard',
+                                                                    className: '',
+                                                                },
+                                                                {
+                                                                    icon: Trash,
+                                                                    onClick: () =>
+                                                                        clearHistoryItem(key),
+                                                                    title: 'Clear history item',
+                                                                    className:
+                                                                        'text-destructive hover:text-destructive',
+                                                                },
+                                                            ].map(
+                                                                ({
+                                                                    icon: Icon,
+                                                                    onClick,
+                                                                    title,
+                                                                    className,
+                                                                }) => (
+                                                                    <Button
+                                                                        key={title}
+                                                                        variant="outline"
+                                                                        size="sm"
+                                                                        onClick={onClick}
+                                                                        className={`gap-2 ${className}`}
+                                                                        title={title}
+                                                                    >
+                                                                        <Icon className="h-4 w-4" />
+                                                                    </Button>
+                                                                ),
+                                                            )}
+                                                        </div>
+                                                    </div>
+
+                                                    <pre className="text-xs sm:text-sm p-3 rounded-md overflow-x-auto max-h-32 overflow-y-auto">
+                                                        <code>{truncateContent(content, 200)}</code>
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
                 </TabsContent>
 
@@ -529,6 +840,29 @@ export default function Home() {
                     open={schemaShareDialogOpen}
                     onOpenChange={setSchemaShareDialogOpen}
                 />
+
+                <Dialog
+                    open={!!viewingHistoryItem}
+                    onOpenChange={(open) => !open && setViewingHistoryItem(null)}
+                >
+                    <DialogContent className="max-w-[95vw] max-h-[85vh] overflow-hidden flex flex-col">
+                        <DialogHeader>
+                            <DialogTitle>
+                                {viewingHistoryItem && getToolInfo(viewingHistoryItem.key).name} -
+                                Full Content
+                            </DialogTitle>
+                            <DialogDescription>
+                                {viewingHistoryItem &&
+                                    `${viewingHistoryItem.content.length} characters`}
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="flex-1 overflow-auto mt-4">
+                            <pre className="text-sm bg-muted p-4 rounded-md overflow-auto">
+                                <code>{viewingHistoryItem?.content}</code>
+                            </pre>
+                        </div>
+                    </DialogContent>
+                </Dialog>
 
                 <TabsContent value="minify" className="mt-0">
                     <div>
@@ -749,7 +1083,7 @@ export default function Home() {
                             className="mx-auto"
                             onError={handleError}
                             onValidationChange={() => {}}
-                            onContentChange={(jsonContent: string, schemaContent: string) => {
+                            onContentChange={(_jsonContent: string, schemaContent: string) => {
                                 setSchemaContent(schemaContent);
                             }}
                         />
