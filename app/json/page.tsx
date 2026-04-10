@@ -10,8 +10,6 @@ import { ParserPane, ParserShareDialog } from '@/components/parser-pane';
 import { ExportPane, ExportShareDialog } from '@/components/export-pane';
 import { SchemaPane, SchemaShareDialog } from '@/components/schema-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
 import {
     Settings,
     GitCompare,
@@ -22,6 +20,8 @@ import {
     Trash2,
     Eye,
     FileDown,
+    Wand2,
+    ShieldCheck,
 } from 'lucide-react';
 
 export default function Home() {
@@ -711,46 +711,38 @@ export default function Home() {
 
                 <TabsContent value="schema" className="mt-0">
                     <div>
-                        <div className="border-b py-2 flex items-center justify-between">
-                            <RadioGroup
-                                value={schemaMode}
-                                onValueChange={(value) =>
-                                    setSchemaMode(value as 'generate' | 'validate')
-                                }
-                            >
-                                <div className="flex gap-6">
-                                    <div className="flex items-center gap-2">
-                                        <RadioGroupItem value="generate" id="schema-generate" />
-                                        <Label htmlFor="schema-generate">Generate Schema</Label>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <RadioGroupItem value="validate" id="schema-validate" />
-                                        <Label htmlFor="schema-validate">Validate JSON</Label>
-                                    </div>
-                                </div>
-                            </RadioGroup>
-                            <div className="flex items-center gap-2">
-                                <Toolbar
-                                    toggles={[]}
-                                    actions={[
-                                        {
-                                            id: 'clear',
-                                            label: 'Clear All',
-                                            onClick: handleClear,
-                                            variant: 'outline',
-                                            icon: <Trash2 className="h-4 w-4" />,
-                                        },
-                                        {
-                                            id: 'share',
-                                            label: 'Share',
-                                            onClick: handleSchemaShare,
-                                            variant: 'outline',
-                                            icon: <Share2 className="h-4 w-4" />,
-                                        },
-                                    ]}
-                                />
-                            </div>
-                        </div>
+                        <Toolbar
+                            toggles={[
+                                {
+                                    id: 'schema-generate',
+                                    label: 'Generate Schema',
+                                    checked: schemaMode === 'generate',
+                                    onChange: () => setSchemaMode('generate'),
+                                },
+                                {
+                                    id: 'schema-validate',
+                                    label: 'Validate JSON',
+                                    checked: schemaMode === 'validate',
+                                    onChange: () => setSchemaMode('validate'),
+                                },
+                            ]}
+                            actions={[
+                                {
+                                    id: 'clear',
+                                    label: 'Clear All',
+                                    onClick: handleClear,
+                                    variant: 'outline',
+                                    icon: <Trash2 className="h-4 w-4" />,
+                                },
+                                {
+                                    id: 'share',
+                                    label: 'Share',
+                                    onClick: handleSchemaShare,
+                                    variant: 'outline',
+                                    icon: <Share2 className="h-4 w-4" />,
+                                },
+                            ]}
+                        />
 
                         <SchemaPane
                             mode={schemaMode}
