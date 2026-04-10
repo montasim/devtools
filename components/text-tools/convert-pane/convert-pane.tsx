@@ -7,7 +7,6 @@ import { TextareaFooter } from '../text-editor/textarea-footer';
 import { useDebouncedSave } from '../shared/use-debounced-save';
 import { ConvertShareDialog } from './convert-share-dialog';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import {
     toUpperCase,
     toLowerCase,
