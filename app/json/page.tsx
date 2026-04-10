@@ -1,6 +1,14 @@
 'use client';
 
-import { useState, useCallback, useEffect, useLayoutEffect, useRef, Suspense } from 'react';
+import {
+    useState,
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useMemo,
+    Suspense,
+} from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -47,7 +55,6 @@ function JsonPageContent() {
     const pathname = usePathname();
     const isInitializingRef = useRef(true);
     const previousTabRef = useRef<string | null>(null);
-    const [invalidTab, setInvalidTab] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<TabValue>(() => {
         // Initialize from URL during state creation
         const tabFromUrl = searchParams.get('tab');
@@ -62,6 +69,15 @@ function JsonPageContent() {
         return 'diff';
     });
 
+    // Derive invalidTab from URL params and activeTab
+    const invalidTab: string | null = useMemo(() => {
+        const tabFromUrl = searchParams.get('tab');
+        if (tabFromUrl && !VALID_TABS.includes(tabFromUrl as TabValue)) {
+            return tabFromUrl;
+        }
+        return null;
+    }, [searchParams]);
+
     // Set default URL on mount if needed
     useLayoutEffect(() => {
         if (isInitializingRef.current) {
@@ -70,10 +86,6 @@ function JsonPageContent() {
                 if (VALID_TABS.includes(tabFromUrl as TabValue)) {
                     // Valid tab - track it
                     previousTabRef.current = tabFromUrl;
-                } else {
-                    // Invalid tab - store it for error display
-                    // eslint-disable-next-line react-hooks/set-state-in-effect
-                    setInvalidTab(tabFromUrl);
                 }
             } else {
                 // No tab specified - set default
@@ -96,16 +108,12 @@ function JsonPageContent() {
             const newTab = tab as TabValue;
             setActiveTab(newTab);
             previousTabRef.current = newTab;
-            // Clear invalid tab state when user selects a valid tab
-            if (invalidTab) {
-                setInvalidTab(null);
-            }
             // Update URL without causing a page reload
             const params = new URLSearchParams(searchParams.toString());
             params.set('tab', newTab);
             router.replace(`${pathname}?${params.toString()}`, { scroll: false });
         },
-        [searchParams, pathname, router, invalidTab],
+        [searchParams, pathname, router],
     );
 
     // Sync URL changes with state (for browser back/forward navigation)
