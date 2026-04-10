@@ -12,6 +12,16 @@ import {
     toLowerCase,
     toTitleCase,
     toSentenceCase,
+    toCapitalizedCase,
+    toKebabCase,
+    toSnakeCase,
+    toCamelCase,
+    toPascalCase,
+    toConstantCase,
+    toDotCase,
+    toSlugCase,
+    toAlternatingCase,
+    toInverseCase,
     trim,
     removeExtraSpaces,
 } from '../text-editor/utils/text-operations';
@@ -87,8 +97,18 @@ export function ConvertPane() {
     const conversions = [
         { name: 'UPPERCASE', operation: toUpperCase, type: 'UPPERCASE' },
         { name: 'lowercase', operation: toLowerCase, type: 'lowercase' },
+        { name: 'Capitalized Case', operation: toCapitalizedCase, type: 'Capitalized Case' },
         { name: 'Title Case', operation: toTitleCase, type: 'Title Case' },
         { name: 'Sentence case', operation: toSentenceCase, type: 'Sentence case' },
+        { name: 'kebab-case', operation: toKebabCase, type: 'kebab-case' },
+        { name: 'snake_case', operation: toSnakeCase, type: 'snake_case' },
+        { name: 'camelCase', operation: toCamelCase, type: 'camelCase' },
+        { name: 'PascalCase', operation: toPascalCase, type: 'PascalCase' },
+        { name: 'CONSTANT_CASE', operation: toConstantCase, type: 'CONSTANT_CASE' },
+        { name: 'dot.case', operation: toDotCase, type: 'dot.case' },
+        { name: 'slug-case', operation: toSlugCase, type: 'slug-case' },
+        { name: 'aLtErNaTiNg cAsE', operation: toAlternatingCase, type: 'aLtErNaTiNg cAsE' },
+        { name: 'InVeRsE CaSe', operation: toInverseCase, type: 'InVeRsE CaSe' },
         { name: 'Trim', operation: trim, type: 'Trim' },
         { name: 'Remove Extra Spaces', operation: removeExtraSpaces, type: 'Remove Extra Spaces' },
     ];
@@ -106,7 +126,6 @@ export function ConvertPane() {
                             size="sm"
                             onClick={() => handleConvert(operation, type, name)}
                             disabled={!inputText}
-                            className="whitespace-nowrap"
                         >
                             {name}
                         </Button>

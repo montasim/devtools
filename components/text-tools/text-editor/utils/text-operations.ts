@@ -31,6 +31,83 @@ export function toSentenceCase(text: string): string {
         .join('. ');
 }
 
+export function toCapitalizedCase(text: string): string {
+    return text
+        .toLowerCase()
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
+export function toKebabCase(text: string): string {
+    return text
+        .replace(/([a-z])([A-Z])/g, '$1-$2')
+        .replace(/[\s_]+/g, '-')
+        .toLowerCase();
+}
+
+export function toSnakeCase(text: string): string {
+    return text
+        .replace(/([a-z])([A-Z])/g, '$1_$2')
+        .replace(/[\s-]+/g, '_')
+        .toLowerCase();
+}
+
+export function toCamelCase(text: string): string {
+    return text
+        .replace(/[-_\s]+(.)?/g, (_, char) => (char ? char.toUpperCase() : ''))
+        .replace(/^[A-Z]/, (char) => char.toLowerCase());
+}
+
+export function toPascalCase(text: string): string {
+    return text
+        .replace(/[-_\s]+(.)?/g, (_, char) => (char ? char.toUpperCase() : ''))
+        .replace(/^[a-z]/, (char) => char.toUpperCase());
+}
+
+export function toConstantCase(text: string): string {
+    return text
+        .replace(/([a-z])([A-Z])/g, '$1_$2')
+        .replace(/[\s-]+/g, '_')
+        .toUpperCase();
+}
+
+export function toDotCase(text: string): string {
+    return text
+        .replace(/([a-z])([A-Z])/g, '$1.$2')
+        .replace(/[\s_]+/g, '.')
+        .toLowerCase();
+}
+
+export function toSlugCase(text: string): string {
+    return text
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_]+/g, '-')
+        .replace(/-+/g, '-')
+        .trim();
+}
+
+export function toAlternatingCase(text: string): string {
+    return text
+        .split('')
+        .map((char, index) => (index % 2 === 0 ? char.toUpperCase() : char.toLowerCase()))
+        .join('');
+}
+
+export function toInverseCase(text: string): string {
+    return text
+        .split('')
+        .map((char) => {
+            if (char === char.toUpperCase()) {
+                return char.toLowerCase();
+            } else {
+                return char.toUpperCase();
+            }
+        })
+        .join('');
+}
+
 export function capitalize(text: string): string {
     return text.charAt(0).toUpperCase() + text.slice(1);
 }
