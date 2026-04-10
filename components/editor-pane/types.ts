@@ -82,6 +82,7 @@ export interface JsonEditorProps {
     readOnly?: boolean;
     customToolbar?: React.ReactNode;
     height?: string;
+    showEmptyPrompt?: boolean;
 }
 
 // DiffPanel component props

@@ -173,6 +173,7 @@ export const MinifyPane = ({
                         onError={() => {}}
                         readOnly={true}
                         height="600px"
+                        showEmptyPrompt={false}
                         customToolbar={
                             <div className="flex items-center justify-between mb-2 shrink-0">
                                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">

@@ -35,6 +35,7 @@ export function JsonEditor({
     readOnly = false,
     customToolbar,
     height = '400px',
+    showEmptyPrompt = true,
 }: JsonEditorProps) {
     const editorRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<EditorView | null>(null);
@@ -658,7 +659,7 @@ export function JsonEditor({
                 className="border border-gray-300 rounded-md dark:border-gray-600 shrink-0 overflow-hidden max-w-full relative"
                 style={{ height: height, width: '100%', position: 'relative' }}
             >
-                {!value || value.trim() === '' ? (
+                {showEmptyPrompt && (!value || value.trim() === '') ? (
                     <EmptyEditorPrompt
                         icon={FileJson}
                         title={`No ${label.toLowerCase()} data`}
