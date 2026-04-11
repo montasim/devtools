@@ -36,8 +36,8 @@ export function TextDiffPane() {
     const handleRightError = () => {};
 
     // Debounced save to localStorage
-    useDebouncedSave(leftText, 'text-diff-left-content');
-    useDebouncedSave(rightText, 'text-diff-right-content');
+    useDebouncedSave(leftText, STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT);
+    useDebouncedSave(rightText, STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT);
 
     const { stats } = useTextDiff(leftText, rightText);
 
@@ -63,8 +63,8 @@ export function TextDiffPane() {
         setLeftText('');
         setRightText('');
         try {
-            localStorage.removeItem('text-diff-left-content');
-            localStorage.removeItem('text-diff-right-content');
+            localStorage.removeItem(STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT);
+            localStorage.removeItem(STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT);
         } catch (error) {
             console.error('Failed to clear content:', error);
         }

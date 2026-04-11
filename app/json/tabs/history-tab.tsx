@@ -26,6 +26,7 @@ import {
     FileJson,
     FileDown,
 } from 'lucide-react';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 interface HistoryTabProps {
     onTabChange: (tab: string) => void;
@@ -44,16 +45,7 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
 
     // Load history from localStorage
     const loadHistory = useCallback(() => {
-        const historyKeys = [
-            'json-diff-left-content',
-            'json-diff-right-content',
-            'json-format-left-content',
-            'json-minify-left-content',
-            'json-viewer-content',
-            'json-parser-content',
-            'json-export-content',
-            'json-schema-json-content',
-        ];
+        const historyKeys = Object.values(STORAGE_KEYS);
 
         const history: Record<string, string> = {};
         historyKeys.forEach((key) => {
@@ -111,16 +103,16 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
                 return;
             }
 
-            // Map the history key to the appropriate tab and storage key
+            // Map the history key to the appropriate tab
             const keyToTabMap: Record<string, string> = {
-                'json-diff-left-content': 'diff',
-                'json-diff-right-content': 'diff',
-                'json-format-left-content': 'format',
-                'json-minify-left-content': 'minify',
-                'json-viewer-content': 'viewer',
-                'json-parser-content': 'parser',
-                'json-export-content': 'export',
-                'json-schema-json-content': 'schema',
+                [STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT]: 'diff',
+                [STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT]: 'diff',
+                [STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT]: 'format',
+                [STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT]: 'minify',
+                [STORAGE_KEYS.JSON_VIEWER_CONTENT]: 'viewer',
+                [STORAGE_KEYS.JSON_PARSER_CONTENT]: 'parser',
+                [STORAGE_KEYS.JSON_EXPORT_CONTENT]: 'export',
+                [STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT]: 'schema',
             };
 
             const tab = keyToTabMap[key];
@@ -140,16 +132,7 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
     };
 
     const handleConfirmClearAll = () => {
-        const historyKeys = [
-            'json-diff-left-content',
-            'json-diff-right-content',
-            'json-format-left-content',
-            'json-minify-left-content',
-            'json-viewer-content',
-            'json-parser-content',
-            'json-export-content',
-            'json-schema-json-content',
-        ];
+        const historyKeys = Object.values(STORAGE_KEYS);
 
         historyKeys.forEach((key) => {
             try {
@@ -182,14 +165,14 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
             if (firstHistoryKey) {
                 // Map the history key to the appropriate tab
                 const keyToTabMap: Record<string, string> = {
-                    'json-diff-left-content': 'diff',
-                    'json-diff-right-content': 'diff',
-                    'json-format-left-content': 'format',
-                    'json-minify-left-content': 'minify',
-                    'json-viewer-content': 'viewer',
-                    'json-parser-content': 'parser',
-                    'json-export-content': 'export',
-                    'json-schema-json-content': 'schema',
+                    [STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT]: 'diff',
+                    [STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT]: 'diff',
+                    [STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT]: 'format',
+                    [STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT]: 'minify',
+                    [STORAGE_KEYS.JSON_VIEWER_CONTENT]: 'viewer',
+                    [STORAGE_KEYS.JSON_PARSER_CONTENT]: 'parser',
+                    [STORAGE_KEYS.JSON_EXPORT_CONTENT]: 'export',
+                    [STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT]: 'schema',
                 };
 
                 const tab = keyToTabMap[firstHistoryKey];
@@ -210,26 +193,42 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
             string,
             { name: string; icon: React.ComponentType<{ className?: string }>; color: string }
         > = {
-            'json-diff-left-content': {
+            [STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT]: {
                 name: 'Diff (Left)',
                 icon: GitCompare,
                 color: 'text-blue-500',
             },
-            'json-diff-right-content': {
+            [STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT]: {
                 name: 'Diff (Right)',
                 icon: GitCompare,
                 color: 'text-blue-500',
             },
-            'json-format-left-content': { name: 'Format', icon: Code, color: 'text-green-500' },
-            'json-minify-left-content': {
+            [STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT]: {
+                name: 'Format',
+                icon: Code,
+                color: 'text-green-500',
+            },
+            [STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT]: {
                 name: 'Minify',
                 icon: Minimize2,
                 color: 'text-purple-500',
             },
-            'json-viewer-content': { name: 'Viewer', icon: Eye, color: 'text-orange-500' },
-            'json-parser-content': { name: 'Parser', icon: FileJson, color: 'text-pink-500' },
-            'json-export-content': { name: 'Export', icon: FileDown, color: 'text-cyan-500' },
-            'json-schema-json-content': {
+            [STORAGE_KEYS.JSON_VIEWER_CONTENT]: {
+                name: 'Viewer',
+                icon: Eye,
+                color: 'text-orange-500',
+            },
+            [STORAGE_KEYS.JSON_PARSER_CONTENT]: {
+                name: 'Parser',
+                icon: FileJson,
+                color: 'text-pink-500',
+            },
+            [STORAGE_KEYS.JSON_EXPORT_CONTENT]: {
+                name: 'Export',
+                icon: FileDown,
+                color: 'text-cyan-500',
+            },
+            [STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT]: {
                 name: 'Schema',
                 icon: FileJson,
                 color: 'text-indigo-500',

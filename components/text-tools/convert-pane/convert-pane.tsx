@@ -42,7 +42,7 @@ export function ConvertPane() {
     const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
     // Debounced save to localStorage
-    useDebouncedSave(inputText, 'text-convert-input-content');
+    useDebouncedSave(inputText, STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT);
 
     const handleConvert = (operation: (text: string) => string, type: string, name: string) => {
         setOutputText(operation(inputText));
@@ -91,7 +91,7 @@ export function ConvertPane() {
         setConversionType(null);
         setSelectedConversion(null);
         try {
-            localStorage.removeItem('text-convert-input-content');
+            localStorage.removeItem(STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT);
         } catch (error) {
             console.error('Failed to clear convert content:', error);
         }
