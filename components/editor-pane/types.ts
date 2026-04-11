@@ -84,6 +84,8 @@ export interface JsonEditorProps {
     height?: string;
     showEmptyPrompt?: boolean;
     emptyStateIcon?: React.ComponentType<{ className?: string }>;
+    totalKeys?: number;
+    totalValues?: number;
 }
 
 // DiffPanel component props

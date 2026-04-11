@@ -11,6 +11,7 @@ import {
     Check,
     X,
     Circle,
+    Hash,
 } from 'lucide-react';
 import type { ParseError } from './types';
 
@@ -26,6 +27,8 @@ export interface EditorStats {
 export interface EditorFooterProps {
     content: string;
     error: ParseError | null;
+    totalKeys?: number;
+    totalValues?: number;
 }
 
 function calculateStats(content: string): EditorStats {
@@ -112,7 +115,7 @@ function calculateStats(content: string): EditorStats {
     };
 }
 
-export function EditorFooter({ content, error }: EditorFooterProps) {
+export function EditorFooter({ content, error, totalKeys, totalValues }: EditorFooterProps) {
     const stats = useMemo(() => calculateStats(content), [content]);
 
     const statistics = useMemo(
@@ -121,12 +124,22 @@ export function EditorFooter({ content, error }: EditorFooterProps) {
             { icon: Type, label: `${stats.characterCount} chars`, title: 'Characters' },
             { icon: FileText, label: `${stats.wordCount} words`, title: 'Words' },
             { icon: AlignLeft, label: `${stats.lineCount} lines`, title: 'Lines' },
-            ...(stats.depth > 0
+            ...(totalKeys !== undefined
+                ? [
+                      {
+                          icon: Hash,
+                          label: `${totalKeys} keys`,
+                          title: 'Total keys',
+                          emphasized: true,
+                      },
+                  ]
+                : []),
+            ...(totalValues !== undefined
                 ? [
                       {
                           icon: Layers,
-                          label: `depth ${stats.depth}`,
-                          title: 'Max nesting depth',
+                          label: `${totalValues} values`,
+                          title: 'Total values',
                           emphasized: true,
                       },
                   ]
@@ -141,7 +154,7 @@ export function EditorFooter({ content, error }: EditorFooterProps) {
                   ]
                 : []),
         ],
-        [stats],
+        [stats, totalKeys, totalValues],
     );
 
     return (

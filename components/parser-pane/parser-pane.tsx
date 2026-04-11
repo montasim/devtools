@@ -107,6 +107,16 @@ export const ParserPane = ({
                         onChange={setLeftContent}
                         onError={() => {}}
                         height="600px"
+                        totalKeys={
+                            parsedData.isValid && parsedData.statistics.totalKeys > 0
+                                ? parsedData.statistics.totalKeys
+                                : undefined
+                        }
+                        totalValues={
+                            parsedData.isValid && parsedData.statistics.totalValues > 0
+                                ? parsedData.statistics.totalValues
+                                : undefined
+                        }
                     />
                 </div>
 

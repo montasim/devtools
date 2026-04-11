@@ -37,6 +37,8 @@ export function JsonEditor({
     height = '400px',
     showEmptyPrompt = true,
     emptyStateIcon = FileJson,
+    totalKeys,
+    totalValues,
 }: JsonEditorProps) {
     const editorRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<EditorView | null>(null);
@@ -688,7 +690,12 @@ export function JsonEditor({
 
             {/* Footer with statistics and validation */}
             <div className="shrink-0">
-                <EditorFooter content={value} error={error} />
+                <EditorFooter
+                    content={value}
+                    error={error}
+                    totalKeys={totalKeys}
+                    totalValues={totalValues}
+                />
             </div>
         </div>
     );
