@@ -36,6 +36,9 @@ export const STORAGE_KEYS = {
     TEXT_COUNT_INPUT_CONTENT: 'text-count-input-content',
     TEXT_CLEAN_INPUT_CONTENT: 'text-clean-input-content',
 
+    // Git Branch Generator
+    GIT_BRANCH_LAST_GENERATED: 'git-branch-last-generated',
+
     // Theme
     THEME: 'theme',
 } as const;

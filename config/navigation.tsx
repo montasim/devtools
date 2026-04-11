@@ -1,4 +1,4 @@
-import { Book, Clock, Keyboard, Sunset, Trees, Zap } from 'lucide-react';
+import { Book, Clock, GitBranch, Keyboard, Sunset, Trees, Zap } from 'lucide-react';
 
 export const navigationMenu = [
     { title: 'Home', url: '/' },
@@ -29,6 +29,12 @@ export const navigationMenu = [
                 description: 'Convert, validate, and transform CSV',
                 icon: <Zap className="size-5 shrink-0" />,
                 url: '/csv',
+            },
+            {
+                title: 'Git Branch Name Generator',
+                description: 'Generate consistent git branch names',
+                icon: <GitBranch className="size-5 shrink-0" />,
+                url: '/git-branch-generator',
             },
         ],
     },
