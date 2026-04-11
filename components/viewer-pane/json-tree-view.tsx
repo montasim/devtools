@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { ChevronRight, ChevronDown, Copy, Check } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { TreeNode } from './types';
 
 interface JsonTreeViewProps {
@@ -143,17 +144,23 @@ function TreeNodeComponent({ node, showTypes, showPaths, level }: TreeNodeCompon
                 )}
 
                 {/* Copy Button */}
-                <button
-                    onClick={() => handleCopy(node.value)}
-                    className="ml-auto opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-opacity"
-                    title="Copy value"
-                >
-                    {copied ? (
-                        <Check className="h-3 w-3 text-green-600" />
-                    ) : (
-                        <Copy className="h-3 w-3" />
-                    )}
-                </button>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <button
+                            onClick={() => handleCopy(node.value)}
+                            className="ml-auto opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-opacity"
+                        >
+                            {copied ? (
+                                <Check className="h-3 w-3 text-green-600" />
+                            ) : (
+                                <Copy className="h-3 w-3" />
+                            )}
+                        </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Copy value</p>
+                    </TooltipContent>
+                </Tooltip>
             </div>
 
             {/* Children */}

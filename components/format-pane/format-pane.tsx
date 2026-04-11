@@ -6,6 +6,7 @@ import { Copy, Download, FileCode, FileJson } from 'lucide-react';
 import { JsonEditor } from '../editor-pane/json-editor';
 import { Separator } from '../ui/separator';
 import { Button } from '../ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useFormatJson } from './use-format-json';
 import type { FormatPaneProps, FormatOptions } from './types';
 import { STORAGE_KEYS } from '@/lib/constants';
@@ -220,26 +221,38 @@ export const FormatPane = ({
                                         {formatOptions.escapeUnicode && ', Unicode'}
                                     </span>
                                     <div className="flex items-center gap-2">
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="h-8 w-8"
-                                            onClick={handleCopy}
-                                            disabled={isDisabled}
-                                            title="Copy to clipboard"
-                                        >
-                                            <Copy className="h-4 w-4" />
-                                        </Button>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="h-8 w-8"
-                                            onClick={handleDownload}
-                                            disabled={isDisabled}
-                                            title="Download as JSON"
-                                        >
-                                            <Download className="h-4 w-4" />
-                                        </Button>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-8 w-8"
+                                                    onClick={handleCopy}
+                                                    disabled={isDisabled}
+                                                >
+                                                    <Copy className="h-4 w-4" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>Copy to clipboard</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-8 w-8"
+                                                    onClick={handleDownload}
+                                                    disabled={isDisabled}
+                                                >
+                                                    <Download className="h-4 w-4" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>Download as JSON</p>
+                                            </TooltipContent>
+                                        </Tooltip>
                                     </div>
                                 </div>
                             </div>
