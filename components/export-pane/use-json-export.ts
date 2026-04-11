@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo } from 'react';
 import type { ExportOptions, ExportResult } from './types';
 
@@ -48,7 +49,7 @@ export function useJsonExport(json: string, options: ExportOptions): ExportResul
                 error: (error as Error).message,
             };
         }
-    }, [json, options.format, options.csvDelimiter, options.xmlRootTag, options.yamlIndent, options.includeHeaders]);
+    }, [json, options]);
 }
 
 // Convert JSON to CSV
@@ -65,8 +66,8 @@ function jsonToCSV(obj: any, options: ExportOptions): string {
             rows.push(headers.join(delimiter));
         }
 
-        obj.forEach(item => {
-            const values = headers.map(header => {
+        obj.forEach((item) => {
+            const values = headers.map((header) => {
                 const value = item[header];
                 if (value === null || value === undefined) return '';
                 if (typeof value === 'string') return `"${value.replace(/"/g, '""')}"`;
@@ -81,7 +82,7 @@ function jsonToCSV(obj: any, options: ExportOptions): string {
     // If obj is a single object
     if (typeof obj === 'object' && obj !== null && !Array.isArray(obj)) {
         const headers = Object.keys(obj);
-        const values = headers.map(header => {
+        const values = headers.map((header) => {
             const value = obj[header];
             if (value === null || value === undefined) return '';
             if (typeof value === 'string') return `"${value.replace(/"/g, '""')}"`;
@@ -123,7 +124,7 @@ function jsonToXML(obj: any, options: ExportOptions): string {
             }
 
             let xml = `${spaces}<${key}>\n`;
-            value.forEach(item => {
+            value.forEach((item) => {
                 xml += valueToXML(item, 'item', indent + 2);
             });
             xml += `${spaces}</${key}>\n`;
@@ -137,7 +138,7 @@ function jsonToXML(obj: any, options: ExportOptions): string {
             }
 
             let xml = `${spaces}<${key}>\n`;
-            keys.forEach(k => {
+            keys.forEach((k) => {
                 xml += valueToXML(value[k], k, indent + 2);
             });
             xml += `${spaces}</${key}>\n`;
@@ -192,7 +193,7 @@ function jsonToYAML(obj: any, options: ExportOptions): string {
             }
 
             let yaml = '\n';
-            value.forEach(item => {
+            value.forEach((item) => {
                 const itemYAML = toYAML(item, indentLevel + indent);
                 yaml += `${spaces}- ${itemYAML.startsWith('\n') ? itemYAML.slice(1) : itemYAML}\n`;
             });
@@ -206,7 +207,7 @@ function jsonToYAML(obj: any, options: ExportOptions): string {
             }
 
             let yaml = '\n';
-            keys.forEach(key => {
+            keys.forEach((key) => {
                 const valueYAML = toYAML(value[key], indentLevel + indent);
                 yaml += `${spaces}${key}:${valueYAML.startsWith('\n') ? valueYAML : ' ' + valueYAML}\n`;
             });
@@ -246,7 +247,7 @@ function jsonToTOML(obj: any, options: ExportOptions): string {
             }
 
             let toml = `${spaces}${key} = [\n`;
-            value.forEach(item => {
+            value.forEach((item) => {
                 toml += toTOML(item, '', indentLevel + 2);
             });
             toml += `${spaces}]\n`;
@@ -260,7 +261,7 @@ function jsonToTOML(obj: any, options: ExportOptions): string {
             }
 
             let toml = `${spaces}${key} = { ${keys.join(', ')} }\n`;
-            keys.forEach(k => {
+            keys.forEach((k) => {
                 toml += toTOML(value[k], k, indentLevel + 2);
             });
             return toml;
@@ -271,7 +272,7 @@ function jsonToTOML(obj: any, options: ExportOptions): string {
 
     if (Array.isArray(obj)) {
         let toml = '';
-        obj.forEach(item => {
+        obj.forEach((item) => {
             toml += toTOML(item, '', 0);
         });
         return toml.trim();
@@ -279,7 +280,7 @@ function jsonToTOML(obj: any, options: ExportOptions): string {
 
     if (typeof obj === 'object') {
         let toml = '';
-        Object.keys(obj).forEach(key => {
+        Object.keys(obj).forEach((key) => {
             toml += toTOML(obj[key], key, 0);
         });
         return toml.trim();
