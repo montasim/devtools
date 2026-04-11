@@ -5,6 +5,7 @@ import type { EditorView } from '@codemirror/view';
 import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Search as SearchIcon } from 'lucide-react';
 import { EditorOperationsMenu } from './editor-operations-menu';
 
@@ -99,16 +100,22 @@ export function EditorActions({
                     return (
                         <DropdownMenu key={button.id}>
                             <DropdownMenuTrigger asChild>
-                                <Button
-                                    type="button"
-                                    variant={button.variant || 'ghost'}
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    disabled={button.disabled}
-                                    title={button.title || button.label}
-                                >
-                                    <Icon className="h-4 w-4" />
-                                </Button>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            type="button"
+                                            variant={button.variant || 'ghost'}
+                                            size="icon"
+                                            className="h-8 w-8"
+                                            disabled={button.disabled}
+                                        >
+                                            <Icon className="h-4 w-4" />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>{button.title || button.label}</p>
+                                    </TooltipContent>
+                                </Tooltip>
                             </DropdownMenuTrigger>
                             <EditorOperationsMenu
                                 content={content}
@@ -132,42 +139,53 @@ export function EditorActions({
                 if (isFileUploadButton(button)) {
                     return (
                         <label key={button.id}>
-                            <Button
-                                type="button"
-                                variant={button.variant || 'ghost'}
-                                size="icon"
-                                className="h-8 w-8"
-                                disabled={button.disabled}
-                                title={button.title || button.label}
-                                asChild
-                            >
-                                <span>
-                                    <Icon className="h-4 w-4" />
-                                    <input
-                                        type="file"
-                                        accept={button.accept}
-                                        onChange={button.onChange}
-                                        className="hidden"
-                                    />
-                                </span>
-                            </Button>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        type="button"
+                                        variant={button.variant || 'ghost'}
+                                        size="icon"
+                                        className="h-8 w-8"
+                                        disabled={button.disabled}
+                                        asChild
+                                    >
+                                        <span>
+                                            <Icon className="h-4 w-4" />
+                                            <input
+                                                type="file"
+                                                accept={button.accept}
+                                                onChange={button.onChange}
+                                                className="hidden"
+                                            />
+                                        </span>
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{button.title || button.label}</p>
+                                </TooltipContent>
+                            </Tooltip>
                         </label>
                     );
                 }
 
                 return (
-                    <Button
-                        key={button.id}
-                        type={button.type || 'button'}
-                        variant={button.variant || 'ghost'}
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={button.onClick}
-                        disabled={button.disabled}
-                        title={button.title || button.label}
-                    >
-                        <Icon className="h-4 w-4" />
-                    </Button>
+                    <Tooltip key={button.id}>
+                        <TooltipTrigger asChild>
+                            <Button
+                                type={button.type || 'button'}
+                                variant={button.variant || 'ghost'}
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={button.onClick}
+                                disabled={button.disabled}
+                            >
+                                <Icon className="h-4 w-4" />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>{button.title || button.label}</p>
+                        </TooltipContent>
+                    </Tooltip>
                 );
             })}
         </div>

@@ -2,6 +2,7 @@
 
 import { Moon, Sun, Monitor } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTheme } from '@/components/theme/theme-provider';
 
 export function ThemeToggle() {
@@ -36,14 +37,20 @@ export function ThemeToggle() {
     };
 
     return (
-        <Button
-            size="icon"
-            variant="outline"
-            onClick={cycleTheme}
-            aria-label={`Current theme: ${getThemeLabel()}. Click to cycle through themes.`}
-            title={`Current theme: ${getThemeLabel()}`}
-        >
-            {getThemeIcon()}
-        </Button>
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={cycleTheme}
+                    aria-label={`Current theme: ${getThemeLabel()}. Click to cycle through themes.`}
+                >
+                    {getThemeIcon()}
+                </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+                <p>Current theme: {getThemeLabel()}</p>
+            </TooltipContent>
+        </Tooltip>
     );
 }

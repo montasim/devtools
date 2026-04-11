@@ -6,6 +6,7 @@ import { Navbar } from '@/components/navbar/navbar';
 import Footer from '@/components/footer';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -34,12 +35,14 @@ export default function RootLayout({
         >
             <body className="min-h-full flex flex-col">
                 <ThemeProvider>
-                    <Navbar />
+                    <TooltipProvider>
+                        <Navbar />
 
-                    <main className="px-4 sm:px-6 lg:px-8 overflow-visible">{children}</main>
+                        <main className="px-4 sm:px-6 lg:px-8 overflow-visible">{children}</main>
 
-                    <Footer />
-                    <Toaster />
+                        <Footer />
+                        <Toaster />
+                    </TooltipProvider>
                 </ThemeProvider>
             </body>
         </html>

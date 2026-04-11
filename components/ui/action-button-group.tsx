@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { LucideIcon } from 'lucide-react';
 
 export interface ActionButton {
@@ -21,16 +22,21 @@ export function ActionButtonGroup({ actions, className = '' }: ActionButtonGroup
         <div className={`flex gap-2 shrink-0 ${className}`}>
             {actions.map(
                 ({ icon: Icon, onClick, title, className: btnClassName, variant = 'outline' }) => (
-                    <Button
-                        key={title}
-                        variant={variant}
-                        size="sm"
-                        onClick={onClick}
-                        className={`gap-2 ${btnClassName}`}
-                        title={title}
-                    >
-                        <Icon className="h-4 w-4" />
-                    </Button>
+                    <Tooltip key={title}>
+                        <TooltipTrigger asChild>
+                            <Button
+                                variant={variant}
+                                size="sm"
+                                onClick={onClick}
+                                className={`gap-2 ${btnClassName}`}
+                            >
+                                <Icon className="h-4 w-4" />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>{title}</p>
+                        </TooltipContent>
+                    </Tooltip>
                 ),
             )}
         </div>

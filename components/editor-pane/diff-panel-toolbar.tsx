@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Share2 } from 'lucide-react';
 import { DiffPanelToolbarProps } from './types';
 import { ViewModeTabs } from './view-mode-tabs';
@@ -71,15 +72,21 @@ export function DiffPanelToolbar({
                 <Separator orientation="vertical" className="h-6" />
 
                 {/* Share Button */}
-                <Button
-                    variant="outline"
-                    size="icon-sm"
-                    onClick={onShare}
-                    aria-label="Share this diff"
-                    title="Share this diff"
-                >
-                    <Share2 className="h-4 w-4" />
-                </Button>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            variant="outline"
+                            size="icon-sm"
+                            onClick={onShare}
+                            aria-label="Share this diff"
+                        >
+                            <Share2 className="h-4 w-4" />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Share this diff</p>
+                    </TooltipContent>
+                </Tooltip>
 
                 {/* Options Dropdown */}
                 <DiffOptionsDropdown
