@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { toast } from 'sonner';
 import { Copy, Check, Share2, Download, FileDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,12 +23,7 @@ interface ExportShareDialogProps {
     onOpenChange?: (open: boolean) => void;
 }
 
-export function ExportShareDialog({
-    content,
-    format,
-    open,
-    onOpenChange,
-}: ExportShareDialogProps) {
+export function ExportShareDialog({ content, format, open, onOpenChange }: ExportShareDialogProps) {
     const [copied, setCopied] = useState(false);
 
     // Generate shareable URL
@@ -61,8 +57,10 @@ export function ExportShareDialog({
             await navigator.clipboard.writeText(content);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Copied to clipboard');
         } catch (error) {
             console.error('Failed to copy to clipboard:', error);
+            toast.error('Failed to copy to clipboard');
         }
     }, [content]);
 
@@ -82,8 +80,10 @@ export function ExportShareDialog({
             await navigator.clipboard.writeText(jsonContent);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Copied as JSON');
         } catch (error) {
             console.error('Failed to copy as JSON:', error);
+            toast.error('Failed to copy as JSON');
         }
     }, [content, format]);
 
@@ -127,10 +127,14 @@ export function ExportShareDialog({
             await navigator.clipboard.writeText(shareUrl);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Shareable link copied to clipboard');
         } catch (error) {
             console.error('Failed to copy URL:', error);
+            toast.error('Failed to copy shareable link');
         }
     }, [shareUrl]);
+
+    function getMimeType(fmt: ExportFormat): string {
         const mimes: Record<ExportFormat, string> = {
             csv: 'text/csv',
             xml: 'application/xml',

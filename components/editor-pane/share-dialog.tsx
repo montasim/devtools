@@ -63,8 +63,10 @@ export function ShareDialog({
             await navigator.clipboard.writeText(url);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Shareable link copied to clipboard');
         } catch (error) {
             console.error('Failed to copy URL:', error);
+            toast.error('Failed to copy shareable link');
         }
     }, [generateShareUrl]);
 
@@ -90,8 +92,10 @@ export function ShareDialog({
             await navigator.clipboard.writeText(diffText);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Copied diff to clipboard');
         } catch (error) {
             console.error('Failed to copy diff:', error);
+            toast.error('Failed to copy diff');
         }
     }, [diffResult]);
 
@@ -118,8 +122,10 @@ export function ShareDialog({
             await navigator.clipboard.writeText(JSON.stringify(patch, null, 2));
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Copied JSON Patch to clipboard');
         } catch (error) {
             console.error('Failed to copy JSON Patch:', error);
+            toast.error('Failed to copy JSON Patch');
         }
     }, [diffResult, generateJSONPatch]);
 
@@ -143,8 +149,10 @@ export function ShareDialog({
             await navigator.clipboard.writeText(JSON.stringify(patch, null, 2));
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Copied Merge Patch to clipboard');
         } catch (error) {
             console.error('Failed to copy Merge Patch:', error);
+            toast.error('Failed to copy Merge Patch');
         }
     }, [diffResult, generateMergePatch]);
 
@@ -252,8 +260,10 @@ export function ShareDialog({
             await navigator.clipboard.writeText(JSON.stringify(uniquePaths, null, 2));
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Copied JSON paths to clipboard');
         } catch (error) {
             console.error('Failed to copy JSON paths:', error);
+            toast.error('Failed to copy JSON paths');
         }
     }, [diffResult]);
 

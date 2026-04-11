@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { toast } from 'sonner';
 import { Copy, Check, Share2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -58,8 +59,10 @@ export function SchemaShareDialog({
             await navigator.clipboard.writeText(content);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Copied to clipboard');
         } catch (error) {
             console.error('Failed to copy to clipboard:', error);
+            toast.error('Failed to copy to clipboard');
         }
     }, [content]);
 
@@ -70,8 +73,10 @@ export function SchemaShareDialog({
             await navigator.clipboard.writeText(shareUrl);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Shareable link copied to clipboard');
         } catch (error) {
             console.error('Failed to copy URL:', error);
+            toast.error('Failed to copy shareable link');
         }
     }, [shareUrl]);
 

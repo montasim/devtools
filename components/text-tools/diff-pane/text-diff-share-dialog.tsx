@@ -71,8 +71,10 @@ export function TextDiffShareDialog({
             await navigator.clipboard.writeText(url);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Shareable link copied to clipboard');
         } catch (error) {
             console.error('Failed to copy URL:', error);
+            toast.error('Failed to copy shareable link');
         }
     }, [generateShareUrl]);
 
@@ -113,8 +115,10 @@ export function TextDiffShareDialog({
             await navigator.clipboard.writeText(diffText);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Copied diff to clipboard');
         } catch (error) {
             console.error('Failed to copy diff:', error);
+            toast.error('Failed to copy diff');
         }
     }, [stats, left, right, changePercentage]);
 
@@ -150,8 +154,10 @@ export function TextDiffShareDialog({
             await navigator.clipboard.writeText(diffText);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+            toast.success('Copied unified diff to clipboard');
         } catch (error) {
             console.error('Failed to copy unified diff:', error);
+            toast.error('Failed to copy unified diff');
         }
     }, [stats, left, right]);
 
