@@ -8,6 +8,7 @@ import { TextareaFooter } from '@/components/text-tools/text-editor/textarea-foo
 import { TextOperationsMenu } from '@/components/text-tools/text-editor/text-operations-menu';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
     toUpperCase,
     toLowerCase,
@@ -154,77 +155,107 @@ export function TextEditor({
                         <>
                             {/* Upload button */}
                             <label>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    disabled={readOnly}
-                                    title="Upload file"
-                                    type="button"
-                                    asChild
-                                >
-                                    <span>
-                                        <Upload className="h-4 w-4" />
-                                        <input
-                                            type="file"
-                                            accept=".txt,text/plain"
-                                            onChange={handleFileUpload}
-                                            className="hidden"
-                                        />
-                                    </span>
-                                </Button>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8"
+                                            disabled={readOnly}
+                                            type="button"
+                                            asChild
+                                        >
+                                            <span>
+                                                <Upload className="h-4 w-4" />
+                                                <input
+                                                    type="file"
+                                                    accept=".txt,text/plain"
+                                                    onChange={handleFileUpload}
+                                                    className="hidden"
+                                                />
+                                            </span>
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Upload file</p>
+                                    </TooltipContent>
+                                </Tooltip>
                             </label>
 
                             {/* Copy button */}
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                onClick={handleCopy}
-                                disabled={readOnly}
-                                title="Copy to clipboard"
-                            >
-                                <Link2 className="h-4 w-4" />
-                            </Button>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8"
+                                        onClick={handleCopy}
+                                        disabled={readOnly}
+                                    >
+                                        <Link2 className="h-4 w-4" />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Copy to clipboard</p>
+                                </TooltipContent>
+                            </Tooltip>
 
                             {/* Search button */}
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                onClick={handleSearch}
-                                disabled={readOnly}
-                                title="Search"
-                            >
-                                <Search className="h-4 w-4" />
-                            </Button>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8"
+                                        onClick={handleSearch}
+                                        disabled={readOnly}
+                                    >
+                                        <Search className="h-4 w-4" />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Search</p>
+                                </TooltipContent>
+                            </Tooltip>
 
                             {/* Clear button */}
                             {onClear && (
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={onClear}
-                                    disabled={readOnly || !value}
-                                    title="Clear editor"
-                                >
-                                    <X className="h-4 w-4" />
-                                </Button>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8"
+                                            onClick={onClear}
+                                            disabled={readOnly || !value}
+                                        >
+                                            <X className="h-4 w-4" />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Clear editor</p>
+                                    </TooltipContent>
+                                </Tooltip>
                             )}
 
                             {/* More options menu */}
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-8 w-8"
-                                        disabled={readOnly}
-                                        title="More options"
-                                    >
-                                        <MoreVertical className="h-4 w-4" />
-                                    </Button>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8"
+                                                disabled={readOnly}
+                                            >
+                                                <MoreVertical className="h-4 w-4" />
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>More options</p>
+                                        </TooltipContent>
+                                    </Tooltip>
                                 </DropdownMenuTrigger>
                                 <TextOperationsMenu
                                     content={value}
