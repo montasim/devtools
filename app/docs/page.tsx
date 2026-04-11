@@ -2,23 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import {
-    Target,
-    Zap,
-    Wrench,
-    Search,
-    Download,
-    Keyboard,
-    Save,
-    Globe,
-    Layers,
+    GitBranch,
+    Code,
+    FileJson,
+    FileText,
+    Sparkles,
     BookOpen,
     Play,
-    FlaskRound,
     Lightbulb,
     Settings,
-    Sparkles,
-    Crosshair,
-    FileText,
+    Wrench,
+    Layers,
+    History,
+    Zap,
+    Shield,
+    Save,
 } from 'lucide-react';
 import {
     PageLayout,
@@ -42,29 +40,29 @@ const docSections: DocSection[] = [
         icon: <BookOpen className="w-5 h-5" />,
     },
     {
-        id: 'features',
-        title: 'Features',
-        icon: <Sparkles className="w-5 h-5" />,
+        id: 'json-tools',
+        title: 'JSON Tools',
+        icon: <FileJson className="w-5 h-5" />,
     },
     {
-        id: 'configuration',
-        title: 'Configuration',
-        icon: <Settings className="w-5 h-5" />,
+        id: 'text-tools',
+        title: 'Text Tools',
+        icon: <FileText className="w-5 h-5" />,
+    },
+    {
+        id: 'git-tools',
+        title: 'Git Tools',
+        icon: <GitBranch className="w-5 h-5" />,
+    },
+    {
+        id: 'features',
+        title: 'Key Features',
+        icon: <Sparkles className="w-5 h-5" />,
     },
     {
         id: 'getting-started',
         title: 'Getting Started',
         icon: <Play className="w-5 h-5" />,
-    },
-    {
-        id: 'advanced',
-        title: 'Advanced Features',
-        icon: <FlaskRound className="w-5 h-5" />,
-    },
-    {
-        id: 'tips',
-        title: 'Pro Tips',
-        icon: <Lightbulb className="w-5 h-5" />,
     },
 ];
 
@@ -101,8 +99,8 @@ export default function DocsPage() {
         <PageLayout>
             <PageHeader
                 icon={<FileText className="w-6 h-6 text-white" />}
-                title="JSON Diff Tool"
-                description="Documentation & Usage Guide"
+                title="DevTools Documentation"
+                description="Complete guide to all development tools"
             />
             <PageContent
                 sidebar={
@@ -124,18 +122,18 @@ export default function DocsPage() {
                 <PageSection
                     id="overview"
                     title="Overview"
-                    description="The JSON Diff Tool is a powerful utility for comparing and analyzing differences between JSON documents. It provides multiple comparison modes, export options, and advanced features to help you understand and communicate changes in your data."
+                    description="A comprehensive suite of developer tools for JSON, text, and git workflows. Boost your productivity with powerful utilities designed for modern development."
                 >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border border-blue-200 dark:border-blue-800">
                             <div className="w-8 h-8 mb-2 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                                <Crosshair className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                <Code className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                             </div>
                             <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
-                                Accurate
+                                Powerful
                             </h3>
                             <p className="text-sm text-blue-700/70 dark:text-blue-300/70">
-                                Precise diff detection with multiple algorithms
+                                Advanced tools for complex tasks
                             </p>
                         </div>
 
@@ -147,19 +145,154 @@ export default function DocsPage() {
                                 Fast
                             </h3>
                             <p className="text-sm text-emerald-700/70 dark:text-emerald-300/70">
-                                Optimized for quick comparisons
+                                Optimized for quick workflows
                             </p>
                         </div>
 
                         <div className="p-5 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border border-purple-200 dark:border-purple-800">
                             <div className="w-8 h-8 mb-2 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                                <Wrench className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                                <Shield className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                             </div>
                             <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-1">
-                                Flexible
+                                Secure
                             </h3>
                             <p className="text-sm text-purple-700/70 dark:text-purple-300/70">
-                                Multiple view modes and export options
+                                All data stays in your browser
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                {/* JSON Tools Section */}
+                <PageSection
+                    id="json-tools"
+                    title="JSON Tools"
+                    description="Complete JSON toolkit for validation, formatting, comparison, and transformation."
+                >
+                    <div className="space-y-4">
+                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center gap-3 mb-2">
+                                <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    JSON Diff
+                                </h3>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Compare two JSON files with multiple view modes (unified, split,
+                                inline, tree). Filter by change type, export diffs, and use keyboard
+                                shortcuts for power users.
+                            </p>
+                        </div>
+
+                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center gap-3 mb-2">
+                                <Wrench className="w-5 h-5 text-green-600 dark:text-green-400" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    JSON Format & Minify
+                                </h3>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Beautify or minify JSON with customizable indentation and formatting
+                                options. Real-time validation and syntax highlighting.
+                            </p>
+                        </div>
+
+                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center gap-3 mb-2">
+                                <Code className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    JSON Parser & Viewer
+                                </h3>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Parse and validate JSON with detailed error messages. View JSON in
+                                an expandable tree structure with syntax highlighting.
+                            </p>
+                        </div>
+
+                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center gap-3 mb-2">
+                                <FileJson className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    JSON Schema & Export
+                                </h3>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Validate JSON against schemas and export data in multiple formats.
+                                Generate JSON Patch and Merge Patch documents.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                {/* Text Tools Section */}
+                <PageSection
+                    id="text-tools"
+                    title="Text Tools"
+                    description="Process and manipulate text with powerful transformation and analysis tools."
+                >
+                    <div className="space-y-4">
+                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center gap-3 mb-2">
+                                <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    Text Diff
+                                </h3>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Compare two text blocks side-by-side with line-by-line highlighting.
+                                Perfect for reviewing document changes and code modifications.
+                            </p>
+                        </div>
+
+                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center gap-3 mb-2">
+                                <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    Text Convert
+                                </h3>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Transform text with case conversion (upper, lower, title, sentence),
+                                encoding/decoding, and format conversions.
+                            </p>
+                        </div>
+
+                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center gap-3 mb-2">
+                                <Sparkles className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    Text Clean
+                                </h3>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Remove extra spaces, trim lines, eliminate special characters, and
+                                normalize whitespace in your text.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                {/* Git Tools Section */}
+                <PageSection
+                    id="git-tools"
+                    title="Git Tools"
+                    description="Streamline your git workflow with intelligent branch name generation."
+                >
+                    <div className="space-y-4">
+                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center gap-3 mb-2">
+                                <GitBranch className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    Branch Name Generator
+                                </h3>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Generate consistent git branch names with issue type prefixes,
+                                ticket numbers, and formatted descriptions. Supports 11 issue types
+                                including feature, fix, hotfix, refactor, docs, test, chore,
+                                performance, style, and CI/CD. Saves your last generated branch for
+                                quick reference.
                             </p>
                         </div>
                     </div>
@@ -170,155 +303,55 @@ export default function DocsPage() {
                     <div className="space-y-4">
                         <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
                             <div className="flex items-center gap-3 mb-2">
-                                <Layers className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Multiple View Modes
-                                </h3>
-                            </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Choose between unified, split, inline, and tree views to visualize
-                                changes in the way that works best for you.
-                            </p>
-                        </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Search className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Smart Filtering
-                                </h3>
-                            </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Filter by change type to focus on what matters: additions,
-                                deletions, or modifications.
-                            </p>
-                        </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Download className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Export Options
-                                </h3>
-                            </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Export diffs in multiple formats including JSON Patch, Merge Patch,
-                                downloadable files, and HTML reports.
-                            </p>
-                        </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Keyboard className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Keyboard Shortcuts
-                                </h3>
-                            </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Power user keyboard shortcuts for quick filtering, exporting, and
-                                panel toggling.
-                            </p>
-                        </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
                                 <Save className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                                 <h3 className="font-semibold text-gray-900 dark:text-gray-100">
                                     Auto-Save
                                 </h3>
                             </div>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Your content is automatically saved to localStorage, preventing
-                                accidental data loss.
-                            </p>
-                        </div>
-                    </div>
-                </PageSection>
-
-                {/* Configuration Section */}
-                <PageSection id="configuration" title="Configuration Options">
-                    <div className="space-y-4">
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-start justify-between mb-3">
-                                <div>
-                                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                        Ignore Key Order
-                                    </h3>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        Compare objects regardless of key ordering
-                                    </p>
-                                </div>
-                                <span className="px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium">
-                                    Default: On
-                                </span>
-                            </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                When enabled, the comparison ignores the order of keys in JSON
-                                objects. This is useful when comparing JSON generated by different
-                                serializers that may produce equivalent data with different key
-                                ordering.
+                                All your content is automatically saved to localStorage as you work.
+                                Never lose your data due to accidental page refreshes or browser
+                                crashes.
                             </p>
                         </div>
 
                         <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-start justify-between mb-3">
-                                <div>
-                                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                        Pretty Print
-                                    </h3>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        Format output with proper indentation
-                                    </p>
-                                </div>
-                                <span className="px-2 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 text-xs font-medium">
-                                    Default: On
-                                </span>
+                            <div className="flex items-center gap-3 mb-2">
+                                <History className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    History Management
+                                </h3>
                             </div>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Automatically formats JSON output with proper indentation and line
-                                breaks for better readability in the diff display.
+                                Access your tool usage history across all pages. View, restore,
+                                copy, or clear individual history items. Grouped by JSON and Text
+                                tools.
                             </p>
                         </div>
 
                         <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-start justify-between mb-3">
-                                <div>
-                                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                        Ignore Whitespace
-                                    </h3>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        Skip whitespace-only differences
-                                    </p>
-                                </div>
-                                <span className="px-2 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-medium">
-                                    Default: Off
-                                </span>
+                            <div className="flex items-center gap-3 mb-2">
+                                <Zap className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    Keyboard Shortcuts
+                                </h3>
                             </div>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                When enabled, whitespace differences are ignored during comparison.
-                                Useful when comparing JSON that differs only in formatting or
-                                spacing.
+                                Power user keyboard shortcuts for quick filtering, exporting, and
+                                panel toggling. Visit the Shortcuts page for the complete list.
                             </p>
                         </div>
 
                         <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-start justify-between mb-3">
-                                <div>
-                                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                        Semantic Type Diff
-                                    </h3>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        Intelligent type-aware comparisons
-                                    </p>
-                                </div>
-                                <span className="px-2 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-medium">
-                                    Default: Off
-                                </span>
+                            <div className="flex items-center gap-3 mb-2">
+                                <Shield className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    Privacy First
+                                </h3>
                             </div>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Performs intelligent type-aware comparisons that understand data
-                                types and structures, detecting semantic changes beyond simple text
-                                differences.
+                                All data processing happens locally in your browser. No information
+                                is sent to external servers. Your data stays yours.
                             </p>
                         </div>
                     </div>
@@ -333,12 +366,11 @@ export default function DocsPage() {
                             </div>
                             <div>
                                 <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                    Input JSON Data
+                                    Choose Your Tool
                                 </h3>
                                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    Paste or type your JSON content into the left and right editor
-                                    panels. The editors support syntax highlighting and real-time
-                                    validation.
+                                    Select from JSON Tools, Text Tools, XML Tools, CSV Tools, or Git
+                                    Tools from the navigation menu based on your task.
                                 </p>
                             </div>
                         </div>
@@ -349,11 +381,11 @@ export default function DocsPage() {
                             </div>
                             <div>
                                 <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                    Configure Options
+                                    Input Your Data
                                 </h3>
                                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    Toggle the comparison options at the top to customize how the
-                                    diff is computed based on your needs.
+                                    Paste, type, or upload files into the editor panels. The tools
+                                    support syntax highlighting and real-time validation.
                                 </p>
                             </div>
                         </div>
@@ -364,12 +396,11 @@ export default function DocsPage() {
                             </div>
                             <div>
                                 <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                    Compare
+                                    Configure & Process
                                 </h3>
                                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    Click the &ldquo;Compare&rdquo; button to generate the diff.
-                                    Results appear below, showing additions, deletions, and
-                                    modifications.
+                                    Adjust options to customize the output. Click the action button
+                                    to process your data and view results instantly.
                                 </p>
                             </div>
                         </div>
@@ -380,122 +411,14 @@ export default function DocsPage() {
                             </div>
                             <div>
                                 <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                    Analyze & Export
+                                    Export & Share
                                 </h3>
                                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    Use filter options to focus on specific change types. Export the
-                                    diff in various formats or use keyboard shortcuts for
-                                    navigation.
+                                    Copy results to clipboard, download files, or generate shareable
+                                    links. Your work is automatically saved for later access.
                                 </p>
                             </div>
                         </div>
-                    </div>
-                </PageSection>
-
-                {/* Advanced Features Section */}
-                <PageSection id="advanced" title="Advanced Features">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border border-blue-200 dark:border-blue-800">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Target className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                                <h3 className="font-semibold text-blue-900 dark:text-blue-100">
-                                    Filter Shortcuts
-                                </h3>
-                            </div>
-                            <p className="text-sm text-blue-700/70 dark:text-blue-300/70 mb-2">
-                                Use{' '}
-                                <kbd className="px-1.5 py-0.5 text-xs font-semibold rounded bg-blue-200 dark:bg-blue-900/50 border border-blue-300 dark:border-blue-700">
-                                    ⌘/Ctrl + 1-4
-                                </kbd>{' '}
-                                to quickly filter by change type
-                            </p>
-                        </div>
-
-                        <div className="p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border border-emerald-200 dark:border-emerald-800">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Download className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                                <h3 className="font-semibold text-emerald-900 dark:text-emerald-100">
-                                    Export Shortcuts
-                                </h3>
-                            </div>
-                            <p className="text-sm text-emerald-700/70 dark:text-emerald-300/70 mb-2">
-                                Use{' '}
-                                <kbd className="px-1.5 py-0.5 text-xs font-semibold rounded bg-emerald-200 dark:bg-emerald-900/50 border border-emerald-300 dark:border-emerald-700">
-                                    ⌘/Ctrl + Shift + Key
-                                </kbd>{' '}
-                                for quick exports
-                            </p>
-                        </div>
-
-                        <div className="p-5 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border border-purple-200 dark:border-purple-800">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Layers className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                                <h3 className="font-semibold text-purple-900 dark:text-purple-100">
-                                    Side Panels
-                                </h3>
-                            </div>
-                            <p className="text-sm text-purple-700/70 dark:text-purple-300/70 mb-2">
-                                Toggle tree structure, statistics, validation, and bookmarks panels
-                            </p>
-                        </div>
-
-                        <div className="p-5 rounded-xl bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/30 border border-orange-200 dark:border-orange-800">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Globe className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                                <h3 className="font-semibold text-orange-900 dark:text-orange-100">
-                                    Dark Mode
-                                </h3>
-                            </div>
-                            <p className="text-sm text-orange-700/70 dark:text-orange-300/70 mb-2">
-                                Automatic dark mode support for comfortable viewing in any lighting
-                            </p>
-                        </div>
-                    </div>
-                </PageSection>
-
-                {/* Pro Tips Section */}
-                <PageSection id="tips" title="Pro Tips">
-                    <div className="p-6 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 border border-amber-200 dark:border-amber-800">
-                        <ul className="space-y-3">
-                            <li className="flex items-start gap-3">
-                                <span className="text-amber-600 dark:text-amber-400 mt-0.5">•</span>
-                                <span className="text-sm text-amber-900 dark:text-amber-100">
-                                    Use <strong>Ignore Key Order</strong> when comparing JSON from
-                                    different sources with different serialization approaches
-                                </span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-amber-600 dark:text-amber-400 mt-0.5">•</span>
-                                <span className="text-sm text-amber-900 dark:text-amber-100">
-                                    Enable <strong>Semantic Type Diff</strong> for smarter
-                                    comparisons that understand data types and structures
-                                </span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-amber-600 dark:text-amber-400 mt-0.5">•</span>
-                                <span className="text-sm text-amber-900 dark:text-amber-100">
-                                    Visit the{' '}
-                                    <strong className="text-emerald-600 dark:text-emerald-400">
-                                        Shortcuts page
-                                    </strong>{' '}
-                                    for the complete list of keyboard shortcuts
-                                </span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-amber-600 dark:text-amber-400 mt-0.5">•</span>
-                                <span className="text-sm text-amber-900 dark:text-amber-100">
-                                    Your content is <strong>automatically saved</strong> and
-                                    restored when you return to the page
-                                </span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-amber-600 dark:text-amber-400 mt-0.5">•</span>
-                                <span className="text-sm text-amber-900 dark:text-amber-100">
-                                    Use <strong>bookmarks</strong> to mark important hunks for quick
-                                    reference during analysis
-                                </span>
-                            </li>
-                        </ul>
                     </div>
                 </PageSection>
             </PageContent>
