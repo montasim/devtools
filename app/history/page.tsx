@@ -33,6 +33,7 @@ import {
     History,
 } from 'lucide-react';
 import { STORAGE_KEYS } from '@/lib/constants';
+import { PageLayout, PageHeader, SidebarNav, PageSection, PageContent } from '@/components/docs';
 
 interface HistoryItem {
     key: string;
@@ -43,14 +44,14 @@ interface HistoryItem {
     color: string;
 }
 
-interface CategorySection {
+interface NavSection {
     id: string;
     title: string;
     icon: React.ReactNode;
     category: 'all' | 'json' | 'text';
 }
 
-const categorySections: CategorySection[] = [
+const categorySections: NavSection[] = [
     {
         id: 'all',
         title: 'All History',
@@ -397,168 +398,115 @@ export default function HistoryPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
-            {/* Header */}
-            <div className="mx-auto border-b border-gray-200 dark:border-gray-800 bg-white sticky top-0">
-                <div className="mx-auto py-4">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-                            <History className="w-6 h-6 text-white" />
+        <PageLayout>
+            <PageHeader
+                icon={<History className="w-6 h-6 text-white" />}
+                title="History"
+                description="View your tool usage history across all pages"
+                actions={
+                    historyData.length > 0
+                        ? toolbarActions.map((action) => (
+                              <Button
+                                  key={action.id}
+                                  variant={action.variant}
+                                  onClick={action.onClick}
+                                  className="gap-2"
+                              >
+                                  {action.icon}
+                                  {action.label}
+                              </Button>
+                          ))
+                        : undefined
+                }
+            />
+            <PageContent
+                sidebar={
+                    <SidebarNav
+                        sections={categorySections.map((section) => ({
+                            ...section,
+                            count:
+                                section.category === 'all'
+                                    ? historyData.length
+                                    : section.category === 'json'
+                                      ? jsonHistory.length
+                                      : textHistory.length,
+                        }))}
+                        activeSection={activeSection}
+                        onSectionClick={scrollToSection}
+                    />
+                }
+            >
+                {/* All History Section */}
+                <PageSection
+                    id="all"
+                    title="All History"
+                    description="View all your saved content from both JSON and text tools in one place. Each item shows tool details, statistics, and quick actions for restore, copy, or delete."
+                >
+                    {historyData.length === 0 ? (
+                        <div className="text-center py-8 sm:py-12 border rounded-lg border-dashed">
+                            <Clock className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-4 text-muted-foreground" />
+                            <h3 className="text-base sm:text-lg font-semibold mb-2">
+                                No History Yet
+                            </h3>
+                            <p className="text-sm text-muted-foreground mb-4">
+                                Start using the JSON or text tools to build up your history
+                            </p>
+                            <div className="flex gap-2 justify-center">
+                                <Button variant="outline" asChild>
+                                    <a href="/json">JSON Tools</a>
+                                </Button>
+                                <Button variant="outline" asChild>
+                                    <a href="/text">Text Tools</a>
+                                </Button>
+                            </div>
                         </div>
-                        <div>
-                            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                                History
-                            </h1>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                View your tool usage history across all pages
+                    ) : (
+                        <div className="grid gap-4">
+                            {historyData.map((item) => renderHistoryItem(item))}
+                        </div>
+                    )}
+                </PageSection>
+
+                {/* JSON Tools Section */}
+                <PageSection
+                    id="json"
+                    title="JSON Tools"
+                    description="History from all JSON-related tools including diff, format, minify, parser, viewer, export, and schema."
+                >
+                    {jsonHistory.length === 0 ? (
+                        <div className="text-center py-8 border rounded-lg border-dashed">
+                            <Clock className="h-8 w-8 mx-auto mb-4 text-muted-foreground" />
+                            <p className="text-sm text-muted-foreground">
+                                No JSON tool history yet
                             </p>
                         </div>
-                        <div className="ml-auto flex items-center gap-2">
-                            {toolbarActions.map((action) => (
-                                <Button
-                                    key={action.id}
-                                    variant={action.variant}
-                                    onClick={action.onClick}
-                                    className="gap-2"
-                                >
-                                    {action.icon}
-                                    {action.label}
-                                </Button>
-                            ))}
+                    ) : (
+                        <div className="grid gap-4">
+                            {jsonHistory.map((item) => renderHistoryItem(item))}
                         </div>
-                    </div>
-                </div>
-            </div>
+                    )}
+                </PageSection>
 
-            {/* Main Content */}
-            <div className="mx-auto py-8">
-                <div className="flex gap-8">
-                    {/* Sidebar Navigation */}
-                    <aside className="w-64 flex-shrink-0">
-                        <nav className="sticky top-24 space-y-1">
-                            {categorySections.map((section) => {
-                                const count =
-                                    section.category === 'all'
-                                        ? historyData.length
-                                        : section.category === 'json'
-                                          ? jsonHistory.length
-                                          : textHistory.length;
-
-                                return (
-                                    <button
-                                        key={section.id}
-                                        onClick={() => {
-                                            scrollToSection(section.id);
-                                        }}
-                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
-                                            activeSection === section.id
-                                                ? 'bg-primary/10 text-primary shadow-lg'
-                                                : 'hover:bg-primary/20 hover:text-primary'
-                                        }`}
-                                    >
-                                        <span className="flex-shrink-0">{section.icon}</span>
-                                        <span className="font-medium">{section.title}</span>
-                                        <span className="ml-auto text-sm opacity-70">{count}</span>
-                                    </button>
-                                );
-                            })}
-                        </nav>
-                    </aside>
-
-                    {/* Content Area */}
-                    <main className="flex-1 min-w-0 space-y-16 pb-16">
-                        {/* All History Section */}
-                        <section id="all" className="scroll-mt-32">
-                            <div className="mb-6">
-                                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                                    All History
-                                </h2>
-                                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                                    View all your saved content from both JSON and text tools in one
-                                    place. Each item shows tool details, statistics, and quick
-                                    actions for restore, copy, or delete.
-                                </p>
-                            </div>
-
-                            {historyData.length === 0 ? (
-                                <div className="text-center py-8 sm:py-12 border rounded-lg border-dashed">
-                                    <Clock className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-4 text-muted-foreground" />
-                                    <h3 className="text-base sm:text-lg font-semibold mb-2">
-                                        No History Yet
-                                    </h3>
-                                    <p className="text-sm text-muted-foreground mb-4">
-                                        Start using the JSON or text tools to build up your history
-                                    </p>
-                                    <div className="flex gap-2 justify-center">
-                                        <Button variant="outline" asChild>
-                                            <a href="/json">JSON Tools</a>
-                                        </Button>
-                                        <Button variant="outline" asChild>
-                                            <a href="/text">Text Tools</a>
-                                        </Button>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="grid gap-4">
-                                    {historyData.map((item) => renderHistoryItem(item))}
-                                </div>
-                            )}
-                        </section>
-
-                        {/* JSON Tools Section */}
-                        <section id="json" className="scroll-mt-32">
-                            <div className="mb-6">
-                                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                                    JSON Tools
-                                </h2>
-                                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                                    History from all JSON-related tools including diff, format,
-                                    minify, parser, viewer, export, and schema.
-                                </p>
-                            </div>
-
-                            {jsonHistory.length === 0 ? (
-                                <div className="text-center py-8 border rounded-lg border-dashed">
-                                    <Clock className="h-8 w-8 mx-auto mb-4 text-muted-foreground" />
-                                    <p className="text-sm text-muted-foreground">
-                                        No JSON tool history yet
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className="grid gap-4">
-                                    {jsonHistory.map((item) => renderHistoryItem(item))}
-                                </div>
-                            )}
-                        </section>
-
-                        {/* Text Tools Section */}
-                        <section id="text" className="scroll-mt-32">
-                            <div className="mb-6">
-                                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                                    Text Tools
-                                </h2>
-                                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                                    History from all text-related tools including diff, convert,
-                                    format, count, and clean operations.
-                                </p>
-                            </div>
-
-                            {textHistory.length === 0 ? (
-                                <div className="text-center py-8 border rounded-lg border-dashed">
-                                    <Clock className="h-8 w-8 mx-auto mb-4 text-muted-foreground" />
-                                    <p className="text-sm text-muted-foreground">
-                                        No text tool history yet
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className="grid gap-4">
-                                    {textHistory.map((item) => renderHistoryItem(item))}
-                                </div>
-                            )}
-                        </section>
-                    </main>
-                </div>
-            </div>
+                {/* Text Tools Section */}
+                <PageSection
+                    id="text"
+                    title="Text Tools"
+                    description="History from all text-related tools including diff, convert, format, count, and clean operations."
+                >
+                    {textHistory.length === 0 ? (
+                        <div className="text-center py-8 border rounded-lg border-dashed">
+                            <Clock className="h-8 w-8 mx-auto mb-4 text-muted-foreground" />
+                            <p className="text-sm text-muted-foreground">
+                                No text tool history yet
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="grid gap-4">
+                            {textHistory.map((item) => renderHistoryItem(item))}
+                        </div>
+                    )}
+                </PageSection>
+            </PageContent>
 
             <ConfirmDialog
                 open={showClearDialog}
@@ -638,6 +586,6 @@ export default function HistoryPage() {
                     </div>
                 </DialogContent>
             </Dialog>
-        </div>
+        </PageLayout>
     );
 }
