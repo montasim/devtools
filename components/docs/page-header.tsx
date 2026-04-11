@@ -12,7 +12,7 @@ interface PageHeaderProps {
 export function PageHeader({ icon, title, description, actions }: PageHeaderProps) {
     return (
         <div className="mx-auto border-b border-gray-200 dark:border-gray-800 bg-white sticky top-0 z-50">
-            <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="mx-auto py-4">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shrink-0">
