@@ -22,6 +22,8 @@ export interface EditorStats {
     lineCount: number;
     totalKeys: number;
     totalValues: number;
+    nullCount: number;
+    undefinedCount: number;
     paths: string[];
 }
 
@@ -52,12 +54,15 @@ function calculateStats(content: string): EditorStats {
     // Calculate total keys and values
     let totalKeys = 0;
     let totalValues = 0;
+    let nullCount = 0;
+    const undefinedCount = 0;
     try {
         if (content.trim()) {
             const parsed = JSON.parse(content);
             const analyze = (obj: unknown): void => {
                 if (obj === null) {
                     totalValues++;
+                    nullCount++;
                     return;
                 }
                 if (
@@ -124,6 +129,8 @@ function calculateStats(content: string): EditorStats {
         lineCount,
         totalKeys,
         totalValues,
+        nullCount,
+        undefinedCount,
         paths,
     };
 }
@@ -163,6 +170,24 @@ export function EditorFooter({ content, error }: EditorFooterProps) {
                           icon: GitBranch,
                           label: `${stats.paths.length} paths`,
                           title: `${stats.paths.length} paths`,
+                      },
+                  ]
+                : []),
+            ...(stats.nullCount > 0
+                ? [
+                      {
+                          icon: Circle,
+                          label: `${stats.nullCount} null`,
+                          title: 'Null values',
+                      },
+                  ]
+                : []),
+            ...(stats.undefinedCount > 0
+                ? [
+                      {
+                          icon: X,
+                          label: `${stats.undefinedCount} undefined`,
+                          title: 'Undefined values',
                       },
                   ]
                 : []),
