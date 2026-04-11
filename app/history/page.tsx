@@ -229,6 +229,23 @@ export default function HistoryPage() {
         toast.success('All history has been cleared');
     };
 
+    // Restore all history
+    const restoreAllHistory = () => {
+        if (historyData.length === 0) {
+            toast.error('No history to restore');
+            return;
+        }
+
+        // Find the first available history item with content
+        const firstItem = historyData.find((item) => item.content && item.content.trim() !== '');
+
+        if (firstItem) {
+            restoreHistoryItem(firstItem);
+        } else {
+            toast.error('No restorable history found');
+        }
+    };
+
     const getToolInfo = (
         key: string,
     ): {
@@ -302,6 +319,13 @@ export default function HistoryPage() {
     const toolbarActions =
         historyData.length > 0
             ? [
+                  {
+                      id: 'restore-all',
+                      label: 'Restore All',
+                      icon: <RotateCcw className="h-4 w-4" />,
+                      onClick: restoreAllHistory,
+                      variant: 'default' as const,
+                  },
                   {
                       id: 'clear-all',
                       label: 'Clear All',
