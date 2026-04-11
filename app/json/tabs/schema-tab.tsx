@@ -6,6 +6,7 @@ import { Toolbar } from '@/components/toolbar';
 import { SchemaPane, SchemaShareDialog } from '@/components/schema-pane';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Trash2, Share2 } from 'lucide-react';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 interface SchemaTabProps {
     onClear: () => void;
@@ -21,7 +22,7 @@ export function SchemaTab({ onClear }: SchemaTabProps) {
     useEffect(() => {
         const loadSchemaContent = () => {
             try {
-                const content = localStorage.getItem('json-schema-json-content') || '';
+                const content = localStorage.getItem(STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT) || '';
                 setSchemaContent(content);
             } catch (error) {
                 console.error('Failed to load schema content:', error);
@@ -44,7 +45,7 @@ export function SchemaTab({ onClear }: SchemaTabProps) {
 
     const handleSchemaShare = useCallback(() => {
         // Get the schema content from localStorage
-        const schemaContentData = localStorage.getItem('json-schema-json-content');
+        const schemaContentData = localStorage.getItem(STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT);
         if (!schemaContentData) {
             toast.error('No content to share. Please enter some JSON first.');
             return;

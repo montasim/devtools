@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -24,7 +25,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Initialize theme from localStorage or default to system
     const [theme, setThemeState] = useState<Theme>(() => {
         if (typeof window !== 'undefined') {
-            const storedTheme = localStorage.getItem('theme') as Theme | null;
+            const storedTheme = localStorage.getItem(STORAGE_KEYS.THEME) as Theme | null;
             return storedTheme || 'system';
         }
         return 'system';
@@ -69,7 +70,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     const setTheme = (newTheme: Theme) => {
         setThemeState(newTheme);
-        localStorage.setItem('theme', newTheme);
+        localStorage.setItem(STORAGE_KEYS.THEME, newTheme);
     };
 
     return (

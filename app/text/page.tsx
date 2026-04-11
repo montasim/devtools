@@ -9,6 +9,7 @@ import { TextDiffPane } from '@/components/text-tools/diff-pane/diff-pane';
 import { ConvertPane } from '@/components/text-tools/convert-pane/convert-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, GitCompare, Code, FileJson, Share2, Trash2, Repeat } from 'lucide-react';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 export default function Home() {
     const [activeTab, setActiveTab] = useState('diff');
@@ -32,7 +33,7 @@ export default function Home() {
     useEffect(() => {
         const loadFormatContent = () => {
             try {
-                const content = localStorage.getItem('json-format-left-content') || '';
+                const content = localStorage.getItem(STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT) || '';
                 setFormatContent(content);
             } catch (error) {
                 console.error('Failed to load format content:', error);
@@ -54,7 +55,7 @@ export default function Home() {
     useEffect(() => {
         const loadParserContent = () => {
             try {
-                const content = localStorage.getItem('json-parser-content') || '';
+                const content = localStorage.getItem(STORAGE_KEYS.JSON_PARSER_CONTENT) || '';
                 setParserContent(content);
             } catch (error) {
                 console.error('Failed to load parser content:', error);
@@ -75,15 +76,15 @@ export default function Home() {
     const handleClear = () => {
         // Clear all text and json tool localStorage
         const keys = [
-            'text-diff-left-content',
-            'text-diff-right-content',
-            'text-convert-input-content',
-            'json-format-left-content',
-            'json-minify-left-content',
-            'json-viewer-content',
-            'json-parser-content',
-            'json-export-content',
-            'json-schema-json-content',
+            STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT,
+            STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT,
+            STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT,
+            STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT,
+            STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT,
+            STORAGE_KEYS.JSON_VIEWER_CONTENT,
+            STORAGE_KEYS.JSON_PARSER_CONTENT,
+            STORAGE_KEYS.JSON_EXPORT_CONTENT,
+            STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT,
         ];
         keys.forEach((key) => {
             try {
@@ -98,7 +99,7 @@ export default function Home() {
 
     const handleFormatShare = () => {
         // Get the formatted content from localStorage
-        const formattedContent = localStorage.getItem('json-format-left-content');
+        const formattedContent = localStorage.getItem(STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT);
         if (!formattedContent) {
             toast.error('No content to share. Please enter some JSON first.');
             return;
@@ -110,7 +111,7 @@ export default function Home() {
 
     const handleParserShare = () => {
         // Get the parser content from localStorage
-        const parserContentData = localStorage.getItem('json-parser-content');
+        const parserContentData = localStorage.getItem(STORAGE_KEYS.JSON_PARSER_CONTENT);
         if (!parserContentData) {
             toast.error('No content to share. Please enter some JSON first.');
             return;

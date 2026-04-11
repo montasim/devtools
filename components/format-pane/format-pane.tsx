@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Input } from '../ui/input';
 import { useFormatJson } from './use-format-json';
 import type { FormatPaneProps, FormatOptions } from './types';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 export const FormatPane = ({
     indentation = 2,
@@ -26,7 +27,9 @@ export const FormatPane = ({
     const [leftContent, setLeftContent] = useState<string>(() => {
         if (initialLeftContent !== '') return initialLeftContent;
         try {
-            return localStorage.getItem('json-format-left-content') || initialLeftContent;
+            return (
+                localStorage.getItem(STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT) || initialLeftContent
+            );
         } catch {
             return initialLeftContent;
         }
@@ -47,7 +50,7 @@ export const FormatPane = ({
         // Only save if content is different from initial props
         if (leftContent !== initialLeftContentRef.current) {
             try {
-                localStorage.setItem('json-format-left-content', leftContent);
+                localStorage.setItem(STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT, leftContent);
             } catch (error) {
                 console.error('Failed to save left content to localStorage:', error);
             }
@@ -61,7 +64,7 @@ export const FormatPane = ({
         }
 
         try {
-            const saved = localStorage.getItem('format-options');
+            const saved = localStorage.getItem(STORAGE_KEYS.FORMAT_OPTIONS);
             if (saved) {
                 return { ...JSON.parse(saved), indentation: indentation || 2 };
             }

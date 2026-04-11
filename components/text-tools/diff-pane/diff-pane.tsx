@@ -11,19 +11,20 @@ import { useTextDiff } from './use-text-diff';
 import { useDebouncedSave } from '../shared/use-debounced-save';
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 export function TextDiffPane() {
     // Initialize state from localStorage
     const [leftText, setLeftText] = useState(() => {
         try {
-            return localStorage.getItem('text-diff-left-content') || '';
+            return localStorage.getItem(STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT) || '';
         } catch {
             return '';
         }
     });
     const [rightText, setRightText] = useState(() => {
         try {
-            return localStorage.getItem('text-diff-right-content') || '';
+            return localStorage.getItem(STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT) || '';
         } catch {
             return '';
         }

@@ -8,6 +8,7 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Trash2, Share2 } from 'lucide-react';
 import { Combobox } from '@/components/ui/combobox';
 import type { ExportFormat } from '@/components/export-pane/types';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 interface ExportTabProps {
     onClear: () => void;
@@ -23,7 +24,7 @@ export function ExportTab({ onClear }: ExportTabProps) {
     useEffect(() => {
         const loadExportContent = () => {
             try {
-                const content = localStorage.getItem('json-export-content') || '';
+                const content = localStorage.getItem(STORAGE_KEYS.JSON_EXPORT_CONTENT) || '';
                 setExportContent(content);
             } catch (error) {
                 console.error('Failed to load export content:', error);
@@ -47,7 +48,7 @@ export function ExportTab({ onClear }: ExportTabProps) {
 
     const handleExportShare = useCallback(() => {
         // Get the export content from localStorage
-        const exportContentData = localStorage.getItem('json-export-content');
+        const exportContentData = localStorage.getItem(STORAGE_KEYS.JSON_EXPORT_CONTENT);
         if (!exportContentData) {
             toast.error('No content to share. Please enter some JSON first.');
             return;

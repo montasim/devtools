@@ -8,6 +8,7 @@ import { Separator } from '../ui/separator';
 import { Button } from '../ui/button';
 import { useMinifyJson } from './use-minify-json';
 import type { MinifyPaneProps } from './types';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 export const MinifyPane = ({
     sortKeys = false,
@@ -21,7 +22,9 @@ export const MinifyPane = ({
     const [leftContent, setLeftContent] = useState<string>(() => {
         if (initialLeftContent !== '') return initialLeftContent;
         try {
-            return localStorage.getItem('json-minify-left-content') || initialLeftContent;
+            return (
+                localStorage.getItem(STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT) || initialLeftContent
+            );
         } catch {
             return initialLeftContent;
         }
@@ -41,7 +44,7 @@ export const MinifyPane = ({
         // Only save if content is different from initial props
         if (leftContent !== initialLeftContentRef.current) {
             try {
-                localStorage.setItem('json-minify-left-content', leftContent);
+                localStorage.setItem(STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT, leftContent);
             } catch (error) {
                 console.error('Failed to save left content to localStorage:', error);
             }
@@ -55,7 +58,7 @@ export const MinifyPane = ({
         }
 
         try {
-            const saved = localStorage.getItem('minify-options');
+            const saved = localStorage.getItem(STORAGE_KEYS.MINIFY_OPTIONS);
             if (saved) {
                 return { ...JSON.parse(saved) };
             }
@@ -69,7 +72,7 @@ export const MinifyPane = ({
     // Save minify options to localStorage when they change
     useEffect(() => {
         try {
-            localStorage.setItem('minify-options', JSON.stringify(minifyOptions));
+            localStorage.setItem(STORAGE_KEYS.MINIFY_OPTIONS, JSON.stringify(minifyOptions));
         } catch (error) {
             console.error('Failed to save minify options:', error);
         }

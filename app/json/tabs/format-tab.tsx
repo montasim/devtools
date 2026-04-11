@@ -6,6 +6,7 @@ import { Toolbar } from '@/components/toolbar';
 import { FormatPane, FormatShareDialog } from '@/components/format-pane';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Trash2, Share2 } from 'lucide-react';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 interface FormatTabProps {
     onClear: () => void;
@@ -24,7 +25,7 @@ export function FormatTab({ onClear }: FormatTabProps) {
     useEffect(() => {
         const loadFormatContent = () => {
             try {
-                const content = localStorage.getItem('json-format-left-content') || '';
+                const content = localStorage.getItem(STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT) || '';
                 setFormatContent(content);
             } catch (error) {
                 console.error('Failed to load format content:', error);
@@ -48,7 +49,7 @@ export function FormatTab({ onClear }: FormatTabProps) {
 
     const handleFormatShare = useCallback(() => {
         // Get the formatted content from localStorage
-        const formattedContent = localStorage.getItem('json-format-left-content');
+        const formattedContent = localStorage.getItem(STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT);
         if (!formattedContent) {
             toast.error('No content to share. Please enter some JSON first.');
             return;

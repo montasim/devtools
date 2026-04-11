@@ -6,6 +6,7 @@ import { JsonEditor } from './json-editor';
 import { DiffPanel } from './diff-panel';
 import { useJsonDiff } from './use-json-diff';
 import { Separator } from '../ui/separator';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 export interface EditorPaneRef {
     triggerCompare: () => Promise<void>;
@@ -31,7 +32,7 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
     const [leftContent, setLeftContent] = useState<string>(() => {
         if (initialLeftContent !== '') return initialLeftContent;
         try {
-            return localStorage.getItem('json-diff-left-content') || initialLeftContent;
+            return localStorage.getItem(STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT) || initialLeftContent;
         } catch {
             return initialLeftContent;
         }
@@ -40,7 +41,9 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
     const [rightContent, setRightContent] = useState<string>(() => {
         if (initialRightContent !== '') return initialRightContent;
         try {
-            return localStorage.getItem('json-diff-right-content') || initialRightContent;
+            return (
+                localStorage.getItem(STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT) || initialRightContent
+            );
         } catch {
             return initialRightContent;
         }
@@ -65,7 +68,7 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
         // Only save if content is different from initial props
         if (leftContent !== initialLeftContentRef.current) {
             try {
-                localStorage.setItem('json-diff-left-content', leftContent);
+                localStorage.setItem(STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT, leftContent);
             } catch (error) {
                 console.error('Failed to save left content to localStorage:', error);
             }
@@ -76,7 +79,7 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
         // Only save if content is different from initial props
         if (rightContent !== initialRightContentRef.current) {
             try {
-                localStorage.setItem('json-diff-right-content', rightContent);
+                localStorage.setItem(STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT, rightContent);
             } catch (error) {
                 console.error('Failed to save right content to localStorage:', error);
             }

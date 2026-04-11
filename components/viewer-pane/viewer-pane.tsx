@@ -10,6 +10,7 @@ import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { useJsonTree } from './use-json-tree';
 import { JsonTreeView } from './json-tree-view';
 import type { ViewerPaneProps, ViewerOptions } from './types';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 export const ViewerPane = ({
     showTypes = false,
@@ -24,7 +25,7 @@ export const ViewerPane = ({
     const [leftContent, setLeftContent] = useState<string>(() => {
         if (initialContent !== '') return initialContent;
         try {
-            return localStorage.getItem('json-viewer-content') || initialContent;
+            return localStorage.getItem(STORAGE_KEYS.JSON_VIEWER_CONTENT) || initialContent;
         } catch {
             return initialContent;
         }
@@ -42,7 +43,7 @@ export const ViewerPane = ({
         // Only save if content is different from initial props
         if (leftContent !== initialContentRef.current) {
             try {
-                localStorage.setItem('json-viewer-content', leftContent);
+                localStorage.setItem(STORAGE_KEYS.JSON_VIEWER_CONTENT, leftContent);
             } catch (error) {
                 console.error('Failed to save content to localStorage:', error);
             }

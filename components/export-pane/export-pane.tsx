@@ -9,6 +9,7 @@ import { Button } from '../ui/button';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { useJsonExport } from './use-json-export';
 import type { ExportPaneProps, ExportFormat } from './types';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 export const ExportPane = ({
     onError,
@@ -22,7 +23,7 @@ export const ExportPane = ({
     const [leftContent, setLeftContent] = useState<string>(() => {
         if (initialContent !== '') return initialContent;
         try {
-            return localStorage.getItem('json-export-content') || initialContent;
+            return localStorage.getItem(STORAGE_KEYS.JSON_EXPORT_CONTENT) || initialContent;
         } catch {
             return initialContent;
         }
@@ -40,7 +41,7 @@ export const ExportPane = ({
         // Only save if content is different from initial props
         if (leftContent !== initialContentRef.current) {
             try {
-                localStorage.setItem('json-export-content', leftContent);
+                localStorage.setItem(STORAGE_KEYS.JSON_EXPORT_CONTENT, leftContent);
             } catch (error) {
                 console.error('Failed to save left content to localStorage:', error);
             }

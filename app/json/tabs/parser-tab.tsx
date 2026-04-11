@@ -6,6 +6,7 @@ import { Toolbar } from '@/components/toolbar';
 import { ParserPane, ParserShareDialog } from '@/components/parser-pane';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Trash2, Share2 } from 'lucide-react';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 interface ParserTabProps {
     onClear: () => void;
@@ -23,7 +24,7 @@ export function ParserTab({ onClear }: ParserTabProps) {
     useEffect(() => {
         const loadParserContent = () => {
             try {
-                const content = localStorage.getItem('json-parser-content') || '';
+                const content = localStorage.getItem(STORAGE_KEYS.JSON_PARSER_CONTENT) || '';
                 setParserContent(content);
             } catch (error) {
                 console.error('Failed to load parser content:', error);
@@ -47,7 +48,7 @@ export function ParserTab({ onClear }: ParserTabProps) {
 
     const handleParserShare = useCallback(() => {
         // Get the parser content from localStorage
-        const parserContentData = localStorage.getItem('json-parser-content');
+        const parserContentData = localStorage.getItem(STORAGE_KEYS.JSON_PARSER_CONTENT);
         if (!parserContentData) {
             toast.error('No content to share. Please enter some JSON first.');
             return;

@@ -9,6 +9,7 @@ import { useJsonSchemaValidator } from './use-json-schema-validator';
 import { SchemaOutput } from './schema-output';
 import { ValidationResults } from './validation-results';
 import type { SchemaPaneProps, SchemaMode } from './types';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 export const SchemaPane = ({
     mode: externalMode,
@@ -21,7 +22,9 @@ export const SchemaPane = ({
     const [internalMode] = useState<SchemaMode>(() => {
         if (typeof window === 'undefined') return 'generate';
         try {
-            return (localStorage.getItem('json-schema-mode') as SchemaMode) || 'generate';
+            return (
+                (localStorage.getItem(STORAGE_KEYS.JSON_SCHEMA_MODE) as SchemaMode) || 'generate'
+            );
         } catch {
             return 'generate';
         }
@@ -33,7 +36,7 @@ export const SchemaPane = ({
     const [jsonInput, setJsonInput] = useState<string>(() => {
         if (typeof window === 'undefined') return '';
         try {
-            return localStorage.getItem('json-schema-json-content') || '';
+            return localStorage.getItem(STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT) || '';
         } catch {
             return '';
         }
@@ -43,7 +46,7 @@ export const SchemaPane = ({
     const [schemaInput, setSchemaInput] = useState<string>(() => {
         if (typeof window === 'undefined') return '';
         try {
-            return localStorage.getItem('json-schema-schema-content') || '';
+            return localStorage.getItem(STORAGE_KEYS.JSON_SCHEMA_SCHEMA_CONTENT) || '';
         } catch {
             return '';
         }
@@ -57,7 +60,7 @@ export const SchemaPane = ({
     useEffect(() => {
         if (jsonInput !== initialJsonInputRef.current) {
             try {
-                localStorage.setItem('json-schema-json-content', jsonInput);
+                localStorage.setItem(STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT, jsonInput);
             } catch (error) {
                 console.error('Failed to save JSON input:', error);
             }
@@ -67,7 +70,7 @@ export const SchemaPane = ({
     useEffect(() => {
         if (schemaInput !== initialSchemaInputRef.current) {
             try {
-                localStorage.setItem('json-schema-schema-content', schemaInput);
+                localStorage.setItem(STORAGE_KEYS.JSON_SCHEMA_SCHEMA_CONTENT, schemaInput);
             } catch (error) {
                 console.error('Failed to save schema input:', error);
             }

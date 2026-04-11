@@ -26,11 +26,12 @@ import {
     trim,
     removeExtraSpaces,
 } from '../text-editor/utils/text-operations';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 export function ConvertPane() {
     const [inputText, setInputText] = useState(() => {
         try {
-            return localStorage.getItem('text-convert-input-content') || '';
+            return localStorage.getItem(STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT) || '';
         } catch {
             return '';
         }

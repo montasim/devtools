@@ -6,6 +6,7 @@ import { Toolbar } from '@/components/toolbar';
 import { MinifyPane, MinifyShareDialog } from '@/components/minify-pane';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Trash2, Share2 } from 'lucide-react';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 interface MinifyTabProps {
     onClear: () => void;
@@ -22,7 +23,7 @@ export function MinifyTab({ onClear }: MinifyTabProps) {
     useEffect(() => {
         const loadMinifyContent = () => {
             try {
-                const content = localStorage.getItem('json-minify-left-content') || '';
+                const content = localStorage.getItem(STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT) || '';
                 setMinifyContent(content);
             } catch (error) {
                 console.error('Failed to load minify content:', error);
@@ -46,7 +47,7 @@ export function MinifyTab({ onClear }: MinifyTabProps) {
 
     const handleMinifyShare = useCallback(() => {
         // Get the minified content from localStorage
-        const minifiedContent = localStorage.getItem('json-minify-left-content');
+        const minifiedContent = localStorage.getItem(STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT);
         if (!minifiedContent) {
             toast.error('No content to share. Please enter some JSON first.');
             return;

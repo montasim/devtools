@@ -6,6 +6,7 @@ import { Toolbar } from '@/components/toolbar';
 import { ViewerPane, ViewerShareDialog } from '@/components/viewer-pane';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Trash2, Share2 } from 'lucide-react';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 interface ViewerTabProps {
     onClear: () => void;
@@ -23,7 +24,7 @@ export function ViewerTab({ onClear }: ViewerTabProps) {
     useEffect(() => {
         const loadViewerContent = () => {
             try {
-                const content = localStorage.getItem('json-viewer-content') || '';
+                const content = localStorage.getItem(STORAGE_KEYS.JSON_VIEWER_CONTENT) || '';
                 setViewerContent(content);
             } catch (error) {
                 console.error('Failed to load viewer content:', error);
@@ -47,7 +48,7 @@ export function ViewerTab({ onClear }: ViewerTabProps) {
 
     const handleViewerShare = useCallback(() => {
         // Get the viewer content from localStorage
-        const viewerContentData = localStorage.getItem('json-viewer-content');
+        const viewerContentData = localStorage.getItem(STORAGE_KEYS.JSON_VIEWER_CONTENT);
         if (!viewerContentData) {
             toast.error('No content to share. Please enter some JSON first.');
             return;

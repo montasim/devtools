@@ -10,6 +10,7 @@ import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { useJsonParser } from './use-json-parser';
 import { ParserResults } from './parser-results';
 import type { ParserPaneProps } from './types';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 export const ParserPane = ({
     showTypes = true,
@@ -24,7 +25,7 @@ export const ParserPane = ({
     const [leftContent, setLeftContent] = useState<string>(() => {
         if (initialContent !== '') return initialContent;
         try {
-            return localStorage.getItem('json-parser-content') || initialContent;
+            return localStorage.getItem(STORAGE_KEYS.JSON_PARSER_CONTENT) || initialContent;
         } catch {
             return initialContent;
         }
@@ -42,7 +43,7 @@ export const ParserPane = ({
         // Only save if content is different from initial props
         if (leftContent !== initialContentRef.current) {
             try {
-                localStorage.setItem('json-parser-content', leftContent);
+                localStorage.setItem(STORAGE_KEYS.JSON_PARSER_CONTENT, leftContent);
             } catch (error) {
                 console.error('Failed to save content to localStorage:', error);
             }
