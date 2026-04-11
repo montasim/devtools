@@ -6,7 +6,7 @@ import { MobileMenu } from './mobile-menu';
 
 export const Navbar = ({ menu = navigationMenu, auth = authButtons, className }: NavbarProps) => {
     return (
-        <section className={cn('px-4 sm:px-6 lg:px-8 py-2 border-b relative z-[100]', className)}>
+        <section className={cn('px-4 sm:px-6 lg:px-8 py-2 border-b relative z-50', className)}>
             <DesktopMenu menu={menu} auth={auth} />
             <MobileMenu menu={menu} auth={auth} />
         </section>

@@ -37,9 +37,9 @@ export const DesktopMenuItem = ({ item }: DesktopMenuItemProps) => {
         return (
             <NavigationMenuItem key={item.title}>
                 <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
-                <NavigationMenuContent className="bg-popover text-popover-foreground">
+                <NavigationMenuContent className="!w-92 bg-popover text-popover-foreground">
                     {item.items.map((subItem) => (
-                        <NavigationMenuLink asChild key={subItem.title} className="w-80">
+                        <NavigationMenuLink asChild key={subItem.title}>
                             <SubMenuLink item={subItem} />
                         </NavigationMenuLink>
                     ))}
