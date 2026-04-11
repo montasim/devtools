@@ -99,9 +99,9 @@ export function EditorActions({
                 if (isEditorActionButton(button) && button.id === 'more-menu' && hasMoreMenu) {
                     return (
                         <DropdownMenu key={button.id}>
-                            <DropdownMenuTrigger asChild>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <DropdownMenuTrigger asChild>
                                         <Button
                                             type="button"
                                             variant={button.variant || 'ghost'}
@@ -111,12 +111,12 @@ export function EditorActions({
                                         >
                                             <Icon className="h-4 w-4" />
                                         </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>{button.title || button.label}</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </DropdownMenuTrigger>
+                                    </DropdownMenuTrigger>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{button.title || button.label}</p>
+                                </TooltipContent>
+                            </Tooltip>
                             <EditorOperationsMenu
                                 content={content}
                                 onContentChange={onContentChange || (() => {})}

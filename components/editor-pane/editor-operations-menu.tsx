@@ -89,7 +89,7 @@ export function EditorOperationsMenu({
     };
 
     return (
-        <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuContent align="end" className="w-56 z-[100]">
             <DropdownMenuItem onClick={handleCopy}>
                 <Copy className="mr-2 h-4 w-4" />
                 Copy Content
