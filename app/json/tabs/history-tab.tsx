@@ -280,20 +280,19 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
                         return (
                             <div
                                 key={key}
-                                className="border rounded-lg p-3 sm:p-4 hover:border-primary/50 transition-colors"
+                                className="border rounded-lg p-3 sm:p-4 hover:border-primary/50 transition-colors overflow-hidden"
                             >
-                                <div className="flex flex-col sm:flex-row sm:items-start gap-3">
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                                            <div className="flex items-center gap-4 min-w-0">
-                                                <h3 className="flex items-center gap-1 font-semibold truncate">
-                                                    <Icon className="w-5 h-5" />
-                                                    {toolInfo.name}
-                                                </h3>
+                                <div className="flex flex-col gap-3">
+                                    <div className="flex flex-col gap-2">
+                                        <div className="flex items-center gap-2 min-w-0">
+                                            <h3 className="flex items-center gap-1 font-semibold truncate text-sm">
+                                                <Icon className="w-4 h-4 shrink-0" />
+                                                <span className="truncate">{toolInfo.name}</span>
+                                            </h3>
+                                        </div>
 
-                                                <JsonStats content={content} />
-                                            </div>
-
+                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                                            <JsonStats content={content} />
                                             <ActionButtonGroup
                                                 actions={[
                                                     {
@@ -326,11 +325,13 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
                                                 ]}
                                             />
                                         </div>
-
-                                        <pre className="text-xs sm:text-sm p-3 rounded-md overflow-x-auto max-h-32 overflow-y-auto">
-                                            <code>{truncateContent(content, 200)}</code>
-                                        </pre>
                                     </div>
+
+                                    <pre className="text-xs p-3 rounded-md overflow-x-auto max-h-32 overflow-y-auto">
+                                        <code className="break-all">
+                                            {truncateContent(content, 200)}
+                                        </code>
+                                    </pre>
                                 </div>
                             </div>
                         );
@@ -386,8 +387,8 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
                             Content
                         </DialogTitle>
 
-                        <DialogDescription className="flex items-center justify-between gap-4 mb-2">
-                            <div className="flex items-center gap-4">
+                        <DialogDescription className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-2 items-start">
+                            <div className="flex items-center gap-2 sm:gap-4">
                                 {viewingHistoryItem && (
                                     <JsonStats content={viewingHistoryItem.content} />
                                 )}

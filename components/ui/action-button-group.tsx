@@ -19,7 +19,7 @@ export interface ActionButtonGroupProps {
 
 export function ActionButtonGroup({ actions, className = '' }: ActionButtonGroupProps) {
     return (
-        <div className={`flex gap-2 shrink-0 ${className}`}>
+        <div className={`flex flex-wrap gap-2 shrink-0 ${className}`}>
             {actions.map(
                 ({ icon: Icon, onClick, title, className: btnClassName, variant = 'outline' }) => (
                     <Tooltip key={title}>
