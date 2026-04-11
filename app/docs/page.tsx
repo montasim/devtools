@@ -92,10 +92,10 @@ export default function DocsPage() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
             {/* Header */}
-            <div className="mx-auto border-b border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50">
+            <div className="mx-auto border-b border-gray-200 dark:border-gray-800 bg-white sticky top-0">
                 <div className="mx-auto py-4">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
                             <svg
                                 className="w-6 h-6 text-white"
                                 fill="none"
@@ -134,8 +134,8 @@ export default function DocsPage() {
                                     onClick={() => scrollToSection(section.id)}
                                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
                                         activeSection === section.id
-                                            ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg'
-                                            : 'hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
+                                            ? 'bg-primary/10 text-primary shadow-lg'
+                                            : 'hover:bg-primary/20 hover:text-primary'
                                     }`}
                                 >
                                     <span className="flex-shrink-0">{section.icon}</span>
