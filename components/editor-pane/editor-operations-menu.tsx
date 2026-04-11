@@ -34,7 +34,7 @@ import {
     sortKeys,
     formatDates,
     escapeUnicode,
-} from './utils/json-operations';
+} from '@/components/editor-pane/utils/json-operations';
 
 export interface EditorOperationsMenuProps {
     content: string;

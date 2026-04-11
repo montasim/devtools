@@ -3,14 +3,14 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { Copy, Download, TreeDeciduous } from 'lucide-react';
-import { JsonEditor } from '../editor-pane/json-editor';
-import { Separator } from '../ui/separator';
-import { Button } from '../ui/button';
+import { JsonEditor } from '@/components/editor-pane/json-editor';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
-import { useJsonTree } from './use-json-tree';
-import { JsonTreeView } from './json-tree-view';
-import type { ViewerPaneProps, ViewerOptions } from './types';
+import { useJsonTree } from '@/components/viewer-pane/use-json-tree';
+import { JsonTreeView } from '@/components/viewer-pane/json-tree-view';
+import type { ViewerPaneProps, ViewerOptions } from '@/components/viewer-pane/types';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export const ViewerPane = ({

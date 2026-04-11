@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { Separator } from '../ui/separator';
+import { Separator } from '@/components/ui/separator';
 import { Plus, Minus, Replace, Percent } from 'lucide-react';
 
 interface DiffStatsDisplayProps {

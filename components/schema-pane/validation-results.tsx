@@ -1,8 +1,8 @@
 'use client';
 
 import { Copy, Download } from 'lucide-react';
-import { Button } from '../ui/button';
-import type { ValidationResult } from './types';
+import { Button } from '@/components/ui/button';
+import type { ValidationResult } from '@/components/schema-pane/types';
 
 interface ValidationResultsProps {
     result: ValidationResult;

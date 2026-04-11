@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useCallback, useEffect, useImperativeHandle, forwardRef, useRef } from 'react';
-import { EditorPaneProps } from './types';
-import { JsonEditor } from './json-editor';
-import { DiffPanel } from './diff-panel';
-import { useJsonDiff } from './use-json-diff';
-import { Separator } from '../ui/separator';
+import { EditorPaneProps } from '@/components/editor-pane/types';
+import { JsonEditor } from '@/components/editor-pane/json-editor';
+import { DiffPanel } from '@/components/editor-pane/diff-panel';
+import { useJsonDiff } from '@/components/editor-pane/use-json-diff';
+import { Separator } from '@/components/ui/separator';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export interface EditorPaneRef {

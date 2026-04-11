@@ -3,13 +3,13 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { Copy, Download, FileDown } from 'lucide-react';
-import { JsonEditor } from '../editor-pane/json-editor';
-import { Separator } from '../ui/separator';
-import { Button } from '../ui/button';
+import { JsonEditor } from '@/components/editor-pane/json-editor';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
-import { useJsonExport } from './use-json-export';
-import type { ExportPaneProps, ExportFormat } from './types';
+import { useJsonExport } from '@/components/export-pane/use-json-export';
+import type { ExportPaneProps, ExportFormat } from '@/components/export-pane/types';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export const ExportPane = ({

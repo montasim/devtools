@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Share2 } from 'lucide-react';
-import { DiffPanelToolbarProps } from './types';
-import { ViewModeTabs } from './view-mode-tabs';
-import { DiffStatsDisplay } from './diff-stats-display';
-import { DiffOptionsDropdown } from './diff-options-dropdown';
+import { DiffPanelToolbarProps } from '@/components/editor-pane/types';
+import { ViewModeTabs } from '@/components/editor-pane/view-mode-tabs';
+import { DiffStatsDisplay } from '@/components/editor-pane/diff-stats-display';
+import { DiffOptionsDropdown } from '@/components/editor-pane/diff-options-dropdown';
 
 /**
  * DiffPanelToolbar - Toolbar component for diff panels

@@ -3,12 +3,12 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { toast } from 'sonner';
 import { Copy, Download, FileCode, FileJson } from 'lucide-react';
-import { JsonEditor } from '../editor-pane/json-editor';
-import { Separator } from '../ui/separator';
-import { Button } from '../ui/button';
+import { JsonEditor } from '@/components/editor-pane/json-editor';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { useFormatJson } from './use-format-json';
-import type { FormatPaneProps, FormatOptions } from './types';
+import { useFormatJson } from '@/components/format-pane/use-format-json';
+import type { FormatPaneProps, FormatOptions } from '@/components/format-pane/types';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export const FormatPane = ({

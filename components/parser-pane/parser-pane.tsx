@@ -3,14 +3,14 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { Copy, Download, ScanSearch } from 'lucide-react';
-import { JsonEditor } from '../editor-pane/json-editor';
-import { Separator } from '../ui/separator';
-import { Button } from '../ui/button';
+import { JsonEditor } from '@/components/editor-pane/json-editor';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
-import { useJsonParser } from './use-json-parser';
-import { ParserResults } from './parser-results';
-import type { ParserPaneProps } from './types';
+import { useJsonParser } from '@/components/parser-pane/use-json-parser';
+import { ParserResults } from '@/components/parser-pane/parser-results';
+import type { ParserPaneProps } from '@/components/parser-pane/types';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export const ParserPane = ({

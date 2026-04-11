@@ -1,4 +1,4 @@
-import { MenuItem } from './types';
+import { MenuItem } from '@/components/navbar/types';
 import {
     NavigationMenuItem,
     NavigationMenuLink,

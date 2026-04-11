@@ -3,12 +3,12 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { Copy, Download } from 'lucide-react';
-import { JsonEditor } from '../editor-pane/json-editor';
-import { Separator } from '../ui/separator';
-import { Button } from '../ui/button';
+import { JsonEditor } from '@/components/editor-pane/json-editor';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { useMinifyJson } from './use-minify-json';
-import type { MinifyPaneProps } from './types';
+import { useMinifyJson } from '@/components/minify-pane/use-minify-json';
+import type { MinifyPaneProps } from '@/components/minify-pane/types';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export const MinifyPane = ({

@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
-import { DiffPanelProps, DiffResult, ViewMode, DiffLine } from './types';
-import { DiffPanelToolbar } from './diff-panel-toolbar';
-import { ShareDialog } from './share-dialog';
+import { DiffPanelProps, DiffResult, ViewMode, DiffLine } from '@/components/editor-pane/types';
+import { DiffPanelToolbar } from '@/components/editor-pane/diff-panel-toolbar';
+import { ShareDialog } from '@/components/editor-pane/share-dialog';
 import { ChevronRight, X, CheckCircle, Loader2, Bookmark } from 'lucide-react';
 import { EmptyState } from '@/components/ui/empty-state';
 

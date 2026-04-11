@@ -3,8 +3,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import { Link2, Upload, Search, MoreVertical } from 'lucide-react';
-import { TextareaFooter } from './textarea-footer';
-import { TextOperationsMenu } from './text-operations-menu';
+import { TextareaFooter } from '@/components/text-tools/text-editor/textarea-footer';
+import { TextOperationsMenu } from '@/components/text-tools/text-editor/text-operations-menu';
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import {
     toUpperCase,
@@ -12,8 +12,8 @@ import {
     toTitleCase,
     trim,
     removeExtraSpaces,
-} from './utils/text-operations';
-import type { TextEditorProps } from './types';
+} from '@/components/text-tools/text-editor/utils/text-operations';
+import type { TextEditorProps } from '@/components/text-tools/text-editor/types';
 
 export function TextEditor({
     value,

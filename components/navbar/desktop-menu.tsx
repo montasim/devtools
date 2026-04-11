@@ -2,9 +2,9 @@ import { NavigationMenu, NavigationMenuList } from '@/components/ui/navigation-m
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
-import { MenuItem } from './types';
-import { DesktopMenuItem } from './menu-items';
-import { Separator } from '../ui/separator';
+import { MenuItem } from '@/components/navbar/types';
+import { DesktopMenuItem } from '@/components/navbar/menu-items';
+import { Separator } from '@/components/ui/separator';
 
 interface DesktopMenuProps {
     menu: MenuItem[];

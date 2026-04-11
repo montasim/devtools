@@ -47,7 +47,7 @@ import {
     decodeBase64,
     encodeUrl,
     decodeUrl,
-} from './utils/text-operations';
+} from '@/components/text-tools/text-editor/utils/text-operations';
 
 export interface TextOperationsMenuProps {
     content: string;

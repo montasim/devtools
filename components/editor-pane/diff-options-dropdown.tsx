@@ -24,7 +24,7 @@ import {
     BarChart3,
     CheckCircle,
 } from 'lucide-react';
-import { ExportFormat, DiffFilter, PanelType } from './types';
+import { ExportFormat, DiffFilter, PanelType } from '@/components/editor-pane/types';
 
 interface DiffOptionsDropdownProps {
     additionCount: number;

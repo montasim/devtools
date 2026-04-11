@@ -13,7 +13,7 @@ import {
     Circle,
     Hash,
 } from 'lucide-react';
-import type { ParseError } from './types';
+import type { ParseError } from '@/components/editor-pane/types';
 
 export interface EditorStats {
     fileSize: string;

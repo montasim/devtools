@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
-import { ToolbarProps } from './types';
-import { ToolbarToggle } from './toolbar-toggle';
-import { ToolbarActions } from './toolbar-actions';
+import { ToolbarProps } from '@/components/toolbar/types';
+import { ToolbarToggle } from '@/components/toolbar/toolbar-toggle';
+import { ToolbarActions } from '@/components/toolbar/toolbar-actions';
 import { ReactNode } from 'react';
 
 interface ExtendedToolbarProps extends ToolbarProps {

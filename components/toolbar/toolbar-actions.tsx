@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ToolbarAction } from './types';
+import { ToolbarAction } from '@/components/toolbar/types';
 import { RefreshCcw, Trash2, Share2 } from 'lucide-react';
 
 interface ToolbarActionsProps {

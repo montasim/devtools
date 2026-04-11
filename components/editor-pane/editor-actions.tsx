@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Search as SearchIcon } from 'lucide-react';
-import { EditorOperationsMenu } from './editor-operations-menu';
+import { EditorOperationsMenu } from '@/components/editor-pane/editor-operations-menu';
 
 export type ButtonVariant = 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
 

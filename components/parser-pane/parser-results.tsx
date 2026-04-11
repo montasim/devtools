@@ -13,7 +13,7 @@ import {
     CheckCircle2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { ParsedData } from './types';
+import type { ParsedData } from '@/components/parser-pane/types';
 
 interface ParserResultsProps {
     parsedData: ParsedData;

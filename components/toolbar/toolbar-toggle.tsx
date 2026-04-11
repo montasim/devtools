@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
-import { ToolbarToggleItem } from './types';
-import { Button } from '../ui/button';
+import { ToolbarToggleItem } from '@/components/toolbar/types';
+import { Button } from '@/components/ui/button';
 
 interface ToolbarToggleProps {
     items: ToolbarToggleItem[];

@@ -13,7 +13,7 @@ import {
     SheetHeader,
     SheetTitle,
 } from '@/components/ui/sheet';
-import type { ExportFormat } from './types';
+import type { ExportFormat } from '@/components/export-pane/types';
 
 interface ExportShareDialogProps {
     content: string;
@@ -87,6 +87,18 @@ export function ExportShareDialog({
         }
     }, [content, format]);
 
+    // Helper function to get MIME type
+    function getMimeType(fmt: ExportFormat): string {
+        const mimes: Record<ExportFormat, string> = {
+            csv: 'text/csv',
+            xml: 'application/xml',
+            yaml: 'application/x-yaml',
+            toml: 'application/toml',
+            json: 'application/json',
+        };
+        return mimes[fmt] || 'text/plain';
+    }
+
     // Download as file
     const downloadAsFile = useCallback(() => {
         if (!content) return;
@@ -119,8 +131,6 @@ export function ExportShareDialog({
             console.error('Failed to copy URL:', error);
         }
     }, [shareUrl]);
-
-    function getMimeType(fmt: ExportFormat): string {
         const mimes: Record<ExportFormat, string> = {
             csv: 'text/csv',
             xml: 'application/xml',

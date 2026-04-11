@@ -2,13 +2,13 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
-import { JsonEditor } from '../editor-pane/json-editor';
-import { Separator } from '../ui/separator';
-import { useJsonSchemaGenerator } from './use-json-schema-generator';
-import { useJsonSchemaValidator } from './use-json-schema-validator';
-import { SchemaOutput } from './schema-output';
-import { ValidationResults } from './validation-results';
-import type { SchemaPaneProps, SchemaMode } from './types';
+import { JsonEditor } from '@/components/editor-pane/json-editor';
+import { Separator } from '@/components/ui/separator';
+import { useJsonSchemaGenerator } from '@/components/schema-pane/use-json-schema-generator';
+import { useJsonSchemaValidator } from '@/components/schema-pane/use-json-schema-validator';
+import { SchemaOutput } from '@/components/schema-pane/schema-output';
+import { ValidationResults } from '@/components/schema-pane/validation-results';
+import type { SchemaPaneProps, SchemaMode } from '@/components/schema-pane/types';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export const SchemaPane = ({

@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Trash2, Copy, Download, Share2 } from 'lucide-react';
-import { TextEditor } from '../text-editor/text-editor';
-import { TextareaFooter } from '../text-editor/textarea-footer';
-import { useDebouncedSave } from '../shared/use-debounced-save';
-import { ConvertShareDialog } from './convert-share-dialog';
+import { TextEditor } from '@/components/text-tools/text-editor/text-editor';
+import { TextareaFooter } from '@/components/text-tools/text-editor/textarea-footer';
+import { useDebouncedSave } from '@/components/text-tools/shared/use-debounced-save';
+import { ConvertShareDialog } from '@/components/text-tools/convert-pane/convert-share-dialog';
 import { Button } from '@/components/ui/button';
 import {
     toUpperCase,
@@ -25,7 +25,7 @@ import {
     toInverseCase,
     trim,
     removeExtraSpaces,
-} from '../text-editor/utils/text-operations';
+} from '@/components/text-tools/text-editor/utils/text-operations';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export function ConvertPane() {

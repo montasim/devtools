@@ -8,10 +8,10 @@ import { json } from '@codemirror/lang-json';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { search, highlightSelectionMatches } from '@codemirror/search';
 import { X, Link2, Search, Upload, MoreVertical, FileJson } from 'lucide-react';
-import { EditorActions } from './editor-actions';
-import { EditorFooter } from './editor-footer';
+import { EditorActions } from '@/components/editor-pane/editor-actions';
+import { EditorFooter } from '@/components/editor-pane/editor-footer';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
-import { validateJson } from './utils/validation';
+import { validateJson } from '@/components/editor-pane/utils/validation';
 import {
     formatJson,
     minifyJson,
@@ -23,9 +23,9 @@ import {
     sortKeys,
     formatDates,
     escapeUnicode,
-} from './utils/json-operations';
-import type { ParseError } from './types';
-import type { JsonEditorProps } from './types';
+} from '@/components/editor-pane/utils/json-operations';
+import type { ParseError } from '@/components/editor-pane/types';
+import type { JsonEditorProps } from '@/components/editor-pane/types';
 
 export function JsonEditor({
     value,

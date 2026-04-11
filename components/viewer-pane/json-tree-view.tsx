@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { ChevronRight, ChevronDown, Copy, Check } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import type { TreeNode } from './types';
+import type { TreeNode } from '@/components/viewer-pane/types';
 
 interface JsonTreeViewProps {
     nodes: TreeNode[];

@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Accordion } from '@/components/ui/accordion';
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
-import { MenuItem } from './types';
-import { MobileMenuItem } from './menu-items';
+import { MenuItem } from '@/components/navbar/types';
+import { MobileMenuItem } from '@/components/navbar/menu-items';
 import Link from 'next/link';
 
 interface MobileMenuProps {

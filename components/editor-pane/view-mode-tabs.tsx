@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ViewMode } from './types';
+import { ViewMode } from '@/components/editor-pane/types';
 import { Columns, FileDiff, AlignLeft, FolderTree } from 'lucide-react';
 
 interface ViewModeTabsProps {

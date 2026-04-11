@@ -3,12 +3,12 @@
 import { useState, useMemo } from 'react';
 import { toast } from 'sonner';
 import { Share2, MoreVertical } from 'lucide-react';
-import { TextEditor } from '../text-editor/text-editor';
-import { DiffResults } from './diff-results';
-import { TextDiffOperationsMenu } from './text-diff-operations-menu';
-import { TextDiffShareDialog } from './text-diff-share-dialog';
-import { useTextDiff } from './use-text-diff';
-import { useDebouncedSave } from '../shared/use-debounced-save';
+import { TextEditor } from '@/components/text-tools/text-editor/text-editor';
+import { DiffResults } from '@/components/text-tools/diff-pane/diff-results';
+import { TextDiffOperationsMenu } from '@/components/text-tools/diff-pane/text-diff-operations-menu';
+import { TextDiffShareDialog } from '@/components/text-tools/diff-pane/text-diff-share-dialog';
+import { useTextDiff } from '@/components/text-tools/diff-pane/use-text-diff';
+import { useDebouncedSave } from '@/components/text-tools/shared/use-debounced-save';
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { STORAGE_KEYS } from '@/lib/constants';

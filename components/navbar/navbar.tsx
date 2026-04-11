@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
 import { navigationMenu, authButtons } from '@/config/navigation';
-import { NavbarProps } from './types';
-import { DesktopMenu } from './desktop-menu';
-import { MobileMenu } from './mobile-menu';
+import { NavbarProps } from '@/components/navbar/types';
+import { DesktopMenu } from '@/components/navbar/desktop-menu';
+import { MobileMenu } from '@/components/navbar/mobile-menu';
 
 export const Navbar = ({ menu = navigationMenu, auth = authButtons, className }: NavbarProps) => {
     return (

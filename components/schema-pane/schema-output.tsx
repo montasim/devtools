@@ -1,7 +1,7 @@
 'use client';
 
 import { Copy, Download, FileJson } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 
 interface SchemaOutputProps {

@@ -22,16 +22,16 @@ import {
     Eye,
     FileDown,
 } from 'lucide-react';
-import { DiffTab } from './tabs/diff-tab';
-import { FormatTab } from './tabs/format-tab';
-import { MinifyTab } from './tabs/minify-tab';
-import { ViewerTab } from './tabs/viewer-tab';
-import { ParserTab } from './tabs/parser-tab';
-import { ExportTab } from './tabs/export-tab';
-import { SchemaTab } from './tabs/schema-tab';
-import { OptionsTab } from './tabs/options-tab';
-import { HistoryTab } from './tabs/history-tab';
-import { ShareTab } from './tabs/share-tab';
+import { DiffTab } from '@/app/json/tabs/diff-tab';
+import { FormatTab } from '@/app/json/tabs/format-tab';
+import { MinifyTab } from '@/app/json/tabs/minify-tab';
+import { ViewerTab } from '@/app/json/tabs/viewer-tab';
+import { ParserTab } from '@/app/json/tabs/parser-tab';
+import { ExportTab } from '@/app/json/tabs/export-tab';
+import { SchemaTab } from '@/app/json/tabs/schema-tab';
+import { OptionsTab } from '@/app/json/tabs/options-tab';
+import { HistoryTab } from '@/app/json/tabs/history-tab';
+import { ShareTab } from '@/app/json/tabs/share-tab';
 import { InvalidTabState } from '@/components/ui/invalid-tab-state';
 
 type TabValue = (typeof VALID_TABS)[number];

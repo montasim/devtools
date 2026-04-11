@@ -14,7 +14,7 @@ import {
     SheetFooter,
 } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
-import { DiffResult } from './types';
+import { DiffResult } from '@/components/editor-pane/types';
 
 interface ShareDialogProps {
     diffResult: DiffResult | null;
