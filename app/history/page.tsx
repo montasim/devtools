@@ -33,7 +33,14 @@ import {
     History,
 } from 'lucide-react';
 import { STORAGE_KEYS } from '@/lib/constants';
-import { PageLayout, PageHeader, SidebarNav, PageSection, PageContent } from '@/components/docs';
+import {
+    PageLayout,
+    PageHeader,
+    SidebarNav,
+    PageSection,
+    PageContent,
+    MobileNav,
+} from '@/components/docs';
 
 interface HistoryItem {
     key: string;
@@ -430,6 +437,17 @@ export default function HistoryPage() {
                                     : section.category === 'json'
                                       ? jsonHistory.length
                                       : textHistory.length,
+                        }))}
+                        activeSection={activeSection}
+                        onSectionClick={scrollToSection}
+                    />
+                }
+                mobileNav={
+                    <MobileNav
+                        sections={categorySections.map((section) => ({
+                            id: section.id,
+                            title: section.title,
+                            icon: section.icon,
                         }))}
                         activeSection={activeSection}
                         onSectionClick={scrollToSection}

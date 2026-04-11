@@ -20,7 +20,14 @@ import {
     Crosshair,
     FileText,
 } from 'lucide-react';
-import { PageLayout, PageHeader, SidebarNav, PageSection, PageContent } from '@/components/docs';
+import {
+    PageLayout,
+    PageHeader,
+    SidebarNav,
+    PageSection,
+    PageContent,
+    MobileNav,
+} from '@/components/docs';
 
 interface DocSection {
     id: string;
@@ -100,6 +107,13 @@ export default function DocsPage() {
             <PageContent
                 sidebar={
                     <SidebarNav
+                        sections={docSections}
+                        activeSection={activeSection}
+                        onSectionClick={scrollToSection}
+                    />
+                }
+                mobileNav={
+                    <MobileNav
                         sections={docSections}
                         activeSection={activeSection}
                         onSectionClick={scrollToSection}

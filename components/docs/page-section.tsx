@@ -11,13 +11,13 @@ interface PageSectionProps {
 
 export function PageSection({ id, title, description, children }: PageSectionProps) {
     return (
-        <section id={id} className="scroll-mt-32">
-            <div className="mb-6">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+        <section id={id} className="scroll-mt-24 sm:scroll-mt-32">
+            <div className="mb-4 sm:mb-6">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 sm:mb-4">
                     {title}
                 </h2>
                 {description && (
-                    <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                    <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
                         {description}
                     </p>
                 )}
