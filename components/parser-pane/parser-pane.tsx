@@ -146,7 +146,7 @@ export const ParserPane = ({
                     </div>
 
                     {/* Results */}
-                    <div className="border border-gray-300 rounded-md dark:border-gray-600 p-4 overflow-auto max-w-full flex-1">
+                    <div className="overflow-auto max-w-full flex-1">
                         {parsedData.isValid && parsedData.structure ? (
                             <ParserResults
                                 parsedData={parsedData}
