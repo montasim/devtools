@@ -2,12 +2,16 @@
 
 import React from 'react';
 import ReactDiffViewer, { ReactDiffViewerStylesOverride } from 'react-diff-viewer-continued';
+import { FileText, CheckCircle } from 'lucide-react';
+import { EmptyState } from '@/components/ui/empty-state';
+import type { TextDiffViewMode } from './view-mode-tabs';
 
 interface DiffResultsProps {
     leftText: string;
     rightText: string;
     leftTitle?: string;
     rightTitle?: string;
+    diffViewType?: TextDiffViewMode;
 }
 
 export function DiffResults({
@@ -15,11 +19,25 @@ export function DiffResults({
     rightText,
     leftTitle = 'Original',
     rightTitle = 'Modified',
+    diffViewType = 'split',
 }: DiffResultsProps) {
     if (!leftText && !rightText) {
         return (
-            <div className="flex items-center justify-center h-full text-muted-foreground">
-                <p>Enter text in both panes to see the diff</p>
+            <div className="flex items-center justify-center h-full w-full">
+                <EmptyState className="w-full" icon={FileText}>
+                    Enter text in both panes to see the diff
+                </EmptyState>
+            </div>
+        );
+    }
+
+    // Check if texts are identical
+    if (leftText === rightText) {
+        return (
+            <div className="flex items-center justify-center h-full w-full">
+                <EmptyState className="w-full" icon={CheckCircle}>
+                    No differences found
+                </EmptyState>
             </div>
         );
     }
@@ -79,7 +97,7 @@ export function DiffResults({
                 newValue={rightText || ''}
                 leftTitle={leftTitle}
                 rightTitle={rightTitle}
-                splitView={true}
+                splitView={diffViewType === 'split'}
                 useDarkTheme={true}
                 styles={customStyles}
                 showDiffOnly={false}

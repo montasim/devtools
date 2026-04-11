@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
-import { JsonStats } from '@/components/json-stats';
 import { ActionButtonGroup } from '@/components/ui/action-button-group';
 import { HistoryActionButtons } from '@/components/ui/history-action-buttons';
 import { Button } from '@/components/ui/button';
@@ -22,18 +21,77 @@ import {
     Trash,
     Clock,
     GitCompare,
-    Code,
+    FileText,
     Minimize2,
-    FileJson,
-    FileDown,
+    Sparkles,
+    Hash,
+    HardDrive,
+    Type,
+    AlignLeft,
+    List,
+    Heading1,
 } from 'lucide-react';
 import { STORAGE_KEYS } from '@/lib/constants';
+
+// Text stats calculation
+function calculateStats(content: string) {
+    const fileSize = new Blob([content]).size;
+    const fileSizeFormatted =
+        fileSize < 1024
+            ? `${fileSize} B`
+            : fileSize < 1024 * 1024
+              ? `${(fileSize / 1024).toFixed(1)} KB`
+              : `${(fileSize / (1024 * 1024)).toFixed(1)} MB`;
+
+    const characterCount = content.length;
+    const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
+    const lineCount = content.split('\n').length;
+    const sentences = content.split(/[.!?]+/).filter((s) => s.trim().length > 0);
+    const sentenceCount = sentences.length;
+    const paragraphs = content.split(/\n\s*\n/).filter((p) => p.trim().length > 0);
+    const paragraphCount = paragraphs.length;
+    const readingTimeMinutes = wordCount > 0 ? Math.ceil(wordCount / 200) : 0;
+
+    return {
+        fileSize: fileSizeFormatted,
+        characterCount,
+        wordCount,
+        lineCount,
+        sentenceCount,
+        paragraphCount,
+        readingTimeMinutes,
+    };
+}
+
+function TextStats({ content }: { content: string }) {
+    const stats = calculateStats(content);
+
+    const statistics = [
+        { icon: HardDrive, label: stats.fileSize, title: 'File size' },
+        { icon: Type, label: `${stats.characterCount} chars`, title: 'Characters' },
+        { icon: FileText, label: `${stats.wordCount} words`, title: 'Words' },
+        { icon: AlignLeft, label: `${stats.lineCount} lines`, title: 'Lines' },
+        { icon: List, label: `${stats.sentenceCount} sentences`, title: 'Sentences' },
+        { icon: Heading1, label: `${stats.paragraphCount} paragraphs`, title: 'Paragraphs' },
+    ];
+
+    return (
+        <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400 overflow-x-auto scrollbar-hide">
+            {statistics.map((stat, index) => (
+                <div key={index} title={stat.title} className="flex items-center gap-1.5 shrink-0">
+                    <stat.icon className="h-3.5 w-3.5 text-gray-500" />
+                    <span>{stat.label}</span>
+                </div>
+            ))}
+        </div>
+    );
+}
 
 interface HistoryTabProps {
     onTabChange: (tab: string) => void;
 }
 
-export function HistoryTab({ onTabChange }: HistoryTabProps) {
+export function TextHistoryTab({ onTabChange }: HistoryTabProps) {
     const [historyData, setHistoryData] = useState<Record<string, string>>({});
     const [showClearDialog, setShowClearDialog] = useState(false);
     const [showRestoreDialog, setShowRestoreDialog] = useState(false);
@@ -44,14 +102,14 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
         content: string;
     } | null>(null);
 
-    // Load history from localStorage (only JSON keys)
+    // Load history from localStorage (only text keys)
     const loadHistory = useCallback(() => {
         const allKeys = Object.values(STORAGE_KEYS);
-        // Filter only JSON-related keys (keys with values starting with 'json-')
-        const jsonKeys = allKeys.filter((key) => key.startsWith('json-'));
+        // Filter only text-related keys (keys with values starting with 'text-')
+        const textKeys = allKeys.filter((key) => key.startsWith('text-'));
 
         const history: Record<string, string> = {};
-        jsonKeys.forEach((key) => {
+        textKeys.forEach((key) => {
             try {
                 const content = localStorage.getItem(key);
                 if (content) {
@@ -108,14 +166,12 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
 
             // Map the history key to the appropriate tab
             const keyToTabMap: Record<string, string> = {
-                [STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT]: 'diff',
-                [STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT]: 'diff',
-                [STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT]: 'format',
-                [STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT]: 'minify',
-                [STORAGE_KEYS.JSON_VIEWER_CONTENT]: 'viewer',
-                [STORAGE_KEYS.JSON_PARSER_CONTENT]: 'parser',
-                [STORAGE_KEYS.JSON_EXPORT_CONTENT]: 'export',
-                [STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT]: 'schema',
+                [STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT]: 'diff',
+                [STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT]: 'diff',
+                [STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT]: 'convert',
+                [STORAGE_KEYS.TEXT_FORMAT_INPUT_CONTENT]: 'format',
+                [STORAGE_KEYS.TEXT_COUNT_INPUT_CONTENT]: 'count',
+                [STORAGE_KEYS.TEXT_CLEAN_INPUT_CONTENT]: 'clean',
             };
 
             const tab = keyToTabMap[key];
@@ -136,10 +192,10 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
 
     const handleConfirmClearAll = () => {
         const allKeys = Object.values(STORAGE_KEYS);
-        // Filter only JSON-related keys (keys with values starting with 'json-')
-        const jsonKeys = allKeys.filter((key) => key.startsWith('json-'));
+        // Filter only text-related keys (keys with values starting with 'text-')
+        const textKeys = allKeys.filter((key) => key.startsWith('text-'));
 
-        jsonKeys.forEach((key) => {
+        textKeys.forEach((key) => {
             try {
                 localStorage.removeItem(key);
             } catch (error) {
@@ -148,7 +204,7 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
         });
 
         setHistoryData({});
-        toast.success('All JSON history has been cleared');
+        toast.success('All text history has been cleared');
     };
 
     // Restore all history
@@ -170,14 +226,12 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
             if (firstHistoryKey) {
                 // Map the history key to the appropriate tab
                 const keyToTabMap: Record<string, string> = {
-                    [STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT]: 'diff',
-                    [STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT]: 'diff',
-                    [STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT]: 'format',
-                    [STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT]: 'minify',
-                    [STORAGE_KEYS.JSON_VIEWER_CONTENT]: 'viewer',
-                    [STORAGE_KEYS.JSON_PARSER_CONTENT]: 'parser',
-                    [STORAGE_KEYS.JSON_EXPORT_CONTENT]: 'export',
-                    [STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT]: 'schema',
+                    [STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT]: 'diff',
+                    [STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT]: 'diff',
+                    [STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT]: 'convert',
+                    [STORAGE_KEYS.TEXT_FORMAT_INPUT_CONTENT]: 'format',
+                    [STORAGE_KEYS.TEXT_COUNT_INPUT_CONTENT]: 'count',
+                    [STORAGE_KEYS.TEXT_CLEAN_INPUT_CONTENT]: 'clean',
                 };
 
                 const tab = keyToTabMap[firstHistoryKey];
@@ -198,49 +252,39 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
             string,
             { name: string; icon: React.ComponentType<{ className?: string }>; color: string }
         > = {
-            [STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT]: {
+            [STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT]: {
                 name: 'Diff (Left)',
                 icon: GitCompare,
                 color: 'text-blue-500',
             },
-            [STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT]: {
+            [STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT]: {
                 name: 'Diff (Right)',
                 icon: GitCompare,
                 color: 'text-blue-500',
             },
-            [STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT]: {
-                name: 'Format',
-                icon: Code,
+            [STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT]: {
+                name: 'Convert',
+                icon: FileText,
                 color: 'text-green-500',
             },
-            [STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT]: {
-                name: 'Minify',
+            [STORAGE_KEYS.TEXT_FORMAT_INPUT_CONTENT]: {
+                name: 'Format',
                 icon: Minimize2,
                 color: 'text-purple-500',
             },
-            [STORAGE_KEYS.JSON_VIEWER_CONTENT]: {
-                name: 'Viewer',
-                icon: Eye,
+            [STORAGE_KEYS.TEXT_COUNT_INPUT_CONTENT]: {
+                name: 'Count',
+                icon: Hash,
                 color: 'text-orange-500',
             },
-            [STORAGE_KEYS.JSON_PARSER_CONTENT]: {
-                name: 'Parser',
-                icon: FileJson,
+            [STORAGE_KEYS.TEXT_CLEAN_INPUT_CONTENT]: {
+                name: 'Clean',
+                icon: Sparkles,
                 color: 'text-pink-500',
-            },
-            [STORAGE_KEYS.JSON_EXPORT_CONTENT]: {
-                name: 'Export',
-                icon: FileDown,
-                color: 'text-cyan-500',
-            },
-            [STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT]: {
-                name: 'Schema',
-                icon: FileJson,
-                color: 'text-indigo-500',
             },
         };
 
-        return toolMap[key] || { name: 'Unknown', icon: FileJson, color: 'text-gray-500' };
+        return toolMap[key] || { name: 'Unknown', icon: FileText, color: 'text-gray-500' };
     };
 
     const truncateContent = (content: string, maxLength = 100) => {
@@ -280,7 +324,7 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
                         <Clock className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-4 text-muted-foreground" />
                         <h3 className="text-base sm:text-lg font-semibold mb-2">No History Yet</h3>
                         <p className="text-sm text-muted-foreground mb-4">
-                            Start using the JSON tools to build up your history
+                            Start using the text tools to build up your history
                         </p>
                         <Button variant="outline" onClick={() => onTabChange('diff')}>
                             Get Started
@@ -301,7 +345,9 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
                                         <div className="flex flex-col gap-2">
                                             <div className="flex items-center gap-2 min-w-0">
                                                 <h3 className="flex items-center gap-1 font-semibold truncate text-sm">
-                                                    <Icon className="w-4 h-4 shrink-0" />
+                                                    <Icon
+                                                        className={`w-4 h-4 shrink-0 ${toolInfo.color}`}
+                                                    />
                                                     <span className="truncate">
                                                         {toolInfo.name}
                                                     </span>
@@ -309,7 +355,7 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
                                             </div>
 
                                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                                                <JsonStats content={content} />
+                                                <TextStats content={content} />
                                                 <ActionButtonGroup
                                                     actions={[
                                                         {
@@ -368,7 +414,7 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
                 open={showClearDialog}
                 onOpenChange={setShowClearDialog}
                 title="Clear All History"
-                description="Are you sure you want to clear all history? This action cannot be undone and will remove all saved JSON data from all tools."
+                description="Are you sure you want to clear all history? This action cannot be undone and will remove all saved text data from all tools."
                 confirmLabel="Clear All"
                 cancelLabel="Cancel"
                 onConfirm={handleConfirmClearAll}
@@ -415,7 +461,7 @@ export function HistoryTab({ onTabChange }: HistoryTabProps) {
                         <DialogDescription className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-2 items-start">
                             <div className="flex items-center gap-2 sm:gap-4">
                                 {viewingHistoryItem && (
-                                    <JsonStats content={viewingHistoryItem.content} />
+                                    <TextStats content={viewingHistoryItem.content} />
                                 )}
                             </div>
                             {viewingHistoryItem && (

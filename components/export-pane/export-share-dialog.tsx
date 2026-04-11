@@ -134,17 +134,6 @@ export function ExportShareDialog({ content, format, open, onOpenChange }: Expor
         }
     }, [shareUrl]);
 
-    function getMimeType(fmt: ExportFormat): string {
-        const mimes: Record<ExportFormat, string> = {
-            csv: 'text/csv',
-            xml: 'application/xml',
-            yaml: 'application/x-yaml',
-            toml: 'application/toml',
-            json: 'application/json',
-        };
-        return mimes[fmt] || 'text/plain';
-    }
-
     const formatLabel = format.toUpperCase();
 
     return (

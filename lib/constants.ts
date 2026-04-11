@@ -32,6 +32,9 @@ export const STORAGE_KEYS = {
     TEXT_DIFF_LEFT_CONTENT: 'text-diff-left-content',
     TEXT_DIFF_RIGHT_CONTENT: 'text-diff-right-content',
     TEXT_CONVERT_INPUT_CONTENT: 'text-convert-input-content',
+    TEXT_FORMAT_INPUT_CONTENT: 'text-format-input-content',
+    TEXT_COUNT_INPUT_CONTENT: 'text-count-input-content',
+    TEXT_CLEAN_INPUT_CONTENT: 'text-clean-input-content',
 
     // Theme
     THEME: 'theme',

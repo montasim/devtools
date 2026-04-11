@@ -21,7 +21,7 @@ export const Toolbar = ({
                 className,
             )}
         >
-            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide w-full sm:w-auto">
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide w-full md:w-[70vw] sm:w-auto">
                 {leftContent}
                 <ToolbarToggle items={toggles} />
             </div>

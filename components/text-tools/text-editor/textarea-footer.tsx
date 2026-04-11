@@ -1,13 +1,27 @@
 'use client';
 
 import { useMemo } from 'react';
-import { HardDrive, Type, FileText, AlignLeft, Check, X } from 'lucide-react';
+import {
+    HardDrive,
+    Type,
+    FileText,
+    AlignLeft,
+    List,
+    Heading1,
+    Clock,
+    Check,
+    X,
+    Circle,
+} from 'lucide-react';
 
 export interface TextareaStats {
     fileSize: string;
     characterCount: number;
     wordCount: number;
     lineCount: number;
+    sentenceCount: number;
+    paragraphCount: number;
+    readingTimeMinutes: number;
 }
 
 export interface TextareaFooterProps {
@@ -34,11 +48,25 @@ function calculateStats(content: string): TextareaStats {
     // Calculate line count
     const lineCount = content.split('\n').length;
 
+    // Calculate sentence count (rough estimation by sentence-ending punctuation)
+    const sentences = content.split(/[.!?]+/).filter((s) => s.trim().length > 0);
+    const sentenceCount = sentences.length;
+
+    // Calculate paragraph count (paragraphs are separated by blank lines)
+    const paragraphs = content.split(/\n\s*\n/).filter((p) => p.trim().length > 0);
+    const paragraphCount = paragraphs.length;
+
+    // Calculate reading time (average 200 words per minute)
+    const readingTimeMinutes = wordCount > 0 ? Math.ceil(wordCount / 200) : 0;
+
     return {
         fileSize: fileSizeFormatted,
         characterCount,
         wordCount,
         lineCount,
+        sentenceCount,
+        paragraphCount,
+        readingTimeMinutes,
     };
 }
 
@@ -51,6 +79,13 @@ export function TextareaFooter({ content, error }: TextareaFooterProps) {
             { icon: Type, label: `${stats.characterCount} chars`, title: 'Characters' },
             { icon: FileText, label: `${stats.wordCount} words`, title: 'Words' },
             { icon: AlignLeft, label: `${stats.lineCount} lines`, title: 'Lines' },
+            { icon: List, label: `${stats.sentenceCount} sentences`, title: 'Sentences' },
+            { icon: Heading1, label: `${stats.paragraphCount} paragraphs`, title: 'Paragraphs' },
+            {
+                icon: Clock,
+                label: `${stats.readingTimeMinutes}m read`,
+                title: 'Reading time',
+            },
         ],
         [stats],
     );
@@ -90,7 +125,7 @@ export function TextareaFooter({ content, error }: TextareaFooterProps) {
                         ) : content.trim() ? (
                             <Check className="h-3.5 w-3.5" />
                         ) : (
-                            <span className="h-3.5 w-3.5" />
+                            <Circle className="h-3.5 w-3.5" />
                         )}
                         <span>{error ? 'Error' : content.trim() ? 'Ready' : 'Empty'}</span>
                     </div>

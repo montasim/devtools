@@ -5,4 +5,6 @@ export interface TextEditorProps {
     label?: string;
     readOnly?: boolean;
     height?: string;
+    onClear?: () => void;
+    showEmptyPrompt?: boolean;
 }

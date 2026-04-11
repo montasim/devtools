@@ -2,9 +2,11 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
-import { Link2, Upload, Search, MoreVertical } from 'lucide-react';
+import { Link2, Upload, Search, MoreVertical, X, FileText } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { TextareaFooter } from '@/components/text-tools/text-editor/textarea-footer';
 import { TextOperationsMenu } from '@/components/text-tools/text-editor/text-operations-menu';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import {
     toUpperCase,
@@ -22,6 +24,8 @@ export function TextEditor({
     label,
     readOnly = false,
     height = '400px',
+    onClear,
+    showEmptyPrompt = false,
 }: TextEditorProps) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [error, setError] = useState<string | null>(null);
@@ -150,55 +154,77 @@ export function TextEditor({
                         <>
                             {/* Upload button */}
                             <label>
-                                <button
-                                    type="button"
-                                    className="h-8 w-8 inline-flex items-center justify-center rounded-md hover:bg-accent transition-colors"
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-8 w-8"
                                     disabled={readOnly}
                                     title="Upload file"
+                                    type="button"
+                                    asChild
                                 >
-                                    <Upload className="h-4 w-4" />
-                                </button>
-                                <input
-                                    type="file"
-                                    accept=".txt,text/plain"
-                                    onChange={handleFileUpload}
-                                    className="hidden"
-                                />
+                                    <span>
+                                        <Upload className="h-4 w-4" />
+                                        <input
+                                            type="file"
+                                            accept=".txt,text/plain"
+                                            onChange={handleFileUpload}
+                                            className="hidden"
+                                        />
+                                    </span>
+                                </Button>
                             </label>
 
                             {/* Copy button */}
-                            <button
-                                type="button"
-                                className="h-8 w-8 inline-flex items-center justify-center rounded-md hover:bg-accent transition-colors"
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
                                 onClick={handleCopy}
                                 disabled={readOnly}
                                 title="Copy to clipboard"
                             >
                                 <Link2 className="h-4 w-4" />
-                            </button>
+                            </Button>
 
                             {/* Search button */}
-                            <button
-                                type="button"
-                                className="h-8 w-8 inline-flex items-center justify-center rounded-md hover:bg-accent transition-colors"
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
                                 onClick={handleSearch}
                                 disabled={readOnly}
                                 title="Search"
                             >
                                 <Search className="h-4 w-4" />
-                            </button>
+                            </Button>
+
+                            {/* Clear button */}
+                            {onClear && (
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-8 w-8"
+                                    onClick={onClear}
+                                    disabled={readOnly || !value}
+                                    title="Clear editor"
+                                >
+                                    <X className="h-4 w-4" />
+                                </Button>
+                            )}
 
                             {/* More options menu */}
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <button
-                                        type="button"
-                                        className="h-8 w-8 inline-flex items-center justify-center rounded-md hover:bg-accent transition-colors"
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8"
                                         disabled={readOnly}
                                         title="More options"
                                     >
                                         <MoreVertical className="h-4 w-4" />
-                                    </button>
+                                    </Button>
                                 </DropdownMenuTrigger>
                                 <TextOperationsMenu
                                     content={value}
@@ -221,9 +247,10 @@ export function TextEditor({
 
             {/* Textarea container */}
             <div
-                className="border border-input rounded-md shrink-0 overflow-hidden"
-                style={{ height: height }}
+                className="border border-input rounded-md shrink-0 overflow-hidden relative"
+                style={{ height: height, position: 'relative' }}
             >
+                {/* Always render the textarea */}
                 <textarea
                     ref={textareaRef}
                     value={value}
@@ -232,6 +259,18 @@ export function TextEditor({
                     className="w-full h-full resize-none p-3 font-mono text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                     style={{ minHeight: height }}
                 />
+
+                {/* Empty state overlay - shown on top when editor is empty */}
+                {showEmptyPrompt && !value && (
+                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                        <EmptyEditorPrompt
+                            icon={FileText}
+                            title={`Start adding ${label?.toLowerCase() || 'text'} data`}
+                            description="Begin typing, paste content, or upload a file"
+                            showActions={!readOnly}
+                        />
+                    </div>
+                )}
             </div>
 
             {/* Error display */}

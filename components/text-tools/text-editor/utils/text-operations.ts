@@ -150,6 +150,27 @@ export function sortLinesDescending(text: string): string {
     return text.split('\n').sort().reverse().join('\n');
 }
 
+export function sortLinesAlphabetically(text: string): string {
+    return text
+        .split('\n')
+        .sort((a, b) => a.localeCompare(b))
+        .join('\n');
+}
+
+export function sortLinesByLength(text: string): string {
+    return text
+        .split('\n')
+        .sort((a, b) => a.length - b.length)
+        .join('\n');
+}
+
+export function removeEmptyLines(text: string): string {
+    return text
+        .split('\n')
+        .filter((line) => line.trim() !== '')
+        .join('\n');
+}
+
 export function reverseText(text: string): string {
     return text.split('').reverse().join('');
 }
