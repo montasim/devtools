@@ -1,13 +1,11 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { toast } from 'sonner';
 import { Copy, Download, FileCode, FileJson } from 'lucide-react';
 import { JsonEditor } from '../editor-pane/json-editor';
 import { Separator } from '../ui/separator';
 import { Button } from '../ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Input } from '../ui/input';
 import { useFormatJson } from './use-format-json';
 import type { FormatPaneProps, FormatOptions } from './types';
 import { STORAGE_KEYS } from '@/lib/constants';
@@ -19,7 +17,6 @@ export const FormatPane = ({
     escapeUnicode = false,
     onError,
     onValidationChange,
-    onIndentationChange,
     initialLeftContent = '',
     className,
 }: FormatPaneProps) => {
@@ -34,9 +31,6 @@ export const FormatPane = ({
             return initialLeftContent;
         }
     });
-
-    const [customIndent, setCustomIndent] = useState('');
-    const [showCustomInput, setShowCustomInput] = useState(false);
 
     // Track initial content to avoid saving it to localStorage
     const initialLeftContentRef = useRef(initialLeftContent);
@@ -58,22 +52,59 @@ export const FormatPane = ({
     }, [leftContent]);
 
     // Load format options from localStorage on mount
-    const [formatOptions] = useState<FormatOptions>(() => {
-        if (typeof window === 'undefined') {
-            return { indentation: indentation || 2, sortKeys, removeTrailingCommas, escapeUnicode };
-        }
+    const [savedFormatOptions] = useState<FormatOptions | null>(() => {
+        if (typeof window === 'undefined') return null;
 
         try {
             const saved = localStorage.getItem(STORAGE_KEYS.FORMAT_OPTIONS);
             if (saved) {
-                return { ...JSON.parse(saved), indentation: indentation || 2 };
+                return JSON.parse(saved);
             }
         } catch (error) {
             console.error('Failed to load format options:', error);
         }
 
-        return { indentation: indentation || 2, sortKeys, removeTrailingCommas, escapeUnicode };
+        return null;
     });
+
+    // Derive format options from props and saved options
+    const formatOptions = useMemo<FormatOptions>(() => {
+        const baseOptions = {
+            indentation: indentation || 2,
+            sortKeys,
+            removeTrailingCommas,
+            escapeUnicode,
+        };
+
+        if (savedFormatOptions) {
+            return {
+                ...baseOptions,
+                // Use saved values for non-indentation options if not explicitly provided
+                sortKeys: sortKeys ?? savedFormatOptions.sortKeys,
+                removeTrailingCommas:
+                    removeTrailingCommas ?? savedFormatOptions.removeTrailingCommas,
+                escapeUnicode: escapeUnicode ?? savedFormatOptions.escapeUnicode,
+            };
+        }
+
+        return baseOptions;
+    }, [indentation, sortKeys, removeTrailingCommas, escapeUnicode, savedFormatOptions]);
+
+    // Save format options to localStorage when they change (except indentation which is managed by parent)
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        try {
+            const optionsToSave = {
+                sortKeys: formatOptions.sortKeys,
+                removeTrailingCommas: formatOptions.removeTrailingCommas,
+                escapeUnicode: formatOptions.escapeUnicode,
+            };
+            localStorage.setItem(STORAGE_KEYS.FORMAT_OPTIONS, JSON.stringify(optionsToSave));
+        } catch (error) {
+            console.error('Failed to save format options:', error);
+        }
+    }, [formatOptions.sortKeys, formatOptions.removeTrailingCommas, formatOptions.escapeUnicode]);
 
     // Format JSON
     const formatResult = useFormatJson(leftContent, formatOptions);
@@ -145,27 +176,6 @@ export const FormatPane = ({
         }
     };
 
-    const handleIndentChange = (value: string) => {
-        if (value === 'custom') {
-            setShowCustomInput(true);
-        } else {
-            setShowCustomInput(false);
-            setCustomIndent('');
-            const indent = parseInt(value);
-            if (!isNaN(indent) && indent > 0) {
-                onIndentationChange?.(indent);
-            }
-        }
-    };
-
-    const handleCustomIndentChange = (value: string) => {
-        setCustomIndent(value);
-        const indent = parseInt(value);
-        if (!isNaN(indent) && indent > 0 && indent <= 10) {
-            onIndentationChange?.(indent);
-        }
-    };
-
     const isDisabled = !formatResult.isValid || !formatResult.formatted;
 
     return (
@@ -203,47 +213,12 @@ export const FormatPane = ({
                                 </label>
                                 <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
                                     <span className="text-sm text-muted-foreground">
-                                        {formatOptions.sortKeys && 'Sort'}
-                                        {formatOptions.sortKeys &&
-                                            (formatOptions.removeTrailingCommas ||
-                                                formatOptions.escapeUnicode) &&
-                                            ', '}
-                                        {formatOptions.removeTrailingCommas && 'No Commas'}
-                                        {formatOptions.removeTrailingCommas &&
-                                            formatOptions.escapeUnicode &&
-                                            ', '}
-                                        {formatOptions.escapeUnicode && 'Unicode'}
+                                        {formatOptions.indentation} space
+                                        {formatOptions.indentation !== 1 ? 's' : ''}
+                                        {formatOptions.sortKeys && ', Sort'}
+                                        {formatOptions.removeTrailingCommas && ', No Commas'}
+                                        {formatOptions.escapeUnicode && ', Unicode'}
                                     </span>
-                                    <Select
-                                        value={
-                                            showCustomInput
-                                                ? 'custom'
-                                                : String(formatOptions.indentation)
-                                        }
-                                        onValueChange={handleIndentChange}
-                                    >
-                                        <SelectTrigger className="h-8 w-[100px] sm:w-[120px] text-xs">
-                                            <SelectValue placeholder="Spaces" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="2">2 spaces</SelectItem>
-                                            <SelectItem value="4">4 spaces</SelectItem>
-                                            <SelectItem value="custom">Custom...</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    {showCustomInput && (
-                                        <Input
-                                            type="number"
-                                            placeholder="Spaces"
-                                            value={customIndent}
-                                            onChange={(e) =>
-                                                handleCustomIndentChange(e.target.value)
-                                            }
-                                            className="h-8 w-[60px] text-xs"
-                                            min="1"
-                                            max="10"
-                                        />
-                                    )}
                                     <div className="flex items-center gap-2">
                                         <Button
                                             variant="ghost"

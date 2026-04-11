@@ -7,6 +7,14 @@ import { FormatPane, FormatShareDialog } from '@/components/format-pane';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Trash2, Share2 } from 'lucide-react';
 import { STORAGE_KEYS } from '@/lib/constants';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
 
 interface FormatTabProps {
     onClear: () => void;
@@ -20,6 +28,12 @@ export function FormatTab({ onClear }: FormatTabProps) {
     const [formatEscapeUnicode, setFormatEscapeUnicode] = useState(false);
     const [shareDialogOpen, setShareDialogOpen] = useState(false);
     const [formatContent, setFormatContent] = useState('');
+
+    const spacingOptions = [
+        { value: '2', label: '2 spaces' },
+        { value: '4', label: '4 spaces' },
+        { value: '8', label: '8 spaces' },
+    ];
 
     // Load format content from localStorage on mount and keep in sync
     useEffect(() => {
@@ -68,17 +82,38 @@ export function FormatTab({ onClear }: FormatTabProps) {
         onClear();
     };
 
+    const handleIndentChange = (value: string) => {
+        const indent = parseInt(value);
+        if (!isNaN(indent) && indent > 0) {
+            setFormatIndentation(indent);
+        }
+    };
+
+    const spacingSelector = (
+        <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Spacing:</span>
+            <Select value={String(formatIndentation)} onValueChange={handleIndentChange}>
+                <SelectTrigger className="h-8 w-[100px] text-xs">
+                    <SelectValue placeholder="Spaces" />
+                </SelectTrigger>
+                <SelectContent>
+                    {spacingOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+            <Separator orientation="vertical" className="h-8" />
+        </div>
+    );
+
     return (
         <>
             <div>
                 <Toolbar
+                    leftContent={spacingSelector}
                     toggles={[
-                        {
-                            id: 'indentation',
-                            label: 'Indentation',
-                            checked: formatIndentation === 4,
-                            onChange: () => setFormatIndentation(formatIndentation === 2 ? 4 : 2),
-                        },
                         {
                             id: 'sortKeys',
                             label: 'Sort Keys',
@@ -124,7 +159,6 @@ export function FormatTab({ onClear }: FormatTabProps) {
                     escapeUnicode={formatEscapeUnicode}
                     onError={handleError}
                     onValidationChange={() => {}}
-                    onIndentationChange={setFormatIndentation}
                 />
             </div>
 
