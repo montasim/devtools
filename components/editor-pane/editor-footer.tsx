@@ -20,15 +20,14 @@ export interface EditorStats {
     characterCount: number;
     wordCount: number;
     lineCount: number;
-    depth: number;
+    totalKeys: number;
+    totalValues: number;
     paths: string[];
 }
 
 export interface EditorFooterProps {
     content: string;
     error: ParseError | null;
-    totalKeys?: number;
-    totalValues?: number;
 }
 
 function calculateStats(content: string): EditorStats {
@@ -50,30 +49,43 @@ function calculateStats(content: string): EditorStats {
     // Calculate line count
     const lineCount = content.split('\n').length;
 
-    // Calculate depth (max nesting level)
-    let depth = 0;
+    // Calculate total keys and values
+    let totalKeys = 0;
+    let totalValues = 0;
     try {
         if (content.trim()) {
             const parsed = JSON.parse(content);
-            const calculateDepth = (obj: unknown, currentDepth = 0): number => {
-                if (obj === null || typeof obj !== 'object') {
-                    return currentDepth;
+            const analyze = (obj: unknown): void => {
+                if (obj === null) {
+                    totalValues++;
+                    return;
+                }
+                if (
+                    typeof obj === 'boolean' ||
+                    typeof obj === 'number' ||
+                    typeof obj === 'string'
+                ) {
+                    totalValues++;
+                    return;
                 }
                 if (Array.isArray(obj)) {
-                    return obj.reduce(
-                        (max, item) => Math.max(max, calculateDepth(item, currentDepth + 1)),
-                        currentDepth,
-                    );
+                    totalKeys++;
+                    obj.forEach((item) => analyze(item));
+                    return;
                 }
-                return Object.values(obj as object).reduce(
-                    (max, value) => Math.max(max, calculateDepth(value, currentDepth + 1)),
-                    currentDepth,
-                );
+                if (typeof obj === 'object') {
+                    totalKeys++;
+                    Object.entries(obj as object).forEach(([key, value]) => {
+                        totalKeys++;
+                        analyze(value);
+                    });
+                    return;
+                }
             };
-            depth = calculateDepth(parsed);
+            analyze(parsed);
         }
     } catch {
-        depth = 0;
+        // Invalid JSON, no keys or values
     }
 
     // Extract paths (all property paths)
@@ -110,12 +122,13 @@ function calculateStats(content: string): EditorStats {
         characterCount,
         wordCount,
         lineCount,
-        depth,
+        totalKeys,
+        totalValues,
         paths,
     };
 }
 
-export function EditorFooter({ content, error, totalKeys, totalValues }: EditorFooterProps) {
+export function EditorFooter({ content, error }: EditorFooterProps) {
     const stats = useMemo(() => calculateStats(content), [content]);
 
     const statistics = useMemo(
@@ -124,21 +137,21 @@ export function EditorFooter({ content, error, totalKeys, totalValues }: EditorF
             { icon: Type, label: `${stats.characterCount} chars`, title: 'Characters' },
             { icon: FileText, label: `${stats.wordCount} words`, title: 'Words' },
             { icon: AlignLeft, label: `${stats.lineCount} lines`, title: 'Lines' },
-            ...(totalKeys !== undefined
+            ...(stats.totalKeys > 0
                 ? [
                       {
                           icon: Hash,
-                          label: `${totalKeys} keys`,
+                          label: `${stats.totalKeys} keys`,
                           title: 'Total keys',
                           emphasized: true,
                       },
                   ]
                 : []),
-            ...(totalValues !== undefined
+            ...(stats.totalValues > 0
                 ? [
                       {
                           icon: Layers,
-                          label: `${totalValues} values`,
+                          label: `${stats.totalValues} values`,
                           title: 'Total values',
                           emphasized: true,
                       },
@@ -154,7 +167,7 @@ export function EditorFooter({ content, error, totalKeys, totalValues }: EditorF
                   ]
                 : []),
         ],
-        [stats, totalKeys, totalValues],
+        [stats],
     );
 
     return (
