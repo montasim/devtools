@@ -77,7 +77,34 @@
 
 ## Phase 1: Database & API Infrastructure
 
-### Task 1.1: Update Prisma Schema
+### Task 1.1: Install Dependencies
+
+**Files:**
+
+- Modify: `package.json`
+
+- [ ] **Step 1: Install required packages**
+
+Run: `npm install zod axios @tanstack/react-query bcrypt`
+
+Expected: Packages installed successfully
+
+- [ ] **Step 2: Install bcrypt types**
+
+Run: `npm install -D @types/bcrypt`
+
+Expected: Type definitions installed
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add package.json package-lock.json
+git commit -m "deps: add zod, axios, react-query, bcrypt"
+```
+
+---
+
+### Task 1.2: Update Prisma Schema
 
 **Files:**
 
@@ -611,6 +638,7 @@ Create `lib/api/share.ts`:
 'use client';
 
 import axios, { AxiosError } from 'axios';
+import { z } from 'zod';
 import type {
     CreateShareInput,
     ShareMetadata,
@@ -719,11 +747,7 @@ export function useAccessShare() {
 }
 ```
 
-- [ ] **Step 2: Fix missing import**
-
-Add `import { z } from 'zod';` at the top of the file.
-
-- [ ] **Step 3: Commit**
+- [ ] **Step 2: Commit**
 
 ```bash
 git add lib/api/share.ts
@@ -1375,12 +1399,10 @@ Create `components/shared/password-prompt.tsx`:
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useAccessShare } from '@/lib/api/share';
 
 interface PasswordPromptProps {
   pageType: string;
@@ -1389,11 +1411,10 @@ interface PasswordPromptProps {
     title: string;
     pageType: string;
   };
+  onUnlock: (password: string) => Promise<{ error?: string }>;
 }
 
-export function PasswordPrompt({ pageType, id, metadata }: PasswordPromptProps) {
-  const router = useRouter();
-  const accessShare = useAccessShare();
+export function PasswordPrompt({ pageType, id, metadata, onUnlock }: PasswordPromptProps) {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -1403,29 +1424,17 @@ export function PasswordPrompt({ pageType, id, metadata }: PasswordPromptProps) 
     setIsLoading(true);
     setError('');
 
-    try {
-      const data = await accessShare.mutateAsync({ id, password });
+    const result = await onUnlock(password);
 
-      // Store in sessionStorage
-      sessionStorage.setItem('sharedState', JSON.stringify(data));
-
-      // Redirect to correct tab
-      const tab = metadata.pageType.split('-')[1];
-      router.push(`/${pageType}?tab=${tab}`);
-    } catch (err) {
-      if (err && typeof err === 'object' && 'error' in err) {
-        const shareError = err as { error: string; message: string };
-        if (shareError.error === 'INVALID_PASSWORD') {
-          setError('Incorrect password');
-        } else {
-          setError(shareError.message);
-        }
+    if (result?.error) {
+      if (result.error === 'INVALID_PASSWORD') {
+        setError('Incorrect password');
       } else {
-        setError('Something went wrong');
+        setError(result.error);
       }
-    } finally {
-      setIsLoading(false);
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -1494,7 +1503,7 @@ Create `components/shared/share-error-display.tsx`:
 ```typescript
 'use client';
 
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { AlertCircle, Clock, Lock, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -1553,9 +1562,10 @@ const errorConfig = {
 export function ShareErrorDisplay({ error, pageType }: ShareErrorDisplayProps) {
   const config = errorConfig[error];
   const Icon = config.icon;
+  const router = useRouter();
 
   const handleGoToPage = () => {
-    redirect(`/${pageType}`);
+    router.push(`/${pageType}`);
   };
 
   return (
@@ -1677,7 +1687,7 @@ git commit -m "refactor: add state interface to TextDiffTab"
 
 ---
 
-### Task 3.3: Refactor TextConvertTab with State Interface
+### Task 3.4: Refactor TextConvertTab with State Interface
 
 **Files:**
 
@@ -1700,7 +1710,7 @@ git commit -m "refactor: add state interface to TextConvertTab"
 
 ---
 
-### Task 3.4: Refactor TextCleanTab with State Interface
+### Task 3.5: Refactor TextCleanTab with State Interface
 
 **Files:**
 
@@ -1719,7 +1729,7 @@ git commit -m "refactor: add state interface to TextCleanTab"
 
 ---
 
-### Task 3.5: Create JSON Tab Type Interfaces
+### Task 3.6: Create JSON Tab Type Interfaces
 
 **Files:**
 
@@ -1843,7 +1853,7 @@ git commit -m "feat: add base64 tab ref interfaces"
 
 ---
 
-### Task 3.8: Refactor Base64 Tabs with State Interfaces
+### Task 3.9: Refactor Base64 Tabs with State Interfaces
 
 **Files:**
 
@@ -1895,15 +1905,14 @@ Pattern:
 ```typescript
 import { ShareForm } from '@/components/share/share-form';
 
-// In the component:
-<div className="flex flex-col gap-4 p-4">
-  <ShareForm
-    pageType="text-diff"
-    getState={() => ({
-      leftContent: leftContent,
-      rightContent: rightContent,
-    })}
-  />
+// In the component, add before existing content:
+<ShareForm
+  pageType="text-diff"
+  getState={() => ({
+    leftContent: leftContent || left, // Use actual prop names
+    rightContent: rightContent || right, // Use actual prop names
+  })}
+/>
 
   <Separator />
 
@@ -2008,133 +2017,141 @@ git commit -m "feat: integrate ShareForm into Base64ShareDialog"
 
 - [ ] **Step 1: Create dynamic route page**
 
-Create `app/[pageType]/[id]/page.tsx`:
+Create `app/[pageType]/[id]/page.tsx` as a CLIENT component:
 
 ```typescript
-import { redirect } from 'next/navigation';
-import { Suspense } from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
-import { useShareMetadata, useAccessShare } from '@/lib/api/share';
 import { PasswordPrompt } from '@/components/shared/password-prompt';
 import { ShareErrorDisplay } from '@/components/shared/share-error-display';
 
 interface PageProps {
-  params: Promise<{
-    pageType: string;
-    id: string;
-  }>;
+  params: { pageType: string; id: string };
 }
 
 function pageTypeFromMetadata(pageType: string): string {
   const parts = pageType.split('-');
   if (parts[0] === 'base64' && parts[1] === 'encode') {
-    return 'media-to-base64';
+    return 'encode';
   }
   if (parts[0] === 'base64' && parts[1] === 'decode') {
-    return 'base64-to-media';
+    return 'decode';
   }
   return parts[1] || parts[0];
 }
 
-async function SharedLinkLoader({ pageType, id }: { pageType: string; id: string }) {
-  // Validate pageType
-  const validPageTypes = ['text', 'json', 'base64'];
-  if (!validPageTypes.includes(pageType)) {
-    redirect('/text');
-  }
+export default function SharedLinkPage({ params }: PageProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { pageType, id } = params;
 
-  // Fetch metadata
-  const { data: metadata, error: metadataError } = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/share/${id}`,
-    { cache: 'no-store' }
-  ).then(async (res) => {
-    if (!res.ok) {
-      if (res.status === 404) {
-        return { data: null, error: { error: 'NOT_FOUND' } };
+  const [loading, setLoading] = useState(true);
+  const [metadata, setMetadata] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadSharedContent() {
+      // Validate pageType
+      const validPageTypes = ['text', 'json', 'base64'];
+      if (!validPageTypes.includes(pageType)) {
+        router.push('/text');
+        return;
       }
-      return { data: null, error: { error: 'INVALID_STATE' } };
+
+      try {
+        // Fetch metadata
+        const metadataRes = await fetch(`/api/share/${id}`);
+        if (!metadataRes.ok) {
+          if (metadataRes.status === 404) {
+            setError('NOT_FOUND');
+            return;
+          }
+          setError('INVALID_STATE');
+          return;
+        }
+
+        const metadataData = await metadataRes.json();
+        setMetadata(metadataData);
+
+        // Check expiration
+        if (metadataData.expiresAt && new Date(metadataData.expiresAt) < new Date()) {
+          setError('LINK_EXPIRED');
+          return;
+        }
+
+        // If not password protected, access content directly
+        if (!metadataData.hasPassword) {
+          await accessContent();
+        }
+      } catch (err) {
+        console.error('Error loading share:', err);
+        setError('INVALID_STATE');
+      } finally {
+        setLoading(false);
+      }
     }
-    const data = await res.json();
-    return { data, error: null };
-  });
 
-  if (metadataError || !metadata) {
-    return <ShareErrorDisplay error="NOT_FOUND" pageType={pageType} />;
+    loadSharedContent();
+  }, [pageType, id]);
+
+  async function accessContent(password?: string) {
+    try {
+      const accessRes = await fetch(`/api/share/${id}/access`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+
+      if (!accessRes.ok) {
+        if (accessRes.status === 401) {
+          return { error: 'INVALID_PASSWORD' };
+        }
+        setError('INVALID_STATE');
+        return;
+      }
+
+      const accessData = await accessRes.json();
+
+      // Store in sessionStorage
+      sessionStorage.setItem('sharedState', JSON.stringify(accessData));
+
+      // Redirect to correct tab
+      const tab = pageTypeFromMetadata(accessData.pageType);
+      router.push(`/${pageType}?tab=${tab}`);
+    } catch (err) {
+      console.error('Error accessing share:', err);
+      setError('INVALID_STATE');
+    }
   }
 
-  // Check expiration
-  if (metadata.expiresAt && new Date(metadata.expiresAt) < new Date()) {
-    return <ShareErrorDisplay error="LINK_EXPIRED" pageType={pageType} />;
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground mb-4" />
+        <p className="text-muted-foreground">Loading shared content...</p>
+      </div>
+    );
   }
 
-  // If password protected, show prompt
-  if (metadata.hasPassword) {
+  if (error) {
+    return <ShareErrorDisplay error={error} pageType={pageType} />;
+  }
+
+  if (metadata?.hasPassword) {
     return (
       <PasswordPrompt
         pageType={pageType}
         id={id}
         metadata={metadata}
+        onUnlock={accessContent}
       />
     );
   }
 
-  // Access content without password
-  const accessResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/share/${id}/access`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
-      cache: 'no-store',
-    }
-  );
-
-  if (!accessResponse.ok) {
-    return <ShareErrorDisplay error="INVALID_STATE" pageType={pageType} />;
-  }
-
-  const accessData = await accessResponse.json();
-
-  // Store in sessionStorage and redirect
-  const tab = pageTypeFromMetadata(accessData.pageType);
-  const redirectUrl = `/${pageType}?tab=${tab}`;
-
-  // Note: We can't use sessionStorage on server, so we'll pass data via URL
-  // For now, redirect to main page with share ID in sessionStorage (will be handled by client component)
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <Loader2 className="h-8 w-8 animate-spin text-muted-foreground mb-4" />
-      <p className="text-muted-foreground">Loading shared content...</p>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            sessionStorage.setItem('sharedState', ${JSON.stringify(JSON.stringify(accessData))});
-            window.location.href = '${redirectUrl}';
-          `,
-        }}
-      />
-    </div>
-  );
-}
-
-export default async function SharedLinkPage(props: PageProps) {
-  const params = await props.params;
-  const { pageType, id } = params;
-
-  return (
-    <div className="min-h-screen">
-      <Suspense
-        fallback={
-          <div className="flex flex-col items-center justify-center min-h-screen">
-            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">Loading shared content...</p>
-          </div>
-        }
-      >
-        <SharedLinkLoader pageType={pageType} id={id} />
-      </Suspense>
-    </div>
-  );
+  return null; // Will redirect
 }
 ```
 
