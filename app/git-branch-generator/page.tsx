@@ -26,17 +26,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 const ISSUE_TYPES = [
-    { value: 'none', label: 'None', color: 'bg-slate-500', icon: Slash },
-    { value: 'feature', label: 'Feature', color: 'bg-green-500', icon: Sparkles },
-    { value: 'fix', label: 'Bug Fix', color: 'bg-red-500', icon: Wrench },
-    { value: 'hotfix', label: 'Hotfix', color: 'bg-orange-500', icon: Flame },
-    { value: 'refactor', label: 'Refactor', color: 'bg-blue-500', icon: RefreshCw },
-    { value: 'docs', label: 'Documentation', color: 'bg-purple-500', icon: FileText },
-    { value: 'test', label: 'Test', color: 'bg-yellow-500', icon: CheckCircle },
-    { value: 'chore', label: 'Chore', color: 'bg-gray-500', icon: Settings },
-    { value: 'perf', label: 'Performance', color: 'bg-pink-500', icon: Zap },
-    { value: 'style', label: 'Style', color: 'bg-indigo-500', icon: Palette },
-    { value: 'ci', label: 'CI/CD', color: 'bg-cyan-500', icon: Cpu },
+    { value: 'none', label: 'None', color: 'bg-slate-400', icon: Slash },
+    { value: 'feature', label: 'Feature', color: 'bg-green-400', icon: Sparkles },
+    { value: 'fix', label: 'Bug Fix', color: 'bg-red-400', icon: Wrench },
+    { value: 'hotfix', label: 'Hotfix', color: 'bg-orange-400', icon: Flame },
+    { value: 'refactor', label: 'Refactor', color: 'bg-blue-400', icon: RefreshCw },
+    { value: 'docs', label: 'Documentation', color: 'bg-purple-400', icon: FileText },
+    { value: 'test', label: 'Test', color: 'bg-yellow-400', icon: CheckCircle },
+    { value: 'chore', label: 'Chore', color: 'bg-gray-400', icon: Settings },
+    { value: 'perf', label: 'Performance', color: 'bg-pink-400', icon: Zap },
+    { value: 'style', label: 'Style', color: 'bg-indigo-400', icon: Palette },
+    { value: 'ci', label: 'CI/CD', color: 'bg-cyan-400', icon: Cpu },
 ];
 
 // Structured data for SEO
