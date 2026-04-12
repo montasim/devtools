@@ -15,8 +15,8 @@ import { Settings, FileCode, Image as ImageIcon, Share2, History } from 'lucide-
 import { MediaToBase64Tab } from '@/app/base64/tabs/media-to-base64-tab';
 import { Base64ToMediaTab } from '@/app/base64/tabs/base64-to-media-tab';
 import { Base64HistoryTab } from '@/app/base64/tabs/base64-history-tab';
-import { OptionsTab } from '@/app/json/tabs/options-tab';
-import { ShareTab } from '@/app/json/tabs/share-tab';
+import { JsonOptionsTab as OptionsTab } from '@/app/json/tabs/json-options-tab';
+import { JsonShareTab as ShareTab } from '@/app/json/tabs/json-share-tab';
 import { InvalidTabState } from '@/components/ui/invalid-tab-state';
 
 type TabValue = (typeof VALID_TABS)[number];

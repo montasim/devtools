@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Accordion } from '@/components/ui/accordion';
-import { Logo } from '@/components/logo';
+import { Logo } from '@/components/layout/logo';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { MenuItem } from '@/components/navbar/types';
 import { MobileMenuItem } from '@/components/navbar/menu-items';

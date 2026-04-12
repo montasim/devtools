@@ -15,10 +15,10 @@ import {
     Copy,
 } from 'lucide-react';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
-import { EditorActions } from '@/components/editor-pane/editor-actions';
-import { EditorFooter } from '@/components/editor-pane';
+import { EditorActions } from '@/components/editor/editor-actions';
+import { EditorFooter } from '@/components/editor';
 import { Toolbar } from '@/components/toolbar/toolbar';
-import { Base64ShareDialog } from '@/components/base64-pane';
+import { Base64ShareDialog } from '@/components/base64';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export interface MediaToBase64TabProps {

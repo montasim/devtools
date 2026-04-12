@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { ActionButtonGroup } from '@/components/ui/action-button-group';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { JsonStats } from '@/components/json-stats';
+import { JsonStats } from '@/components/layout/json-stats';
 import {
     Dialog,
     DialogContent,

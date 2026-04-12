@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Copy, Download, Share2, Trash2, X, Sparkles } from 'lucide-react';
-import { TextEditor } from '@/components/text-tools/text-editor/text-editor';
-import { TextareaFooter } from '@/components/text-tools/text-editor/textarea-footer';
-import { EditorActions } from '@/components/editor-pane/editor-actions';
+import { TextEditor } from '@/components/text/text-editor/text-editor';
+import { TextareaFooter } from '@/components/text/text-editor/textarea-footer';
+import { EditorActions } from '@/components/editor/editor-actions';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
-import { useDebouncedSave } from '@/components/text-tools/shared/use-debounced-save';
+import { useDebouncedSave } from '@/components/text/shared/use-debounced-save';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Toolbar } from '@/components/toolbar/toolbar';
@@ -20,7 +20,7 @@ import {
     sortLinesByLength,
     reverseLines,
     removeEmptyLines,
-} from '@/components/text-tools/text-editor/utils/text-operations';
+} from '@/components/text/text-editor/utils/text-operations';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export function TextCleanTab({ onClear }: { onClear?: () => void }) {

@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { Toolbar } from '@/components/toolbar';
-import { FormatPane, FormatShareDialog } from '@/components/format-pane';
-import { ParserPane, ParserShareDialog } from '@/components/parser-pane';
-import { TextDiffPane } from '@/components/text-tools/diff-pane/diff-pane';
-import { ConvertPane } from '@/components/text-tools/convert-pane/convert-pane';
+import { FormatPane, FormatShareDialog } from '@/components/format';
+import { ParserPane, ParserShareDialog } from '@/components/parser';
+import { TextDiffPane } from '@/components/text/diff-pane/diff-pane';
+import { ConvertPane } from '@/components/text/convert-pane/convert-pane';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, GitCompare, Code, FileJson, Share2, Trash2, Repeat } from 'lucide-react';
 import { STORAGE_KEYS } from '@/lib/constants';

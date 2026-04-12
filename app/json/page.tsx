@@ -22,16 +22,16 @@ import {
     Eye,
     FileDown,
 } from 'lucide-react';
-import { DiffTab } from '@/app/json/tabs/diff-tab';
-import { FormatTab } from '@/app/json/tabs/format-tab';
-import { MinifyTab } from '@/app/json/tabs/minify-tab';
-import { ViewerTab } from '@/app/json/tabs/viewer-tab';
-import { ParserTab } from '@/app/json/tabs/parser-tab';
-import { ExportTab } from '@/app/json/tabs/export-tab';
-import { SchemaTab } from '@/app/json/tabs/schema-tab';
-import { OptionsTab } from '@/app/json/tabs/options-tab';
-import { HistoryTab } from '@/app/json/tabs/history-tab';
-import { ShareTab } from '@/app/json/tabs/share-tab';
+import { JsonDiffTab as DiffTab } from '@/app/json/tabs/json-diff-tab';
+import { JsonFormatTab as FormatTab } from '@/app/json/tabs/json-format-tab';
+import { JsonMinifyTab as MinifyTab } from '@/app/json/tabs/json-minify-tab';
+import { JsonViewerTab as ViewerTab } from '@/app/json/tabs/json-viewer-tab';
+import { JsonParserTab as ParserTab } from '@/app/json/tabs/json-parser-tab';
+import { JsonExportTab as ExportTab } from '@/app/json/tabs/json-export-tab';
+import { JsonSchemaTab as SchemaTab } from '@/app/json/tabs/json-schema-tab';
+import { JsonOptionsTab as OptionsTab } from '@/app/json/tabs/json-options-tab';
+import { JsonHistoryTab as HistoryTab } from '@/app/json/tabs/json-history-tab';
+import { JsonShareTab as ShareTab } from '@/app/json/tabs/json-share-tab';
 import { InvalidTabState } from '@/components/ui/invalid-tab-state';
 
 type TabValue = (typeof VALID_TABS)[number];

@@ -1,0 +1,237 @@
+'use client';
+
+import { useMemo } from 'react';
+import {
+    HardDrive,
+    Type,
+    FileText,
+    AlignLeft,
+    Layers,
+    GitBranch,
+    Check,
+    X,
+    Circle,
+    Hash,
+} from 'lucide-react';
+import type { ParseError } from '@/components/editor/types';
+
+export interface EditorStats {
+    fileSize: string;
+    characterCount: number;
+    wordCount: number;
+    lineCount: number;
+    totalKeys: number;
+    totalValues: number;
+    nullCount: number;
+    undefinedCount: number;
+    paths: string[];
+}
+
+export interface EditorFooterProps {
+    content: string;
+    error: ParseError | null;
+}
+
+function calculateStats(content: string): EditorStats {
+    // Calculate file size
+    const fileSize = new Blob([content]).size;
+    const fileSizeFormatted =
+        fileSize < 1024
+            ? `${fileSize} B`
+            : fileSize < 1024 * 1024
+              ? `${(fileSize / 1024).toFixed(1)} KB`
+              : `${(fileSize / (1024 * 1024)).toFixed(1)} MB`;
+
+    // Calculate character count
+    const characterCount = content.length;
+
+    // Calculate word count
+    const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
+
+    // Calculate line count
+    const lineCount = content.split('\n').length;
+
+    // Calculate total keys and values
+    let totalKeys = 0;
+    let totalValues = 0;
+    let nullCount = 0;
+    const undefinedCount = 0;
+    try {
+        if (content.trim()) {
+            const parsed = JSON.parse(content);
+            const analyze = (obj: unknown): void => {
+                if (obj === null) {
+                    totalValues++;
+                    nullCount++;
+                    return;
+                }
+                if (
+                    typeof obj === 'boolean' ||
+                    typeof obj === 'number' ||
+                    typeof obj === 'string'
+                ) {
+                    totalValues++;
+                    return;
+                }
+                if (Array.isArray(obj)) {
+                    totalKeys++;
+                    obj.forEach((item) => analyze(item));
+                    return;
+                }
+                if (typeof obj === 'object') {
+                    totalKeys++;
+                    Object.entries(obj as object).forEach(([key, value]) => {
+                        totalKeys++;
+                        analyze(value);
+                    });
+                    return;
+                }
+            };
+            analyze(parsed);
+        }
+    } catch {
+        // Invalid JSON, no keys or values
+    }
+
+    // Extract paths (all property paths)
+    const paths: string[] = [];
+    try {
+        if (content.trim()) {
+            const parsed = JSON.parse(content);
+            const extractPaths = (obj: unknown, currentPath = ''): void => {
+                if (obj === null || typeof obj !== 'object') {
+                    if (currentPath) {
+                        paths.push(currentPath);
+                    }
+                    return;
+                }
+                if (Array.isArray(obj)) {
+                    obj.forEach((_, index) => {
+                        extractPaths(index, `${currentPath}[${index}]`);
+                    });
+                    return;
+                }
+                Object.entries(obj as object).forEach(([key, value]) => {
+                    const newPath = currentPath ? `${currentPath}.${key}` : key;
+                    extractPaths(value, newPath);
+                });
+            };
+            extractPaths(parsed);
+        }
+    } catch {
+        // Invalid JSON, no paths
+    }
+
+    return {
+        fileSize: fileSizeFormatted,
+        characterCount,
+        wordCount,
+        lineCount,
+        totalKeys,
+        totalValues,
+        nullCount,
+        undefinedCount,
+        paths,
+    };
+}
+
+export function EditorFooter({ content, error }: EditorFooterProps) {
+    const stats = useMemo(() => calculateStats(content), [content]);
+
+    const statistics = useMemo(
+        () => [
+            { icon: HardDrive, label: stats.fileSize, title: 'File size', emphasized: true },
+            { icon: Type, label: `${stats.characterCount} chars`, title: 'Characters' },
+            { icon: FileText, label: `${stats.wordCount} words`, title: 'Words' },
+            { icon: AlignLeft, label: `${stats.lineCount} lines`, title: 'Lines' },
+            ...(stats.totalKeys > 0
+                ? [
+                      {
+                          icon: Hash,
+                          label: `${stats.totalKeys} keys`,
+                          title: 'Total keys',
+                          emphasized: true,
+                      },
+                  ]
+                : []),
+            ...(stats.totalValues > 0
+                ? [
+                      {
+                          icon: Layers,
+                          label: `${stats.totalValues} values`,
+                          title: 'Total values',
+                          emphasized: true,
+                      },
+                  ]
+                : []),
+            ...(stats.paths.length > 0
+                ? [
+                      {
+                          icon: GitBranch,
+                          label: `${stats.paths.length} paths`,
+                          title: `${stats.paths.length} paths`,
+                      },
+                  ]
+                : []),
+            ...(stats.nullCount > 0
+                ? [
+                      {
+                          icon: Circle,
+                          label: `${stats.nullCount} null`,
+                          title: 'Null values',
+                      },
+                  ]
+                : []),
+            ...(stats.undefinedCount > 0
+                ? [
+                      {
+                          icon: X,
+                          label: `${stats.undefinedCount} undefined`,
+                          title: 'Undefined values',
+                      },
+                  ]
+                : []),
+        ],
+        [stats],
+    );
+
+    return (
+        <div className="flex items-center justify-between py-2">
+            {/* Left side: Statistics */}
+            <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400 overflow-x-auto scrollbar-hide flex-1">
+                {statistics.map((stat, index) => (
+                    <div
+                        key={index}
+                        title={stat.title}
+                        className="flex items-center gap-1.5 shrink-0"
+                    >
+                        <stat.icon className="h-3.5 w-3.5 text-gray-500" />
+                        <span className={stat.emphasized ? 'font-medium' : ''}>{stat.label}</span>
+                    </div>
+                ))}
+            </div>
+
+            {/* Right side: Validation status */}
+            <div className="flex items-center gap-2 shrink-0">
+                <div
+                    className={`flex items-center gap-1.5 py-1 rounded-md text-xs font-medium ${
+                        error
+                            ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                            : content.trim()
+                              ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                              : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                    }`}
+                >
+                    {error ? (
+                        <X className="h-3.5 w-3.5" />
+                    ) : content.trim() ? (
+                        <Check className="h-3.5 w-3.5" />
+                    ) : (
+                        <Circle className="h-3.5 w-3.5" />
+                    )}
+                    <span>{error ? 'Invalid' : content.trim() ? 'Valid' : 'Empty'}</span>
+                </div>
+            </div>
+        </div>
+    );
+}

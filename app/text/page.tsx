@@ -16,9 +16,9 @@ import { TextDiffTab } from '@/app/text/tabs/text-diff-tab';
 import { TextConvertTab } from '@/app/text/tabs/text-convert-tab';
 import { TextCleanTab } from '@/app/text/tabs/text-clean-tab';
 import { TextHistoryTab } from '@/app/text/tabs/text-history-tab';
-import { OptionsTab } from '@/app/json/tabs/options-tab';
-import { HistoryTab } from '@/app/json/tabs/history-tab';
-import { ShareTab } from '@/app/json/tabs/share-tab';
+import { JsonOptionsTab as OptionsTab } from '@/app/json/tabs/json-options-tab';
+import { JsonHistoryTab as HistoryTab } from '@/app/json/tabs/json-history-tab';
+import { JsonShareTab as ShareTab } from '@/app/json/tabs/json-share-tab';
 import { InvalidTabState } from '@/components/ui/invalid-tab-state';
 
 type TabValue = (typeof VALID_TABS)[number];

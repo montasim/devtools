@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { TextDiffPane } from '@/components/text-tools/diff-pane/diff-pane';
+import { TextDiffPane } from '@/components/text/diff-pane/diff-pane';
 import { Toolbar } from '@/components/toolbar/toolbar';
 
 export interface TextDiffTabProps {

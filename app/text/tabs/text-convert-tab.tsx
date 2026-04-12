@@ -1,6 +1,6 @@
 'use client';
 
-import { ConvertPane } from '@/components/text-tools/convert-pane/convert-pane';
+import { ConvertPane } from '@/components/text/convert-pane/convert-pane';
 
 export interface TextConvertTabProps {
     onClear?: () => void;
