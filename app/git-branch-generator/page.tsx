@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { STORAGE_KEYS } from '@/lib/constants';
 import {
@@ -17,9 +18,6 @@ import {
     Palette,
     Cpu,
     Slash,
-    BookOpen,
-    Check,
-    ArrowRight,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -75,15 +73,19 @@ export default function GitBranchGeneratorPage() {
     const [issueType, setIssueType] = useState('none');
     const [issueId, setIssueId] = useState('');
     const [description, setDescription] = useState('');
-    const [generatedBranch, setGeneratedBranch] = useState(() => {
-        // Load saved branch name on initial render
+    const [generatedBranch, setGeneratedBranch] = useState('');
+
+    // Load saved branch name on client-side mount
+    useEffect(() => {
         try {
-            return localStorage.getItem(STORAGE_KEYS.GIT_BRANCH_LAST_GENERATED) || '';
+            const saved = localStorage.getItem(STORAGE_KEYS.GIT_BRANCH_LAST_GENERATED);
+            if (saved) {
+                setGeneratedBranch(saved);
+            }
         } catch (error) {
             console.error('Failed to load saved branch name:', error);
-            return '';
         }
-    });
+    }, []);
 
     const generateBranchName = () => {
         if (!description.trim()) {
