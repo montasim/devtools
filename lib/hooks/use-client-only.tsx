@@ -9,6 +9,7 @@ export function useClientOnly() {
     const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsClient(true);
     }, []);
 
@@ -27,7 +28,7 @@ export function withClientOnly<P extends object>(
         const isClient = useClientOnly();
 
         if (!isClient) {
-            return <>{fallback || null}</>;
+            return fallback as React.ReactElement | null;
         }
 
         return <Component {...props} />;

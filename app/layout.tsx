@@ -82,6 +82,23 @@ export const metadata: Metadata = {
     },
 };
 
+function ThemeScript() {
+    return (
+        <script
+            dangerouslySetInnerHTML={{
+                __html: `
+                    (function() {
+                        const theme = localStorage.getItem('theme');
+                        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                        const effectiveTheme = theme === 'system' ? systemTheme : theme || systemTheme;
+                        document.documentElement.classList.add(effectiveTheme);
+                    })();
+                `,
+            }}
+        />
+    );
+}
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -92,6 +109,9 @@ export default function RootLayout({
             lang="en"
             className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
         >
+            <head>
+                <ThemeScript />
+            </head>
             <body className="min-h-full flex flex-col" suppressHydrationWarning>
                 <ThemeProvider>
                     <TooltipProvider>
