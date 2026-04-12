@@ -196,44 +196,40 @@ export function EditorFooter({ content, error }: EditorFooterProps) {
     );
 
     return (
-        <div className="border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between py-2">
-                {/* Left side: Statistics */}
-                <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400 overflow-x-auto scrollbar-hide flex-1">
-                    {statistics.map((stat, index) => (
-                        <div
-                            key={index}
-                            title={stat.title}
-                            className="flex items-center gap-1.5 shrink-0"
-                        >
-                            <stat.icon className="h-3.5 w-3.5 text-gray-500" />
-                            <span className={stat.emphasized ? 'font-medium' : ''}>
-                                {stat.label}
-                            </span>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Right side: Validation status */}
-                <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center justify-between py-2">
+            {/* Left side: Statistics */}
+            <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400 overflow-x-auto scrollbar-hide flex-1">
+                {statistics.map((stat, index) => (
                     <div
-                        className={`flex items-center gap-1.5 py-1 rounded-md text-xs font-medium ${
-                            error
-                                ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
-                                : content.trim()
-                                  ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                                  : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
-                        }`}
+                        key={index}
+                        title={stat.title}
+                        className="flex items-center gap-1.5 shrink-0"
                     >
-                        {error ? (
-                            <X className="h-3.5 w-3.5" />
-                        ) : content.trim() ? (
-                            <Check className="h-3.5 w-3.5" />
-                        ) : (
-                            <Circle className="h-3.5 w-3.5" />
-                        )}
-                        <span>{error ? 'Invalid' : content.trim() ? 'Valid' : 'Empty'}</span>
+                        <stat.icon className="h-3.5 w-3.5 text-gray-500" />
+                        <span className={stat.emphasized ? 'font-medium' : ''}>{stat.label}</span>
                     </div>
+                ))}
+            </div>
+
+            {/* Right side: Validation status */}
+            <div className="flex items-center gap-2 shrink-0">
+                <div
+                    className={`flex items-center gap-1.5 py-1 rounded-md text-xs font-medium ${
+                        error
+                            ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                            : content.trim()
+                              ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                              : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                    }`}
+                >
+                    {error ? (
+                        <X className="h-3.5 w-3.5" />
+                    ) : content.trim() ? (
+                        <Check className="h-3.5 w-3.5" />
+                    ) : (
+                        <Circle className="h-3.5 w-3.5" />
+                    )}
+                    <span>{error ? 'Invalid' : content.trim() ? 'Valid' : 'Empty'}</span>
                 </div>
             </div>
         </div>
