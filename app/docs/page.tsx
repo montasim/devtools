@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import {
     GitBranch,
     Code,
+    FileCode,
     FileJson,
     FileText,
     Sparkles,
@@ -48,6 +49,11 @@ const docSections: DocSection[] = [
         id: 'text-tools',
         title: 'Text Tools',
         icon: <FileText className="w-5 h-5" />,
+    },
+    {
+        id: 'base64-tools',
+        title: 'Base64 Tools',
+        icon: <FileCode className="w-5 h-5" />,
     },
     {
         id: 'git-tools',
@@ -273,6 +279,58 @@ export default function DocsPage() {
                     </div>
                 </PageSection>
 
+                {/* Base64 Tools Section */}
+                <PageSection
+                    id="base64-tools"
+                    title="Base64 Tools"
+                    description="Encode and decode Base64 data with support for media files and automatic MIME type detection."
+                >
+                    <div className="space-y-4">
+                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center gap-3 mb-2">
+                                <FileCode className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    Media to Base64
+                                </h3>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Convert any media file (images, PDFs, documents) to Base64 encoding.
+                                Upload files directly or fetch from URLs. Preview images and
+                                download the Base64 output. View character count and file size
+                                statistics.
+                            </p>
+                        </div>
+
+                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center gap-3 mb-2">
+                                <Code className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    Base64 to Media
+                                </h3>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Decode Base64 strings back to media files with automatic MIME type
+                                detection. Supports PNG, JPEG, GIF, WebP, PDF, and SVG formats.
+                                Preview decoded images and download the converted files.
+                            </p>
+                        </div>
+
+                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center gap-3 mb-2">
+                                <History className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                    Base64 History
+                                </h3>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Access your Base64 conversion history with persistent storage. View,
+                                restore, copy, or clear individual history items. Filter by tool
+                                type and manage your data efficiently.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
                 {/* Git Tools Section */}
                 <PageSection
                     id="git-tools"
@@ -324,8 +382,8 @@ export default function DocsPage() {
                             </div>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
                                 Access your tool usage history across all pages. View, restore,
-                                copy, or clear individual history items. Grouped by JSON and Text
-                                tools.
+                                copy, or clear individual history items. Grouped by JSON, Text, and
+                                Base64 tools.
                             </p>
                         </div>
 
@@ -369,8 +427,8 @@ export default function DocsPage() {
                                     Choose Your Tool
                                 </h3>
                                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    Select from JSON Tools, Text Tools, XML Tools, CSV Tools, or Git
-                                    Tools from the navigation menu based on your task.
+                                    Select from JSON Tools, Text Tools, XML Tools, CSV Tools, Base64
+                                    Tools, or Git Tools from the navigation menu based on your task.
                                 </p>
                             </div>
                         </div>
