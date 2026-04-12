@@ -6,6 +6,7 @@ import { Upload, X, FileText, File, HardDrive, Type, Check, Circle, Download } f
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { EditorActions } from '@/components/editor-pane/editor-actions';
 import { Toolbar } from '@/components/toolbar/toolbar';
+import { Base64ShareDialog } from '@/components/base64-pane';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export interface Base64ToMediaTabProps {
@@ -23,6 +24,8 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
             return '';
         }
     });
+
+    const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
 
     // Save input to localStorage when it changes
     useEffect(() => {
@@ -220,6 +223,15 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
         setInput('');
     }, []);
 
+    // Handle share - open share sheet
+    const handleShare = useCallback(() => {
+        if (!input) {
+            toast.error('No Base64 input to share');
+            return;
+        }
+        setIsShareSheetOpen(true);
+    }, [input]);
+
     // Define action buttons for Input Source section
     const inputActions = useMemo(
         () => [
@@ -267,6 +279,12 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
 
     return (
         <>
+            <Base64ShareDialog
+                content={input}
+                open={isShareSheetOpen}
+                onOpenChange={setIsShareSheetOpen}
+            />
+
             <Toolbar
                 actions={[
                     {
@@ -274,6 +292,13 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
                         label: 'Clear All',
                         onClick: onClear || handleClear,
                         variant: 'outline',
+                    },
+                    {
+                        id: 'share',
+                        label: 'Share',
+                        onClick: handleShare,
+                        variant: 'outline',
+                        disabled: !input,
                     },
                 ]}
             />

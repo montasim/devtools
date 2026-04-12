@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { ActionButtonGroup } from '@/components/ui/action-button-group';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Toolbar } from '@/components/toolbar/toolbar';
+import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,
@@ -22,34 +23,27 @@ import {
     Image as ImageIcon,
     HardDrive,
 } from 'lucide-react';
+import { Base64Stats } from '@/components/base64-pane';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 interface HistoryTabProps {
     onTabChange: (tab: string) => void;
 }
 
-interface HistoryItem {
-    key: string;
-    label: string;
-    description: string;
-    icon: React.ComponentType<{ className?: string }>;
-    content: string;
-}
-
 export function Base64HistoryTab({ onTabChange }: HistoryTabProps) {
-    const [historyData, setHistoryData] = useState<HistoryItem[]>([]);
+    const [historyData, setHistoryData] = useState<Record<string, string>>({});
     const [showClearDialog, setShowClearDialog] = useState(false);
+    const [showRestoreDialog, setShowRestoreDialog] = useState(false);
     const [showClearItemDialog, setShowClearItemDialog] = useState(false);
     const [itemToClear, setItemToClear] = useState<string | null>(null);
     const [viewingHistoryItem, setViewingHistoryItem] = useState<{
         key: string;
-        label: string;
         content: string;
     } | null>(null);
 
     // Define Base64 history items
     const historyItemConfig = useMemo(
-        (): HistoryItem['key'][] => [
+        (): string[] => [
             STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_INPUT,
             STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT,
             STORAGE_KEYS.BASE64_TO_MEDIA_INPUT,
@@ -57,52 +51,40 @@ export function Base64HistoryTab({ onTabChange }: HistoryTabProps) {
         [],
     );
 
-    const getItemConfig = (key: string): Omit<HistoryItem, 'content'> => {
-        switch (key) {
-            case STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_INPUT:
-                return {
-                    key,
-                    label: 'Media to Base64 - Input',
-                    description: 'Original file/media data for encoding',
-                    icon: FileText,
-                };
-            case STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT:
-                return {
-                    key,
-                    label: 'Media to Base64 - Output',
-                    description: 'Base64 encoded result',
-                    icon: HardDrive,
-                };
-            case STORAGE_KEYS.BASE64_TO_MEDIA_INPUT:
-                return {
-                    key,
-                    label: 'Base64 to Media - Input',
-                    description: 'Base64 text for decoding',
-                    icon: ImageIcon,
-                };
-            default:
-                return {
-                    key,
-                    label: key,
-                    description: 'Stored data',
-                    icon: HardDrive,
-                };
-        }
+    const getToolInfo = (key: string) => {
+        const toolMap: Record<
+            string,
+            { name: string; icon: React.ComponentType<{ className?: string }>; color: string }
+        > = {
+            [STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_INPUT]: {
+                name: 'Media to Base64 (Input)',
+                icon: FileText,
+                color: 'text-blue-500',
+            },
+            [STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT]: {
+                name: 'Media to Base64 (Output)',
+                icon: HardDrive,
+                color: 'text-green-500',
+            },
+            [STORAGE_KEYS.BASE64_TO_MEDIA_INPUT]: {
+                name: 'Base64 to Media (Input)',
+                icon: ImageIcon,
+                color: 'text-purple-500',
+            },
+        };
+
+        return toolMap[key] || { name: 'Unknown', icon: HardDrive, color: 'text-gray-500' };
     };
 
     // Load history from localStorage
     const loadHistory = useCallback(() => {
-        const history: HistoryItem[] = [];
+        const history: Record<string, string> = {};
 
         historyItemConfig.forEach((key) => {
             try {
                 const content = localStorage.getItem(key);
                 if (content) {
-                    const config = getItemConfig(key);
-                    history.push({
-                        ...config,
-                        content,
-                    });
+                    history[key] = content;
                 }
             } catch (error) {
                 console.error(`Failed to load history for ${key}:`, error);
@@ -158,51 +140,8 @@ export function Base64HistoryTab({ onTabChange }: HistoryTabProps) {
         toast.success('Data restored from history');
     };
 
-    // Restore all history items
-    const restoreAllHistory = () => {
-        if (historyData.length === 0) {
-            toast.error('No history to restore');
-            return;
-        }
-
-        // Find the first available history item and navigate to its tab
-        const mediaToBase64Input = historyData.find(
-            (item) => item.key === STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_INPUT,
-        );
-        const base64ToMediaInput = historyData.find(
-            (item) => item.key === STORAGE_KEYS.BASE64_TO_MEDIA_INPUT,
-        );
-
-        // Navigate to the tab with the most relevant data
-        if (base64ToMediaInput) {
-            onTabChange('base64-to-media');
-        } else if (mediaToBase64Input) {
-            onTabChange('media-to-base64');
-        }
-
-        toast.success(
-            `Restored ${historyData.length} history item${historyData.length > 1 ? 's' : ''}`,
-        );
-    };
-
-    // View history item
-    const viewHistoryItem = (key: string, content: string) => {
-        const config = getItemConfig(key);
-        setViewingHistoryItem({
-            key,
-            label: config.label,
-            content,
-        });
-    };
-
-    // Copy history item content
-    const copyHistoryItem = (content: string) => {
-        navigator.clipboard.writeText(content);
-        toast.success('Copied to clipboard');
-    };
-
     // Clear all history
-    const handleClearAll = () => {
+    const clearAllHistory = () => {
         setShowClearDialog(true);
     };
 
@@ -221,100 +160,159 @@ export function Base64HistoryTab({ onTabChange }: HistoryTabProps) {
         }
     };
 
+    // Restore all history
+    const restoreAllHistory = () => {
+        if (Object.keys(historyData).length === 0) {
+            toast.error('No history to restore');
+            return;
+        }
+        setShowRestoreDialog(true);
+    };
+
+    const handleConfirmRestoreAll = () => {
+        try {
+            // Find the first available history item with content
+            const firstHistoryKey = Object.keys(historyData).find(
+                (key) => historyData[key] && historyData[key].trim() !== '',
+            );
+
+            if (firstHistoryKey) {
+                // Map the history key to the appropriate tab
+                const keyToTabMap: Record<string, string> = {
+                    [STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_INPUT]: 'media-to-base64',
+                    [STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT]: 'media-to-base64',
+                    [STORAGE_KEYS.BASE64_TO_MEDIA_INPUT]: 'base64-to-media',
+                };
+
+                const tab = keyToTabMap[firstHistoryKey];
+                if (tab) {
+                    onTabChange(tab);
+                }
+            }
+
+            toast.success('All history has been restored');
+        } catch (error) {
+            console.error('Failed to restore all history:', error);
+            toast.error('Failed to restore all history');
+        } finally {
+            setShowRestoreDialog(false);
+        }
+    };
+
+    const truncateContent = (content: string, maxLength = 100) => {
+        if (content.length <= maxLength) return content;
+        return content.substring(0, maxLength) + '...';
+    };
+
+    const toolbarActions =
+        Object.keys(historyData).length > 0
+            ? [
+                  {
+                      id: 'restore-all',
+                      label: 'Restore All',
+                      icon: <RotateCcw className="h-4 w-4" />,
+                      onClick: restoreAllHistory,
+                      variant: 'outline' as const,
+                  },
+                  {
+                      id: 'clear-all',
+                      label: 'Clear All',
+                      icon: <Trash className="h-4 w-4" />,
+                      onClick: clearAllHistory,
+                      variant: 'outline' as const,
+                  },
+              ]
+            : [];
+
     return (
         <>
             <Toolbar
                 leftContent={<h2 className="text-lg font-semibold">History</h2>}
-                actions={[
-                    {
-                        id: 'restore-all',
-                        label: 'Restore All',
-                        onClick: restoreAllHistory,
-                        variant: 'outline',
-                        disabled: historyData.length === 0,
-                    },
-                    {
-                        id: 'clear-all',
-                        label: 'Clear All',
-                        onClick: handleClearAll,
-                        variant: 'outline',
-                        disabled: historyData.length === 0,
-                    },
-                ]}
+                actions={toolbarActions}
             />
 
             <div className="mx-auto py-4">
-                {/* History Items */}
-                {historyData.length === 0 ? (
-                    <div className="text-center py-12">
-                        <Clock className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-                        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-                            No history yet
-                        </h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                            Start converting files to Base64 to see your history here
+                {Object.keys(historyData).length === 0 ? (
+                    <div className="text-center py-8 sm:py-12 border rounded-lg border-dashed px-4">
+                        <Clock className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-4 text-muted-foreground" />
+                        <h3 className="text-base sm:text-lg font-semibold mb-2">No History Yet</h3>
+                        <p className="text-sm text-muted-foreground mb-4">
+                            Start using the Base64 tools to build up your history
                         </p>
+                        <Button variant="outline" onClick={() => onTabChange('media-to-base64')}>
+                            Get Started
+                        </Button>
                     </div>
                 ) : (
-                    <div className="space-y-3">
-                        {historyData.map((item) => {
-                            const Icon = item.icon;
+                    <div className="grid gap-4">
+                        {Object.entries(historyData).map(([key, content]) => {
+                            const toolInfo = getToolInfo(key);
+                            const Icon = toolInfo.icon;
+
                             return (
                                 <div
-                                    key={item.key}
-                                    className="border border-input rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                                    key={key}
+                                    className="border rounded-lg p-3 sm:p-4 hover:border-primary/50 transition-colors overflow-hidden"
                                 >
-                                    <div className="flex items-start justify-between gap-4">
-                                        <div className="flex items-start gap-3 flex-1 min-w-0">
-                                            <div className="shrink-0">
-                                                <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                                                    <Icon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                                                </div>
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
-                                                    {item.label}
+                                    <div className="flex flex-col gap-3">
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex items-center gap-2 min-w-0">
+                                                <h3 className="flex items-center gap-1 font-semibold truncate text-sm">
+                                                    <Icon className={`w-4 h-4 shrink-0`} />
+                                                    <span className="truncate">
+                                                        {toolInfo.name}
+                                                    </span>
                                                 </h3>
-                                                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                                                    {item.description}
-                                                </p>
-                                                <p className="text-xs font-mono text-gray-500 dark:text-gray-500 truncate">
-                                                    {item.content.slice(0, 100)}
-                                                    {item.content.length > 100 ? '...' : ''}
-                                                </p>
-                                                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                                                    {item.content.length.toLocaleString()}{' '}
-                                                    characters
-                                                </p>
+                                            </div>
+
+                                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                                                <Base64Stats content={content} />
+                                                <ActionButtonGroup
+                                                    actions={[
+                                                        {
+                                                            icon: Eye,
+                                                            onClick: () => {
+                                                                setViewingHistoryItem({
+                                                                    key,
+                                                                    content,
+                                                                });
+                                                            },
+                                                            title: 'View full content',
+                                                        },
+                                                        {
+                                                            icon: RotateCcw,
+                                                            onClick: () => restoreHistoryItem(key),
+                                                            title: 'Restore to tool',
+                                                        },
+                                                        {
+                                                            icon: Copy,
+                                                            onClick: () => {
+                                                                navigator.clipboard.writeText(
+                                                                    content,
+                                                                );
+                                                                toast.success(
+                                                                    'Copied to clipboard',
+                                                                );
+                                                            },
+                                                            title: 'Copy to clipboard',
+                                                        },
+                                                        {
+                                                            icon: Trash,
+                                                            onClick: () => clearHistoryItem(key),
+                                                            title: 'Clear history item',
+                                                            className:
+                                                                'text-destructive hover:text-destructive',
+                                                        },
+                                                    ]}
+                                                />
                                             </div>
                                         </div>
 
-                                        <ActionButtonGroup
-                                            actions={[
-                                                {
-                                                    icon: Eye,
-                                                    onClick: () =>
-                                                        viewHistoryItem(item.key, item.content),
-                                                    title: 'View full content',
-                                                },
-                                                {
-                                                    icon: Copy,
-                                                    onClick: () => copyHistoryItem(item.content),
-                                                    title: 'Copy to clipboard',
-                                                },
-                                                {
-                                                    icon: RotateCcw,
-                                                    onClick: () => restoreHistoryItem(item.key),
-                                                    title: 'Restore to tool',
-                                                },
-                                                {
-                                                    icon: Trash,
-                                                    onClick: () => clearHistoryItem(item.key),
-                                                    title: 'Delete from history',
-                                                    variant: 'destructive',
-                                                },
-                                            ]}
-                                        />
+                                        <pre className="text-xs p-3 rounded-md overflow-x-auto max-h-32 overflow-y-auto">
+                                            <code className="break-all">
+                                                {truncateContent(content, 200)}
+                                            </code>
+                                        </pre>
                                     </div>
                                 </div>
                             );
@@ -328,63 +326,44 @@ export function Base64HistoryTab({ onTabChange }: HistoryTabProps) {
                 open={!!viewingHistoryItem}
                 onOpenChange={(open) => !open && setViewingHistoryItem(null)}
             >
-                <DialogContent className="w-[90vw] max-w-[90vw] max-h-[85vh] overflow-hidden flex flex-col sm:max-w-[90vw]">
-                    <DialogHeader className="border-b">
-                        <DialogTitle>
-                            {/*{viewingHistoryItem && getToolInfo(viewingHistoryItem.key).name} - Fulls*/}
-                            Content
+                <DialogContent className="w-[90vw] max-w-[90vw] sm:max-w-[90vw] max-h-[85vh] overflow-hidden flex flex-col">
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                            <Eye className="w-5 h-5" />
+                            {viewingHistoryItem && getToolInfo(viewingHistoryItem.key).name}
                         </DialogTitle>
-
-                        <DialogDescription className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-2 items-start">
-                            <div className="flex items-center gap-2 sm:gap-4">
-                                {/*{viewingHistoryItem && (
-                                    // <JsonStats content={viewingHistoryItem.content} />
-                                )}*/}
-                            </div>
-                            {viewingHistoryItem && (
-                                <ActionButtonGroup
-                                    actions={[
-                                        {
-                                            icon: Copy,
-                                            onClick: () => {
-                                                navigator.clipboard.writeText(
-                                                    viewingHistoryItem.content,
-                                                );
-                                                toast.success('Copied to clipboard');
-                                            },
-                                            title: 'Copy to clipboard',
-                                        },
-                                        {
-                                            icon: RotateCcw,
-                                            onClick: () =>
-                                                restoreHistoryItem(viewingHistoryItem.key),
-                                            title: 'Restore to tool',
-                                        },
-                                        {
-                                            icon: Trash,
-                                            onClick: () => clearHistoryItem(viewingHistoryItem.key),
-                                            title: 'Clear history item',
-                                            className: 'text-destructive hover:text-destructive',
-                                        },
-                                    ]}
-                                />
-                            )}
-                        </DialogDescription>
+                        <DialogDescription>Full content from history</DialogDescription>
                     </DialogHeader>
                     <div className="flex-1 overflow-auto mt-4">
-                        <pre className="text-sm p-4 rounded-md overflow-auto">
-                            <code>{viewingHistoryItem?.content}</code>
+                        <pre className="text-xs p-4 rounded-md overflow-auto max-h-[60vh] whitespace-pre-wrap break-words">
+                            {viewingHistoryItem?.content}
                         </pre>
                     </div>
                 </DialogContent>
             </Dialog>
+
             {/* Clear All Confirmation Dialog */}
             <ConfirmDialog
                 open={showClearDialog}
                 onOpenChange={setShowClearDialog}
                 title="Clear All History"
-                description="Are you sure you want to clear all Base64 history? This action cannot be undone."
+                description="Are you sure you want to clear all Base64 history? This action cannot be undone and will remove all saved data from all Base64 tools."
+                confirmLabel="Clear All"
+                cancelLabel="Cancel"
                 onConfirm={handleConfirmClearAll}
+                variant="destructive"
+            />
+
+            {/* Restore All Confirmation Dialog */}
+            <ConfirmDialog
+                open={showRestoreDialog}
+                onOpenChange={setShowRestoreDialog}
+                title="Restore All History"
+                description="This will navigate to the first available history item. You can then restore individual items from the history tab."
+                confirmLabel="Restore"
+                cancelLabel="Cancel"
+                onConfirm={handleConfirmRestoreAll}
+                variant="default"
             />
 
             {/* Clear Item Confirmation Dialog */}
@@ -392,7 +371,15 @@ export function Base64HistoryTab({ onTabChange }: HistoryTabProps) {
                 open={showClearItemDialog}
                 onOpenChange={setShowClearItemDialog}
                 title="Clear History Item"
-                description="Are you sure you want to delete this history item? This action cannot be undone."
+                description={
+                    itemToClear
+                        ? `Are you sure you want to delete the history item for "${
+                              getToolInfo(itemToClear).name
+                          }"? This action cannot be undone.`
+                        : 'Are you sure you want to delete this history item? This action cannot be undone.'
+                }
+                confirmLabel="Clear"
+                cancelLabel="Cancel"
                 onConfirm={handleConfirmClearItem}
             />
         </>

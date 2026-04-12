@@ -267,17 +267,17 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
             <Toolbar
                 actions={[
                     {
+                        id: 'clear',
+                        label: 'Clear All',
+                        onClick: onClear || handleClear,
+                        variant: 'outline',
+                    },
+                    {
                         id: 'share',
                         label: 'Share',
                         onClick: handleShare,
                         variant: 'outline',
                         disabled: !output,
-                    },
-                    {
-                        id: 'clear',
-                        label: 'Clear All',
-                        onClick: onClear || handleClear,
-                        variant: 'outline',
                     },
                 ]}
             />
