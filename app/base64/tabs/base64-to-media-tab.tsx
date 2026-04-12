@@ -1,265 +1,477 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { toast } from 'sonner';
-import { Upload, Download, Image as ImageIcon, X, Copy } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Upload, X, FileText, File, HardDrive, Type, Check, Circle, Download } from 'lucide-react';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { EditorActions } from '@/components/editor-pane/editor-actions';
+import { Toolbar } from '@/components/toolbar/toolbar';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 export interface Base64ToMediaTabProps {
     onClear?: () => void;
 }
 
 export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
-    const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
-    const [base64Output, setBase64Output] = useState<string>('');
-    const [fileName, setFileName] = useState<string>('');
-    const [fileSize, setFileSize] = useState<string>('');
-    const [isDragging, setIsDragging] = useState(false);
+    // Load saved data on mount using lazy initialization
+    const [input, setInput] = useState(() => {
+        if (typeof window === 'undefined') return '';
+        try {
+            return localStorage.getItem(STORAGE_KEYS.BASE64_TO_MEDIA_INPUT) || '';
+        } catch (error) {
+            console.error('Failed to load saved data:', error);
+            return '';
+        }
+    });
 
-    const handleFileSelect = useCallback((file: File) => {
-        if (!file.type.startsWith('image/')) {
-            toast.error('Please select an image file');
-            return;
+    // Save input to localStorage when it changes
+    useEffect(() => {
+        if (input) {
+            try {
+                localStorage.setItem(STORAGE_KEYS.BASE64_TO_MEDIA_INPUT, input);
+            } catch (error) {
+                console.error('Failed to save input:', error);
+            }
+        }
+    }, [input]);
+
+    // Detect MIME type from magic bytes
+    const detectMimeType = useCallback((bytes: Uint8Array): string => {
+        // Check for common file signatures
+        if (bytes.length < 4) return 'application/octet-stream';
+
+        // PNG
+        if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47) {
+            return 'image/png';
         }
 
-        setFileName(file.name);
-        setFileSize(`${(file.size / 1024).toFixed(2)} KB`);
+        // JPEG
+        if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) {
+            return 'image/jpeg';
+        }
+
+        // GIF
+        if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46) {
+            return 'image/gif';
+        }
+
+        // WebP
+        if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46) {
+            return 'image/webp';
+        }
+
+        // PDF
+        if (bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46) {
+            return 'application/pdf';
+        }
+
+        // SVG
+        const text = new TextDecoder().decode(bytes.slice(0, 100));
+        if (text.includes('<svg') || text.includes('<?xml')) {
+            return 'image/svg+xml';
+        }
+
+        // Default
+        return 'application/octet-stream';
+    }, []);
+
+    // Get file extension from MIME type
+    const getExtensionFromMimeType = useCallback((mimeType: string): string => {
+        const extensions: Record<string, string> = {
+            'image/png': '.png',
+            'image/jpeg': '.jpg',
+            'image/gif': '.gif',
+            'image/webp': '.webp',
+            'image/svg+xml': '.svg',
+            'application/pdf': '.pdf',
+            'application/octet-stream': '.bin',
+        };
+        return extensions[mimeType] || '.bin';
+    }, []);
+
+    // Decode Base64 to media - computed value
+    const mediaPreview = useMemo(() => {
+        if (!input.trim()) {
+            return null;
+        }
+
+        try {
+            // Clean the input - remove whitespace and data URL scheme if present
+            const cleanInput = input.trim().replace(/\s/g, '');
+
+            // Check if it's a data URL
+            if (cleanInput.startsWith('data:')) {
+                const matches = cleanInput.match(/^data:([^;]+);base64,(.+)$/);
+                if (matches) {
+                    const mimeType = matches[1];
+                    const base64Data = matches[2];
+                    const decodedData = atob(base64Data);
+                    const bytes = new Uint8Array(decodedData.length);
+                    for (let i = 0; i < decodedData.length; i++) {
+                        bytes[i] = decodedData.charCodeAt(i);
+                    }
+
+                    return {
+                        dataUrl: cleanInput,
+                        mimeType,
+                        filename: `decoded_file${getExtensionFromMimeType(mimeType)}`,
+                        size: bytes.length,
+                    };
+                }
+            }
+
+            // Try to decode as raw base64
+            try {
+                const decodedData = atob(cleanInput);
+                const bytes = new Uint8Array(decodedData.length);
+                for (let i = 0; i < decodedData.length; i++) {
+                    bytes[i] = decodedData.charCodeAt(i);
+                }
+
+                // Try to detect MIME type from magic bytes
+                const mimeType = detectMimeType(bytes);
+
+                return {
+                    dataUrl: `data:${mimeType};base64,${cleanInput}`,
+                    mimeType,
+                    filename: `decoded_file${getExtensionFromMimeType(mimeType)}`,
+                    size: bytes.length,
+                };
+            } catch {
+                return null;
+            }
+        } catch {
+            return null;
+        }
+    }, [input, detectMimeType, getExtensionFromMimeType]);
+
+    const error = useMemo(() => {
+        if (!input.trim()) return null;
+
+        try {
+            const cleanInput = input.trim().replace(/\s/g, '');
+
+            if (cleanInput.startsWith('data:')) {
+                const matches = cleanInput.match(/^data:([^;]+);base64,(.+)$/);
+                if (matches) return null;
+            }
+
+            // Try to decode
+            atob(cleanInput);
+            return null;
+        } catch {
+            return 'Invalid Base64 string';
+        }
+    }, [input]);
+
+    // Handle file upload - upload a base64 file
+    const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            const result = e.target?.result as string;
-            setImageDataUrl(result);
-            setBase64Output(result);
+            const content = e.target?.result as string;
+            setInput(content);
+            toast.success(`File "${file.name}" loaded`);
         };
-        reader.readAsDataURL(file);
+
+        reader.onerror = () => {
+            toast.error('Failed to read file');
+        };
+
+        reader.readAsText(file);
+        event.target.value = '';
     }, []);
 
-    const handleDrop = useCallback(
-        (e: React.DragEvent) => {
-            e.preventDefault();
-            setIsDragging(false);
-
-            const file = e.dataTransfer.files[0];
-            if (file) {
-                handleFileSelect(file);
-            }
-        },
-        [handleFileSelect],
-    );
-
-    const handleDragOver = useCallback((e: React.DragEvent) => {
-        e.preventDefault();
-        setIsDragging(true);
-    }, []);
-
-    const handleDragLeave = useCallback((e: React.DragEvent) => {
-        e.preventDefault();
-        setIsDragging(false);
-    }, []);
-
-    const handleFileInput = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const file = e.target.files?.[0];
-            if (file) {
-                handleFileSelect(file);
-            }
-        },
-        [handleFileSelect],
-    );
-
-    const handleCopy = useCallback(() => {
-        if (base64Output) {
-            navigator.clipboard.writeText(base64Output);
-            toast.success('Copied to clipboard');
-        }
-    }, [base64Output]);
-
+    // Download decoded media
     const handleDownload = useCallback(() => {
-        if (base64Output) {
-            const blob = new Blob([base64Output], { type: 'text/plain' });
+        if (!mediaPreview) return;
+
+        try {
+            // Extract base64 data from data URL
+            const base64Data = mediaPreview.dataUrl.split(',')[1];
+            const byteCharacters = atob(base64Data);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+
+            const blob = new Blob([byteArray], { type: mediaPreview.mimeType });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${fileName.replace(/\.[^/.]+$/, '')}_base64.txt`;
+            a.download = mediaPreview.filename;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            toast.success('Downloaded Base64 file');
-        }
-    }, [base64Output, fileName]);
 
+            toast.success('Media downloaded successfully');
+        } catch (err) {
+            console.error('Download error:', err);
+            toast.error('Failed to download media');
+        }
+    }, [mediaPreview]);
+
+    // Handle clear
     const handleClear = useCallback(() => {
-        setImageDataUrl(null);
-        setBase64Output('');
-        setFileName('');
-        setFileSize('');
+        setInput('');
     }, []);
 
-    // Define action buttons for Image Preview section
-    const imageActions = useMemo(
+    // Define action buttons for Input Source section
+    const inputActions = useMemo(
         () => [
             {
                 id: 'upload',
                 icon: Upload,
-                label: 'Upload image',
-                accept: 'image/*',
-                onChange: handleFileInput,
-                title: 'Upload image file',
+                label: 'Upload Base64 file',
+                accept: '.txt,.base64,.b64',
+                onChange: handleFileUpload,
+                title: 'Upload a file containing Base64 text',
+            },
+            {
+                id: 'clear',
+                icon: X,
+                label: 'Clear all',
+                onClick: onClear || handleClear,
+                title: 'Clear all',
+                disabled: !input && !mediaPreview,
             },
         ],
-        [handleFileInput],
+        [handleFileUpload, input, mediaPreview, onClear, handleClear],
     );
 
-    // Define action buttons for Base64 Output section
+    // Define action buttons for Output section
     const outputActions = useMemo(
         () => [
             {
-                id: 'copy',
-                icon: Copy,
-                label: 'Copy to clipboard',
-                onClick: handleCopy,
-                title: 'Copy to clipboard',
-                disabled: !base64Output,
-            },
-            {
                 id: 'download',
                 icon: Download,
-                label: 'Download as file',
+                label: 'Download media',
                 onClick: handleDownload,
-                title: 'Download as file',
-                disabled: !base64Output,
+                title: 'Download decoded media',
+                disabled: !mediaPreview,
             },
         ],
-        [handleCopy, handleDownload, base64Output],
+        [handleDownload, mediaPreview],
     );
+
+    // Format file size
+    const formatFileSize = (bytes: number): string => {
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+        return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    };
 
     return (
         <>
-            <div className="border-b">
-                <div className="mx-auto py-4 px-4">
-                    <div className="flex items-center justify-between">
-                        <Button variant="outline" size="sm" onClick={onClear || handleClear}>
-                            <X className="h-4 w-4 mr-2" />
-                            Clear All
-                        </Button>
-                    </div>
-                </div>
-            </div>
+            <Toolbar
+                actions={[
+                    {
+                        id: 'clear',
+                        label: 'Clear All',
+                        onClick: onClear || handleClear,
+                        variant: 'outline',
+                    },
+                ]}
+            />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
-                {/* Left side - Upload & Preview */}
-                <div className="flex flex-col h-full">
-                    <div className="flex items-center justify-between mb-2">
+            <div className="flex flex-col lg:flex-row gap-4">
+                {/* Left side - Input */}
+                <div className="flex flex-col h-full flex-1 min-w-0 lg:pr-4 lg:border-r">
+                    <div className="flex items-center justify-between my-2">
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Image Preview
+                            Input Source
                         </label>
-                        {!imageDataUrl && <EditorActions buttons={imageActions} />}
+                        <EditorActions buttons={inputActions} />
                     </div>
 
-                    {!imageDataUrl ? (
-                        <div
-                            onDrop={handleDrop}
-                            onDragOver={handleDragOver}
-                            onDragLeave={handleDragLeave}
-                            className={`border-2 border-dashed rounded-lg flex-1 flex flex-col items-center justify-center p-8 transition-colors ${
-                                isDragging
-                                    ? 'border-primary bg-primary/5'
-                                    : 'border-border hover:border-primary/50'
-                            }`}
-                            style={{ minHeight: '400px' }}
-                        >
-                            <ImageIcon className="h-16 w-16 text-muted-foreground mb-4" />
-                            <h3 className="text-lg font-semibold mb-2">Upload Image</h3>
-                            <p className="text-sm text-muted-foreground text-center mb-4">
-                                Drag and drop an image here, or click to browse
-                            </p>
-                            <label>
-                                <Button type="button" asChild>
-                                    <span>
-                                        <Upload className="h-4 w-4 mr-2" />
-                                        Choose File
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={handleFileInput}
-                                            className="hidden"
-                                        />
-                                    </span>
-                                </Button>
-                            </label>
-                            <p className="text-xs text-muted-foreground mt-4">
-                                Supports: PNG, JPEG, GIF, WebP, SVG
-                            </p>
-                        </div>
-                    ) : (
-                        <div
-                            className="border border-input rounded-lg flex-1 flex flex-col overflow-hidden"
-                            style={{ minHeight: '400px' }}
-                        >
-                            <div className="flex items-center justify-between p-2 border-b bg-muted/20">
-                                <span className="text-sm font-medium truncate">{fileName}</span>
-                                <span className="text-xs text-muted-foreground">{fileSize}</span>
-                            </div>
-                            <div className="flex-1 flex items-center justify-center p-4 bg-muted/10">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src={imageDataUrl}
-                                    alt="Preview"
-                                    className="max-w-full max-h-[400px] object-contain rounded"
+                    {/* Textarea for Base64 input */}
+                    <div className="border border-input rounded-md flex-1 overflow-hidden relative">
+                        <textarea
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            className="w-full h-full resize-none p-3 font-mono text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                            style={{ minHeight: '600px' }}
+                        />
+                        {!input && (
+                            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                                <EmptyEditorPrompt
+                                    icon={Upload}
+                                    title="Start adding Base64 data"
+                                    description="Paste Base64 text or upload a Base64 file to decode"
+                                    showActions={true}
                                 />
-                            </div>
-                            <div className="p-2 border-t bg-muted/20">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={handleClear}
-                                    className="w-full"
-                                >
-                                    <X className="h-4 w-4 mr-2" />
-                                    Remove Image
-                                </Button>
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                {/* Right side - Base64 Output */}
-                <div className="flex flex-col h-full">
-                    <div className="flex items-center justify-between mb-2">
-                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Base64 Output
-                        </label>
-                        <EditorActions buttons={outputActions} />
-                    </div>
-
-                    <div
-                        className="border border-input rounded-md flex-1 overflow-hidden relative"
-                        style={{ minHeight: '400px' }}
-                    >
-                        {base64Output ? (
-                            <textarea
-                                value={base64Output}
-                                readOnly
-                                className="w-full h-full resize-none p-3 font-mono text-xs bg-background focus:outline-none"
-                                style={{ minHeight: '400px' }}
-                            />
-                        ) : (
-                            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                                <p className="text-sm">Upload an image to generate Base64</p>
                             </div>
                         )}
                     </div>
 
-                    {base64Output && (
-                        <div className="mt-2 p-2 bg-muted/20 rounded text-xs text-muted-foreground">
-                            <div className="flex justify-between">
-                                <span>Characters: {base64Output.length.toLocaleString()}</span>
-                                <span>Size: {(base64Output.length / 1024).toFixed(2)} KB</span>
+                    {/* Footer for Input section */}
+                    <div className="shrink-0">
+                        <div className="flex items-center justify-between py-2">
+                            <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                                {input && (
+                                    <div className="flex items-center gap-1.5" title="Characters">
+                                        <Type className="h-3.5 w-3.5 text-gray-500" />
+                                        <span>{input.length.toLocaleString()} chars</span>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="flex items-center gap-2 shrink-0">
+                                <div
+                                    className={`flex items-center gap-1.5 py-1 rounded-md text-xs font-medium ${
+                                        error
+                                            ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                                            : input
+                                              ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                                              : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                                    }`}
+                                >
+                                    {error ? (
+                                        <X className="h-3.5 w-3.5" />
+                                    ) : input ? (
+                                        <Check className="h-3.5 w-3.5" />
+                                    ) : (
+                                        <Circle className="h-3.5 w-3.5" />
+                                    )}
+                                    <span>{error ? 'Invalid' : input ? 'Ready' : 'Empty'}</span>
+                                </div>
                             </div>
                         </div>
-                    )}
+                    </div>
+                </div>
+
+                {/* Right side - Output */}
+                <div className="flex flex-col h-full flex-1 min-w-0">
+                    <div className="flex items-center justify-between my-2">
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Output
+                        </label>
+                        <EditorActions buttons={outputActions} />
+                    </div>
+
+                    {/* Media Preview or Empty State */}
+                    <div
+                        className="border border-input rounded-md flex-1 overflow-hidden relative bg-background"
+                        style={{ minHeight: '600px' }}
+                    >
+                        {mediaPreview ? (
+                            <div className="h-full flex flex-col items-center justify-center p-4">
+                                {mediaPreview.mimeType.startsWith('image/') ? (
+                                    <>
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img
+                                            src={mediaPreview.dataUrl}
+                                            alt="Decoded media"
+                                            className="max-w-full max-h-[500px] object-contain rounded-lg mb-4"
+                                        />
+                                        <div className="text-center">
+                                            <p className="text-sm font-medium">
+                                                {mediaPreview.filename}
+                                            </p>
+                                            <p className="text-xs text-muted-foreground">
+                                                {mediaPreview.mimeType} •{' '}
+                                                {formatFileSize(mediaPreview.size)}
+                                            </p>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center text-center">
+                                        {mediaPreview.mimeType.includes('pdf') ? (
+                                            <FileText className="h-20 w-20 text-muted-foreground mb-4" />
+                                        ) : (
+                                            <File className="h-20 w-20 text-muted-foreground mb-4" />
+                                        )}
+                                        <p className="text-sm font-medium mb-1">
+                                            {mediaPreview.filename}
+                                        </p>
+                                        <p className="text-xs text-muted-foreground">
+                                            {mediaPreview.mimeType} •{' '}
+                                            {formatFileSize(mediaPreview.size)}
+                                        </p>
+                                        <p className="text-xs text-gray-500 mt-2">
+                                            Preview not available for this file type
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        ) : error ? (
+                            <div className="h-full flex items-center justify-center p-4">
+                                <div className="text-center">
+                                    <X className="h-16 w-16 text-red-500 mx-auto mb-4" />
+                                    <p className="text-sm font-medium text-red-600 dark:text-red-400">
+                                        {error}
+                                    </p>
+                                    <p className="text-xs text-gray-500 mt-2">
+                                        Please check your Base64 input and try again
+                                    </p>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                                <EmptyEditorPrompt
+                                    icon={HardDrive}
+                                    title="Decoded media will appear here"
+                                    description="Enter Base64 encoded data to see the decoded media"
+                                    showActions={false}
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Footer for Output section */}
+                    <div className="shrink-0">
+                        <div className="flex items-center justify-between py-2">
+                            <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                                {mediaPreview ? (
+                                    <>
+                                        <div
+                                            className="flex items-center gap-1.5"
+                                            title="File size"
+                                        >
+                                            <HardDrive className="h-3.5 w-3.5 text-gray-500" />
+                                            <span className="font-medium">
+                                                {formatFileSize(mediaPreview.size)}
+                                            </span>
+                                        </div>
+                                        <div
+                                            className="flex items-center gap-1.5"
+                                            title="File type"
+                                        >
+                                            <Type className="h-3.5 w-3.5 text-gray-500" />
+                                            <span>{mediaPreview.mimeType}</span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <span className="text-gray-500">No output</span>
+                                )}
+                            </div>
+                            <div className="flex items-center gap-2 shrink-0">
+                                <div
+                                    className={`flex items-center gap-1.5 py-1 rounded-md text-xs font-medium ${
+                                        error
+                                            ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                                            : mediaPreview
+                                              ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                                              : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                                    }`}
+                                >
+                                    {error ? (
+                                        <X className="h-3.5 w-3.5" />
+                                    ) : mediaPreview ? (
+                                        <Check className="h-3.5 w-3.5" />
+                                    ) : (
+                                        <Circle className="h-3.5 w-3.5" />
+                                    )}
+                                    <span>
+                                        {error ? 'Error' : mediaPreview ? 'Decoded' : 'Empty'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

@@ -39,6 +39,11 @@ export const STORAGE_KEYS = {
     // Git Branch Generator
     GIT_BRANCH_LAST_GENERATED: 'git-branch-last-generated',
 
+    // Base64 tool
+    BASE64_MEDIA_TO_BASE64_INPUT: 'base64-media-to-base64-input',
+    BASE64_MEDIA_TO_BASE64_OUTPUT: 'base64-media-to-base64-output',
+    BASE64_TO_MEDIA_INPUT: 'base64-to-media-input',
+
     // Theme
     THEME: 'theme',
 } as const;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { toast } from 'sonner';
 import {
     Upload,
@@ -19,14 +19,34 @@ import { EditorActions } from '@/components/editor-pane/editor-actions';
 import { EditorFooter } from '@/components/editor-pane';
 import { Toolbar } from '@/components/toolbar/toolbar';
 import { Base64ShareDialog } from '@/components/base64-pane';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 export interface MediaToBase64TabProps {
     onClear?: () => void;
 }
 
 export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
-    const [input, setInput] = useState('');
-    const [output, setOutput] = useState('');
+    // Load saved data on mount using lazy initialization
+    const [input, setInput] = useState(() => {
+        if (typeof window === 'undefined') return '';
+        try {
+            return localStorage.getItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_INPUT) || '';
+        } catch (error) {
+            console.error('Failed to load saved data:', error);
+            return '';
+        }
+    });
+
+    const [output, setOutput] = useState(() => {
+        if (typeof window === 'undefined') return '';
+        try {
+            return localStorage.getItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT) || '';
+        } catch (error) {
+            console.error('Failed to load saved data:', error);
+            return '';
+        }
+    });
+
     const [isFetching, setIsFetching] = useState(false);
     const [filePreview, setFilePreview] = useState<{
         dataUrl: string;
@@ -35,6 +55,28 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
         size: string;
     } | null>(null);
     const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
+
+    // Save input to localStorage when it changes
+    useEffect(() => {
+        if (input) {
+            try {
+                localStorage.setItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_INPUT, input);
+            } catch (error) {
+                console.error('Failed to save input:', error);
+            }
+        }
+    }, [input]);
+
+    // Save output to localStorage when it changes
+    useEffect(() => {
+        if (output) {
+            try {
+                localStorage.setItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT, output);
+            } catch (error) {
+                console.error('Failed to save output:', error);
+            }
+        }
+    }, [output]);
 
     // Fetch URL and convert to Base64
     const handleUrlFetch = useCallback(async () => {

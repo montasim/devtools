@@ -14,14 +14,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, FileCode, Image as ImageIcon, Share2, History } from 'lucide-react';
 import { MediaToBase64Tab } from '@/app/base64/tabs/media-to-base64-tab';
 import { Base64ToMediaTab } from '@/app/base64/tabs/base64-to-media-tab';
+import { Base64HistoryTab } from '@/app/base64/tabs/base64-history-tab';
 import { OptionsTab } from '@/app/json/tabs/options-tab';
-import { HistoryTab } from '@/app/json/tabs/history-tab';
 import { ShareTab } from '@/app/json/tabs/share-tab';
 import { InvalidTabState } from '@/components/ui/invalid-tab-state';
 
 type TabValue = (typeof VALID_TABS)[number];
 
-const VALID_TABS = ['encode', 'image', 'options', 'shared', 'history'] as const;
+const VALID_TABS = ['media-to-base64', 'base64-to-media', 'options', 'shared', 'history'] as const;
 
 function Base64PageContent() {
     const searchParams = useSearchParams();
@@ -38,7 +38,7 @@ function Base64PageContent() {
                 return tabFromUrl as TabValue;
             }
         }
-        return 'encode';
+        return 'media-to-base64';
     });
 
     const invalidTab: string | null = useMemo(() => {
@@ -110,12 +110,12 @@ function Base64PageContent() {
                                 <div className="flex gap-2 min-w-max">
                                     {[
                                         {
-                                            value: 'encode',
+                                            value: 'media-to-base64',
                                             label: 'Media to Base64',
                                             icon: FileCode,
                                         },
                                         {
-                                            value: 'image',
+                                            value: 'base64-to-media',
                                             label: 'Base64 to Media',
                                             icon: ImageIcon,
                                         },
@@ -176,14 +176,14 @@ function Base64PageContent() {
                 </TabsContent>
 
                 <TabsContent value="history" className="mt-0">
-                    <HistoryTab onTabChange={handleTabChange} />
+                    <Base64HistoryTab onTabChange={handleTabChange} />
                 </TabsContent>
 
-                <TabsContent value="encode" className="mt-0">
+                <TabsContent value="media-to-base64" className="mt-0">
                     <MediaToBase64Tab onClear={handleClear} />
                 </TabsContent>
 
-                <TabsContent value="image" className="mt-0">
+                <TabsContent value="base64-to-media" className="mt-0">
                     <Base64ToMediaTab onClear={handleClear} />
                 </TabsContent>
 
