@@ -1,20 +1,12 @@
 'use client';
 
-/* eslint-disable react-hooks/set-state-in-effect */
-import { useState, useEffect } from 'react';
 import { Moon, Sun, Monitor } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { useTheme } from '@/components/theme/theme-provider';
+import { useTheme } from 'next-themes';
 
 export function ThemeToggle() {
-    const { theme, setTheme, effectiveTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-
-    // Only render theme-dependent UI after client-side hydration
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    const { theme, setTheme, resolvedTheme } = useTheme();
 
     const cycleTheme = () => {
         if (theme === 'light') {
@@ -30,7 +22,7 @@ export function ThemeToggle() {
         if (theme === 'system') {
             return <Monitor className="h-[1.2rem] w-[1.2rem]" />;
         }
-        return effectiveTheme === 'dark' ? (
+        return resolvedTheme === 'dark' ? (
             <Moon className="h-[1.2rem] w-[1.2rem]" />
         ) : (
             <Sun className="h-[1.2rem] w-[1.2rem]" />
@@ -39,22 +31,10 @@ export function ThemeToggle() {
 
     const getThemeLabel = () => {
         if (theme === 'system') {
-            return `System (${effectiveTheme})`;
+            return `System (${resolvedTheme})`;
         }
-        return theme.charAt(0).toUpperCase() + theme.slice(1);
+        return (theme || 'system').charAt(0).toUpperCase() + (theme || 'system').slice(1);
     };
-
-    // Don't render theme-dependent UI until mounted to prevent hydration mismatch
-    if (!mounted) {
-        return (
-            <Button
-                size="icon"
-                variant="outline"
-                className="opacity-0"
-                aria-label="Loading theme toggle"
-            />
-        );
-    }
 
     return (
         <Tooltip>

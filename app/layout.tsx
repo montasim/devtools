@@ -1,22 +1,11 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/navbar/navbar';
 import Footer from '@/components/layout/footer';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
-
-const geistSans = Geist({
-    variable: '--font-geist-sans',
-    subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-    variable: '--font-geist-mono',
-    subsets: ['latin'],
-});
 
 export const metadata: Metadata = {
     title: {
@@ -82,38 +71,15 @@ export const metadata: Metadata = {
     },
 };
 
-function ThemeScript() {
-    return (
-        <script
-            dangerouslySetInnerHTML={{
-                __html: `
-                    (function() {
-                        const theme = localStorage.getItem('theme');
-                        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                        const effectiveTheme = theme === 'system' ? systemTheme : theme || systemTheme;
-                        document.documentElement.classList.add(effectiveTheme);
-                    })();
-                `,
-            }}
-        />
-    );
-}
-
 export default function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
-        <html
-            lang="en"
-            className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-        >
-            <head>
-                <ThemeScript />
-            </head>
-            <body className="min-h-full flex flex-col" suppressHydrationWarning>
-                <ThemeProvider>
+        <html lang="en" className="h-full antialiased">
+            <body className="min-h-full flex flex-col">
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                     <TooltipProvider>
                         <Navbar />
 
