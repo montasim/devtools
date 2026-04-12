@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 /**
  * Custom hook to handle client-only rendering
@@ -6,14 +6,14 @@ import { useEffect, useState } from 'react';
  * Use this to prevent hydration mismatches when accessing browser APIs
  */
 export function useClientOnly() {
-    const [isClient, setIsClient] = useState(false);
-
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setIsClient(true);
-    }, []);
-
-    return isClient;
+    return useSyncExternalStore(
+        // subscribe function - no-op since we only need to know if we're on client
+        () => () => {},
+        // getSnapshot on client - always return true
+        () => true,
+        // getSnapshot on server - return false
+        () => false,
+    );
 }
 
 /**
