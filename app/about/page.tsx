@@ -1,13 +1,5 @@
 import Link from 'next/link';
-import {
-    Globe,
-    Mail,
-    Heart,
-    Zap,
-    Shield,
-    Code2,
-    Users,
-} from 'lucide-react';
+import { Globe, Mail, Heart, Zap, Shield, Code2, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const values = [
@@ -77,11 +69,7 @@ export default function AboutPage() {
                             </Link>
                         </Button>
                         <Button size="lg" variant="outline" asChild>
-                            <a
-                                href="https://github.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
                                 <Globe className="mr-2 h-5 w-5" />
                                 View on GitHub
                             </a>
@@ -120,19 +108,19 @@ export default function AboutPage() {
 
                     <div className="prose prose-lg dark:prose-invert mx-auto max-w-none">
                         <p>
-                            DevTools was created to solve a common problem: developers need quick, reliable
-                            tools to format, validate, and transform data without worrying about privacy or
-                            paying for premium features.
+                            DevTools was created to solve a common problem: developers need quick,
+                            reliable tools to format, validate, and transform data without worrying
+                            about privacy or paying for premium features.
                         </p>
                         <p>
-                            We believe that essential developer tools should be free, fast, and respect your
-                            privacy. That&apos;s why all our tools run entirely in your browser—your data never
-                            leaves your device.
+                            We believe that essential developer tools should be free, fast, and
+                            respect your privacy. That&apos;s why all our tools run entirely in your
+                            browser—your data never leaves your device.
                         </p>
                         <p>
-                            Whether you&apos;re debugging JSON, comparing text files, encoding Base64 data, or
-                            generating consistent git branch names, our tools are designed to help you work
-                            more efficiently.
+                            Whether you&apos;re debugging JSON, comparing text files, encoding
+                            Base64 data, or generating consistent git branch names, our tools are
+                            designed to help you work more efficiently.
                         </p>
                     </div>
                 </div>
@@ -223,7 +211,8 @@ export default function AboutPage() {
                             },
                             {
                                 title: 'XML Tools',
-                                description: 'Parse, validate, and convert XML data with a user-friendly interface.',
+                                description:
+                                    'Parse, validate, and convert XML data with a user-friendly interface.',
                                 href: '/xml',
                             },
                             {
@@ -233,7 +222,8 @@ export default function AboutPage() {
                             },
                             {
                                 title: 'Git Branch Generator',
-                                description: 'Generate consistent git branch names following best practices.',
+                                description:
+                                    'Generate consistent git branch names following best practices.',
                                 href: '/git-branch-generator',
                             },
                         ].map((tool) => (
@@ -243,10 +233,10 @@ export default function AboutPage() {
                                 className="group rounded-xl border bg-card p-6 transition-all hover:shadow-lg hover:shadow-primary/5"
                             >
                                 <h3 className="mb-2 text-lg font-semibold">{tool.title}</h3>
-                                <p className="mb-4 text-sm text-muted-foreground">{tool.description}</p>
-                                <span className="text-sm font-medium text-primary">
-                                    Explore →
-                                </span>
+                                <p className="mb-4 text-sm text-muted-foreground">
+                                    {tool.description}
+                                </p>
+                                <span className="text-sm font-medium text-primary">Explore →</span>
                             </Link>
                         ))}
                     </div>
@@ -265,21 +255,13 @@ export default function AboutPage() {
                     </p>
                     <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
                         <Button size="lg" asChild>
-                            <a
-                                href="https://github.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
                                 <Globe className="mr-2 h-5 w-5" />
                                 Star on GitHub
                             </a>
                         </Button>
                         <Button size="lg" variant="outline" asChild>
-                            <a
-                                href="https://twitter.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
+                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
                                 <Globe className="mr-2 h-5 w-5" />
                                 Follow on Twitter
                             </a>
@@ -298,7 +280,8 @@ export default function AboutPage() {
             <section className="border-t px-4 py-12 text-center sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl">
                     <p className="flex items-center justify-center gap-2 text-muted-foreground">
-                        Made with <Heart className="h-4 w-4 text-red-500" /> by developers, for developers
+                        Made with <Heart className="h-4 w-4 text-red-500" /> by developers, for
+                        developers
                     </p>
                 </div>
             </section>
