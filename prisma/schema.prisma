@@ -13,29 +13,29 @@ datasource db {
 }
 
 // Shareable app state models
-   model SharedLink {
-     id           String    @id @default(cuid())
-     pageType     String // 'text', 'json', etc.
-     title        String? // Optional user-provided title
-     expiresAt    DateTime? // Null = never expires
-     passwordHash String? // Null = public access
-     updateToken  String?   @unique // Authorization token for updates/deletes
-     viewCount    Int       @default(0)
-     updatedAt    DateTime  @updatedAt
-     createdAt    DateTime  @default(now())
+model SharedLink {
+  id           String    @id @default(cuid())
+  pageType     String // 'text', 'json', etc.
+  title        String? // Optional user-provided title
+  expiresAt    DateTime? // Null = never expires
+  passwordHash String? // Null = public access
+  updateToken  String?   @unique // Authorization token for updates/deletes
+  viewCount    Int       @default(0)
+  updatedAt    DateTime  @updatedAt
+  createdAt    DateTime  @default(now())
 
-     content SharedContent?
+  content SharedContent?
 
-     @@index([pageType])
-     @@index([createdAt])
-     @@index([updateToken])
-   }
+  @@index([pageType])
+  @@index([createdAt])
+  @@index([updateToken])
+}
 
-   model SharedContent {
-     id     String     @id @default(cuid())
-     linkId String     @unique
-     state  Json // Page-specific state as JSON
-     link   SharedLink @relation(fields: [linkId], references: [id], onDelete: Cascade)
+model SharedContent {
+  id     String     @id @default(cuid())
+  linkId String     @unique
+  state  Json // Page-specific state as JSON
+  link   SharedLink @relation(fields: [linkId], references: [id], onDelete: Cascade)
 
-     @@index([linkId])
-   }
+  @@index([linkId])
+}
