@@ -24,7 +24,7 @@ import { PAGE_NAMES, BASE64_TABS } from '@/lib/constants/tabs';
 
 export interface MediaToBase64TabProps {
     onClear?: () => void;
-    sharedData?: any;
+    sharedData?: { tabName?: string; state?: { leftContent?: string; rightContent?: string } };
 }
 
 export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps) {
@@ -35,7 +35,10 @@ export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps)
     const [leftContent, setLeftContent] = useState<string>(() => {
         try {
             // Prioritize shared content if available
-            if (sharedData?.tabName === BASE64_TABS.MEDIA_TO_BASE64 && sharedData?.state?.leftContent) {
+            if (
+                sharedData?.tabName === BASE64_TABS.MEDIA_TO_BASE64 &&
+                sharedData?.state?.leftContent
+            ) {
                 sharedDataLoadedRef.current = true;
                 return sharedData.state.leftContent;
             }
@@ -47,7 +50,10 @@ export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps)
     const [rightContent, setRightContent] = useState<string>(() => {
         try {
             // Prioritize shared content if available
-            if (sharedData?.tabName === BASE64_TABS.MEDIA_TO_BASE64 && sharedData?.state?.rightContent) {
+            if (
+                sharedData?.tabName === BASE64_TABS.MEDIA_TO_BASE64 &&
+                sharedData?.state?.rightContent
+            ) {
                 return sharedData.state.rightContent;
             }
             return '';
@@ -79,7 +85,9 @@ export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps)
             // Only load from localStorage if no shared data was present on mount
             if (!sharedDataLoadedRef.current) {
                 const savedInput = localStorage.getItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_INPUT);
-                const savedOutput = localStorage.getItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT);
+                const savedOutput = localStorage.getItem(
+                    STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT,
+                );
                 if (savedInput) setLeftContent(savedInput);
                 if (savedOutput) setRightContent(savedOutput);
             }
@@ -91,7 +99,11 @@ export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps)
     // Handle async shared data arrival
     useEffect(() => {
         // If shared data just arrived (was undefined/null, now has value)
-        if (sharedData?.tabName === BASE64_TABS.MEDIA_TO_BASE64 && sharedData?.state && !sharedDataLoadedRef.current) {
+        if (
+            sharedData?.tabName === BASE64_TABS.MEDIA_TO_BASE64 &&
+            sharedData?.state &&
+            !sharedDataLoadedRef.current
+        ) {
             sharedDataLoadedRef.current = true;
             if (sharedData.state.leftContent) setLeftContent(sharedData.state.leftContent);
             if (sharedData.state.rightContent) setRightContent(sharedData.state.rightContent);
@@ -293,7 +305,15 @@ export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps)
                 disabled: !leftContent && !rightContent,
             },
         ],
-        [handleFileUpload, handleUrlFetch, isFetching, leftContent, rightContent, onClear, handleClear],
+        [
+            handleFileUpload,
+            handleUrlFetch,
+            isFetching,
+            leftContent,
+            rightContent,
+            onClear,
+            handleClear,
+        ],
     );
 
     // Define action buttons for Base64 Output section
@@ -317,7 +337,7 @@ export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps)
                 content={currentRightContent}
                 leftContent={currentLeftContent}
                 pageName={PAGE_NAMES.BASE64}
-                tabName={BASE64_TABS.MEDIA_TO_BASE64 as keyof typeof BASE64_TABS}
+                tabName={BASE64_TABS.MEDIA_TO_BASE64}
                 open={isShareSheetOpen}
                 onOpenChange={setIsShareSheetOpen}
             />

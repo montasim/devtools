@@ -16,11 +16,12 @@ import {
 } from '@/components/ui/select';
 import { useCreateShare } from '@/lib/api/share';
 import type { ShareError } from '@/lib/types/share';
+import { PAGE_NAMES, TAB_NAMES } from '@/lib/constants/tabs';
 
 interface ShareFormProps {
-    pageName: string;
-    tabName: string;
-    getState: () => any;
+    pageName: (typeof PAGE_NAMES)[keyof typeof PAGE_NAMES];
+    tabName: (typeof TAB_NAMES)[keyof typeof TAB_NAMES];
+    getState: () => Record<string, unknown>;
     onLinkGenerated?: (url: string) => void;
 }
 
@@ -135,7 +136,10 @@ export function ShareForm({ pageName, tabName, getState, onLinkGenerated }: Shar
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label htmlFor="expiration">Expiration</Label>
-                            <Select value={expiration} onValueChange={(v: any) => setExpiration(v)}>
+                            <Select
+                                value={expiration}
+                                onValueChange={(v: '1h' | '1d' | '7d' | '30d') => setExpiration(v)}
+                            >
                                 <SelectTrigger id="expiration">
                                     <SelectValue />
                                 </SelectTrigger>

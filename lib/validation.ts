@@ -1,7 +1,7 @@
 const MAX_STATE_SIZE = 5 * 1024 * 1024; // 5MB total
 const MAX_FIELD_SIZE = 1 * 1024 * 1024; // 1MB per field
 
-export function validateState(state: any): { valid: boolean; error?: string } {
+export function validateState(state: Record<string, unknown>): { valid: boolean; error?: string } {
     // Check total size
     const stateSize = JSON.stringify(state).length;
     if (stateSize > MAX_STATE_SIZE) {
@@ -9,7 +9,10 @@ export function validateState(state: any): { valid: boolean; error?: string } {
     }
 
     // Check individual string fields
-    function checkFields(obj: any, path = '') {
+    function checkFields(
+        obj: Record<string, unknown>,
+        path = '',
+    ): { valid: boolean; error?: string } {
         for (const [key, value] of Object.entries(obj)) {
             const fieldPath = path ? `${path}.${key}` : key;
 

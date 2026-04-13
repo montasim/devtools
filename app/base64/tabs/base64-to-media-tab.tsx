@@ -12,7 +12,7 @@ import { PAGE_NAMES, BASE64_TABS } from '@/lib/constants/tabs';
 
 export interface Base64ToMediaTabProps {
     onClear?: () => void;
-    sharedData?: any;
+    sharedData?: { tabName?: string; state?: { leftContent?: string } };
 }
 
 export function Base64ToMediaTab({ onClear, sharedData }: Base64ToMediaTabProps) {
@@ -20,18 +20,7 @@ export function Base64ToMediaTab({ onClear, sharedData }: Base64ToMediaTabProps)
     const sharedDataLoadedRef = useRef(false);
 
     // Initialize with empty string to avoid hydration mismatch
-    const [leftContent, setLeftContent] = useState<string>(() => {
-        try {
-            // Prioritize shared content if available
-            if (sharedData?.tabName === BASE64_TABS.BASE64_TO_MEDIA && sharedData?.state?.leftContent) {
-                sharedDataLoadedRef.current = true;
-                return sharedData.state.leftContent;
-            }
-            return '';
-        } catch {
-            return '';
-        }
-    });
+    const [leftContent, setLeftContent] = useState<string>('');
     const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
 
@@ -58,7 +47,11 @@ export function Base64ToMediaTab({ onClear, sharedData }: Base64ToMediaTabProps)
     // Handle async shared data arrival
     useEffect(() => {
         // If shared data just arrived (was undefined/null, now has value)
-        if (sharedData?.tabName === BASE64_TABS.BASE64_TO_MEDIA && sharedData?.state?.leftContent && !sharedDataLoadedRef.current) {
+        if (
+            sharedData?.tabName === BASE64_TABS.BASE64_TO_MEDIA &&
+            sharedData?.state?.leftContent &&
+            !sharedDataLoadedRef.current
+        ) {
             sharedDataLoadedRef.current = true;
             setLeftContent(sharedData.state.leftContent);
         }
@@ -326,7 +319,7 @@ export function Base64ToMediaTab({ onClear, sharedData }: Base64ToMediaTabProps)
             <Base64ShareDialog
                 content={currentLeftContent}
                 pageName={PAGE_NAMES.BASE64}
-                tabName={BASE64_TABS.BASE64_TO_MEDIA as keyof typeof BASE64_TABS}
+                tabName={BASE64_TABS.BASE64_TO_MEDIA}
                 open={isShareSheetOpen}
                 onOpenChange={setIsShareSheetOpen}
             />
@@ -407,7 +400,9 @@ export function Base64ToMediaTab({ onClear, sharedData }: Base64ToMediaTabProps)
                                     ) : (
                                         <Circle className="h-3.5 w-3.5" />
                                     )}
-                                    <span>{error ? 'Invalid' : leftContent ? 'Ready' : 'Empty'}</span>
+                                    <span>
+                                        {error ? 'Invalid' : leftContent ? 'Ready' : 'Empty'}
+                                    </span>
                                 </div>
                             </div>
                         </div>

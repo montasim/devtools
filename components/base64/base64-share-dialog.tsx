@@ -2,9 +2,8 @@
 
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
-import { Copy, Check, Share2, Download } from 'lucide-react';
+import { Copy, Share2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { ShareForm } from '@/components/share/share-form';
 import { PAGE_NAMES, BASE64_TABS, TEXT_TABS, JSON_TABS } from '@/lib/constants/tabs';
@@ -20,13 +19,23 @@ import {
 interface Base64ShareDialogProps {
     content: string;
     leftContent?: string; // Input content (file name/URL) for media-to-base64 tab
-    pageName?: string; // Should be PAGE_NAMES.BASE64 ('base64')
-    tabName?: keyof typeof BASE64_TABS | keyof typeof TEXT_TABS | keyof typeof JSON_TABS;
+    pageName?: (typeof PAGE_NAMES)[keyof typeof PAGE_NAMES];
+    tabName?:
+        | (typeof BASE64_TABS)[keyof typeof BASE64_TABS]
+        | (typeof TEXT_TABS)[keyof typeof TEXT_TABS]
+        | (typeof JSON_TABS)[keyof typeof JSON_TABS];
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
 }
 
-export function Base64ShareDialog({ content, leftContent, pageName, tabName, open, onOpenChange }: Base64ShareDialogProps) {
+export function Base64ShareDialog({
+    content,
+    leftContent,
+    pageName,
+    tabName,
+    open,
+    onOpenChange,
+}: Base64ShareDialogProps) {
     const [copied, setCopied] = useState(false);
 
     const defaultPageName = PAGE_NAMES.BASE64;
@@ -83,7 +92,10 @@ export function Base64ShareDialog({ content, leftContent, pageName, tabName, ope
                         tabName={tabName || defaultTabName}
                         getState={() => {
                             // For media-to-base64 tab, send both input and output
-                            if (tabName === BASE64_TABS.MEDIA_TO_BASE64 && leftContent !== undefined) {
+                            if (
+                                tabName === BASE64_TABS.MEDIA_TO_BASE64 &&
+                                leftContent !== undefined
+                            ) {
                                 return {
                                     leftContent,
                                     rightContent: content,
