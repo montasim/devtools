@@ -41,5 +41,6 @@ export interface SchemaPaneProps {
     onError?: (error: Error) => void;
     onValidationChange?: (isValid: boolean) => void;
     onContentChange?: (jsonContent: string, schemaContent: string) => void;
+    initialJsonContent?: string;
     className?: string;
 }

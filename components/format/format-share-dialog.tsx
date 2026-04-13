@@ -6,6 +6,8 @@ import { Copy, Check, Share2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { ShareForm } from '@/components/share/share-form';
+import { PAGE_NAMES, JSON_TABS } from '@/lib/constants/tabs';
 import {
     Sheet,
     SheetContent,
@@ -125,36 +127,15 @@ export function FormatShareDialog({ content, open, onOpenChange }: FormatShareDi
                 </SheetHeader>
 
                 <div className="flex flex-col gap-4 p-4">
-                    {/* Shareable Link Section */}
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Shareable Link
-                        </label>
-
-                        <div className="flex gap-2 mt-2">
-                            <Input
-                                value={generateShareUrl()}
-                                readOnly
-                                placeholder="Generating link..."
-                                className="flex-1 text-xs"
-                            />
-                            <Button
-                                size="sm"
-                                onClick={copyShareUrl}
-                                disabled={!generateShareUrl()}
-                                className="shrink-0"
-                            >
-                                {copied ? (
-                                    <Check className="h-4 w-4" />
-                                ) : (
-                                    <Copy className="h-4 w-4" />
-                                )}
-                            </Button>
-                        </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                            Anyone with this link can view the formatted JSON
-                        </p>
-                    </div>
+                    <ShareForm
+                        pageName={PAGE_NAMES.JSON}
+                        tabName={JSON_TABS.FORMAT}
+                        getState={() => ({
+                            input: content,
+                            output: content,
+                            indent: 2,
+                        })}
+                    />
 
                     <Separator />
 

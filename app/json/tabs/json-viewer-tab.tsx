@@ -10,53 +10,35 @@ import { STORAGE_KEYS } from '@/lib/constants';
 
 interface ViewerTabProps {
     onClear: () => void;
+    sharedData?: any;
 }
 
-export function JsonViewerTab({ onClear }: ViewerTabProps) {
+export function JsonViewerTab({ onClear, sharedData }: ViewerTabProps) {
     const [viewerShowTypes, setViewerShowTypes] = useState(false);
     const [viewerShowPaths, setViewerShowPaths] = useState(false);
     const [viewerSortKeys, setViewerSortKeys] = useState(false);
     const [viewerShareDialogOpen, setViewerShareDialogOpen] = useState(false);
-    const [viewerContent, setViewerContent] = useState('');
+    const [currentContent, setCurrentContent] = useState('');
     const [showClearDialog, setShowClearDialog] = useState(false);
-
-    // Load viewer content from localStorage on mount and keep in sync
-    useEffect(() => {
-        const loadViewerContent = () => {
-            try {
-                const content = localStorage.getItem(STORAGE_KEYS.JSON_VIEWER_CONTENT) || '';
-                setViewerContent(content);
-            } catch (error) {
-                console.error('Failed to load viewer content:', error);
-            }
-        };
-
-        loadViewerContent();
-
-        // Listen for storage changes
-        const handleStorageChange = () => {
-            loadViewerContent();
-        };
-
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
-    }, []);
 
     const handleError = (error: Error) => {
         console.error('Viewer error:', error);
     };
 
+    const handleContentChange = useCallback((content: string) => {
+        setCurrentContent(content);
+    }, []);
+
     const handleViewerShare = useCallback(() => {
-        // Get the viewer content from localStorage
-        const viewerContentData = localStorage.getItem(STORAGE_KEYS.JSON_VIEWER_CONTENT);
-        if (!viewerContentData) {
+        // Use the current content from state instead of localStorage
+        if (!currentContent) {
             toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
         // Open the share dialog
         setViewerShareDialogOpen(true);
-    }, []);
+    }, [currentContent]);
 
     const handleClearClick = () => {
         setShowClearDialog(true);
@@ -116,11 +98,13 @@ export function JsonViewerTab({ onClear }: ViewerTabProps) {
                     sortKeys={viewerSortKeys}
                     onError={handleError}
                     onValidationChange={() => {}}
+                    onContentChange={handleContentChange}
+                    initialContent={sharedData?.state?.input}
                 />
             </div>
 
             <ViewerShareDialog
-                content={viewerContent}
+                content={currentContent}
                 open={viewerShareDialogOpen}
                 onOpenChange={setViewerShareDialogOpen}
             />

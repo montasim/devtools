@@ -2,22 +2,22 @@ import { z } from 'zod';
 
 // Request schemas
 export const CreateShareSchema = z.object({
-    pageType: z.enum([
-        // Text page
-        'text-diff',
-        'text-convert',
-        'text-clean',
-        // JSON page
-        'json-viewer',
-        'json-diff',
-        'json-schema',
-        'json-parser',
-        'json-format',
-        'json-minify',
-        'json-export',
-        // Base64 page
-        'base64-encode',
-        'base64-decode',
+    pageName: z.enum(['text', 'json', 'base64']),
+    tabName: z.enum([
+        // Text tabs
+        'diff',
+        'convert',
+        'clean',
+        // JSON tabs
+        'viewer',
+        'schema',
+        'parser',
+        'format',
+        'minify',
+        'export',
+        // Base64 tabs
+        'media-to-base64',
+        'base64-to-media',
     ]),
     title: z.string().min(1, 'Title is required').max(200, 'Title too long'),
     comment: z.string().max(1000, 'Comment too long').optional(),
@@ -33,7 +33,8 @@ export const AccessShareSchema = z.object({
 // Response schemas
 export const ShareMetadataSchema = z.object({
     id: z.string(),
-    pageType: z.string(),
+    pageName: z.string(),
+    tabName: z.string(),
     title: z.string(),
     comment: z.string().nullable(),
     expiresAt: z.string().nullable(),
@@ -45,7 +46,8 @@ export const ShareMetadataSchema = z.object({
 export const ShareAccessResponseSchema = z.object({
     state: z.any(),
     linkId: z.string(),
-    pageType: z.string(),
+    pageName: z.string(),
+    tabName: z.string(),
     title: z.string(),
     comment: z.string().nullable(),
     expiresAt: z.string().nullable(),

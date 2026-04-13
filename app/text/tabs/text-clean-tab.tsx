@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { toast } from 'sonner';
 import { Copy, Download, Share2, Trash2, X, Sparkles } from 'lucide-react';
 import { TextEditor } from '@/components/text/text-editor/text-editor';
@@ -8,6 +8,7 @@ import { TextareaFooter } from '@/components/text/text-editor/textarea-footer';
 import { EditorActions } from '@/components/editor/editor-actions';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { useDebouncedSave } from '@/components/text/shared/use-debounced-save';
+import { TextCleanShareDialog } from '@/components/text/clean-pane';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Toolbar } from '@/components/toolbar/toolbar';
@@ -23,31 +24,66 @@ import {
 } from '@/components/text/text-editor/utils/text-operations';
 import { STORAGE_KEYS } from '@/lib/constants';
 
-export function TextCleanTab({ onClear }: { onClear?: () => void }) {
-    const [inputText, setInputText] = useState(() => {
+export function TextCleanTab({ onClear, sharedData }: { onClear?: () => void; sharedData?: any }) {
+    // Track if we've loaded shared data
+    const sharedDataLoadedRef = useRef(false);
+
+    const [leftContent, setLeftContent] = useState<string>(() => {
         try {
+            // Prioritize shared content if available
+            if (sharedData?.tabName === 'clean' && sharedData?.state?.leftContent) {
+                sharedDataLoadedRef.current = true;
+                return sharedData.state.leftContent;
+            }
             return localStorage.getItem(STORAGE_KEYS.TEXT_CLEAN_INPUT_CONTENT) || '';
         } catch {
             return '';
         }
     });
-    const [outputText, setOutputText] = useState('');
+    const [rightContent, setRightContent] = useState('');
     const [cleanType, setCleanType] = useState<string | null>(null);
     const [selectedOperation, setSelectedOperation] = useState<string | null>(null);
     const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
+    // Track current content for real-time sharing
+    const [currentLeftContent, setCurrentLeftContent] = useState('');
+    const [currentRightContent, setCurrentRightContent] = useState('');
+
+    const handleContentChange = useCallback((left: string, right: string) => {
+        setCurrentLeftContent(left);
+        setCurrentRightContent(right);
+    }, []);
+
+    // Track sharedData to detect async arrival
+    const sharedDataRef = useRef(sharedData);
+
+    // Handle async shared data arrival
+    useEffect(() => {
+        // If shared data just arrived (was undefined/null, now has value with leftContent)
+        if (sharedData?.tabName === 'clean' && sharedData?.state?.leftContent && !sharedDataLoadedRef.current) {
+            sharedDataLoadedRef.current = true;
+            setLeftContent(sharedData.state.leftContent);
+        }
+        sharedDataRef.current = sharedData;
+    }, [sharedData]);
+
     // Debounced save to localStorage
-    useDebouncedSave(inputText, STORAGE_KEYS.TEXT_CLEAN_INPUT_CONTENT);
+    useDebouncedSave(leftContent, STORAGE_KEYS.TEXT_CLEAN_INPUT_CONTENT);
+
+    // Track current content for sharing
+    useEffect(() => {
+        handleContentChange(leftContent, rightContent);
+    }, [leftContent, rightContent, handleContentChange]);
 
     const handleClean = (operation: (text: string) => string, type: string) => {
-        setOutputText(operation(inputText));
+        setRightContent(operation(leftContent));
         setCleanType(type);
         setSelectedOperation(type);
         toast.success(`Applied: ${type}`);
     };
 
     const handleShare = () => {
-        if (!outputText) {
+        if (!currentRightContent && !rightContent) {
             toast.error('No content to share. Please clean some text first.');
             return;
         }
@@ -55,13 +91,13 @@ export function TextCleanTab({ onClear }: { onClear?: () => void }) {
     };
 
     const handleClearOutput = () => {
-        setOutputText('');
+        setRightContent('');
         setCleanType(null);
     };
 
     const handleCopy = async () => {
         try {
-            await navigator.clipboard.writeText(outputText);
+            await navigator.clipboard.writeText(rightContent);
             toast.success('Copied to clipboard');
         } catch (error) {
             console.error('Failed to copy:', error);
@@ -70,10 +106,10 @@ export function TextCleanTab({ onClear }: { onClear?: () => void }) {
     };
 
     const handleDownload = () => {
-        if (!outputText) return;
+        if (!rightContent) return;
 
         try {
-            const blob = new Blob([outputText], { type: 'text/plain' });
+            const blob = new Blob([rightContent], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -87,8 +123,8 @@ export function TextCleanTab({ onClear }: { onClear?: () => void }) {
     };
 
     const handleClear = () => {
-        setInputText('');
-        setOutputText('');
+        setLeftContent('');
+        setRightContent('');
         setCleanType(null);
         try {
             localStorage.removeItem(STORAGE_KEYS.TEXT_CLEAN_INPUT_CONTENT);
@@ -99,8 +135,8 @@ export function TextCleanTab({ onClear }: { onClear?: () => void }) {
     };
 
     const handleClearInput = () => {
-        setInputText('');
-        setOutputText('');
+        setLeftContent('');
+        setRightContent('');
         setCleanType(null);
         try {
             localStorage.removeItem(STORAGE_KEYS.TEXT_CLEAN_INPUT_CONTENT);
@@ -167,14 +203,14 @@ export function TextCleanTab({ onClear }: { onClear?: () => void }) {
                         label: 'Clear All',
                         onClick: handleClear,
                         variant: 'outline',
-                        disabled: !inputText && !outputText,
+                        disabled: !leftContent && !rightContent,
                     },
                     {
                         id: 'share',
                         label: 'Share',
                         onClick: handleShare,
                         variant: 'outline',
-                        disabled: !outputText,
+                        disabled: !rightContent,
                     },
                 ]}
             />
@@ -183,8 +219,8 @@ export function TextCleanTab({ onClear }: { onClear?: () => void }) {
                 <div className="w-full lg:w-1/2 min-w-0">
                     <TextEditor
                         label="Input Text"
-                        value={inputText}
-                        onChange={setInputText}
+                        value={leftContent}
+                        onChange={setLeftContent}
                         onError={() => {}}
                         onClear={handleClearInput}
                         height="600px"
@@ -209,7 +245,7 @@ export function TextCleanTab({ onClear }: { onClear?: () => void }) {
                                         icon: Copy,
                                         label: 'Copy',
                                         onClick: handleCopy,
-                                        disabled: !outputText,
+                                        disabled: !rightContent,
                                         title: 'Copy to clipboard',
                                     },
                                     {
@@ -217,7 +253,7 @@ export function TextCleanTab({ onClear }: { onClear?: () => void }) {
                                         icon: Download,
                                         label: 'Download',
                                         onClick: handleDownload,
-                                        disabled: !outputText,
+                                        disabled: !rightContent,
                                         title: 'Download as file',
                                     },
                                     {
@@ -225,7 +261,7 @@ export function TextCleanTab({ onClear }: { onClear?: () => void }) {
                                         icon: X,
                                         label: 'Clear editor',
                                         onClick: handleClearOutput,
-                                        disabled: !outputText,
+                                        disabled: !rightContent,
                                         title: 'Clear editor',
                                     },
                                 ]}
@@ -238,13 +274,13 @@ export function TextCleanTab({ onClear }: { onClear?: () => void }) {
                             style={{ height: '600px', position: 'relative' }}
                         >
                             <textarea
-                                value={outputText}
+                                value={rightContent}
                                 readOnly
                                 className="w-full h-full resize-none p-3 font-mono text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                             />
 
                             {/* Empty state overlay - shown on top when editor is empty */}
-                            {!outputText && (
+                            {!rightContent && (
                                 <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
                                     <EmptyEditorPrompt
                                         icon={Sparkles}
@@ -258,11 +294,20 @@ export function TextCleanTab({ onClear }: { onClear?: () => void }) {
 
                         {/* Footer with statistics */}
                         <div className="shrink-0">
-                            <TextareaFooter content={outputText} error={null} />
+                            <TextareaFooter content={rightContent} error={null} />
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* Share dialog */}
+            <TextCleanShareDialog
+                leftContent={currentLeftContent}
+                rightContent={currentRightContent}
+                cleanType={cleanType}
+                open={shareDialogOpen}
+                onOpenChange={setShareDialogOpen}
+            />
         </div>
     );
 }

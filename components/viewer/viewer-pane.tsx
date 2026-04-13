@@ -19,25 +19,47 @@ export const ViewerPane = ({
     sortKeys = false,
     onError,
     onValidationChange,
+    onContentChange,
     initialContent = '',
     className,
 }: ViewerPaneProps) => {
-    // State with lazy initialization from localStorage
+    // Track if we've loaded shared data
+    const sharedDataLoadedRef = useRef(!!initialContent);
+
+    // State with simplified initialization: shared content > localStorage > empty
     const [leftContent, setLeftContent] = useState<string>(() => {
-        if (initialContent !== '') return initialContent;
-        try {
-            return localStorage.getItem(STORAGE_KEYS.JSON_VIEWER_CONTENT) || initialContent;
-        } catch {
+        // Priority 1: Use initial content if provided (shared data)
+        if (initialContent) {
+            sharedDataLoadedRef.current = true;
             return initialContent;
         }
+        // Priority 2: Load from localStorage
+        try {
+            const saved = localStorage.getItem(STORAGE_KEYS.JSON_VIEWER_CONTENT);
+            if (saved) {
+                return saved;
+            }
+        } catch (error) {
+            console.error('Failed to load from localStorage:', error);
+        }
+        // Priority 3: Empty string
+        return '';
     });
 
     // Track initial content to avoid saving it to localStorage
     const initialContentRef = useRef(initialContent);
 
+    // Update content when shared data arrives asynchronously
     useEffect(() => {
+        // If shared data just arrived (was undefined, now has value)
+        if (initialContent && !sharedDataLoadedRef.current) {
+            sharedDataLoadedRef.current = true;
+            setLeftContent(initialContent);
+        }
+        // Notify parent of content change
+        onContentChange?.(leftContent);
         initialContentRef.current = initialContent;
-    }, [initialContent]);
+    }, [initialContent, leftContent, onContentChange]);
 
     // Save to localStorage whenever content changes (but not on initial render)
     useEffect(() => {

@@ -6,6 +6,8 @@ import { Copy, Check, Share2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { ShareForm } from '@/components/share/share-form';
+import { PAGE_NAMES, BASE64_TABS, TEXT_TABS, JSON_TABS } from '@/lib/constants/tabs';
 import {
     Sheet,
     SheetContent,
@@ -17,34 +19,18 @@ import {
 
 interface Base64ShareDialogProps {
     content: string;
+    leftContent?: string; // Input content (file name/URL) for media-to-base64 tab
+    pageName?: string; // Should be PAGE_NAMES.BASE64 ('base64')
+    tabName?: keyof typeof BASE64_TABS | keyof typeof TEXT_TABS | keyof typeof JSON_TABS;
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
 }
 
-export function Base64ShareDialog({ content, open, onOpenChange }: Base64ShareDialogProps) {
+export function Base64ShareDialog({ content, leftContent, pageName, tabName, open, onOpenChange }: Base64ShareDialogProps) {
     const [copied, setCopied] = useState(false);
 
-    // Generate shareable URL
-    const generateShareUrl = useCallback(() => {
-        if (!content) return '';
-
-        try {
-            // Encode the Base64 content
-            const encoded = btoa(encodeURIComponent(content));
-
-            // Create URL with encoded content
-            const url = new URL(window.location.href);
-            url.searchParams.set('content', encoded);
-            url.hash = 'base64';
-
-            return url.toString();
-        } catch (error) {
-            console.error('Failed to generate share URL:', error);
-            return '';
-        }
-    }, [content]);
-
-    const shareUrl = generateShareUrl();
+    const defaultPageName = PAGE_NAMES.BASE64;
+    const defaultTabName = BASE64_TABS.MEDIA_TO_BASE64;
 
     // Copy Base64 to clipboard
     const copyToClipboard = useCallback(async () => {
@@ -80,21 +66,6 @@ export function Base64ShareDialog({ content, open, onOpenChange }: Base64ShareDi
         }
     }, [content]);
 
-    // Copy share URL
-    const copyShareUrl = useCallback(async () => {
-        if (!shareUrl) return;
-
-        try {
-            await navigator.clipboard.writeText(shareUrl);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-            toast.success('Shareable link copied to clipboard');
-        } catch (error) {
-            console.error('Failed to copy URL:', error);
-            toast.error('Failed to copy shareable link');
-        }
-    }, [shareUrl]);
-
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent side="right" className="w-96">
@@ -107,36 +78,23 @@ export function Base64ShareDialog({ content, open, onOpenChange }: Base64ShareDi
                 </SheetHeader>
 
                 <div className="flex flex-col gap-4 p-4">
-                    {/* Shareable Link Section */}
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Shareable Link
-                        </label>
-
-                        <div className="flex gap-2 mt-2">
-                            <Input
-                                value={generateShareUrl()}
-                                readOnly
-                                placeholder="Generating link..."
-                                className="flex-1 text-xs"
-                            />
-                            <Button
-                                size="sm"
-                                onClick={copyShareUrl}
-                                disabled={!generateShareUrl()}
-                                className="shrink-0"
-                            >
-                                {copied ? (
-                                    <Check className="h-4 w-4" />
-                                ) : (
-                                    <Copy className="h-4 w-4" />
-                                )}
-                            </Button>
-                        </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                            Anyone with this link can view the shared content
-                        </p>
-                    </div>
+                    <ShareForm
+                        pageName={pageName || defaultPageName}
+                        tabName={tabName || defaultTabName}
+                        getState={() => {
+                            // For media-to-base64 tab, send both input and output
+                            if (tabName === BASE64_TABS.MEDIA_TO_BASE64 && leftContent !== undefined) {
+                                return {
+                                    leftContent,
+                                    rightContent: content,
+                                };
+                            }
+                            // For base64-to-media tab, send only the input
+                            return {
+                                leftContent: content,
+                            };
+                        }}
+                    />
 
                     <Separator />
 

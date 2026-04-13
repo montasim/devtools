@@ -18,10 +18,12 @@ import { Base64HistoryTab } from '@/app/base64/tabs/base64-history-tab';
 import { JsonOptionsTab as OptionsTab } from '@/app/json/tabs/json-options-tab';
 import { JsonShareTab as ShareTab } from '@/app/json/tabs/json-share-tab';
 import { InvalidTabState } from '@/components/ui/invalid-tab-state';
+import { SharedContentBanner } from '@/components/shared/shared-content-banner';
+import { BASE64_TABS } from '@/lib/constants/tabs';
 
 type TabValue = (typeof VALID_TABS)[number];
 
-const VALID_TABS = ['media-to-base64', 'base64-to-media', 'options', 'shared', 'history'] as const;
+const VALID_TABS = [BASE64_TABS.MEDIA_TO_BASE64, BASE64_TABS.BASE64_TO_MEDIA, 'options', 'shared', 'history'] as const;
 
 function Base64PageContent() {
     const searchParams = useSearchParams();
@@ -29,6 +31,7 @@ function Base64PageContent() {
     const pathname = usePathname();
     const isInitializingRef = useRef(true);
     const previousTabRef = useRef<string | null>(null);
+    const [sharedData, setSharedData] = useState<any>(null);
     const [activeTab, setActiveTab] = useState<TabValue>(() => {
         const tabFromUrl = searchParams.get('tab');
         if (tabFromUrl) {
@@ -38,7 +41,7 @@ function Base64PageContent() {
                 return tabFromUrl as TabValue;
             }
         }
-        return 'media-to-base64';
+        return BASE64_TABS.MEDIA_TO_BASE64;
     });
 
     const invalidTab: string | null = useMemo(() => {
@@ -48,6 +51,28 @@ function Base64PageContent() {
         }
         return null;
     }, [searchParams]);
+
+    // Check for shared state on mount
+    useEffect(() => {
+        const sharedStateStr = sessionStorage.getItem('sharedState');
+        if (sharedStateStr) {
+            try {
+                const sharedState = JSON.parse(sharedStateStr);
+                setSharedData(sharedState);
+                sessionStorage.removeItem('sharedState');
+
+                // Switch to the shared tab
+                const { tabName } = sharedState;
+                setActiveTab(tabName as any);
+                const params = new URLSearchParams();
+                params.set('tab', tabName);
+                router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+            } catch (error) {
+                console.error('Failed to parse shared state:', error);
+                sessionStorage.removeItem('sharedState');
+            }
+        }
+    }, []);
 
     useLayoutEffect(() => {
         if (isInitializingRef.current) {
@@ -99,6 +124,17 @@ function Base64PageContent() {
 
     return (
         <>
+            {sharedData && (
+                <SharedContentBanner
+                    title={sharedData.title}
+                    comment={sharedData.comment}
+                    expiresAt={sharedData.expiresAt}
+                    hasPassword={sharedData.hasPassword}
+                    viewCount={sharedData.viewCount}
+                    createdAt={sharedData.createdAt}
+                    onClose={() => setSharedData(null)}
+                />
+            )}
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
                 <div className="border-b">
                     <div className="mx-auto py-4">
@@ -110,12 +146,12 @@ function Base64PageContent() {
                                 <div className="flex gap-2 min-w-max">
                                     {[
                                         {
-                                            value: 'media-to-base64',
+                                            value: BASE64_TABS.MEDIA_TO_BASE64,
                                             label: 'Media to Base64',
                                             icon: FileCode,
                                         },
                                         {
-                                            value: 'base64-to-media',
+                                            value: BASE64_TABS.BASE64_TO_MEDIA,
                                             label: 'Base64 to Media',
                                             icon: ImageIcon,
                                         },
@@ -179,12 +215,12 @@ function Base64PageContent() {
                     <Base64HistoryTab onTabChange={handleTabChange} />
                 </TabsContent>
 
-                <TabsContent value="media-to-base64" className="mt-0">
-                    <MediaToBase64Tab onClear={handleClear} />
+                <TabsContent value={BASE64_TABS.MEDIA_TO_BASE64} className="mt-0">
+                    <MediaToBase64Tab onClear={handleClear} sharedData={sharedData} />
                 </TabsContent>
 
-                <TabsContent value="base64-to-media" className="mt-0">
-                    <Base64ToMediaTab onClear={handleClear} />
+                <TabsContent value={BASE64_TABS.BASE64_TO_MEDIA} className="mt-0">
+                    <Base64ToMediaTab onClear={handleClear} sharedData={sharedData} />
                 </TabsContent>
 
                 {invalidTab && (

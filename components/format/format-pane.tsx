@@ -18,25 +18,43 @@ export const FormatPane = ({
     escapeUnicode = false,
     onError,
     onValidationChange,
+    onContentChange,
     initialLeftContent = '',
     className,
 }: FormatPaneProps) => {
-    // State with lazy initialization from localStorage
+    // Track if we've loaded shared data
+    const sharedDataLoadedRef = useRef(!!initialLeftContent);
+
+    // State with simplified initialization: shared content > localStorage > empty
     const [leftContent, setLeftContent] = useState<string>(() => {
-        if (initialLeftContent !== '') return initialLeftContent;
-        try {
-            return (
-                localStorage.getItem(STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT) || initialLeftContent
-            );
-        } catch {
+        // Priority 1: Use initial content if provided (shared data)
+        if (initialLeftContent) {
+            sharedDataLoadedRef.current = true;
             return initialLeftContent;
         }
+        // Priority 2: Load from localStorage
+        try {
+            const saved = localStorage.getItem(STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT);
+            if (saved) {
+                return saved;
+            }
+        } catch (error) {
+            console.error('Failed to load from localStorage:', error);
+        }
+        // Priority 3: Empty string
+        return '';
     });
 
     // Track initial content to avoid saving it to localStorage
     const initialLeftContentRef = useRef(initialLeftContent);
 
+    // Update content when shared data arrives asynchronously
     useEffect(() => {
+        // If shared data just arrived (was undefined, now has value)
+        if (initialLeftContent && !sharedDataLoadedRef.current) {
+            sharedDataLoadedRef.current = true;
+            setLeftContent(initialLeftContent);
+        }
         initialLeftContentRef.current = initialLeftContent;
     }, [initialLeftContent]);
 
@@ -50,7 +68,9 @@ export const FormatPane = ({
                 console.error('Failed to save left content to localStorage:', error);
             }
         }
-    }, [leftContent]);
+        // Notify parent of content change
+        onContentChange?.(leftContent);
+    }, [leftContent, onContentChange]);
 
     // Load format options from localStorage on mount
     const [savedFormatOptions] = useState<FormatOptions | null>(() => {

@@ -46,6 +46,7 @@ export interface EditorPaneProps {
     onCompare?: (result: DiffResult) => void;
     onError?: (error: Error) => void;
     onValidationChange?: (canCompare: boolean) => void;
+    onContentChange?: (leftContent: string, rightContent: string) => void;
 
     // Styling
     className?: string;

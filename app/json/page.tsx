@@ -33,6 +33,7 @@ import { JsonOptionsTab as OptionsTab } from '@/app/json/tabs/json-options-tab';
 import { JsonHistoryTab as HistoryTab } from '@/app/json/tabs/json-history-tab';
 import { JsonShareTab as ShareTab } from '@/app/json/tabs/json-share-tab';
 import { InvalidTabState } from '@/components/ui/invalid-tab-state';
+import { SharedContentBanner } from '@/components/shared/shared-content-banner';
 
 type TabValue = (typeof VALID_TABS)[number];
 
@@ -55,6 +56,7 @@ function JsonPageContent() {
     const pathname = usePathname();
     const isInitializingRef = useRef(true);
     const previousTabRef = useRef<string | null>(null);
+    const [sharedData, setSharedData] = useState<any>(null);
     const [activeTab, setActiveTab] = useState<TabValue>(() => {
         // Initialize from URL during state creation
         const tabFromUrl = searchParams.get('tab');
@@ -77,6 +79,28 @@ function JsonPageContent() {
         }
         return null;
     }, [searchParams]);
+
+    // Check for shared state on mount
+    useEffect(() => {
+        const sharedStateStr = sessionStorage.getItem('sharedState');
+        if (sharedStateStr) {
+            try {
+                const sharedState = JSON.parse(sharedStateStr);
+                setSharedData(sharedState);
+                sessionStorage.removeItem('sharedState');
+
+                // Switch to the shared tab
+                const { tabName } = sharedState;
+                setActiveTab(tabName as any);
+                const params = new URLSearchParams();
+                params.set('tab', tabName);
+                router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+            } catch (error) {
+                console.error('Failed to parse shared state:', error);
+                sessionStorage.removeItem('sharedState');
+            }
+        }
+    }, []);
 
     // Set default URL on mount if needed
     useLayoutEffect(() => {
@@ -136,6 +160,17 @@ function JsonPageContent() {
 
     return (
         <>
+            {sharedData && (
+                <SharedContentBanner
+                    title={sharedData.title}
+                    comment={sharedData.comment}
+                    expiresAt={sharedData.expiresAt}
+                    hasPassword={sharedData.hasPassword}
+                    viewCount={sharedData.viewCount}
+                    createdAt={sharedData.createdAt}
+                    onClose={() => setSharedData(null)}
+                />
+            )}
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
                 <div className="border-b">
                     <div className="mx-auto py-4">
@@ -214,31 +249,31 @@ function JsonPageContent() {
                 </TabsContent>
 
                 <TabsContent value="diff" className="mt-0">
-                    <DiffTab onClear={handleClear} />
+                    <DiffTab onClear={handleClear} sharedData={sharedData} />
                 </TabsContent>
 
                 <TabsContent value="format" className="mt-0">
-                    <FormatTab onClear={handleClear} />
+                    <FormatTab onClear={handleClear} sharedData={sharedData} />
                 </TabsContent>
 
                 <TabsContent value="minify" className="mt-0">
-                    <MinifyTab onClear={handleClear} />
+                    <MinifyTab onClear={handleClear} sharedData={sharedData} />
                 </TabsContent>
 
                 <TabsContent value="viewer" className="mt-0">
-                    <ViewerTab onClear={handleClear} />
+                    <ViewerTab onClear={handleClear} sharedData={sharedData} />
                 </TabsContent>
 
                 <TabsContent value="parser" className="mt-0">
-                    <ParserTab onClear={handleClear} />
+                    <ParserTab onClear={handleClear} sharedData={sharedData} />
                 </TabsContent>
 
                 <TabsContent value="export" className="mt-0">
-                    <ExportTab onClear={handleClear} />
+                    <ExportTab onClear={handleClear} sharedData={sharedData} />
                 </TabsContent>
 
                 <TabsContent value="schema" className="mt-0">
-                    <SchemaTab onClear={handleClear} />
+                    <SchemaTab onClear={handleClear} sharedData={sharedData} />
                 </TabsContent>
 
                 {invalidTab && (

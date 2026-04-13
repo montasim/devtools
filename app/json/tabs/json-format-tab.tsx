@@ -18,16 +18,17 @@ import { Separator } from '@/components/ui/separator';
 
 interface JsonFormatTabProps {
     onClear: () => void;
+    sharedData?: any;
 }
 
-export function JsonFormatTab({ onClear }: JsonFormatTabProps) {
+export function JsonFormatTab({ onClear, sharedData }: JsonFormatTabProps) {
     const [formatIndentation, setFormatIndentation] = useState(2);
     const [showClearDialog, setShowClearDialog] = useState(false);
     const [formatSortKeys, setFormatSortKeys] = useState(false);
     const [formatRemoveTrailingCommas, setFormatRemoveTrailingCommas] = useState(false);
     const [formatEscapeUnicode, setFormatEscapeUnicode] = useState(false);
     const [shareDialogOpen, setShareDialogOpen] = useState(false);
-    const [formatContent, setFormatContent] = useState('');
+    const [currentContent, setCurrentContent] = useState('');
 
     const spacingOptions = [
         { value: '2', label: '2 spaces' },
@@ -35,43 +36,24 @@ export function JsonFormatTab({ onClear }: JsonFormatTabProps) {
         { value: '8', label: '8 spaces' },
     ];
 
-    // Load format content from localStorage on mount and keep in sync
-    useEffect(() => {
-        const loadFormatContent = () => {
-            try {
-                const content = localStorage.getItem(STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT) || '';
-                setFormatContent(content);
-            } catch (error) {
-                console.error('Failed to load format content:', error);
-            }
-        };
-
-        loadFormatContent();
-
-        // Listen for storage changes
-        const handleStorageChange = () => {
-            loadFormatContent();
-        };
-
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
-    }, []);
-
     const handleError = (error: Error) => {
         console.error('Format error:', error);
     };
 
+    const handleContentChange = useCallback((content: string) => {
+        setCurrentContent(content);
+    }, []);
+
     const handleFormatShare = useCallback(() => {
-        // Get the formatted content from localStorage
-        const formattedContent = localStorage.getItem(STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT);
-        if (!formattedContent) {
+        // Use the current content from state instead of localStorage
+        if (!currentContent) {
             toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
         // Open the share dialog
         setShareDialogOpen(true);
-    }, []);
+    }, [currentContent]);
 
     const handleClearClick = () => {
         setShowClearDialog(true);
@@ -159,11 +141,13 @@ export function JsonFormatTab({ onClear }: JsonFormatTabProps) {
                     escapeUnicode={formatEscapeUnicode}
                     onError={handleError}
                     onValidationChange={() => {}}
+                    onContentChange={handleContentChange}
+                    initialLeftContent={sharedData?.state?.input}
                 />
             </div>
 
             <FormatShareDialog
-                content={formatContent}
+                content={currentContent}
                 open={shareDialogOpen}
                 onOpenChange={setShareDialogOpen}
             />

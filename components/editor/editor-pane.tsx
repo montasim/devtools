@@ -24,29 +24,52 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
         onCompare,
         onError,
         onValidationChange,
+        onContentChange,
         className,
     },
     ref,
 ) {
-    // State with lazy initialization from localStorage
+    // Track if we've loaded shared data
+    const leftSharedDataLoadedRef = useRef(!!initialLeftContent);
+    const rightSharedDataLoadedRef = useRef(!!initialRightContent);
+
+    // State with simplified initialization: shared content > localStorage > empty
     const [leftContent, setLeftContent] = useState<string>(() => {
-        if (initialLeftContent !== '') return initialLeftContent;
-        try {
-            return localStorage.getItem(STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT) || initialLeftContent;
-        } catch {
+        // Priority 1: Use initial content if provided (shared data)
+        if (initialLeftContent) {
+            leftSharedDataLoadedRef.current = true;
             return initialLeftContent;
         }
+        // Priority 2: Load from localStorage
+        try {
+            const saved = localStorage.getItem(STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT);
+            if (saved) {
+                return saved;
+            }
+        } catch (error) {
+            console.error('Failed to load from localStorage:', error);
+        }
+        // Priority 3: Empty string
+        return '';
     });
 
     const [rightContent, setRightContent] = useState<string>(() => {
-        if (initialRightContent !== '') return initialRightContent;
-        try {
-            return (
-                localStorage.getItem(STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT) || initialRightContent
-            );
-        } catch {
+        // Priority 1: Use initial content if provided (shared data)
+        if (initialRightContent) {
+            rightSharedDataLoadedRef.current = true;
             return initialRightContent;
         }
+        // Priority 2: Load from localStorage
+        try {
+            const saved = localStorage.getItem(STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT);
+            if (saved) {
+                return saved;
+            }
+        } catch (error) {
+            console.error('Failed to load from localStorage:', error);
+        }
+        // Priority 3: Empty string
+        return '';
     });
 
     const [leftValid, setLeftValid] = useState<boolean>(false);
@@ -56,13 +79,34 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
     const initialLeftContentRef = useRef(initialLeftContent);
     const initialRightContentRef = useRef(initialRightContent);
 
+    // Update content when shared data arrives asynchronously
     useEffect(() => {
+        // If shared data just arrived (was undefined, now has value)
+        if (initialLeftContent && !leftSharedDataLoadedRef.current) {
+            leftSharedDataLoadedRef.current = true;
+            setLeftContent(initialLeftContent);
+        }
         initialLeftContentRef.current = initialLeftContent;
     }, [initialLeftContent]);
 
     useEffect(() => {
+        // If shared data just arrived (was undefined, now has value)
+        if (initialRightContent && !rightSharedDataLoadedRef.current) {
+            rightSharedDataLoadedRef.current = true;
+            setRightContent(initialRightContent);
+        }
         initialRightContentRef.current = initialRightContent;
     }, [initialRightContent]);
+
+    // Notify parent of content changes
+    useEffect(() => {
+        onContentChange?.(leftContent, rightContent);
+    }, [leftContent, rightContent, onContentChange]);
+
+    // Notify parent of content changes
+    useEffect(() => {
+        onContentChange?.(leftContent, rightContent);
+    }, [leftContent, rightContent, onContentChange]);
 
     useEffect(() => {
         // Only save if content is different from initial props

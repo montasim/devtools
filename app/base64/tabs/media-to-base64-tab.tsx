@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import {
     Upload,
@@ -20,33 +20,41 @@ import { EditorFooter } from '@/components/editor';
 import { Toolbar } from '@/components/toolbar/toolbar';
 import { Base64ShareDialog } from '@/components/base64';
 import { STORAGE_KEYS } from '@/lib/constants';
+import { PAGE_NAMES, BASE64_TABS } from '@/lib/constants/tabs';
 
 export interface MediaToBase64TabProps {
     onClear?: () => void;
+    sharedData?: any;
 }
 
-export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
-    // Load saved data on mount using lazy initialization
-    const [input, setInput] = useState(() => {
-        if (typeof window === 'undefined') return '';
+export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps) {
+    // Track if we've loaded shared data
+    const sharedDataLoadedRef = useRef(false);
+
+    // Initialize with empty string to avoid hydration mismatch
+    const [leftContent, setLeftContent] = useState<string>(() => {
         try {
-            return localStorage.getItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_INPUT) || '';
-        } catch (error) {
-            console.error('Failed to load saved data:', error);
+            // Prioritize shared content if available
+            if (sharedData?.tabName === BASE64_TABS.MEDIA_TO_BASE64 && sharedData?.state?.leftContent) {
+                sharedDataLoadedRef.current = true;
+                return sharedData.state.leftContent;
+            }
+            return '';
+        } catch {
             return '';
         }
     });
-
-    const [output, setOutput] = useState(() => {
-        if (typeof window === 'undefined') return '';
+    const [rightContent, setRightContent] = useState<string>(() => {
         try {
-            return localStorage.getItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT) || '';
-        } catch (error) {
-            console.error('Failed to load saved data:', error);
+            // Prioritize shared content if available
+            if (sharedData?.tabName === BASE64_TABS.MEDIA_TO_BASE64 && sharedData?.state?.rightContent) {
+                return sharedData.state.rightContent;
+            }
+            return '';
+        } catch {
             return '';
         }
     });
-
     const [isFetching, setIsFetching] = useState(false);
     const [filePreview, setFilePreview] = useState<{
         dataUrl: string;
@@ -55,28 +63,75 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
         size: string;
     } | null>(null);
     const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
-    // Save input to localStorage when it changes
+    // Track current content for real-time sharing
+    const [currentRightContent, setCurrentRightContent] = useState('');
+    const [currentLeftContent, setCurrentLeftContent] = useState('');
+
+    // Track sharedData to detect async arrival
+    const sharedDataRef = useRef(sharedData);
+
+    // Load saved data from localStorage after mount
     useEffect(() => {
-        if (input) {
+        setMounted(true);
+        try {
+            // Only load from localStorage if no shared data was present on mount
+            if (!sharedDataLoadedRef.current) {
+                const savedInput = localStorage.getItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_INPUT);
+                const savedOutput = localStorage.getItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT);
+                if (savedInput) setLeftContent(savedInput);
+                if (savedOutput) setRightContent(savedOutput);
+            }
+        } catch (error) {
+            console.error('Failed to load saved data:', error);
+        }
+    }, []);
+
+    // Handle async shared data arrival
+    useEffect(() => {
+        // If shared data just arrived (was undefined/null, now has value)
+        if (sharedData?.tabName === BASE64_TABS.MEDIA_TO_BASE64 && sharedData?.state && !sharedDataLoadedRef.current) {
+            sharedDataLoadedRef.current = true;
+            if (sharedData.state.leftContent) setLeftContent(sharedData.state.leftContent);
+            if (sharedData.state.rightContent) setRightContent(sharedData.state.rightContent);
+        }
+        sharedDataRef.current = sharedData;
+    }, [sharedData]);
+
+    // Save leftContent to localStorage when it changes
+    useEffect(() => {
+        if (!mounted) return;
+        if (leftContent) {
             try {
-                localStorage.setItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_INPUT, input);
+                localStorage.setItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_INPUT, leftContent);
             } catch (error) {
                 console.error('Failed to save input:', error);
             }
         }
-    }, [input]);
+    }, [leftContent, mounted]);
 
-    // Save output to localStorage when it changes
+    // Save rightContent to localStorage when it changes
     useEffect(() => {
-        if (output) {
+        if (!mounted) return;
+        if (rightContent) {
             try {
-                localStorage.setItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT, output);
+                localStorage.setItem(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT, rightContent);
             } catch (error) {
-                console.error('Failed to save output:', error);
+                console.error('Failed to save rightContent:', error);
             }
         }
-    }, [output]);
+    }, [rightContent, mounted]);
+
+    // Track current right content for sharing
+    useEffect(() => {
+        setCurrentRightContent(rightContent);
+    }, [rightContent]);
+
+    // Track current left content for sharing
+    useEffect(() => {
+        setCurrentLeftContent(leftContent);
+    }, [leftContent]);
 
     // Fetch URL and convert to Base64
     const handleUrlFetch = useCallback(async () => {
@@ -102,7 +157,7 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
         }
 
         setIsFetching(true);
-        setInput(`Fetching: ${urlInput}`);
+        setLeftContent(`Fetching: ${urlInput}`);
 
         try {
             const response = await fetch(urlInput, {
@@ -120,8 +175,8 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
             reader.onload = () => {
                 const result = reader.result as string;
                 const base64Data = result.split(',')[1];
-                setInput(urlInput);
-                setOutput(base64Data);
+                setLeftContent(urlInput);
+                setRightContent(base64Data);
 
                 // Set preview if it's an image
                 if (blob.type.startsWith('image/')) {
@@ -152,7 +207,7 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
             } else {
                 toast.error(error instanceof Error ? error.message : 'Failed to fetch URL');
             }
-            setInput('');
+            setLeftContent('');
             setIsFetching(false);
         }
     }, []);
@@ -165,10 +220,10 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
         const reader = new FileReader();
         reader.onload = (e) => {
             const result = e.target?.result as string;
-            // Always generate Base64 output from any file
+            // Always generate Base64 rightContent from any file
             const base64Data = result.split(',')[1];
-            setInput(file.name); // Show filename as input
-            setOutput(base64Data);
+            setLeftContent(file.name); // Show filename as input
+            setRightContent(base64Data);
 
             // Store file preview data
             setFilePreview({
@@ -188,25 +243,25 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
 
     // Handle copy to clipboard
     const handleCopy = useCallback(() => {
-        if (output) {
-            navigator.clipboard.writeText(output);
+        if (rightContent) {
+            navigator.clipboard.writeText(rightContent);
             toast.success('Copied to clipboard');
         }
-    }, [output]);
+    }, [rightContent]);
 
     // Handle share - open share sheet
     const handleShare = useCallback(() => {
-        if (!output) {
+        if (!currentRightContent) {
             toast.error('No Base64 output to share');
             return;
         }
         setIsShareSheetOpen(true);
-    }, [output]);
+    }, [currentRightContent]);
 
     // Handle clear
     const handleClear = useCallback(() => {
-        setInput('');
-        setOutput('');
+        setLeftContent('');
+        setRightContent('');
         setFilePreview(null);
     }, []);
 
@@ -235,14 +290,14 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
                 label: 'Clear all',
                 onClick: onClear || handleClear,
                 title: 'Clear all',
-                disabled: !input && !output,
+                disabled: !leftContent && !rightContent,
             },
         ],
-        [handleFileUpload, handleUrlFetch, isFetching, input, output, onClear, handleClear],
+        [handleFileUpload, handleUrlFetch, isFetching, leftContent, rightContent, onClear, handleClear],
     );
 
     // Define action buttons for Base64 Output section
-    const outputActions = useMemo(
+    const rightContentActions = useMemo(
         () => [
             {
                 id: 'copy',
@@ -250,16 +305,19 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
                 label: 'Copy to clipboard',
                 onClick: handleCopy,
                 title: 'Copy to clipboard',
-                disabled: !output,
+                disabled: !rightContent,
             },
         ],
-        [handleCopy, output],
+        [handleCopy, rightContent],
     );
 
     return (
         <>
             <Base64ShareDialog
-                content={output}
+                content={currentRightContent}
+                leftContent={currentLeftContent}
+                pageName={PAGE_NAMES.BASE64}
+                tabName={BASE64_TABS.MEDIA_TO_BASE64 as keyof typeof BASE64_TABS}
                 open={isShareSheetOpen}
                 onOpenChange={setIsShareSheetOpen}
             />
@@ -277,7 +335,7 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
                         label: 'Share',
                         onClick: handleShare,
                         variant: 'outline',
-                        disabled: !output,
+                        disabled: !rightContent,
                     },
                 ]}
             />
@@ -336,13 +394,13 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
                     ) : (
                         <div className="border border-input rounded-md flex-1 overflow-hidden relative">
                             <textarea
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
+                                value={leftContent}
+                                onChange={(e) => setLeftContent(e.target.value)}
                                 className="w-full h-full resize-none p-3 font-mono text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                                 style={{ minHeight: '600px' }}
                                 readOnly
                             />
-                            {!input && (
+                            {!leftContent && (
                                 <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
                                     <EmptyEditorPrompt
                                         icon={Upload}
@@ -376,27 +434,27 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
                                             <span>{filePreview.type || 'Unknown'}</span>
                                         </div>
                                     </>
-                                ) : input ? (
+                                ) : leftContent ? (
                                     <div className="flex items-center gap-1.5" title="URL">
                                         <Type className="h-3.5 w-3.5 text-gray-500" />
-                                        <span>{input}</span>
+                                        <span>{leftContent}</span>
                                     </div>
                                 ) : null}
                             </div>
                             <div className="flex items-center gap-2 shrink-0">
                                 <div
                                     className={`flex items-center gap-1.5 py-1 rounded-md text-xs font-medium ${
-                                        filePreview || input
+                                        filePreview || leftContent
                                             ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
                                             : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
                                     }`}
                                 >
-                                    {filePreview || input ? (
+                                    {filePreview || leftContent ? (
                                         <Check className="h-3.5 w-3.5" />
                                     ) : (
                                         <Circle className="h-3.5 w-3.5" />
                                     )}
-                                    <span>{filePreview || input ? 'Ready' : 'Empty'}</span>
+                                    <span>{filePreview || leftContent ? 'Ready' : 'Empty'}</span>
                                 </div>
                             </div>
                         </div>
@@ -409,22 +467,22 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                             Base64 Output
                         </label>
-                        <EditorActions buttons={outputActions} />
+                        <EditorActions buttons={rightContentActions} />
                     </div>
 
                     <div className="border border-input rounded-md flex-1 overflow-hidden relative">
                         <textarea
-                            value={output}
+                            value={rightContent}
                             readOnly
                             className="w-full h-full resize-none p-3 font-mono text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                             style={{ minHeight: '600px' }}
                         />
-                        {!output && (
+                        {!rightContent && (
                             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
                                 <EmptyEditorPrompt
                                     icon={HardDrive}
-                                    title="Base64 output will appear here"
-                                    description="Upload a file or fetch from URL to see the Base64 output"
+                                    title="Base64 rightContent will appear here"
+                                    description="Upload a file or fetch from URL to see the Base64 rightContent"
                                     showActions={false}
                                 />
                             </div>
@@ -432,7 +490,7 @@ export function MediaToBase64Tab({ onClear }: MediaToBase64TabProps) {
                     </div>
 
                     <div className="shrink-0">
-                        <EditorFooter content={output} error={null} />
+                        <EditorFooter content={rightContent} error={null} />
                     </div>
                 </div>
             </div>

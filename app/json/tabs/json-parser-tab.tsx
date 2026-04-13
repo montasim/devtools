@@ -10,53 +10,35 @@ import { STORAGE_KEYS } from '@/lib/constants';
 
 interface ParserTabProps {
     onClear: () => void;
+    sharedData?: any;
 }
 
-export function JsonParserTab({ onClear }: ParserTabProps) {
+export function JsonParserTab({ onClear, sharedData }: ParserTabProps) {
     const [parserShowTypes, setParserShowTypes] = useState(true);
     const [parserShowPaths, setParserShowPaths] = useState(true);
     const [parserShowStatistics, setParserShowStatistics] = useState(true);
     const [parserShareDialogOpen, setParserShareDialogOpen] = useState(false);
-    const [parserContent, setParserContent] = useState('');
+    const [currentContent, setCurrentContent] = useState('');
     const [showClearDialog, setShowClearDialog] = useState(false);
-
-    // Load parser content from localStorage on mount and keep in sync
-    useEffect(() => {
-        const loadParserContent = () => {
-            try {
-                const content = localStorage.getItem(STORAGE_KEYS.JSON_PARSER_CONTENT) || '';
-                setParserContent(content);
-            } catch (error) {
-                console.error('Failed to load parser content:', error);
-            }
-        };
-
-        loadParserContent();
-
-        // Listen for storage changes
-        const handleStorageChange = () => {
-            loadParserContent();
-        };
-
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
-    }, []);
 
     const handleError = (error: Error) => {
         console.error('Parser error:', error);
     };
 
+    const handleContentChange = useCallback((content: string) => {
+        setCurrentContent(content);
+    }, []);
+
     const handleParserShare = useCallback(() => {
-        // Get the parser content from localStorage
-        const parserContentData = localStorage.getItem(STORAGE_KEYS.JSON_PARSER_CONTENT);
-        if (!parserContentData) {
+        // Use the current content from state instead of localStorage
+        if (!currentContent) {
             toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
         // Open the share dialog
         setParserShareDialogOpen(true);
-    }, []);
+    }, [currentContent]);
 
     const handleClearClick = () => {
         setShowClearDialog(true);
@@ -116,11 +98,13 @@ export function JsonParserTab({ onClear }: ParserTabProps) {
                     showStatistics={parserShowStatistics}
                     onError={handleError}
                     onValidationChange={() => {}}
+                    onContentChange={handleContentChange}
+                    initialContent={sharedData?.state?.input}
                 />
             </div>
 
             <ParserShareDialog
-                content={parserContent}
+                content={currentContent}
                 open={parserShareDialogOpen}
                 onOpenChange={setParserShareDialogOpen}
             />

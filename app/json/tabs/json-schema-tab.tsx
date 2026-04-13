@@ -10,54 +10,33 @@ import { STORAGE_KEYS } from '@/lib/constants';
 
 interface SchemaTabProps {
     onClear: () => void;
+    sharedData?: any;
 }
 
-export function JsonSchemaTab({ onClear }: SchemaTabProps) {
+export function JsonSchemaTab({ onClear, sharedData }: SchemaTabProps) {
     const [schemaMode, setSchemaMode] = useState<'generate' | 'validate'>('generate');
     const [schemaShareDialogOpen, setSchemaShareDialogOpen] = useState(false);
-    const [schemaContent, setSchemaContent] = useState('');
+    const [currentJsonContent, setCurrentJsonContent] = useState('');
     const [showClearDialog, setShowClearDialog] = useState(false);
-
-    // Load schema content from localStorage on mount and keep in sync
-    useEffect(() => {
-        const loadSchemaContent = () => {
-            try {
-                const content = localStorage.getItem(STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT) || '';
-                setSchemaContent(content);
-            } catch (error) {
-                console.error('Failed to load schema content:', error);
-            }
-        };
-
-        loadSchemaContent();
-
-        const handleStorageChange = () => {
-            loadSchemaContent();
-        };
-
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
-    }, []);
 
     const handleError = (error: Error) => {
         console.error('Schema error:', error);
     };
 
+    const handleContentChange = useCallback((jsonContent: string, _schemaContent: string) => {
+        setCurrentJsonContent(jsonContent);
+    }, []);
+
     const handleSchemaShare = useCallback(() => {
-        // Get the schema content from localStorage
-        const schemaContentData = localStorage.getItem(STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT);
-        if (!schemaContentData) {
+        // Use the current content from state instead of localStorage
+        if (!currentJsonContent) {
             toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
         // Open the share dialog
         setSchemaShareDialogOpen(true);
-    }, []);
-
-    const handleContentChange = (_jsonContent: string, schemaContent: string) => {
-        setSchemaContent(schemaContent);
-    };
+    }, [currentJsonContent]);
 
     const handleClearClick = () => {
         setShowClearDialog(true);
@@ -110,11 +89,12 @@ export function JsonSchemaTab({ onClear }: SchemaTabProps) {
                     onError={handleError}
                     onValidationChange={() => {}}
                     onContentChange={handleContentChange}
+                    initialJsonContent={sharedData?.state?.input}
                 />
             </div>
 
             <SchemaShareDialog
-                content={schemaContent}
+                content={currentJsonContent}
                 mode={schemaMode}
                 open={schemaShareDialogOpen}
                 onOpenChange={setSchemaShareDialogOpen}

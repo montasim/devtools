@@ -12,6 +12,7 @@ export interface ParserPaneProps {
     showStatistics?: boolean;
     onError?: (error: Error) => void;
     onValidationChange?: (isValid: boolean) => void;
+    onContentChange?: (content: string) => void;
     initialContent?: string;
     className?: string;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { Upload, X, FileText, File, HardDrive, Type, Check, Circle, Download } from 'lucide-react';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
@@ -8,35 +8,79 @@ import { EditorActions } from '@/components/editor/editor-actions';
 import { Toolbar } from '@/components/toolbar/toolbar';
 import { Base64ShareDialog } from '@/components/base64';
 import { STORAGE_KEYS } from '@/lib/constants';
+import { PAGE_NAMES, BASE64_TABS } from '@/lib/constants/tabs';
 
 export interface Base64ToMediaTabProps {
     onClear?: () => void;
+    sharedData?: any;
 }
 
-export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
-    // Load saved data on mount using lazy initialization
-    const [input, setInput] = useState(() => {
-        if (typeof window === 'undefined') return '';
+export function Base64ToMediaTab({ onClear, sharedData }: Base64ToMediaTabProps) {
+    // Track if we've loaded shared data
+    const sharedDataLoadedRef = useRef(false);
+
+    // Initialize with empty string to avoid hydration mismatch
+    const [leftContent, setLeftContent] = useState<string>(() => {
         try {
-            return localStorage.getItem(STORAGE_KEYS.BASE64_TO_MEDIA_INPUT) || '';
-        } catch (error) {
-            console.error('Failed to load saved data:', error);
+            // Prioritize shared content if available
+            if (sharedData?.tabName === BASE64_TABS.BASE64_TO_MEDIA && sharedData?.state?.leftContent) {
+                sharedDataLoadedRef.current = true;
+                return sharedData.state.leftContent;
+            }
+            return '';
+        } catch {
             return '';
         }
     });
-
     const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
-    // Save input to localStorage when it changes
+    // Track current content for real-time sharing
+    const [currentLeftContent, setCurrentLeftContent] = useState('');
+
+    // Track sharedData to detect async arrival
+    const sharedDataRef = useRef(sharedData);
+
+    // Load saved data from localStorage after mount
     useEffect(() => {
-        if (input) {
+        setMounted(true);
+        try {
+            // Only load from localStorage if no shared data was present on mount
+            if (!sharedDataLoadedRef.current) {
+                const savedInput = localStorage.getItem(STORAGE_KEYS.BASE64_TO_MEDIA_INPUT);
+                if (savedInput) setLeftContent(savedInput);
+            }
+        } catch (error) {
+            console.error('Failed to load saved data:', error);
+        }
+    }, []);
+
+    // Handle async shared data arrival
+    useEffect(() => {
+        // If shared data just arrived (was undefined/null, now has value)
+        if (sharedData?.tabName === BASE64_TABS.BASE64_TO_MEDIA && sharedData?.state?.leftContent && !sharedDataLoadedRef.current) {
+            sharedDataLoadedRef.current = true;
+            setLeftContent(sharedData.state.leftContent);
+        }
+        sharedDataRef.current = sharedData;
+    }, [sharedData]);
+
+    // Save leftContent to localStorage when it changes
+    useEffect(() => {
+        if (!mounted) return;
+        if (leftContent) {
             try {
-                localStorage.setItem(STORAGE_KEYS.BASE64_TO_MEDIA_INPUT, input);
+                localStorage.setItem(STORAGE_KEYS.BASE64_TO_MEDIA_INPUT, leftContent);
             } catch (error) {
-                console.error('Failed to save input:', error);
+                console.error('Failed to save leftContent:', error);
             }
         }
-    }, [input]);
+    }, [leftContent, mounted]);
+
+    // Track current left content for sharing
+    useEffect(() => {
+        setCurrentLeftContent(leftContent);
+    }, [leftContent]);
 
     // Detect MIME type from magic bytes
     const detectMimeType = useCallback((bytes: Uint8Array): string => {
@@ -94,13 +138,13 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
 
     // Decode Base64 to media - computed value
     const mediaPreview = useMemo(() => {
-        if (!input.trim()) {
+        if (!leftContent.trim()) {
             return null;
         }
 
         try {
-            // Clean the input - remove whitespace and data URL scheme if present
-            const cleanInput = input.trim().replace(/\s/g, '');
+            // Clean the leftContent - remove whitespace and data URL scheme if present
+            const cleanInput = leftContent.trim().replace(/\s/g, '');
 
             // Check if it's a data URL
             if (cleanInput.startsWith('data:')) {
@@ -146,13 +190,13 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
         } catch {
             return null;
         }
-    }, [input, detectMimeType, getExtensionFromMimeType]);
+    }, [leftContent, detectMimeType, getExtensionFromMimeType]);
 
     const error = useMemo(() => {
-        if (!input.trim()) return null;
+        if (!leftContent.trim()) return null;
 
         try {
-            const cleanInput = input.trim().replace(/\s/g, '');
+            const cleanInput = leftContent.trim().replace(/\s/g, '');
 
             if (cleanInput.startsWith('data:')) {
                 const matches = cleanInput.match(/^data:([^;]+);base64,(.+)$/);
@@ -165,7 +209,7 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
         } catch {
             return 'Invalid Base64 string';
         }
-    }, [input]);
+    }, [leftContent]);
 
     // Handle file upload - upload a base64 file
     const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -175,7 +219,7 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
         const reader = new FileReader();
         reader.onload = (e) => {
             const content = e.target?.result as string;
-            setInput(content);
+            setLeftContent(content);
             toast.success(`File "${file.name}" loaded`);
         };
 
@@ -220,20 +264,20 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
 
     // Handle clear
     const handleClear = useCallback(() => {
-        setInput('');
+        setLeftContent('');
     }, []);
 
     // Handle share - open share sheet
     const handleShare = useCallback(() => {
-        if (!input) {
-            toast.error('No Base64 input to share');
+        if (!currentLeftContent) {
+            toast.error('No Base64 leftContent to share');
             return;
         }
         setIsShareSheetOpen(true);
-    }, [input]);
+    }, [currentLeftContent]);
 
     // Define action buttons for Input Source section
-    const inputActions = useMemo(
+    const leftContentActions = useMemo(
         () => [
             {
                 id: 'upload',
@@ -249,10 +293,10 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
                 label: 'Clear all',
                 onClick: onClear || handleClear,
                 title: 'Clear all',
-                disabled: !input && !mediaPreview,
+                disabled: !leftContent && !mediaPreview,
             },
         ],
-        [handleFileUpload, input, mediaPreview, onClear, handleClear],
+        [handleFileUpload, leftContent, mediaPreview, onClear, handleClear],
     );
 
     // Define action buttons for Output section
@@ -280,7 +324,9 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
     return (
         <>
             <Base64ShareDialog
-                content={input}
+                content={currentLeftContent}
+                pageName={PAGE_NAMES.BASE64}
+                tabName={BASE64_TABS.BASE64_TO_MEDIA as keyof typeof BASE64_TABS}
                 open={isShareSheetOpen}
                 onOpenChange={setIsShareSheetOpen}
             />
@@ -298,7 +344,7 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
                         label: 'Share',
                         onClick: handleShare,
                         variant: 'outline',
-                        disabled: !input,
+                        disabled: !leftContent,
                     },
                 ]}
             />
@@ -310,18 +356,18 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                             Input Source
                         </label>
-                        <EditorActions buttons={inputActions} />
+                        <EditorActions buttons={leftContentActions} />
                     </div>
 
-                    {/* Textarea for Base64 input */}
-                    <div className="border border-input rounded-md flex-1 overflow-hidden relative">
+                    {/* Textarea for Base64 leftContent */}
+                    <div className="border border-leftContent rounded-md flex-1 overflow-hidden relative">
                         <textarea
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
+                            value={leftContent}
+                            onChange={(e) => setLeftContent(e.target.value)}
                             className="w-full h-full resize-none p-3 font-mono text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                             style={{ minHeight: '600px' }}
                         />
-                        {!input && (
+                        {!leftContent && (
                             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
                                 <EmptyEditorPrompt
                                     icon={Upload}
@@ -337,10 +383,10 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
                     <div className="shrink-0">
                         <div className="flex items-center justify-between py-2">
                             <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
-                                {input && (
+                                {leftContent && (
                                     <div className="flex items-center gap-1.5" title="Characters">
                                         <Type className="h-3.5 w-3.5 text-gray-500" />
-                                        <span>{input.length.toLocaleString()} chars</span>
+                                        <span>{leftContent.length.toLocaleString()} chars</span>
                                     </div>
                                 )}
                             </div>
@@ -349,19 +395,19 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
                                     className={`flex items-center gap-1.5 py-1 rounded-md text-xs font-medium ${
                                         error
                                             ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
-                                            : input
+                                            : leftContent
                                               ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
                                               : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
                                     }`}
                                 >
                                     {error ? (
                                         <X className="h-3.5 w-3.5" />
-                                    ) : input ? (
+                                    ) : leftContent ? (
                                         <Check className="h-3.5 w-3.5" />
                                     ) : (
                                         <Circle className="h-3.5 w-3.5" />
                                     )}
-                                    <span>{error ? 'Invalid' : input ? 'Ready' : 'Empty'}</span>
+                                    <span>{error ? 'Invalid' : leftContent ? 'Ready' : 'Empty'}</span>
                                 </div>
                             </div>
                         </div>
@@ -379,7 +425,7 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
 
                     {/* Media Preview or Empty State */}
                     <div
-                        className="border border-input rounded-md flex-1 overflow-hidden relative bg-background"
+                        className="border border-leftContent rounded-md flex-1 overflow-hidden relative bg-background"
                         style={{ minHeight: '600px' }}
                     >
                         {mediaPreview ? (
@@ -430,7 +476,7 @@ export function Base64ToMediaTab({ onClear }: Base64ToMediaTabProps) {
                                         {error}
                                     </p>
                                     <p className="text-xs text-gray-500 mt-2">
-                                        Please check your Base64 input and try again
+                                        Please check your Base64 leftContent and try again
                                     </p>
                                 </div>
                             </div>

@@ -10,6 +10,7 @@ export interface MinifyPaneProps {
     removeWhitespace?: boolean;
     onError?: (error: Error) => void;
     onValidationChange?: (isValid: boolean) => void;
+    onContentChange?: (content: string) => void;
     initialLeftContent?: string;
     className?: string;
 }

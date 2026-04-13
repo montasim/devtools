@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Toolbar } from '@/components/toolbar';
 import { EditorPane, type EditorPaneRef } from '@/components/editor';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { STORAGE_KEYS } from '@/lib/constants';
 
 interface JsonDiffTabProps {
     onClear: () => void;
+    sharedData?: any;
 }
 
-export function JsonDiffTab({ onClear }: JsonDiffTabProps) {
+export function JsonDiffTab({ onClear, sharedData }: JsonDiffTabProps) {
     const [ignoreKeyOrder, setIgnoreKeyOrder] = useState(true);
     const [showClearDialog, setShowClearDialog] = useState(false);
     const [prettyPrint, setPrettyPrint] = useState(true);
@@ -17,6 +19,8 @@ export function JsonDiffTab({ onClear }: JsonDiffTabProps) {
     const [semanticTypeDiff, setSemanticTypeDiff] = useState(false);
     const [canCompare, setCanCompare] = useState(false);
     const [isComputing, setIsComputing] = useState(false);
+    const [currentLeftContent, setCurrentLeftContent] = useState('');
+    const [currentRightContent, setCurrentRightContent] = useState('');
 
     const editorPaneRef = useRef<EditorPaneRef | null>(null);
 
@@ -31,6 +35,11 @@ export function JsonDiffTab({ onClear }: JsonDiffTabProps) {
     const handleValidationChange = useCallback((isValid: boolean) => {
         setCanCompare(isValid);
         setIsComputing(editorPaneRef.current?.isComputing ?? false);
+    }, []);
+
+    const handleContentChange = useCallback((leftContent: string, rightContent: string) => {
+        setCurrentLeftContent(leftContent);
+        setCurrentRightContent(rightContent);
     }, []);
 
     const handleCompareClick = async () => {
@@ -106,6 +115,9 @@ export function JsonDiffTab({ onClear }: JsonDiffTabProps) {
                     onCompare={handleCompare}
                     onError={handleError}
                     onValidationChange={handleValidationChange}
+                    onContentChange={handleContentChange}
+                    initialLeftContent={sharedData?.state?.input}
+                    initialRightContent={sharedData?.state?.rightContent}
                 />
             </div>
 

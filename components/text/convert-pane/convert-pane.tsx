@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { Trash2, Copy, Download, Share2, X, Sparkles } from 'lucide-react';
 import { TextEditor } from '@/components/text/text-editor/text-editor';
@@ -32,37 +32,75 @@ import {
 } from '@/components/text/text-editor/utils/text-operations';
 import { STORAGE_KEYS } from '@/lib/constants';
 
-export function ConvertPane() {
-    const [inputText, setInputText] = useState(() => {
+export interface ConvertPaneProps {
+    sharedData?: any;
+    onContentChange?: (leftContent: string, rightContent: string) => void;
+    currentLeftContent?: string;
+    currentRightContent?: string;
+}
+
+export function ConvertPane({
+    sharedData,
+    onContentChange,
+    currentLeftContent,
+    currentRightContent,
+}: ConvertPaneProps) {
+    // Track if we've loaded shared data
+    const sharedDataLoadedRef = useRef(false);
+
+    const [leftContent, setLeftContent] = useState<string>(() => {
         try {
+            // Prioritize shared content if available
+            if (sharedData?.tabName === 'convert' && sharedData?.state?.leftContent) {
+                sharedDataLoadedRef.current = true;
+                return sharedData.state.leftContent;
+            }
             return localStorage.getItem(STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT) || '';
         } catch {
             return '';
         }
     });
-    const [outputText, setOutputText] = useState('');
+    const [rightContent, setRightContent] = useState('');
     const [conversionType, setConversionType] = useState<string | null>(null);
     const [selectedConversion, setSelectedConversion] = useState<string | null>(null);
     const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
+    // Track sharedData to detect async arrival
+    const sharedDataRef = useRef(sharedData);
+
     // Debounced save to localStorage
-    useDebouncedSave(inputText, STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT);
+    useDebouncedSave(leftContent, STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT);
+
+    // Handle async shared data arrival
+    useEffect(() => {
+        // If shared data just arrived (was undefined/null, now has value with leftContent)
+        if (sharedData?.tabName === 'convert' && sharedData?.state?.leftContent && !sharedDataLoadedRef.current) {
+            sharedDataLoadedRef.current = true;
+            setLeftContent(sharedData.state.leftContent);
+        }
+        sharedDataRef.current = sharedData;
+    }, [sharedData]);
+
+    // Notify parent of content changes for sharing
+    useEffect(() => {
+        onContentChange?.(leftContent, rightContent);
+    }, [leftContent, rightContent]);
 
     const handleConvert = (operation: (text: string) => string, type: string, name: string) => {
-        setOutputText(operation(inputText));
+        setRightContent(operation(leftContent));
         setConversionType(type);
         setSelectedConversion(name);
     };
 
     const handleClearOutput = () => {
-        setOutputText('');
+        setRightContent('');
         setConversionType(null);
         setSelectedConversion(null);
     };
 
     const handleCopy = async () => {
         try {
-            await navigator.clipboard.writeText(outputText);
+            await navigator.clipboard.writeText(rightContent);
             toast.success('Copied to clipboard');
         } catch (error) {
             console.error('Failed to copy:', error);
@@ -71,10 +109,10 @@ export function ConvertPane() {
     };
 
     const handleDownload = () => {
-        if (!outputText) return;
+        if (!rightContent) return;
 
         try {
-            const blob = new Blob([outputText], { type: 'text/plain' });
+            const blob = new Blob([rightContent], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -88,7 +126,7 @@ export function ConvertPane() {
     };
 
     const handleShare = () => {
-        if (!outputText) {
+        if (!rightContent) {
             toast.error('No content to share. Please convert some text first.');
             return;
         }
@@ -96,8 +134,8 @@ export function ConvertPane() {
     };
 
     const handleClear = () => {
-        setInputText('');
-        setOutputText('');
+        setLeftContent('');
+        setRightContent('');
         setConversionType(null);
         setSelectedConversion(null);
         try {
@@ -108,8 +146,8 @@ export function ConvertPane() {
     };
 
     const handleClearInput = () => {
-        setInputText('');
-        setOutputText('');
+        setLeftContent('');
+        setRightContent('');
         setConversionType(null);
         setSelectedConversion(null);
         try {
@@ -167,7 +205,7 @@ export function ConvertPane() {
                         label: 'Share',
                         onClick: handleShare,
                         variant: 'outline',
-                        disabled: !outputText,
+                        disabled: !rightContent,
                     },
                 ]}
             />
@@ -177,8 +215,8 @@ export function ConvertPane() {
                 <div className="w-full lg:w-1/2 min-w-0">
                     <TextEditor
                         label="Input"
-                        value={inputText}
-                        onChange={setInputText}
+                        value={leftContent}
+                        onChange={setLeftContent}
                         onError={() => {}}
                         onClear={handleClearInput}
                         height="600px"
@@ -202,7 +240,7 @@ export function ConvertPane() {
                                     icon: Copy,
                                     label: 'Copy',
                                     onClick: handleCopy,
-                                    disabled: !outputText,
+                                    disabled: !rightContent,
                                     title: 'Copy output to clipboard',
                                 },
                                 {
@@ -210,7 +248,7 @@ export function ConvertPane() {
                                     icon: Download,
                                     label: 'Download',
                                     onClick: handleDownload,
-                                    disabled: !outputText,
+                                    disabled: !rightContent,
                                     title: 'Download output as file',
                                 },
                                 {
@@ -218,7 +256,7 @@ export function ConvertPane() {
                                     icon: X,
                                     label: 'Clear editor',
                                     onClick: handleClearOutput,
-                                    disabled: !outputText,
+                                    disabled: !rightContent,
                                     title: 'Clear editor',
                                 },
                             ]}
@@ -231,14 +269,14 @@ export function ConvertPane() {
                         style={{ height: '600px', position: 'relative' }}
                     >
                         <textarea
-                            value={outputText}
+                            value={rightContent}
                             readOnly
                             className="w-full h-full resize-none p-3 font-mono text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                             style={{ minHeight: '500px' }}
                         />
 
                         {/* Empty state overlay - shown on top when editor is empty */}
-                        {!outputText && (
+                        {!rightContent && (
                             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
                                 <EmptyEditorPrompt
                                     icon={Sparkles}
@@ -252,15 +290,15 @@ export function ConvertPane() {
 
                     {/* Output footer */}
                     <div className="shrink-0">
-                        <TextareaFooter content={outputText} error={null} />
+                        <TextareaFooter content={rightContent} error={null} />
                     </div>
                 </div>
             </div>
 
             {/* Share dialog */}
             <ConvertShareDialog
-                inputContent={inputText}
-                outputContent={outputText}
+                leftContent={currentLeftContent ?? leftContent}
+                rightContent={currentRightContent ?? rightContent}
                 conversionType={conversionType}
                 open={shareDialogOpen}
                 onOpenChange={setShareDialogOpen}

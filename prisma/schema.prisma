@@ -4,8 +4,7 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../lib/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -15,7 +14,8 @@ datasource db {
 // Shareable app state models
 model SharedLink {
   id           String    @id @default(cuid())
-  pageType     String // 'text', 'json', etc.
+  pageName     String // 'text', 'json', 'base64'
+  tabName      String // 'diff', 'format', etc.
   title        String // User-provided title
   comment      String? // Optional user-provided comment
   expiresAt    DateTime? // Null = never expires
@@ -26,7 +26,7 @@ model SharedLink {
 
   content SharedContent?
 
-  @@index([pageType])
+  @@index([pageName])
   @@index([createdAt])
   @@index([expiresAt])
 }

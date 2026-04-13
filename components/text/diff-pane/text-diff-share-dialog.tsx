@@ -14,6 +14,7 @@ import {
     SheetFooter,
 } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
+import { ShareForm } from '@/components/share/share-form';
 
 interface TextDiffShareDialogProps {
     leftContent: string;
@@ -298,36 +299,14 @@ export function TextDiffShareDialog({
                 </SheetHeader>
 
                 <div className="flex flex-col gap-4 p-4">
-                    {/* Share URL Section */}
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Shareable Link
-                        </label>
-
-                        <div className="flex gap-2 mt-2">
-                            <Input
-                                value={generateShareUrl()}
-                                readOnly
-                                placeholder="Generating link..."
-                                className="flex-1 text-xs"
-                            />
-                            <Button
-                                size="sm"
-                                onClick={copyShareUrl}
-                                disabled={!generateShareUrl()}
-                                className="shrink-0"
-                            >
-                                {copied ? (
-                                    <Check className="h-4 w-4" />
-                                ) : (
-                                    <Copy className="h-4 w-4" />
-                                )}
-                            </Button>
-                        </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                            Anyone with this link can view the diff
-                        </p>
-                    </div>
+                    <ShareForm
+                        pageName="text"
+                        tabName="diff"
+                        getState={() => ({
+                            leftContent,
+                            rightContent,
+                        })}
+                    />
 
                     <Separator />
 

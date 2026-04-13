@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { Share2, MoreVertical, Plus, Minus, Replace, Percent } from 'lucide-react';
 import { TextEditor } from '@/components/text/text-editor/text-editor';
@@ -19,25 +19,53 @@ import type { TextDiffViewMode } from '@/components/text/diff-pane/view-mode-tab
 export interface TextDiffPaneProps {
     shareDialogOpen?: boolean;
     onShareDialogOpenChange?: (open: boolean) => void;
+    sharedData?: any;
+    onContentChange?: (left: string, right: string) => void;
+    currentLeftContent?: string;
+    currentRightContent?: string;
 }
 
-export function TextDiffPane({ shareDialogOpen, onShareDialogOpenChange }: TextDiffPaneProps) {
-    // Initialize state from localStorage
-    const [leftText, setLeftText] = useState(() => {
+export function TextDiffPane({
+    shareDialogOpen,
+    onShareDialogOpenChange,
+    sharedData,
+    onContentChange,
+    currentLeftContent,
+    currentRightContent,
+}: TextDiffPaneProps) {
+    // Track if we've loaded shared data for each side
+    const leftSharedDataLoadedRef = useRef(false);
+    const rightSharedDataLoadedRef = useRef(false);
+
+    // Initialize state from localStorage or shared data
+    const [leftText, setLeftText] = useState<string>(() => {
         try {
+            // Prioritize shared content if available
+            if (sharedData?.tabName === 'diff' && sharedData?.state?.leftContent) {
+                leftSharedDataLoadedRef.current = true;
+                return sharedData.state.leftContent;
+            }
             return localStorage.getItem(STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT) || '';
         } catch {
             return '';
         }
     });
-    const [rightText, setRightText] = useState(() => {
+    const [rightText, setRightText] = useState<string>(() => {
         try {
+            // Prioritize shared content if available
+            if (sharedData?.tabName === 'diff' && sharedData?.state?.rightContent) {
+                rightSharedDataLoadedRef.current = true;
+                return sharedData.state.rightContent;
+            }
             return localStorage.getItem(STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT) || '';
         } catch {
             return '';
         }
     });
     const [diffViewType, setDiffViewType] = useState<TextDiffViewMode>('split');
+
+    // Track sharedData to detect async arrival
+    const sharedDataRef = useRef(sharedData);
 
     // Error handlers (no-op for text diff)
     const handleLeftError = () => {};
@@ -46,6 +74,30 @@ export function TextDiffPane({ shareDialogOpen, onShareDialogOpenChange }: TextD
     // Debounced save to localStorage
     useDebouncedSave(leftText, STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT);
     useDebouncedSave(rightText, STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT);
+
+    // Notify parent of content changes for sharing
+    useEffect(() => {
+        onContentChange?.(leftText, rightText);
+    }, [leftText, rightText]);
+
+    // Handle async shared data arrival for left content
+    useEffect(() => {
+        // If shared data just arrived (was undefined/null, now has value with leftContent)
+        if (sharedData?.tabName === 'diff' && sharedData?.state?.leftContent && !leftSharedDataLoadedRef.current) {
+            leftSharedDataLoadedRef.current = true;
+            setLeftText(sharedData.state.leftContent);
+        }
+        sharedDataRef.current = sharedData;
+    }, [sharedData]);
+
+    // Handle async shared data arrival for right content
+    useEffect(() => {
+        // If shared data just arrived (was undefined/null, now has value with rightContent)
+        if (sharedData?.tabName === 'diff' && sharedData?.state?.rightContent && !rightSharedDataLoadedRef.current) {
+            rightSharedDataLoadedRef.current = true;
+            setRightText(sharedData.state.rightContent);
+        }
+    }, [sharedData]);
 
     const { stats } = useTextDiff(leftText, rightText);
 
@@ -178,8 +230,8 @@ export function TextDiffPane({ shareDialogOpen, onShareDialogOpenChange }: TextD
 
             {/* Share Dialog */}
             <TextDiffShareDialog
-                leftContent={leftText}
-                rightContent={rightText}
+                leftContent={currentLeftContent ?? leftText}
+                rightContent={currentRightContent ?? rightText}
                 stats={stats}
                 changePercentage={changePercentage}
                 open={shareDialogOpen ?? false}

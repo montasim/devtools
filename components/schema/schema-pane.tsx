@@ -16,8 +16,12 @@ export const SchemaPane = ({
     onError,
     onValidationChange,
     onContentChange,
+    initialJsonContent = '',
     className,
 }: SchemaPaneProps) => {
+    // Track if we've loaded shared data
+    const sharedDataLoadedRef = useRef(!!initialJsonContent);
+
     // Mode state - use external mode if provided, otherwise use internal state
     const [internalMode] = useState<SchemaMode>(() => {
         if (typeof window === 'undefined') return 'generate';
@@ -34,6 +38,12 @@ export const SchemaPane = ({
 
     // JSON input state
     const [jsonInput, setJsonInput] = useState<string>(() => {
+        // Priority 1: Use initial content if provided (shared data)
+        if (initialJsonContent) {
+            sharedDataLoadedRef.current = true;
+            return initialJsonContent;
+        }
+        // Priority 2: Load from localStorage
         if (typeof window === 'undefined') return '';
         try {
             return localStorage.getItem(STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT) || '';
@@ -53,8 +63,18 @@ export const SchemaPane = ({
     });
 
     // Track initial content to avoid saving empty string to localStorage
-    const initialJsonInputRef = useRef(jsonInput);
+    const initialJsonInputRef = useRef(initialJsonContent);
     const initialSchemaInputRef = useRef(schemaInput);
+
+    // Update content when shared data arrives asynchronously
+    useEffect(() => {
+        // If shared data just arrived (was undefined, now has value)
+        if (initialJsonContent && !sharedDataLoadedRef.current) {
+            sharedDataLoadedRef.current = true;
+            setJsonInput(initialJsonContent);
+        }
+        initialJsonInputRef.current = initialJsonContent;
+    }, [initialJsonContent]);
 
     // Save to localStorage
     useEffect(() => {
@@ -65,7 +85,11 @@ export const SchemaPane = ({
                 console.error('Failed to save JSON input:', error);
             }
         }
-    }, [jsonInput]);
+        // Notify parent of content change (for share dialog)
+        if (schemaInput !== initialSchemaInputRef.current) {
+            onContentChange?.(jsonInput, schemaInput);
+        }
+    }, [jsonInput, schemaInput, onContentChange]);
 
     useEffect(() => {
         if (schemaInput !== initialSchemaInputRef.current) {

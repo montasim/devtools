@@ -10,52 +10,34 @@ import { STORAGE_KEYS } from '@/lib/constants';
 
 interface MinifyTabProps {
     onClear: () => void;
+    sharedData?: any;
 }
 
-export function JsonMinifyTab({ onClear }: MinifyTabProps) {
+export function JsonMinifyTab({ onClear, sharedData }: MinifyTabProps) {
     const [minifySortKeys, setMinifySortKeys] = useState(false);
     const [minifyRemoveWhitespace, setMinifyRemoveWhitespace] = useState(true);
     const [minifyShareDialogOpen, setMinifyShareDialogOpen] = useState(false);
-    const [minifyContent, setMinifyContent] = useState('');
+    const [currentContent, setCurrentContent] = useState('');
     const [showClearDialog, setShowClearDialog] = useState(false);
-
-    // Load minify content from localStorage on mount and keep in sync
-    useEffect(() => {
-        const loadMinifyContent = () => {
-            try {
-                const content = localStorage.getItem(STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT) || '';
-                setMinifyContent(content);
-            } catch (error) {
-                console.error('Failed to load minify content:', error);
-            }
-        };
-
-        loadMinifyContent();
-
-        // Listen for storage changes
-        const handleStorageChange = () => {
-            loadMinifyContent();
-        };
-
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
-    }, []);
 
     const handleError = (error: Error) => {
         console.error('Minify error:', error);
     };
 
+    const handleContentChange = useCallback((content: string) => {
+        setCurrentContent(content);
+    }, []);
+
     const handleMinifyShare = useCallback(() => {
-        // Get the minified content from localStorage
-        const minifiedContent = localStorage.getItem(STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT);
-        if (!minifiedContent) {
+        // Use the current content from state instead of localStorage
+        if (!currentContent) {
             toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
         // Open the share dialog
         setMinifyShareDialogOpen(true);
-    }, []);
+    }, [currentContent]);
 
     const handleClearClick = () => {
         setShowClearDialog(true);
@@ -108,11 +90,13 @@ export function JsonMinifyTab({ onClear }: MinifyTabProps) {
                     removeWhitespace={minifyRemoveWhitespace}
                     onError={handleError}
                     onValidationChange={() => {}}
+                    onContentChange={handleContentChange}
+                    initialLeftContent={sharedData?.state?.input}
                 />
             </div>
 
             <MinifyShareDialog
-                content={minifyContent}
+                content={currentContent}
                 open={minifyShareDialogOpen}
                 onOpenChange={setMinifyShareDialogOpen}
             />

@@ -8,6 +8,7 @@ export interface FormatPaneProps {
     onError?: (error: Error) => void;
     onValidationChange?: (isValid: boolean) => void;
     onIndentationChange?: (indentation: number) => void;
+    onContentChange?: (content: string) => void;
     initialLeftContent?: string;
     className?: string;
 }

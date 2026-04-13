@@ -14,18 +14,19 @@ import {
     SheetFooter,
 } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
+import { ShareForm } from '@/components/share/share-form';
 
 interface ConvertShareDialogProps {
-    inputContent: string;
-    outputContent: string;
+    leftContent: string;
+    rightContent: string;
     conversionType: string | null;
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
 }
 
 export function ConvertShareDialog({
-    inputContent,
-    outputContent,
+    leftContent,
+    rightContent,
     conversionType,
     open,
     onOpenChange,
@@ -34,12 +35,12 @@ export function ConvertShareDialog({
 
     // Generate shareable URL
     const generateShareUrl = useCallback(() => {
-        if (!inputContent && !outputContent) return '';
+        if (!leftContent && !rightContent) return '';
 
         try {
             // Encode both text contents
-            const encodedInput = inputContent ? btoa(encodeURIComponent(inputContent)) : '';
-            const encodedOutput = outputContent ? btoa(encodeURIComponent(outputContent)) : '';
+            const encodedInput = leftContent ? btoa(encodeURIComponent(leftContent)) : '';
+            const encodedOutput = rightContent ? btoa(encodeURIComponent(rightContent)) : '';
 
             // Create URL with encoded content
             const url = new URL(window.location.href);
@@ -54,7 +55,7 @@ export function ConvertShareDialog({
             console.error('Error generating share URL:', error);
             return '';
         }
-    }, [inputContent, outputContent, conversionType]);
+    }, [leftContent, rightContent, conversionType]);
 
     // Copy share URL to clipboard
     const copyShareUrl = useCallback(async () => {
@@ -74,10 +75,10 @@ export function ConvertShareDialog({
 
     // Copy output to clipboard
     const copyOutputToClipboard = useCallback(async () => {
-        if (!outputContent) return;
+        if (!rightContent) return;
 
         try {
-            await navigator.clipboard.writeText(outputContent);
+            await navigator.clipboard.writeText(rightContent);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
             toast.success('Copied to clipboard');
@@ -85,14 +86,14 @@ export function ConvertShareDialog({
             console.error('Failed to copy output:', error);
             toast.error('Failed to copy to clipboard');
         }
-    }, [outputContent]);
+    }, [rightContent]);
 
     // Download output as file
     const downloadOutput = useCallback(() => {
-        if (!outputContent) return;
+        if (!rightContent) return;
 
         try {
-            const blob = new Blob([outputContent], { type: 'text/plain' });
+            const blob = new Blob([rightContent], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -102,11 +103,11 @@ export function ConvertShareDialog({
         } catch (error) {
             console.error('Failed to download:', error);
         }
-    }, [outputContent, conversionType]);
+    }, [rightContent, conversionType]);
 
     // Export HTML Report
     const exportHTMLReport = useCallback(() => {
-        if (!inputContent && !outputContent) return;
+        if (!leftContent && !rightContent) return;
 
         try {
             const html = `<!DOCTYPE html>
@@ -131,11 +132,11 @@ export function ConvertShareDialog({
         </div>
         <div class="section">
             <h3>Input</h3>
-            <div class="content">${inputContent || '(empty)'}</div>
+            <div class="content">${leftContent || '(empty)'}</div>
         </div>
         <div class="section">
             <h3>Output (${conversionType || 'Converted'})</h3>
-            <div class="content">${outputContent || '(empty)'}</div>
+            <div class="content">${rightContent || '(empty)'}</div>
         </div>
     </div>
 </body>
@@ -147,7 +148,7 @@ export function ConvertShareDialog({
         } catch (error) {
             console.error('Failed to export HTML report:', error);
         }
-    }, [inputContent, outputContent, conversionType]);
+    }, [leftContent, rightContent, conversionType]);
 
     // Share using Web Share API (if available)
     const shareNative = useCallback(async () => {
@@ -162,13 +163,13 @@ export function ConvertShareDialog({
         try {
             await navigator.share({
                 title: `Converted Text (${conversionType || 'Text Conversion'})`,
-                text: outputContent,
+                text: rightContent,
                 url: url,
             });
         } catch (error) {
             console.error('Failed to share:', error);
         }
-    }, [generateShareUrl, outputContent, conversionType]);
+    }, [generateShareUrl, rightContent, conversionType]);
 
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
@@ -181,36 +182,15 @@ export function ConvertShareDialog({
                 </SheetHeader>
 
                 <div className="flex flex-col gap-4 p-4">
-                    {/* Share URL Section */}
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Shareable Link
-                        </label>
-
-                        <div className="flex gap-2 mt-2">
-                            <Input
-                                value={generateShareUrl()}
-                                readOnly
-                                placeholder="Generating link..."
-                                className="flex-1 text-xs"
-                            />
-                            <Button
-                                size="sm"
-                                onClick={copyShareUrl}
-                                disabled={!generateShareUrl()}
-                                className="shrink-0"
-                            >
-                                {copied ? (
-                                    <Check className="h-4 w-4" />
-                                ) : (
-                                    <Copy className="h-4 w-4" />
-                                )}
-                            </Button>
-                        </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                            Anyone with this link can view the conversion
-                        </p>
-                    </div>
+                    <ShareForm
+                        pageName="text"
+                        tabName="convert"
+                        getState={() => ({
+                            leftContent,
+                            rightContent,
+                            conversionType,
+                        })}
+                    />
 
                     <Separator />
 
@@ -225,7 +205,7 @@ export function ConvertShareDialog({
                                 variant="outline"
                                 className="w-full justify-start"
                                 onClick={copyOutputToClipboard}
-                                disabled={!outputContent}
+                                disabled={!rightContent}
                             >
                                 <Copy className="h-4 w-4 mr-2" />
                                 Copy Output to Clipboard
@@ -246,7 +226,7 @@ export function ConvertShareDialog({
                                 variant="outline"
                                 className="w-full justify-start"
                                 onClick={downloadOutput}
-                                disabled={!outputContent}
+                                disabled={!rightContent}
                             >
                                 <Download className="h-4 w-4 mr-2" />
                                 Download as Text File
@@ -255,7 +235,7 @@ export function ConvertShareDialog({
                                 variant="outline"
                                 className="w-full justify-start"
                                 onClick={exportHTMLReport}
-                                disabled={!inputContent && !outputContent}
+                                disabled={!leftContent && !rightContent}
                             >
                                 <FileText className="h-4 w-4 mr-2" />
                                 Export HTML Report

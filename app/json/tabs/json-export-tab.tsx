@@ -12,51 +12,33 @@ import { STORAGE_KEYS } from '@/lib/constants';
 
 interface JsonExportTabProps {
     onClear: () => void;
+    sharedData?: any;
 }
 
-export function JsonExportTab({ onClear }: JsonExportTabProps) {
+export function JsonExportTab({ onClear, sharedData }: JsonExportTabProps) {
     const [exportFormat, setExportFormat] = useState<ExportFormat>('csv');
     const [exportShareDialogOpen, setExportShareDialogOpen] = useState(false);
-    const [exportContent, setExportContent] = useState('');
+    const [currentContent, setCurrentContent] = useState('');
     const [showClearDialog, setShowClearDialog] = useState(false);
-
-    // Load export content from localStorage on mount and keep in sync
-    useEffect(() => {
-        const loadExportContent = () => {
-            try {
-                const content = localStorage.getItem(STORAGE_KEYS.JSON_EXPORT_CONTENT) || '';
-                setExportContent(content);
-            } catch (error) {
-                console.error('Failed to load export content:', error);
-            }
-        };
-
-        loadExportContent();
-
-        // Listen for storage changes
-        const handleStorageChange = () => {
-            loadExportContent();
-        };
-
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
-    }, []);
 
     const handleError = (error: Error) => {
         console.error('Export error:', error);
     };
 
+    const handleContentChange = useCallback((content: string) => {
+        setCurrentContent(content);
+    }, []);
+
     const handleExportShare = useCallback(() => {
-        // Get the export content from localStorage
-        const exportContentData = localStorage.getItem(STORAGE_KEYS.JSON_EXPORT_CONTENT);
-        if (!exportContentData) {
+        // Use the current content from state instead of localStorage
+        if (!currentContent) {
             toast.error('No content to share. Please enter some JSON first.');
             return;
         }
 
         // Open the share dialog
         setExportShareDialogOpen(true);
-    }, []);
+    }, [currentContent]);
 
     const handleClearClick = () => {
         setShowClearDialog(true);
@@ -112,13 +94,15 @@ export function JsonExportTab({ onClear }: JsonExportTabProps) {
                     className="mx-auto"
                     onError={handleError}
                     onValidationChange={() => {}}
+                    onContentChange={handleContentChange}
                     exportFormat={exportFormat}
                     onExportFormatChange={setExportFormat}
+                    initialContent={sharedData?.state?.input}
                 />
             </div>
 
             <ExportShareDialog
-                content={exportContent}
+                content={currentContent}
                 format={exportFormat}
                 open={exportShareDialogOpen}
                 onOpenChange={setExportShareDialogOpen}

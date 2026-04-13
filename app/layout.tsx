@@ -6,6 +6,7 @@ import Footer from '@/components/layout/footer';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Providers } from '@/components/providers/providers';
 
 export const metadata: Metadata = {
     title: {
@@ -79,16 +80,18 @@ export default function RootLayout({
     return (
         <html lang="en" className="h-full antialiased">
             <body className="min-h-full flex flex-col">
-                <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-                    <TooltipProvider>
-                        <Navbar />
+                <Providers>
+                    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                        <TooltipProvider>
+                            <Navbar />
 
-                        <main className="px-4 sm:px-6 lg:px-8 overflow-visible">{children}</main>
+                            <main className="px-4 sm:px-6 lg:px-8 overflow-visible">{children}</main>
 
-                        <Footer />
-                        <Toaster />
-                    </TooltipProvider>
-                </ThemeProvider>
+                            <Footer />
+                            <Toaster />
+                        </TooltipProvider>
+                    </ThemeProvider>
+                </Providers>
             </body>
         </html>
     );

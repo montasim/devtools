@@ -2,9 +2,8 @@
 
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
-import { Copy, Check, Download, MessageCircle, FileText, Share2 } from 'lucide-react';
+import { Copy, Check, Download, FileText, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
     Sheet,
     SheetContent,
@@ -15,6 +14,8 @@ import {
 } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
 import { DiffResult } from '@/components/editor/types';
+import { ShareForm } from '@/components/share/share-form';
+import { PAGE_NAMES, TEXT_TABS, JSON_TABS } from '@/lib/constants/tabs';
 
 interface ShareDialogProps {
     diffResult: DiffResult | null;
@@ -32,43 +33,6 @@ export function ShareDialog({
     onOpenChange,
 }: ShareDialogProps) {
     const [copied, setCopied] = useState(false);
-
-    // Generate shareable URL
-    const generateShareUrl = useCallback(() => {
-        if (!leftContent && !rightContent) return '';
-
-        try {
-            // Encode both JSON contents
-            const encodedLeft = leftContent ? btoa(encodeURIComponent(leftContent)) : '';
-            const encodedRight = rightContent ? btoa(encodeURIComponent(rightContent)) : '';
-
-            // Create URL with encoded content
-            const url = new URL(window.location.href);
-            url.searchParams.set('left', encodedLeft);
-            url.searchParams.set('right', encodedRight);
-
-            return url.toString();
-        } catch (error) {
-            console.error('Error generating share URL:', error);
-            return '';
-        }
-    }, [leftContent, rightContent]);
-
-    // Copy share URL to clipboard
-    const copyShareUrl = useCallback(async () => {
-        const url = generateShareUrl();
-        if (!url) return;
-
-        try {
-            await navigator.clipboard.writeText(url);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-            toast.success('Shareable link copied to clipboard');
-        } catch (error) {
-            console.error('Failed to copy URL:', error);
-            toast.error('Failed to copy shareable link');
-        }
-    }, [generateShareUrl]);
 
     // Copy diff to clipboard
     const copyDiffToClipboard = useCallback(async () => {
@@ -267,27 +231,6 @@ export function ShareDialog({
         }
     }, [diffResult]);
 
-    // Share using Web Share API (if available)
-    const shareNative = useCallback(async () => {
-        if (typeof navigator.share !== 'function') {
-            toast.error('Native sharing is not supported in this browser.');
-            return;
-        }
-
-        const url = generateShareUrl();
-        if (!url) return;
-
-        try {
-            await navigator.share({
-                title: 'JSON Diff',
-                text: `Check out this JSON diff with ${diffResult?.additionCount || 0} additions and ${diffResult?.deletionCount || 0} deletions.`,
-                url: url,
-            });
-        } catch (error) {
-            console.error('Failed to share:', error);
-        }
-    }, [generateShareUrl, diffResult]);
-
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent side="right" className="w-96">
@@ -299,36 +242,14 @@ export function ShareDialog({
                 </SheetHeader>
 
                 <div className="flex flex-col gap-4 p-4">
-                    {/* Share URL Section */}
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Shareable Link
-                        </label>
-
-                        <div className="flex gap-2 mt-2">
-                            <Input
-                                value={generateShareUrl()}
-                                readOnly
-                                placeholder="Generating link..."
-                                className="flex-1 text-xs"
-                            />
-                            <Button
-                                size="sm"
-                                onClick={copyShareUrl}
-                                disabled={!generateShareUrl()}
-                                className="shrink-0"
-                            >
-                                {copied ? (
-                                    <Check className="h-4 w-4" />
-                                ) : (
-                                    <Copy className="h-4 w-4" />
-                                )}
-                            </Button>
-                        </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                            Anyone with this link can view the diff
-                        </p>
-                    </div>
+                    <ShareForm
+                        pageName={PAGE_NAMES.JSON}
+                        tabName={JSON_TABS.DIFF}
+                        getState={() => ({
+                            input: leftContent,
+                            rightContent,
+                        })}
+                    />
 
                     <Separator />
 
@@ -401,25 +322,6 @@ export function ShareDialog({
                             ))}
                         </div>
                     </div>
-
-                    <Separator />
-
-                    {/* Native Share Section */}
-                    {typeof navigator.share === 'function' && (
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Native Share
-                            </label>
-                            <Button
-                                variant="outline"
-                                className="w-full justify-start"
-                                onClick={shareNative}
-                            >
-                                <MessageCircle className="h-4 w-4 mr-2" />
-                                Share Using Device Share Menu
-                            </Button>
-                        </div>
-                    )}
                 </div>
 
                 <SheetFooter>
