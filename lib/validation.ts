@@ -24,7 +24,7 @@ export function validateState(state: Record<string, unknown>): { valid: boolean;
                     };
                 }
             } else if (typeof value === 'object' && value !== null) {
-                const result = checkFields(value, fieldPath);
+                const result = checkFields(value as Record<string, unknown>, fieldPath);
                 if (!result.valid) return result;
             }
         }
