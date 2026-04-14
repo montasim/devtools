@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { FileSearch, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -5,11 +7,6 @@ import { ErrorPageLayout } from '@/components/error-pages/error-page-layout';
 import { ErrorCodeDisplay } from '@/components/error-pages/error-code-display';
 import { ErrorActions } from '@/components/error-pages/error-actions';
 import { ErrorSuggestions } from '@/components/error-pages/error-suggestions';
-
-export const metadata = {
-    title: '404 - Page Not Found | DevTools',
-    description: 'The requested development tool or resource could not be found.',
-};
 
 export default function NotFound() {
     const suggestions = [
