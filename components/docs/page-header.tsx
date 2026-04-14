@@ -11,7 +11,7 @@ interface PageHeaderProps {
 
 export function PageHeader({ icon, title, description, actions }: PageHeaderProps) {
     return (
-        <div className="mx-auto border-b border-gray-200 dark:border-gray-800 bg-white sticky top-0">
+        <div className="mx-auto border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm sticky top-0">
             <div className="mx-auto py-4">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                     <div className="flex items-center gap-3">
