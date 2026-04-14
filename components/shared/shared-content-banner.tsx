@@ -2,7 +2,6 @@
 
 import { Lock, Clock, Eye, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 
 interface SharedContentBannerProps {
     title: string;
@@ -36,6 +35,14 @@ export function SharedContentBanner({
         if (days > 0) return `Expires in ${days} day${days > 1 ? 's' : ''}`;
         if (hours > 0) return `Expires in ${hours} hour${hours > 1 ? 's' : ''}`;
         return 'Expires soon';
+    };
+
+    const formatCreatedDate = (dateStr: string) => {
+        if (!dateStr) return 'Unknown date';
+        const date = new Date(dateStr);
+        // Check if date is invalid
+        if (isNaN(date.getTime())) return 'Unknown date';
+        return date.toLocaleDateString();
     };
 
     return (
@@ -87,7 +94,7 @@ export function SharedContentBanner({
                                 </div>
                             )}
 
-                            <div>Created {new Date(createdAt).toLocaleDateString()}</div>
+                            <div>Created {formatCreatedDate(createdAt)}</div>
                         </div>
                     </div>
                 </div>

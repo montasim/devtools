@@ -3,6 +3,7 @@ export const PAGE_NAMES = {
     TEXT: 'text',
     JSON: 'json',
     BASE64: 'base64',
+    SHARE: 'share',
 } as const;
 
 // Base64 tabs
@@ -16,6 +17,11 @@ export const TEXT_TABS = {
     DIFF: 'diff',
     CONVERT: 'convert',
     CLEAN: 'clean',
+} as const;
+
+// Share tabs
+export const SHARE_TABS = {
+    TEXT: 'text',
 } as const;
 
 // JSON tabs
@@ -34,4 +40,5 @@ export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
     ...JSON_TABS,
+    ...SHARE_TABS,
 } as const;

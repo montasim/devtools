@@ -7,12 +7,12 @@ import { PasswordPrompt } from '@/components/shared/password-prompt';
 import { ShareErrorDisplay, type ShareError } from '@/components/shared/share-error-display';
 
 interface PageProps {
-    params: Promise<{ pageType: string; id: string }>;
+    params: Promise<{ type: string; id: string }>;
 }
 
 export default function SharedLinkPage({ params }: PageProps) {
     const router = useRouter();
-    const { pageType, id } = use(params);
+    const { type, id } = use(params);
 
     const [loading, setLoading] = useState(true);
     const [metadata, setMetadata] = useState<{
@@ -24,11 +24,10 @@ export default function SharedLinkPage({ params }: PageProps) {
 
     useEffect(() => {
         async function loadSharedContent() {
-            // Validate pageType (this is the URL param, e.g., 'json', 'text', 'base64')
-            // Note: 'share' pages are handled by app/share/[type]/[id]/page.tsx
-            const validPageTypes = ['text', 'json', 'base64'];
-            if (!validPageTypes.includes(pageType)) {
-                router.push('/text');
+            // Validate type (this is the URL param, e.g., 'text', 'code')
+            const validTypes = ['text'];
+            if (!validTypes.includes(type)) {
+                router.push('/share/text');
                 return;
             }
 
@@ -67,7 +66,7 @@ export default function SharedLinkPage({ params }: PageProps) {
 
         loadSharedContent();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pageType, id]);
+    }, [type, id]);
 
     async function accessContent(password?: string): Promise<{ error?: string }> {
         try {
@@ -90,9 +89,8 @@ export default function SharedLinkPage({ params }: PageProps) {
             // Store in sessionStorage
             sessionStorage.setItem('sharedState', JSON.stringify(accessData));
 
-            // Redirect to correct page/tab
-            const { pageName, tabName } = accessData;
-            router.push(`/${pageName}?tab=${tabName}`);
+            // Redirect to /share/text or /share/code (future)
+            router.push(`/share/${type}`);
             return {};
         } catch (err) {
             console.error('Error accessing share:', err);
@@ -111,17 +109,12 @@ export default function SharedLinkPage({ params }: PageProps) {
     }
 
     if (error) {
-        return <ShareErrorDisplay error={error} pageType={pageType} />;
+        return <ShareErrorDisplay error={error} pageType={type} />;
     }
 
     if (metadata?.hasPassword) {
         return (
-            <PasswordPrompt
-                pageType={pageType}
-                id={id}
-                metadata={metadata}
-                onUnlock={accessContent}
-            />
+            <PasswordPrompt pageType={type} id={id} metadata={metadata} onUnlock={accessContent} />
         );
     }
 

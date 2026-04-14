@@ -1,4 +1,14 @@
-import { Book, Clock, FileCode, GitBranch, Keyboard, Sunset, Trees, Zap } from 'lucide-react';
+import {
+    Book,
+    Clock,
+    FileCode,
+    GitBranch,
+    Keyboard,
+    Share2,
+    Sunset,
+    Trees,
+    Zap,
+} from 'lucide-react';
 
 export const navigationMenu = [
     { title: 'Home', url: '/' },
@@ -17,6 +27,12 @@ export const navigationMenu = [
                 description: 'Process and manipulate text',
                 icon: <Trees className="size-5 shrink-0" />,
                 url: '/text',
+            },
+            {
+                title: 'Share Text',
+                description: 'Share text with others via link',
+                icon: <Share2 className="size-5 shrink-0" />,
+                url: '/share/text',
             },
             {
                 title: 'XML Tools',

@@ -17,7 +17,9 @@ interface PasswordPromptProps {
 }
 
 export function PasswordPrompt({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Parameters reserved for future use
     pageType: _pageType,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Parameters reserved for future use
     id: _id,
     metadata,
     onUnlock,
@@ -59,6 +61,7 @@ export function PasswordPrompt({
                     <div>
                         <Label htmlFor="password">Password</Label>
                         <Input
+                            className="mt-2"
                             id="password"
                             type="password"
                             value={password}

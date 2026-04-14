@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 // Request schemas
 export const CreateShareSchema = z.object({
-    pageName: z.enum(['text', 'json', 'base64']),
+    pageName: z.enum(['text', 'json', 'base64', 'share']),
     tabName: z.enum([
         // Text tabs
         'diff',
@@ -18,6 +18,8 @@ export const CreateShareSchema = z.object({
         // Base64 tabs
         'media-to-base64',
         'base64-to-media',
+        // Share tabs
+        'text',
     ]),
     title: z.string().min(1, 'Title is required').max(200, 'Title too long'),
     comment: z.string().max(1000, 'Comment too long').optional(),
@@ -143,4 +145,8 @@ export const Base64EncodeStateSchema = z.object({
 export const Base64DecodeStateSchema = z.object({
     input: z.string().max(1_000_000),
     output: z.string().max(1_000_000),
+});
+
+export const ShareTextStateSchema = z.object({
+    content: z.string().max(1_000_000, 'Content too large'),
 });

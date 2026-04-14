@@ -114,7 +114,11 @@ export async function POST(request: NextRequest) {
 
         // Construct response
         const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
-        const shortUrl = `/${pageName}/${sharedLink.id}`;
+        // Share pages use /share/{type}/{id} format, others use /{pageName}/{id}
+        const shortUrl =
+            pageName === 'share'
+                ? `/${pageName}/${tabName}/${sharedLink.id}`
+                : `/${pageName}/${sharedLink.id}`;
         const fullUrl = `${baseUrl}${shortUrl}`;
 
         const response: CreateShareResponse = {
