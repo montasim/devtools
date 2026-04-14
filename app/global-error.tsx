@@ -1,7 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
-
 export default function GlobalError({
     error,
     reset,
@@ -9,34 +7,84 @@ export default function GlobalError({
     error: Error & { digest?: string };
     reset: () => void;
 }) {
-    useEffect(() => {
-        // Log the error to an error reporting service
-        console.error('Global error:', error);
-    }, [error]);
-
     return (
         <html>
             <body>
-                <div className="flex min-h-[100vh] flex-col items-center justify-center px-4">
-                    <div className="w-full max-w-2xl space-y-8 text-center">
-                        <h1 className="font-mono text-6xl font-bold sm:text-7xl lg:text-8xl">
+                <div
+                    style={{
+                        display: 'flex',
+                        minHeight: '100vh',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '1rem',
+                    }}
+                >
+                    <div
+                        style={{
+                            width: '100%',
+                            maxWidth: '42rem',
+                            textAlign: 'center',
+                        }}
+                    >
+                        <h1
+                            style={{
+                                fontFamily: 'monospace',
+                                fontSize: '4rem',
+                                fontWeight: 'bold',
+                                marginBottom: '0.5rem',
+                            }}
+                        >
                             500
                         </h1>
-                        <h2 className="text-xl font-semibold sm:text-2xl">Application Error</h2>
-                        <p className="text-muted-foreground text-lg">
+                        <h2
+                            style={{
+                                fontSize: '1.25rem',
+                                fontWeight: '600',
+                                marginBottom: '1rem',
+                            }}
+                        >
+                            Application Error
+                        </h2>
+                        <p
+                            style={{
+                                fontSize: '1.125rem',
+                                color: '#6b7280',
+                                marginBottom: '1rem',
+                            }}
+                        >
                             An unexpected error occurred. Please try again later.
                         </p>
                         {error.digest && (
-                            <div className="rounded-lg bg-muted p-4">
-                                <p className="font-mono text-sm">
-                                    <span className="text-muted-foreground">Error ID:</span>{' '}
-                                    <span className="text-foreground">{error.digest}</span>
+                            <div
+                                style={{
+                                    borderRadius: '0.5rem',
+                                    backgroundColor: '#f3f4f6',
+                                    padding: '1rem',
+                                    marginBottom: '1rem',
+                                }}
+                            >
+                                <p style={{ fontFamily: 'monospace', fontSize: '0.875rem' }}>
+                                    <span style={{ color: '#6b7280' }}>Error ID:</span>{' '}
+                                    <span>{error.digest}</span>
                                 </p>
                             </div>
                         )}
                         <button
                             onClick={reset}
-                            className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: '0.5rem',
+                                backgroundColor: '#000',
+                                color: '#fff',
+                                padding: '0.75rem 1.5rem',
+                                fontSize: '0.875rem',
+                                fontWeight: '500',
+                                cursor: 'pointer',
+                                border: 'none',
+                            }}
                         >
                             Try again
                         </button>
