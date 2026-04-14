@@ -12,6 +12,12 @@ import { TextShareShareDialog } from '@/components/share-text/text-share-share-d
 import { STORAGE_KEYS } from '@/lib/constants';
 
 interface SharedData {
+    title: string;
+    comment?: string | null;
+    expiresAt?: string | null;
+    hasPassword: boolean;
+    viewCount: number;
+    createdAt: string;
     state?: {
         content?: string;
     };
