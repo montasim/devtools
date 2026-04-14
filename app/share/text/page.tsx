@@ -36,6 +36,7 @@ function ShareTextPageContent() {
         }
     });
     const [shareDialogOpen, setShareDialogOpen] = useState(false);
+    const [initialSharedContent, setInitialSharedContent] = useState<string>('');
 
     // Handle async shared data arrival
     useEffect(() => {
@@ -43,6 +44,7 @@ function ShareTextPageContent() {
             sharedDataLoadedRef.current = true;
             // eslint-disable-next-line react-hooks/set-state-in-effect -- Required for shared data synchronization
             setContent(sharedData.state.content);
+            setInitialSharedContent(sharedData.state.content);
         }
     }, [sharedData]);
 
@@ -127,7 +129,7 @@ function ShareTextPageContent() {
 
     return (
         <>
-            {sharedData && (
+            {sharedData && content === initialSharedContent && (
                 <SharedContentBanner
                     title={sharedData.title}
                     comment={sharedData.comment}
