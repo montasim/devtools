@@ -1,7 +1,7 @@
 import { NavigationMenu, NavigationMenuList } from '@/components/ui/navigation-menu';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/layout/logo';
-import { ThemeSwitcher } from '@/components/theme/theme-switcher';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { MenuItem } from '@/components/navbar/types';
 import { DesktopMenuItem } from '@/components/navbar/menu-items';
 import { Separator } from '@/components/ui/separator';
@@ -29,7 +29,7 @@ export const DesktopMenu = ({ menu, auth }: DesktopMenuProps) => (
             </div>
         </div>
         <div className="flex items-center gap-2">
-            <ThemeSwitcher />
+            <ThemeToggle />
 
             <Separator orientation="vertical" />
 
