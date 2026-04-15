@@ -314,6 +314,31 @@ export function Base64ToMediaTab({ onClear, sharedData }: Base64ToMediaTabProps)
         return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
     };
 
+    // Calculate decoded size from base64 input
+    const decodedSize = useMemo(() => {
+        if (!leftContent.trim()) return null;
+
+        try {
+            const cleanInput = leftContent.trim().replace(/\s/g, '');
+
+            // Check if it's a data URL
+            if (cleanInput.startsWith('data:')) {
+                const matches = cleanInput.match(/^data:([^;]+);base64,(.+)$/);
+                if (matches) {
+                    const base64Data = matches[2];
+                    const decodedData = atob(base64Data);
+                    return decodedData.length;
+                }
+            }
+
+            // Try to decode as raw base64
+            const decodedData = atob(cleanInput);
+            return decodedData.length;
+        } catch {
+            return null;
+        }
+    }, [leftContent]);
+
     return (
         <>
             <Base64ShareDialog
@@ -377,10 +402,26 @@ export function Base64ToMediaTab({ onClear, sharedData }: Base64ToMediaTabProps)
                         <div className="flex items-center justify-between py-2">
                             <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
                                 {leftContent && (
-                                    <div className="flex items-center gap-1.5" title="Characters">
-                                        <Type className="h-3.5 w-3.5 text-gray-500" />
-                                        <span>{leftContent.length.toLocaleString()} chars</span>
-                                    </div>
+                                    <>
+                                        {decodedSize !== null && (
+                                            <div
+                                                className="flex items-center gap-1.5"
+                                                title="Decoded size"
+                                            >
+                                                <HardDrive className="h-3.5 w-3.5 text-gray-500" />
+                                                <span className="font-medium">
+                                                    {formatFileSize(decodedSize)}
+                                                </span>
+                                            </div>
+                                        )}
+                                        <div
+                                            className="flex items-center gap-1.5"
+                                            title="Characters"
+                                        >
+                                            <Type className="h-3.5 w-3.5 text-gray-500" />
+                                            <span>{leftContent.length.toLocaleString()} chars</span>
+                                        </div>
+                                    </>
                                 )}
                             </div>
                             <div className="flex items-center gap-2 shrink-0">
