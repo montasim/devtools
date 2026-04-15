@@ -1,3 +1,5 @@
+'use client';
+
 import { NavigationMenu, NavigationMenuList } from '@/components/ui/navigation-menu';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/layout/logo';
@@ -5,6 +7,8 @@ import { ThemeSwitcher } from '@/components/theme/theme-switcher';
 import { MenuItem } from '@/components/navbar/types';
 import { DesktopMenuItem } from '@/components/navbar/menu-items';
 import { Separator } from '@/components/ui/separator';
+import { UserMenu } from '@/components/auth/user-menu';
+import { useAuth } from '@/hooks/useAuth';
 
 interface DesktopMenuProps {
     menu: MenuItem[];
@@ -14,31 +18,41 @@ interface DesktopMenuProps {
     };
 }
 
-export const DesktopMenu = ({ menu, auth }: DesktopMenuProps) => (
-    <nav className="hidden items-center justify-between lg:flex">
-        <div className="flex items-center gap-6">
-            <Logo />
-            <div className="flex items-center">
-                <NavigationMenu viewport={false}>
-                    <NavigationMenuList>
-                        {menu.map((item) => (
-                            <DesktopMenuItem key={item.title} item={item} />
-                        ))}
-                    </NavigationMenuList>
-                </NavigationMenu>
+export const DesktopMenu = ({ menu, auth }: DesktopMenuProps) => {
+    const { user } = useAuth();
+
+    return (
+        <nav className="hidden items-center justify-between lg:flex">
+            <div className="flex items-center gap-6">
+                <Logo />
+                <div className="flex items-center">
+                    <NavigationMenu viewport={false}>
+                        <NavigationMenuList>
+                            {menu.map((item) => (
+                                <DesktopMenuItem key={item.title} item={item} />
+                            ))}
+                        </NavigationMenuList>
+                    </NavigationMenu>
+                </div>
             </div>
-        </div>
-        <div className="flex items-center gap-2">
-            <ThemeSwitcher />
+            <div className="flex items-center gap-2">
+                <ThemeSwitcher />
 
-            <Separator orientation="vertical" />
+                <Separator orientation="vertical" />
 
-            <Button asChild variant="outline" size="sm">
-                <a href={auth.login.url}>{auth.login.title}</a>
-            </Button>
-            <Button asChild size="sm">
-                <a href={auth.signup.url}>{auth.signup.title}</a>
-            </Button>
-        </div>
-    </nav>
-);
+                {user ? (
+                    <UserMenu />
+                ) : (
+                    <>
+                        <Button asChild variant="outline" size="sm">
+                            <a href={auth.login.url}>{auth.login.title}</a>
+                        </Button>
+                        <Button asChild size="sm">
+                            <a href={auth.signup.url}>{auth.signup.title}</a>
+                        </Button>
+                    </>
+                )}
+            </div>
+        </nav>
+    );
+};

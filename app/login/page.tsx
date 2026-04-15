@@ -4,14 +4,16 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
-import { PasswordInput } from '@/components/auth/password-input';
+import { useRedirectIfAuthenticated } from '@/hooks/useRedirectIfAuthenticated';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Logo } from '@/components/layout/logo';
+import { AuthPageLayout } from '@/components/auth/auth-page-layout';
+import { FormField } from '@/components/auth/form-field';
+import { AuthFooter } from '@/components/auth/auth-footer';
 
 export default function LoginPage() {
+    useRedirectIfAuthenticated();
     const router = useRouter();
     const { login } = useAuth();
     const [email, setEmail] = useState('');
@@ -34,70 +36,58 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
-            <div className="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-lg shadow">
-                <div className="flex justify-center">
-                    <Logo />
-                </div>
-                <div>
-                    <h2 className="text-3xl font-bold text-center">Welcome back</h2>
-                    <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-                        Sign in to your account
-                    </p>
-                </div>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
-                            className="mt-2 placeholder:text-gray-400 dark:placeholder:text-gray-500"
-                            id="email"
-                            type="email"
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="you@example.com"
+        <AuthPageLayout
+            title="Welcome back"
+            subtitle="Sign in to your account"
+            footer={
+                <AuthFooter
+                    linkText="Don't have an account?"
+                    linkHref="/signup"
+                    linkLabel="Sign up"
+                />
+            }
+        >
+            <form onSubmit={handleSubmit} className="space-y-6">
+                <FormField
+                    id="email"
+                    label="Email address"
+                    type="email"
+                    value={email}
+                    onChange={setEmail}
+                    placeholder="you@example.com"
+                    required
+                />
+                <FormField
+                    id="password"
+                    label="Password"
+                    type="password"
+                    value={password}
+                    onChange={setPassword}
+                    placeholder="••••••••"
+                    required
+                />
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                        <input
+                            id="remember-me"
+                            type="checkbox"
+                            className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                         />
+                        <Label htmlFor="remember-me" className="ml-2 block text-sm">
+                            Remember me
+                        </Label>
                     </div>
-                    <div>
-                        <Label htmlFor="password">Password</Label>
-                        <PasswordInput
-                            className="mt-2 placeholder:text-gray-400 dark:placeholder:text-gray-500"
-                            id="password"
-                            required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="••••••••"
-                        />
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                            <input
-                                id="remember-me"
-                                type="checkbox"
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                            />
-                            <Label htmlFor="remember-me" className="ml-2 block text-sm">
-                                Remember me
-                            </Label>
-                        </div>
-                        <Link
-                            href="/reset-password"
-                            className="text-sm text-primary/90 hover:underline"
-                        >
-                            Forgot password?
-                        </Link>
-                    </div>
-                    <Button type="submit" disabled={loading} className="w-full">
-                        {loading ? 'Signing in...' : 'Sign in'}
-                    </Button>
-                </form>
-                <p className="text-center text-sm">
-                    Don&apos;t have an account?{' '}
-                    <Link href="/signup" className="text-primary/90 hover:underline">
-                        Sign up
+                    <Link
+                        href="/reset-password"
+                        className="text-sm text-primary/90 hover:underline"
+                    >
+                        Forgot password?
                     </Link>
-                </p>
-            </div>
-        </div>
+                </div>
+                <Button type="submit" disabled={loading} className="w-full">
+                    {loading ? 'Signing in...' : 'Sign in'}
+                </Button>
+            </form>
+        </AuthPageLayout>
     );
 }

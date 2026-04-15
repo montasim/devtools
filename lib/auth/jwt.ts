@@ -14,7 +14,7 @@ export function generateToken(
     payload: Omit<JWTPayload, 'iat' | 'exp'>,
     expiresIn: string = TOKEN_EXPIRY,
 ): string {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn });
+    return jwt.sign(payload, JWT_SECRET, { expiresIn } as jwt.SignOptions);
 }
 
 export function verifyToken(token: string): JWTPayload {
