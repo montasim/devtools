@@ -3,25 +3,34 @@ import { cn } from '@/lib/utils';
 
 interface EmptyStateProps {
     icon?: LucideIcon;
-    iconClassName?: string;
-    children: React.ReactNode;
+    title?: string;
+    description?: string;
+    children?: React.ReactNode;
     className?: string;
 }
 
-export function EmptyState({ icon: Icon, iconClassName, children, className }: EmptyStateProps) {
+export function EmptyState({
+    icon: Icon,
+    title,
+    description,
+    children,
+    className,
+}: EmptyStateProps) {
     return (
         <div
             className={cn(
-                'border border-gray-300 rounded-md p-8 text-center text-gray-500 dark:border-gray-600 dark:text-gray-400',
+                'text-center py-8 sm:py-12 border rounded-lg border-dashed px-4',
                 className,
             )}
             role="status"
             aria-live="polite"
         >
-            <div className="flex items-center justify-center gap-2">
-                {Icon && <Icon className={cn('h-5 w-5', iconClassName)} />}
-                <span>{children}</span>
-            </div>
+            {Icon && (
+                <Icon className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-4 text-muted-foreground" />
+            )}
+            {title && <h3 className="text-base sm:text-lg font-semibold mb-2">{title}</h3>}
+            {description && <p className="text-sm text-muted-foreground mb-4">{description}</p>}
+            {children}
         </div>
     );
 }

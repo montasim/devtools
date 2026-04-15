@@ -12,7 +12,6 @@ import {
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-    Settings,
     GitCompare,
     Code,
     Minimize2,
@@ -21,6 +20,7 @@ import {
     History,
     Eye,
     FileDown,
+    Bookmark,
 } from 'lucide-react';
 import { JsonDiffTab as DiffTab } from '@/app/json/tabs/json-diff-tab';
 import { JsonFormatTab as FormatTab } from '@/app/json/tabs/json-format-tab';
@@ -29,7 +29,7 @@ import { JsonViewerTab as ViewerTab } from '@/app/json/tabs/json-viewer-tab';
 import { JsonParserTab as ParserTab } from '@/app/json/tabs/json-parser-tab';
 import { JsonExportTab as ExportTab } from '@/app/json/tabs/json-export-tab';
 import { JsonSchemaTab as SchemaTab } from '@/app/json/tabs/json-schema-tab';
-import { JsonOptionsTab as OptionsTab } from '@/app/json/tabs/json-options-tab';
+import { JsonSavedTab as SavedTab } from '@/app/json/tabs/json-saved-tab';
 import { JsonHistoryTab as HistoryTab } from '@/app/json/tabs/json-history-tab';
 import { JsonShareTab as ShareTab } from '@/app/json/tabs/json-share-tab';
 import { InvalidTabState } from '@/components/ui/invalid-tab-state';
@@ -45,7 +45,7 @@ const VALID_TABS = [
     'parser',
     'export',
     'schema',
-    'options',
+    'saved',
     'shared',
     'history',
 ] as const;
@@ -56,7 +56,15 @@ function JsonPageContent() {
     const pathname = usePathname();
     const isInitializingRef = useRef(true);
     const previousTabRef = useRef<string | null>(null);
-    const [sharedData, setSharedData] = useState<any>(null);
+    const [sharedData, setSharedData] = useState<{
+        title: string;
+        comment?: string | null;
+        expiresAt?: string | null;
+        hasPassword: boolean;
+        viewCount: number;
+        createdAt: string;
+        tabName: string;
+    } | null>(null);
     const [activeTab, setActiveTab] = useState<TabValue>(() => {
         // Initialize from URL during state creation
         const tabFromUrl = searchParams.get('tab');
@@ -85,22 +93,34 @@ function JsonPageContent() {
         const sharedStateStr = sessionStorage.getItem('sharedState');
         if (sharedStateStr) {
             try {
-                const sharedState = JSON.parse(sharedStateStr);
-                setSharedData(sharedState);
+                const sharedState = JSON.parse(sharedStateStr) as {
+                    title: string;
+                    comment?: string | null;
+                    expiresAt?: string | null;
+                    hasPassword: boolean;
+                    viewCount: number;
+                    createdAt: string;
+                    tabName: string;
+                };
                 sessionStorage.removeItem('sharedState');
 
                 // Switch to the shared tab
                 const { tabName } = sharedState;
-                setActiveTab(tabName as any);
                 const params = new URLSearchParams();
                 params.set('tab', tabName);
                 router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+
+                // Set shared data and active tab after navigation
+                setTimeout(() => {
+                    setActiveTab(tabName as TabValue);
+                    setSharedData(sharedState);
+                }, 0);
             } catch (error) {
                 console.error('Failed to parse shared state:', error);
                 sessionStorage.removeItem('sharedState');
             }
         }
-    }, []);
+    }, [pathname, router]);
 
     // Set default URL on mount if needed
     useLayoutEffect(() => {
@@ -201,7 +221,7 @@ function JsonPageContent() {
                                 </div>
                                 <div className="hidden md:flex gap-2 min-w-max">
                                     {[
-                                        { value: 'options', label: 'Options', icon: Settings },
+                                        { value: 'saved', label: 'Saved', icon: Bookmark },
                                         { value: 'shared', label: 'Shared', icon: Share2 },
                                         { value: 'history', label: 'History', icon: History },
                                     ].map(({ value, label, icon: Icon }) => (
@@ -217,7 +237,7 @@ function JsonPageContent() {
                                 </div>
                                 <div className="flex md:hidden gap-2 min-w-max">
                                     {[
-                                        { value: 'options', label: 'Options', icon: Settings },
+                                        { value: 'saved', label: 'Saved', icon: Bookmark },
                                         { value: 'shared', label: 'Shared', icon: Share2 },
                                         { value: 'history', label: 'History', icon: History },
                                     ].map(({ value, label, icon: Icon }) => (
@@ -236,8 +256,8 @@ function JsonPageContent() {
                     </div>
                 </div>
 
-                <TabsContent value="options" className="mt-0">
-                    <OptionsTab />
+                <TabsContent value="saved" className="mt-0">
+                    <SavedTab />
                 </TabsContent>
 
                 <TabsContent value="shared" className="mt-0">

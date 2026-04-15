@@ -4,10 +4,10 @@ import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 import { JsonStats } from '@/components/layout/json-stats';
 import { ActionButtonGroup } from '@/components/ui/action-button-group';
-import { HistoryActionButtons } from '@/components/ui/history-action-buttons';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Toolbar } from '@/components/toolbar/toolbar';
+import { EmptyState } from '@/components/ui/empty-state';
 import {
     Dialog,
     DialogContent,
@@ -276,16 +276,15 @@ export function JsonHistoryTab({ onTabChange }: HistoryTabProps) {
             />
             <div className="mx-auto py-4">
                 {Object.keys(historyData).length === 0 ? (
-                    <div className="text-center py-8 sm:py-12 border rounded-lg border-dashed px-4">
-                        <Clock className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-4 text-muted-foreground" />
-                        <h3 className="text-base sm:text-lg font-semibold mb-2">No History Yet</h3>
-                        <p className="text-sm text-muted-foreground mb-4">
-                            Start using the JSON tools to build up your history
-                        </p>
+                    <EmptyState
+                        icon={Clock}
+                        title="No History Yet"
+                        description="Start using the JSON tools to build up your history"
+                    >
                         <Button variant="outline" onClick={() => onTabChange('diff')}>
                             Get Started
                         </Button>
-                    </div>
+                    </EmptyState>
                 ) : (
                     <div className="grid gap-4">
                         {Object.entries(historyData).map(([key, content]) => {

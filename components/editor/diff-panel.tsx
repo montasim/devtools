@@ -295,7 +295,13 @@ export function DiffPanel({
     }
 
     if (!diffResult || diffResult.hunks.length === 0) {
-        return <EmptyState icon={CheckCircle}>No differences found</EmptyState>;
+        return (
+            <EmptyState
+                icon={CheckCircle}
+                title="No Differences"
+                description="No differences found between the provided content"
+            />
+        );
     }
 
     const scrollToHunk = (index: number) => {

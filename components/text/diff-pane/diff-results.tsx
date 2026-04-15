@@ -24,9 +24,12 @@ export function DiffResults({
     if (!leftText && !rightText) {
         return (
             <div className="flex items-center justify-center h-full w-full">
-                <EmptyState className="w-full" icon={FileText}>
-                    Enter text in both panes to see the diff
-                </EmptyState>
+                <EmptyState
+                    className="w-full"
+                    icon={FileText}
+                    title="No Content"
+                    description="Enter text in both panes to see the diff"
+                />
             </div>
         );
     }
@@ -35,9 +38,12 @@ export function DiffResults({
     if (leftText === rightText) {
         return (
             <div className="flex items-center justify-center h-full w-full">
-                <EmptyState className="w-full" icon={CheckCircle}>
-                    No differences found
-                </EmptyState>
+                <EmptyState
+                    className="w-full"
+                    icon={CheckCircle}
+                    title="No Differences"
+                    description="The texts are identical"
+                />
             </div>
         );
     }
