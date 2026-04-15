@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
 import { Copy, Share2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ShareForm } from '@/components/share/share-form';
 import { PAGE_NAMES, BASE64_TABS } from '@/lib/constants/tabs';
-import { saveBase64SharedItem } from '@/lib/base64-shared-utils';
 import {
     Sheet,
     SheetContent,
@@ -34,10 +33,6 @@ export function Base64ShareDialog({
     open,
     onOpenChange,
 }: Base64ShareDialogProps) {
-    const [shareTitle, setShareTitle] = useState('');
-    const [shareComment, setShareComment] = useState('');
-    const [shareExpiration, setShareExpiration] = useState<'1h' | '1d' | '7d' | '30d'>('7d');
-
     const defaultPageName = PAGE_NAMES.BASE64;
     const defaultTabName = BASE64_TABS.MEDIA_TO_BASE64;
 
@@ -80,40 +75,6 @@ export function Base64ShareDialog({
         return tab;
     };
 
-    // Handle link generation and save to shared items
-    const handleLinkGenerated = useCallback((url: string) => {
-        try {
-            // Extract share ID from URL
-            const urlObj = new URL(url);
-            const pathParts = urlObj.pathname.split('/');
-            const shareId = pathParts[pathParts.length - 1];
-
-            // Calculate expiration time in hours
-            const expirationHours: Record<string, number> = {
-                '1h': 1,
-                '1d': 24,
-                '7d': 24 * 7,
-                '30d': 24 * 30,
-            };
-
-            const expirationTime = expirationHours[shareExpiration];
-
-            // Save to localStorage
-            const tabDisplayName = getTabDisplayName(tabName || defaultTabName);
-            saveBase64SharedItem(
-                shareId,
-                url,
-                shareTitle,
-                tabDisplayName,
-                content,
-                shareComment || undefined,
-                expirationTime,
-            );
-        } catch (error) {
-            console.error('Failed to save shared item:', error);
-        }
-    }, [content, tabName, defaultTabName, shareTitle, shareComment, shareExpiration]);
-
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent side="right" className="w-96">
@@ -145,10 +106,6 @@ export function Base64ShareDialog({
                                 leftContent: content,
                             };
                         }}
-                        onLinkGenerated={handleLinkGenerated}
-                        onTitleChange={setShareTitle}
-                        onCommentChange={setShareComment}
-                        onExpirationChange={setShareExpiration}
                     />
 
                     <Separator />

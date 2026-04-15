@@ -8,11 +8,23 @@ import {
     calculateExpiration,
 } from '@/lib/validation';
 import { checkRateLimit, getClientIp } from '@/lib/rate-limit';
+import { getAuthUser } from '@/lib/auth/jwt';
 import type { CreateShareResponse } from '@/lib/types/share';
 
 export async function POST(request: NextRequest) {
     try {
         console.log('🐛 [API /api/share/create] Request received');
+
+        // Get authenticated user
+        const user = await getAuthUser(request);
+        if (!user) {
+            console.log('🐛 [API] Unauthorized: No user found');
+            return NextResponse.json(
+                { error: 'UNAUTHORIZED', message: 'You must be logged in to create shares' },
+                { status: 401 },
+            );
+        }
+        console.log('🐛 [API] User authenticated:', { userId: user.id, email: user.email });
 
         // Rate limiting
         const ip = getClientIp(request);
@@ -91,6 +103,7 @@ export async function POST(request: NextRequest) {
         console.log('🐛 [API] Creating shared link in database...');
         const sharedLink = await prisma.sharedLink.create({
             data: {
+                userId: user.id,
                 pageName,
                 tabName,
                 title: sanitizeTitle(title),

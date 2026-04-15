@@ -17,7 +17,7 @@ import { TextConvertTab } from '@/app/text/tabs/text-convert-tab';
 import { TextCleanTab } from '@/app/text/tabs/text-clean-tab';
 import { TextSavedTab } from '@/app/text/tabs/text-saved-tab';
 import { TextHistoryTab } from '@/app/text/tabs/text-history-tab';
-import { JsonShareTab as ShareTab } from '@/app/json/tabs/json-share-tab';
+import { TextSharedTab } from '@/app/text/tabs/text-shared-tab';
 import { InvalidTabState } from '@/components/ui/invalid-tab-state';
 import { SharedContentBanner } from '@/components/shared/shared-content-banner';
 
@@ -230,7 +230,7 @@ function TextPageContent() {
                 </TabsContent>
 
                 <TabsContent value="shared" className="mt-0">
-                    <ShareTab />
+                    <TextSharedTab onTabChange={handleTabChange} />
                 </TabsContent>
 
                 <TabsContent value="history" className="mt-0">

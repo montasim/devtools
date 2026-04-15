@@ -14,6 +14,7 @@ datasource db {
 // Shareable app state models
 model SharedLink {
   id           String    @id @default(cuid())
+  userId       String
   pageName     String // 'text', 'json', 'base64'
   tabName      String // 'diff', 'format', etc.
   title        String // User-provided title
@@ -24,11 +25,13 @@ model SharedLink {
   updatedAt    DateTime  @updatedAt
   createdAt    DateTime  @default(now())
 
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   content SharedContent?
 
   @@index([pageName])
   @@index([createdAt])
   @@index([expiresAt])
+  @@index([userId])
 }
 
 model SharedContent {
@@ -51,6 +54,7 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   otps           UserOtp[]
+  shares         SharedLink[]
 }
 
 model UserOtp {
