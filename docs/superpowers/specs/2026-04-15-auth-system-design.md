@@ -1,8 +1,9 @@
 # Authentication System Design for Devtools
 
 **Date:** 2026-04-15
-**Status:** Approved
+**Status:** In Revision
 **Author:** Claude + User Collaboration
+**Version:** 1.1 (Addressing critical implementation issues)
 
 ## Overview
 
@@ -772,6 +773,464 @@ function useAuth() {
 - Document environment variables
 - Create troubleshooting guide
 - Update CLAUDE.md with auth context
+
+## Critical Implementation Details
+
+### Error Handling Strategy
+
+**Database Connection Failures:**
+
+```typescript
+// API route error handling
+try {
+    await createUser(data);
+} catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+            return Response.json({ error: 'Email already exists' }, { status: 400 });
+        }
+    }
+    console.error('User creation failed:', error);
+    return Response.json({ error: 'Registration failed. Please try again.' }, { status: 500 });
+}
+```
+
+**Email Service Failures:**
+
+```typescript
+// Resend API failure handling
+try {
+  await resend.emails.send({ ... });
+} catch (error) {
+  console.error('Email send failed:', error);
+  // Still return success to prevent email enumeration
+  return Response.json({ success: true, message: 'If email exists, OTP sent' });
+}
+```
+
+**JWT Verification Failures:**
+
+```typescript
+// Middleware JWT handling
+try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    return NextResponse.next();
+} catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+        return NextResponse.redirect(new URL('/auth/login?error=expired', request.url));
+    }
+    return NextResponse.redirect(new URL('/auth/login?error=invalid', request.url));
+}
+```
+
+**User Enumeration Prevention:**
+
+- Always return generic messages: "If email exists, OTP sent"
+- Use same response time for both existent/non-existent emails
+- Don't reveal account information in error messages
+
+**OTP Generation Failures:**
+
+- Fallback to console.log in development
+- Return generic error in production
+- Log failures for monitoring
+
+### Production Deployment Considerations
+
+**Environment-Specific Configuration:**
+
+```typescript
+// lib/config/auth.ts
+export const authConfig = {
+    isDevelopment: process.env.NODE_ENV === 'development',
+    isProduction: process.env.NODE_ENV === 'production',
+    cookieDomain: process.env.NODE_ENV === 'production' ? '.yourdomain.com' : undefined,
+    secureCookies: process.env.NODE_ENV === 'production',
+    // Log OTPs in development instead of sending emails
+    logOtpsInDev: process.env.NODE_ENV === 'development',
+};
+```
+
+**Vercel/Serverless Considerations:**
+
+- Use connection pooling for Prisma
+- Implement request timeout handling
+- Add request ID tracking for debugging
+- Consider edge runtime limitations for middleware
+
+**Database Connection Pooling:**
+
+```typescript
+// lib/prisma.ts
+const prisma = new PrismaClient({
+    datasources: {
+        db: {
+            url: process.env.DATABASE_URL,
+        },
+    },
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+});
+```
+
+**Rate Limiting Production Strategy:**
+
+- Development: In-memory rate limiting (existing approach)
+- Production: Use Upstash Redis or similar
+- Fallback to database-backed rate limiting if Redis unavailable
+
+**Email Delivery Monitoring:**
+
+- Track Resend API success/failure rates
+- Monitor OTP generation vs. verification rates
+- Alert on delivery failures > 5%
+- Implement email queue for high-volume scenarios
+
+### Security Hardening
+
+**Timing Attack Prevention:**
+
+```typescript
+// Constant-time password comparison
+import { timingSafeEqual } from 'crypto';
+
+function comparePasswords(input: string, stored: string): boolean {
+    const inputBuffer = Buffer.from(input);
+    const storedBuffer = Buffer.from(stored);
+    return timingSafeEqual(inputBuffer, storedBuffer);
+}
+```
+
+**Session Management:**
+
+- Regenerate session ID after login
+- Implement CSRF token for state-changing operations
+- Use SameSite=strict for cookies
+- Set appropriate cookie scopes
+
+**User Enumeration Prevention:**
+
+- Generic error messages
+- Consistent response times
+- No existence confirmation before OTP verification
+- Rate limit per email/IP to prevent enumeration attacks
+
+**Password Reset Security:**
+
+- Don't reveal if email exists
+- Use same OTP expiry for all flows
+- Invalidate all user sessions after password reset
+- Send security notification email after password change
+
+**Additional Security Headers:**
+
+```typescript
+// middleware.ts
+const response = NextResponse.next();
+response.headers.set('X-Content-Type-Options', 'nosniff');
+response.headers.set('X-Frame-Options', 'DENY');
+response.headers.set('X-XSS-Protection', '1; mode=block');
+response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+```
+
+### Component Requirements Analysis
+
+**Existing Components (Verified Available):**
+
+- Button, Input, Label, Tabs, Dialog (from components/ui/)
+- Form components (shadcn/ui)
+
+**New Components Required:**
+
+1. **Password Input with Toggle**: Extend Input component with eye icon
+2. **Multi-step Form Component**: State management for form steps
+3. **OTP Input Component**: 6-digit input with auto-focus
+4. **Password Strength Indicator**: Visual password strength meter
+5. **Form Validation Components**: Real-time validation feedback
+
+**Component Implementation Strategy:**
+
+```typescript
+// components/auth/password-input.tsx
+export function PasswordInput({ ...props }) {
+  const [showPassword, setShowPassword] = useState(false);
+  return (
+    <div className="relative">
+      <Input type={showPassword ? 'text' : 'password'} {...props} />
+      <button
+        type="button"
+        onClick={() => setShowPassword(!showPassword)}
+        className="absolute right-3 top-1/2 -translate-y-1/2"
+      >
+        {showPassword ? <EyeOff /> : <Eye />}
+      </button>
+    </div>
+  );
+}
+```
+
+### Integration Details
+
+**Middleware Implementation (Next.js 16.2.2 Compatible):**
+
+```typescript
+// middleware.ts (NEW FILE)
+import { NextRequest, NextResponse } from 'next/server';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET!;
+
+export function middleware(request: NextRequest) {
+    // Protected routes
+    const protectedPaths = ['/profile', '/settings'];
+    const isProtectedRoute = protectedPaths.some((path) =>
+        request.nextUrl.pathname.startsWith(path),
+    );
+
+    if (isProtectedRoute) {
+        const token = request.cookies.get('auth-token')?.value;
+
+        if (!token) {
+            const loginUrl = new URL('/auth/login', request.url);
+            loginUrl.searchParams.set('redirect', request.nextUrl.pathname);
+            return NextResponse.redirect(loginUrl);
+        }
+
+        try {
+            jwt.verify(token, JWT_SECRET);
+            return NextResponse.next();
+        } catch (error) {
+            const loginUrl = new URL('/auth/login', request.url);
+            loginUrl.searchParams.set('error', 'invalid_token');
+            return NextResponse.redirect(loginUrl);
+        }
+    }
+
+    return NextResponse.next();
+}
+
+export const config = {
+    matcher: ['/profile/:path*', '/settings/:path*'],
+};
+```
+
+**AuthContext Integration:**
+
+```typescript
+// context/AuthContext.tsx (NEW FILE)
+'use client';
+
+import { createContext, useContext, useState, useEffect } from 'react';
+
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  emailVerified: Date | null;
+}
+
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    refreshUser();
+  }, []);
+
+  async function refreshUser() {
+    try {
+      const res = await fetch('/api/auth/me');
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data.user);
+      }
+    } catch (error) {
+      console.error('Failed to fetch user:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function login(email: string, password: string) {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || 'Login failed');
+    }
+
+    await refreshUser();
+  }
+
+  async function logout() {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    setUser(null);
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, loading, login, logout, refreshUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider');
+  }
+  return context;
+}
+```
+
+**Root Layout Integration:**
+
+```typescript
+// app/layout.tsx - ADD AuthProvider
+import { AuthProvider } from '@/context/AuthContext';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <ThemeProvider>
+          <AuthProvider> {/* ADD THIS */}
+            {children}
+          </AuthProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+**Navigation Configuration Update:**
+
+```typescript
+// config/navigation.tsx - UPDATE
+export const authButtons = {
+    login: { title: 'Login', url: '/auth/login' }, // UPDATED
+    signup: { title: 'Sign up', url: '/auth/register' }, // UPDATED
+};
+```
+
+**Password Policy Implementation:**
+
+```typescript
+// lib/auth/password-policy.ts (NEW FILE)
+import { z } from 'zod';
+
+export const passwordSchema = z
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+    .regex(/[0-9]/, 'Password must contain at least one number')
+    .regex(/[!@#$%^&*]/, 'Password must contain at least one special character');
+
+export function validatePassword(password: string): {
+    valid: boolean;
+    errors: string[];
+} {
+    const errors: string[] = [];
+
+    if (password.length < 8) errors.push('Must be at least 8 characters');
+    if (!/[A-Z]/.test(password)) errors.push('Must contain uppercase letter');
+    if (!/[a-z]/.test(password)) errors.push('Must contain lowercase letter');
+    if (!/[0-9]/.test(password)) errors.push('Must contain number');
+    if (!/[!@#$%^&*]/.test(password)) errors.push('Must contain special character');
+
+    return {
+        valid: errors.length === 0,
+        errors,
+    };
+}
+```
+
+**Rate Limiting Extension:**
+
+```typescript
+// lib/rate-limit.ts - EXTEND existing
+// Add new rate limit types for auth
+const AUTH_LIMITS = {
+    otp_request: { max: 3, window: 3600000 }, // 3 per hour
+    login_attempt: { max: 5, window: 900000 }, // 5 per 15 min
+    password_reset: { max: 3, window: 3600000 }, // 3 per hour
+};
+
+// Extend existing RateLimiter class to support auth types
+export class AuthRateLimiter extends RateLimiter {
+    constructor() {
+        super();
+        // Merge auth limits with existing limits
+        this.limits = { ...this.limits, ...AUTH_LIMITS };
+    }
+}
+```
+
+### Database Migration Safety
+
+**Migration Rollback Strategy:**
+
+```bash
+# Before migration
+npx prisma migrate dev --name add_auth_system --create-only
+
+# Review generated SQL
+# Test in development first
+
+# If migration fails in production:
+npx prisma migrate resolve --applied add_auth_system
+npx prisma migrate deploy --skip-generate
+```
+
+**Migration Testing Checklist:**
+
+- [ ] Test migration in development environment
+- [ ] Verify schema changes in Prisma Studio
+- [ ] Test rollback procedure
+- [ ] Backup production database before migration
+- [ ] Run migration in staging first
+- [ ] Verify indexes are created correctly
+- [ ] Test foreign key constraints
+- [ ] Verify connection pooling works
+
+**Index Strategy:**
+
+```prisma
+model UserOtp {
+  id        String   @id @default(uuid())
+  email     String
+  codeHash  String
+  intent    String
+  used      Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  // Composite index for efficient OTP lookups
+  @@index([email, intent, used, expiresAt])
+}
+```
+
+**Performance Considerations:**
+
+- Index on User.email for fast lookups during login
+- Composite index on UserOtp for efficient OTP queries
+- Database connection pooling for concurrent auth requests
+- Consider read replicas for auth operations in high-traffic scenarios
 
 ## Conclusion
 
