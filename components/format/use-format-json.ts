@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { FormatOptions, FormatResult } from './types';
 import { validateJson } from '@/components/editor/utils/validation';
-import { formatJson, sortKeys, escapeUnicode } from '@/components/editor/utils/json-operations';
+import { sortKeys } from '@/components/editor/utils/json-operations';
 
 // Format JSON with options
 const formatJsonWith = (json: string, options: FormatOptions): string => {

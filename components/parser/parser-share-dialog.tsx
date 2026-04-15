@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
-import { Copy, Check, Share2, Download } from 'lucide-react';
+import { Copy, Share2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { ShareForm } from '@/components/share/share-form';
 import {
@@ -23,29 +22,6 @@ interface ParserShareDialogProps {
 }
 
 export function ParserShareDialog({ content, open, onOpenChange }: ParserShareDialogProps) {
-    const [copied, setCopied] = useState(false);
-
-    // Generate shareable URL
-    const generateShareUrl = useCallback(() => {
-        if (!content) return '';
-
-        try {
-            // Encode the JSON content
-            const encoded = btoa(encodeURIComponent(content));
-
-            // Create URL with encoded content
-            const url = new URL(window.location.href);
-            url.searchParams.set('content', encoded);
-            url.hash = 'parser';
-
-            return url.toString();
-        } catch (error) {
-            console.error('Failed to generate share URL:', error);
-            return '';
-        }
-    }, [content]);
-
-    const shareUrl = generateShareUrl();
 
     // Copy JSON to clipboard
     const copyToClipboard = useCallback(async () => {
@@ -69,8 +45,6 @@ export function ParserShareDialog({ content, open, onOpenChange }: ParserShareDi
         try {
             const formatted = JSON.stringify(JSON.parse(content), null, 2);
             await navigator.clipboard.writeText(formatted);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
             toast.success('Copied formatted JSON to clipboard');
         } catch (error) {
             console.error('Failed to copy formatted:', error);
@@ -85,8 +59,6 @@ export function ParserShareDialog({ content, open, onOpenChange }: ParserShareDi
         try {
             const minified = JSON.stringify(JSON.parse(content));
             await navigator.clipboard.writeText(minified);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
             toast.success('Copied minified JSON to clipboard');
         } catch (error) {
             console.error('Failed to copy minified:', error);
@@ -112,21 +84,6 @@ export function ParserShareDialog({ content, open, onOpenChange }: ParserShareDi
             console.error('Failed to download JSON:', error);
         }
     }, [content]);
-
-    // Copy share URL
-    const copyShareUrl = useCallback(async () => {
-        if (!shareUrl) return;
-
-        try {
-            await navigator.clipboard.writeText(shareUrl);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-            toast.success('Shareable link copied to clipboard');
-        } catch (error) {
-            console.error('Failed to copy URL:', error);
-            toast.error('Failed to copy shareable link');
-        }
-    }, [shareUrl]);
 
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>

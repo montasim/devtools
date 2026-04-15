@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest';
 import { validatePassword, passwordSchema } from '../password-policy';
-import { z } from 'zod';
 
 describe('validatePassword', () => {
     it('should reject passwords less than 8 characters', () => {

@@ -27,7 +27,7 @@ describe('OTP Utilities', () => {
     });
 
     it('should hash OTP consistently', async () => {
-        const { generateOTP, hashOTP } = await import('../otp');
+        const { hashOTP } = await import('../otp');
         const otp = '123456';
         const hash1 = hashOTP(otp);
         const hash2 = hashOTP(otp);
@@ -44,7 +44,7 @@ describe('OTP Utilities', () => {
     });
 
     it('should verify correct OTP', async () => {
-        const { generateOTP, hashOTP, verifyOTP } = await import('../otp');
+        const { hashOTP, verifyOTP } = await import('../otp');
         const otp = '123456';
         const hash = hashOTP(otp);
 
@@ -61,7 +61,7 @@ describe('OTP Utilities', () => {
     });
 
     it('should reject OTP with different hash', async () => {
-        const { generateOTP, hashOTP, verifyOTP } = await import('../otp');
+        const { hashOTP, verifyOTP } = await import('../otp');
         const otp = '123456';
         const wrongHash = hashOTP('654321');
 

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
-import { Copy, Download, FileText, MessageCircle, Sparkles } from 'lucide-react';
+import { Copy, Download, FileText, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Sheet,

@@ -10,7 +10,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { useJsonTree } from '@/components/viewer/use-json-tree';
 import { JsonTreeView } from '@/components/viewer/json-tree-view';
-import type { ViewerPaneProps, ViewerOptions } from '@/components/viewer/types';
+import type { ViewerPaneProps } from '@/components/viewer/types';
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export const ViewerPane = ({

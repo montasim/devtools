@@ -104,7 +104,6 @@ function jsonToXML(obj: any, options: ExportOptions): string {
 
     function valueToXML(value: any, key: string, indent: number): string {
         const spaces = ' '.repeat(indent);
-        const innerSpaces = ' '.repeat(indent + 2);
 
         if (value === null || value === undefined) {
             return `${spaces}<${key} xsi:nil="true" />\n`;

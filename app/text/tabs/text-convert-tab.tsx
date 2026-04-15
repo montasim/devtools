@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { toast } from 'sonner';
 import { ConvertPane } from '@/components/text/convert-pane/convert-pane';
 
 export interface TextConvertTabProps {

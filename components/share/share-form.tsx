@@ -23,9 +23,12 @@ interface ShareFormProps {
     tabName: (typeof TAB_NAMES)[keyof typeof TAB_NAMES];
     getState: () => Record<string, unknown>;
     onLinkGenerated?: (url: string) => void;
+    onTitleChange?: (title: string) => void;
+    onCommentChange?: (comment: string) => void;
+    onExpirationChange?: (expiration: '1h' | '1d' | '7d' | '30d') => void;
 }
 
-export function ShareForm({ pageName, tabName, getState, onLinkGenerated }: ShareFormProps) {
+export function ShareForm({ pageName, tabName, getState, onLinkGenerated, onTitleChange, onCommentChange, onExpirationChange }: ShareFormProps) {
     const createShare = useCreateShare();
     const [title, setTitle] = useState('');
     const [comment, setComment] = useState('');
@@ -34,6 +37,22 @@ export function ShareForm({ pageName, tabName, getState, onLinkGenerated }: Shar
     const [showPassword, setShowPassword] = useState(false);
     const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
+
+    // Call parent callbacks when form state changes
+    const handleTitleChange = (value: string) => {
+        setTitle(value);
+        onTitleChange?.(value);
+    };
+
+    const handleCommentChange = (value: string) => {
+        setComment(value);
+        onCommentChange?.(value);
+    };
+
+    const handleExpirationChange = (value: '1h' | '1d' | '7d' | '30d') => {
+        setExpiration(value);
+        onExpirationChange?.(value);
+    };
 
     const handleGenerateLink = async () => {
         if (!title.trim()) {
@@ -118,7 +137,7 @@ export function ShareForm({ pageName, tabName, getState, onLinkGenerated }: Shar
                             id="title"
                             placeholder="My awesome content"
                             value={title}
-                            onChange={(e) => setTitle(e.target.value)}
+                            onChange={(e) => handleTitleChange(e.target.value)}
                         />
                     </div>
 
@@ -128,7 +147,7 @@ export function ShareForm({ pageName, tabName, getState, onLinkGenerated }: Shar
                             id="comment"
                             placeholder="Add a description..."
                             value={comment}
-                            onChange={(e) => setComment(e.target.value)}
+                            onChange={(e) => handleCommentChange(e.target.value)}
                             rows={2}
                         />
                     </div>
@@ -138,7 +157,7 @@ export function ShareForm({ pageName, tabName, getState, onLinkGenerated }: Shar
                             <Label htmlFor="expiration">Expiration</Label>
                             <Select
                                 value={expiration}
-                                onValueChange={(v: '1h' | '1d' | '7d' | '30d') => setExpiration(v)}
+                                onValueChange={(v: '1h' | '1d' | '7d' | '30d') => handleExpirationChange(v)}
                             >
                                 <SelectTrigger id="expiration">
                                     <SelectValue />

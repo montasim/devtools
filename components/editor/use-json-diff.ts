@@ -20,7 +20,7 @@
 
 import { useState, useCallback } from 'react';
 import { diffLines } from 'diff';
-import { UseJsonDiffOptions, UseJsonDiffReturn, DiffResult, DiffHunk, DiffLine } from './types';
+import { UseJsonDiffOptions, UseJsonDiffReturn, DiffResult, DiffHunk } from './types';
 
 function calculateModificationCount(hunks: DiffHunk[]): number {
     let modifications = 0;

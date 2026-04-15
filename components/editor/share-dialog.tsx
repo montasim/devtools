@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
-import { Copy, Check, Download, FileText, Share2 } from 'lucide-react';
+import { Copy, Download, FileText, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Sheet,
@@ -15,7 +15,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { DiffResult } from '@/components/editor/types';
 import { ShareForm } from '@/components/share/share-form';
-import { PAGE_NAMES, TEXT_TABS, JSON_TABS } from '@/lib/constants/tabs';
+import { PAGE_NAMES, JSON_TABS } from '@/lib/constants/tabs';
 
 interface ShareDialogProps {
     diffResult: DiffResult | null;
@@ -32,7 +32,6 @@ export function ShareDialog({
     open,
     onOpenChange,
 }: ShareDialogProps) {
-    const [copied, setCopied] = useState(false);
 
     // Copy diff to clipboard
     const copyDiffToClipboard = useCallback(async () => {
@@ -54,8 +53,6 @@ export function ShareDialog({
             });
 
             await navigator.clipboard.writeText(diffText);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
             toast.success('Copied diff to clipboard');
         } catch (error) {
             console.error('Failed to copy diff:', error);
@@ -84,8 +81,6 @@ export function ShareDialog({
         try {
             const patch = generateJSONPatch();
             await navigator.clipboard.writeText(JSON.stringify(patch, null, 2));
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
             toast.success('Copied JSON Patch to clipboard');
         } catch (error) {
             console.error('Failed to copy JSON Patch:', error);
@@ -111,8 +106,6 @@ export function ShareDialog({
         try {
             const patch = generateMergePatch();
             await navigator.clipboard.writeText(JSON.stringify(patch, null, 2));
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
             toast.success('Copied Merge Patch to clipboard');
         } catch (error) {
             console.error('Failed to copy Merge Patch:', error);
@@ -222,8 +215,6 @@ export function ShareDialog({
 
             const uniquePaths = [...new Set(paths)];
             await navigator.clipboard.writeText(JSON.stringify(uniquePaths, null, 2));
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
             toast.success('Copied JSON paths to clipboard');
         } catch (error) {
             console.error('Failed to copy JSON paths:', error);

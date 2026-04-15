@@ -41,6 +41,7 @@ import {
     PageContent,
     MobileNav,
 } from '@/components/docs';
+import Link from "next/link";
 
 interface HistoryItem {
     key: string;
@@ -307,12 +308,6 @@ export default function HistoryPage() {
         return content.substring(0, maxLength) + '...';
     };
 
-    // Filter history by category
-    const getFilteredHistory = (category: 'all' | 'json' | 'text') => {
-        if (category === 'all') return historyData;
-        return historyData.filter((item) => item.category === category);
-    };
-
     const jsonHistory = historyData.filter((item) => item.category === 'json');
     const textHistory = historyData.filter((item) => item.category === 'text');
 
@@ -495,10 +490,10 @@ export default function HistoryPage() {
                             </p>
                             <div className="flex gap-2 justify-center">
                                 <Button variant="outline" asChild>
-                                    <a href="/json">JSON Tools</a>
+                                    <Link href="/json">JSON Tools</Link>
                                 </Button>
                                 <Button variant="outline" asChild>
-                                    <a href="/text">Text Tools</a>
+                                    <Link href="/text">Text Tools</Link>
                                 </Button>
                             </div>
                         </div>

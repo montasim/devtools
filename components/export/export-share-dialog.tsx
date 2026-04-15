@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
-import { Copy, Check, Share2, Download, FileDown } from 'lucide-react';
+import { Copy, Share2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { ShareForm } from '@/components/share/share-form';
 import {
@@ -25,30 +24,6 @@ interface ExportShareDialogProps {
 }
 
 export function ExportShareDialog({ content, format, open, onOpenChange }: ExportShareDialogProps) {
-    const [copied, setCopied] = useState(false);
-
-    // Generate shareable URL
-    const generateShareUrl = useCallback(() => {
-        if (!content) return '';
-
-        try {
-            // Encode the JSON content
-            const encoded = btoa(encodeURIComponent(content));
-
-            // Create URL with encoded content
-            const url = new URL(window.location.href);
-            url.searchParams.set('content', encoded);
-            url.searchParams.set('format', format);
-            url.hash = 'export';
-
-            return url.toString();
-        } catch (error) {
-            console.error('Failed to generate share URL:', error);
-            return '';
-        }
-    }, [content, format]);
-
-    const shareUrl = generateShareUrl();
 
     // Copy content to clipboard
     const copyToClipboard = useCallback(async () => {
@@ -56,8 +31,6 @@ export function ExportShareDialog({ content, format, open, onOpenChange }: Expor
 
         try {
             await navigator.clipboard.writeText(content);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
             toast.success('Copied to clipboard');
         } catch (error) {
             console.error('Failed to copy to clipboard:', error);
@@ -79,8 +52,6 @@ export function ExportShareDialog({ content, format, open, onOpenChange }: Expor
                 jsonContent = JSON.stringify(parsed, null, 2);
             }
             await navigator.clipboard.writeText(jsonContent);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
             toast.success('Copied as JSON');
         } catch (error) {
             console.error('Failed to copy as JSON:', error);
@@ -119,21 +90,6 @@ export function ExportShareDialog({ content, format, open, onOpenChange }: Expor
             console.error('Failed to download file:', error);
         }
     }, [content, format]);
-
-    // Copy share URL
-    const copyShareUrl = useCallback(async () => {
-        if (!shareUrl) return;
-
-        try {
-            await navigator.clipboard.writeText(shareUrl);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-            toast.success('Shareable link copied to clipboard');
-        } catch (error) {
-            console.error('Failed to copy URL:', error);
-            toast.error('Failed to copy shareable link');
-        }
-    }, [shareUrl]);
 
     const formatLabel = format.toUpperCase();
 

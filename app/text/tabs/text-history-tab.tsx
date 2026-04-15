@@ -3,7 +3,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 import { ActionButtonGroup } from '@/components/ui/action-button-group';
-import { HistoryActionButtons } from '@/components/ui/history-action-buttons';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Toolbar } from '@/components/toolbar/toolbar';

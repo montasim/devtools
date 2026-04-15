@@ -52,7 +52,6 @@ function ShortcutCard({
     gradientClass,
     borderClass,
     iconBgClass,
-    iconTextClass,
     titleTextClass,
     descriptionTextClass,
 }: ShortcutCardProps) {

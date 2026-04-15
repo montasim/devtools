@@ -1,12 +1,10 @@
 'use client';
 
-import { useState, useCallback } from 'react';
 import type { EditorView } from '@codemirror/view';
 import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Search as SearchIcon } from 'lucide-react';
 import { EditorOperationsMenu } from '@/components/editor/editor-operations-menu';
 
 export type ButtonVariant = 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
@@ -66,7 +64,6 @@ function isEditorActionButton(button: EditorActionButtonConfig): button is Edito
 export function EditorActions({
     buttons,
     readOnly = false,
-    editorView,
     content = '',
     onContentChange,
     onError,

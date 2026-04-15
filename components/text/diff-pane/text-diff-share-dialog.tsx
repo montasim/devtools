@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
-import { Copy, Check, Download, MessageCircle, FileText, FileCode } from 'lucide-react';
+import { Copy, Download, MessageCircle, FileText, FileCode } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
     Sheet,
     SheetContent,
@@ -40,7 +39,6 @@ export function TextDiffShareDialog({
     // Use the same prop names for consistency
     const left = leftContent;
     const right = rightContent;
-    const [copied, setCopied] = useState(false);
 
     // Generate shareable URL
     const generateShareUrl = useCallback(() => {
@@ -62,22 +60,6 @@ export function TextDiffShareDialog({
             return '';
         }
     }, [left, right]);
-
-    // Copy share URL to clipboard
-    const copyShareUrl = useCallback(async () => {
-        const url = generateShareUrl();
-        if (!url) return;
-
-        try {
-            await navigator.clipboard.writeText(url);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-            toast.success('Shareable link copied to clipboard');
-        } catch (error) {
-            console.error('Failed to copy URL:', error);
-            toast.error('Failed to copy shareable link');
-        }
-    }, [generateShareUrl]);
 
     // Copy diff to clipboard
     const copyDiffToClipboard = useCallback(async () => {
@@ -114,8 +96,6 @@ export function TextDiffShareDialog({
             }
 
             await navigator.clipboard.writeText(diffText);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
             toast.success('Copied diff to clipboard');
         } catch (error) {
             console.error('Failed to copy diff:', error);
@@ -153,8 +133,6 @@ export function TextDiffShareDialog({
             }
 
             await navigator.clipboard.writeText(diffText);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
             toast.success('Copied unified diff to clipboard');
         } catch (error) {
             console.error('Failed to copy unified diff:', error);

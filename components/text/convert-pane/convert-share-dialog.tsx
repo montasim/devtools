@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
-import { Copy, Check, Download, FileText, FileCode, MessageCircle } from 'lucide-react';
+import { Copy, Download, FileText, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
     Sheet,
     SheetContent,
@@ -31,7 +30,6 @@ export function ConvertShareDialog({
     open,
     onOpenChange,
 }: ConvertShareDialogProps) {
-    const [copied, setCopied] = useState(false);
 
     // Generate shareable URL
     const generateShareUrl = useCallback(() => {
@@ -57,30 +55,12 @@ export function ConvertShareDialog({
         }
     }, [leftContent, rightContent, conversionType]);
 
-    // Copy share URL to clipboard
-    const copyShareUrl = useCallback(async () => {
-        const url = generateShareUrl();
-        if (!url) return;
-
-        try {
-            await navigator.clipboard.writeText(url);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-            toast.success('Share URL copied to clipboard');
-        } catch (error) {
-            console.error('Failed to copy URL:', error);
-            toast.error('Failed to copy URL');
-        }
-    }, [generateShareUrl]);
-
     // Copy output to clipboard
     const copyOutputToClipboard = useCallback(async () => {
         if (!rightContent) return;
 
         try {
             await navigator.clipboard.writeText(rightContent);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
             toast.success('Copied to clipboard');
         } catch (error) {
             console.error('Failed to copy output:', error);

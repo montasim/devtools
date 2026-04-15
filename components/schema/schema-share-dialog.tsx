@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
-import { Copy, Check, Share2, Download } from 'lucide-react';
+import { Copy, Share2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { ShareForm } from '@/components/share/share-form';
 import {
@@ -31,55 +30,18 @@ export function SchemaShareDialog({
     open,
     onOpenChange,
 }: SchemaShareDialogProps) {
-    const [copied, setCopied] = useState(false);
-
-    const generateShareUrl = useCallback(() => {
-        if (!content) return '';
-
-        try {
-            const encoded = btoa(encodeURIComponent(content));
-            const url = new URL(window.location.href);
-            url.searchParams.set('content', encoded);
-            if (schema && mode === 'validate') {
-                url.searchParams.set('schema', btoa(encodeURIComponent(schema)));
-            }
-            url.hash = 'schema';
-            return url.toString();
-        } catch (error) {
-            console.error('Failed to generate share URL:', error);
-            return '';
-        }
-    }, [content, schema, mode]);
-
-    const shareUrl = generateShareUrl();
 
     const copyToClipboard = useCallback(async () => {
         if (!content) return;
 
         try {
             await navigator.clipboard.writeText(content);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
             toast.success('Copied to clipboard');
         } catch (error) {
             console.error('Failed to copy to clipboard:', error);
             toast.error('Failed to copy to clipboard');
         }
     }, [content]);
-
-    const copyShareUrl = useCallback(async () => {
-        if (!shareUrl) return;
-
-        try {
-            await navigator.clipboard.writeText(shareUrl);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-            toast.success('Shareable link copied to clipboard');
-        } catch (error) {
-            console.error('Failed to copy URL:', error);
-            toast.error('Failed to copy shareable link');
-        }
-    }, [shareUrl]);
 
     const downloadAsFile = useCallback(() => {
         if (!content) return;

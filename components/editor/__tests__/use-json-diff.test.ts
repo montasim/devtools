@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { useJsonDiff } from '@/components/editor/use-json-diff';
 
 describe('useJsonDiff', () => {

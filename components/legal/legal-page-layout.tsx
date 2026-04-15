@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ReactNode } from 'react';
 import { ArrowUp } from 'lucide-react';
+import Link from "next/link";
 
 export interface LegalPageLayoutProps {
     title: string;
@@ -138,32 +139,32 @@ export function LegalPageLayout({
                     <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center text-sm">
                         <p className="text-gray-600 dark:text-gray-400">
                             Questions about these documents?{' '}
-                            <a
+                            <Link
                                 href="mailto:legal@devtools.com"
                                 className="text-primary hover:underline"
                             >
                                 Contact us
-                            </a>
+                            </Link>
                         </p>
                         <div className="flex gap-4">
-                            <a
+                            <Link
                                 href="/privacy"
                                 className="text-gray-600 hover:text-primary dark:text-gray-400"
                             >
                                 Privacy
-                            </a>
-                            <a
+                            </Link>
+                            <Link
                                 href="/terms"
                                 className="text-gray-600 hover:text-primary dark:text-gray-400"
                             >
                                 Terms
-                            </a>
-                            <a
+                            </Link>
+                            <Link
                                 href="/cookies"
                                 className="text-gray-600 hover:text-primary dark:text-gray-400"
                             >
                                 Cookies
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

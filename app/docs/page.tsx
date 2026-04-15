@@ -10,7 +10,6 @@ import {
     Sparkles,
     BookOpen,
     Play,
-    Lightbulb,
     Settings,
     Wrench,
     Layers,
