@@ -353,17 +353,17 @@ export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps)
             <Toolbar
                 actions={[
                     {
+                        id: 'clear',
+                        label: 'Clear All',
+                        onClick: onClear || handleClear,
+                        variant: 'outline',
+                    },
+                    {
                         id: 'save',
                         label: 'Save',
                         onClick: handleSave,
                         variant: 'outline',
                         icon: <Bookmark className="h-4 w-4" />,
-                    },
-                    {
-                        id: 'clear',
-                        label: 'Clear All',
-                        onClick: onClear || handleClear,
-                        variant: 'outline',
                     },
                     {
                         id: 'share',

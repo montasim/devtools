@@ -49,17 +49,17 @@ export function TextDiffTab({ onClear, sharedData }: TextDiffTabProps) {
             <Toolbar
                 actions={[
                     {
+                        id: 'clear',
+                        label: 'Clear All',
+                        onClick: onClear || (() => {}),
+                        variant: 'outline',
+                    },
+                    {
                         id: 'save',
                         label: 'Save',
                         onClick: handleSave,
                         variant: 'outline',
                         icon: <Bookmark className="h-4 w-4" />,
-                    },
-                    {
-                        id: 'clear',
-                        label: 'Clear All',
-                        onClick: onClear || (() => {}),
-                        variant: 'outline',
                     },
                     {
                         id: 'share',

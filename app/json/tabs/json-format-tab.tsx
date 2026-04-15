@@ -128,18 +128,18 @@ export function JsonFormatTab({ onClear, sharedData }: JsonFormatTabProps) {
                     ]}
                     actions={[
                         {
-                            id: 'save',
-                            label: 'Save',
-                            onClick: handleSave,
-                            variant: 'outline',
-                            icon: <Bookmark className="h-4 w-4" />,
-                        },
-                        {
                             id: 'clear',
                             label: 'Clear All',
                             onClick: handleClearClick,
                             variant: 'outline',
                             icon: <Trash2 className="h-4 w-4" />,
+                        },
+                        {
+                            id: 'save',
+                            label: 'Save',
+                            onClick: handleSave,
+                            variant: 'outline',
+                            icon: <Bookmark className="h-4 w-4" />,
                         },
                         {
                             id: 'share',
