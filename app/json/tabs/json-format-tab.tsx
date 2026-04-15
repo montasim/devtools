@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import { Toolbar } from '@/components/toolbar';
 import { FormatPane, FormatShareDialog } from '@/components/format';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { Trash2, Share2 } from 'lucide-react';
-import { STORAGE_KEYS } from '@/lib/constants';
+import { Trash2, Share2, Bookmark } from 'lucide-react';
+import { saveJsonContent } from '@/lib/json-save-utils';
 import {
     Select,
     SelectContent,
@@ -18,7 +18,14 @@ import { Separator } from '@/components/ui/separator';
 
 interface JsonFormatTabProps {
     onClear: () => void;
-    sharedData?: any;
+    sharedData?: {
+        title?: string;
+        comment?: string;
+        expiresAt?: string;
+        hasPassword?: boolean;
+        viewCount?: number;
+        createdAt?: string;
+    };
 }
 
 export function JsonFormatTab({ onClear, sharedData }: JsonFormatTabProps) {
@@ -71,6 +78,10 @@ export function JsonFormatTab({ onClear, sharedData }: JsonFormatTabProps) {
         }
     };
 
+    const handleSave = useCallback(() => {
+        saveJsonContent('JSON Format', currentContent);
+    }, [currentContent]);
+
     const spacingSelector = (
         <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">Spacing:</span>
@@ -116,6 +127,13 @@ export function JsonFormatTab({ onClear, sharedData }: JsonFormatTabProps) {
                         },
                     ]}
                     actions={[
+                        {
+                            id: 'save',
+                            label: 'Save',
+                            onClick: handleSave,
+                            variant: 'outline',
+                            icon: <Bookmark className="h-4 w-4" />,
+                        },
                         {
                             id: 'clear',
                             label: 'Clear All',

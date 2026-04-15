@@ -1,16 +1,23 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import { Toolbar } from '@/components/toolbar';
 import { ViewerPane, ViewerShareDialog } from '@/components/viewer';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { Trash2, Share2 } from 'lucide-react';
-import { STORAGE_KEYS } from '@/lib/constants';
+import { Trash2, Share2, Bookmark } from 'lucide-react';
+import { saveJsonContent } from '@/lib/json-save-utils';
 
 interface ViewerTabProps {
     onClear: () => void;
-    sharedData?: any;
+    sharedData?: {
+        title?: string;
+        comment?: string;
+        expiresAt?: string;
+        hasPassword?: boolean;
+        viewCount?: number;
+        createdAt?: string;
+    };
 }
 
 export function JsonViewerTab({ onClear, sharedData }: ViewerTabProps) {
@@ -49,6 +56,10 @@ export function JsonViewerTab({ onClear, sharedData }: ViewerTabProps) {
         onClear();
     };
 
+    const handleSave = useCallback(() => {
+        saveJsonContent('JSON Viewer', currentContent);
+    }, [currentContent]);
+
     return (
         <>
             <div>
@@ -74,6 +85,13 @@ export function JsonViewerTab({ onClear, sharedData }: ViewerTabProps) {
                         },
                     ]}
                     actions={[
+                        {
+                            id: 'save',
+                            label: 'Save',
+                            onClick: handleSave,
+                            variant: 'outline',
+                            icon: <Bookmark className="h-4 w-4" />,
+                        },
                         {
                             id: 'clear',
                             label: 'Clear All',

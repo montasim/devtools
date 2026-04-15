@@ -1,16 +1,23 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import { Toolbar } from '@/components/toolbar';
 import { ParserPane, ParserShareDialog } from '@/components/parser';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { Trash2, Share2 } from 'lucide-react';
-import { STORAGE_KEYS } from '@/lib/constants';
+import { Trash2, Share2, Bookmark } from 'lucide-react';
+import { saveJsonContent } from '@/lib/json-save-utils';
 
 interface ParserTabProps {
     onClear: () => void;
-    sharedData?: any;
+    sharedData?: {
+        title?: string;
+        comment?: string;
+        expiresAt?: string;
+        hasPassword?: boolean;
+        viewCount?: number;
+        createdAt?: string;
+    };
 }
 
 export function JsonParserTab({ onClear, sharedData }: ParserTabProps) {
@@ -49,6 +56,10 @@ export function JsonParserTab({ onClear, sharedData }: ParserTabProps) {
         onClear();
     };
 
+    const handleSave = useCallback(() => {
+        saveJsonContent('JSON Parser', currentContent);
+    }, [currentContent]);
+
     return (
         <>
             <div>
@@ -74,6 +85,13 @@ export function JsonParserTab({ onClear, sharedData }: ParserTabProps) {
                         },
                     ]}
                     actions={[
+                        {
+                            id: 'save',
+                            label: 'Save',
+                            onClick: handleSave,
+                            variant: 'outline',
+                            icon: <Bookmark className="h-4 w-4" />,
+                        },
                         {
                             id: 'clear',
                             label: 'Clear All',

@@ -1,16 +1,23 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import { Toolbar } from '@/components/toolbar';
 import { SchemaPane, SchemaShareDialog } from '@/components/schema';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { Trash2, Share2 } from 'lucide-react';
-import { STORAGE_KEYS } from '@/lib/constants';
+import { Trash2, Share2, Bookmark } from 'lucide-react';
+import { saveJsonContent } from '@/lib/json-save-utils';
 
 interface SchemaTabProps {
     onClear: () => void;
-    sharedData?: any;
+    sharedData?: {
+        title?: string;
+        comment?: string;
+        expiresAt?: string;
+        hasPassword?: boolean;
+        viewCount?: number;
+        createdAt?: string;
+    };
 }
 
 export function JsonSchemaTab({ onClear, sharedData }: SchemaTabProps) {
@@ -23,7 +30,7 @@ export function JsonSchemaTab({ onClear, sharedData }: SchemaTabProps) {
         console.error('Schema error:', error);
     };
 
-    const handleContentChange = useCallback((jsonContent: string, _schemaContent: string) => {
+    const handleContentChange = useCallback((jsonContent: string) => {
         setCurrentJsonContent(jsonContent);
     }, []);
 
@@ -47,6 +54,10 @@ export function JsonSchemaTab({ onClear, sharedData }: SchemaTabProps) {
         onClear();
     };
 
+    const handleSave = useCallback(() => {
+        saveJsonContent('JSON Schema', currentJsonContent);
+    }, [currentJsonContent]);
+
     return (
         <>
             <div>
@@ -66,6 +77,13 @@ export function JsonSchemaTab({ onClear, sharedData }: SchemaTabProps) {
                         },
                     ]}
                     actions={[
+                        {
+                            id: 'save',
+                            label: 'Save',
+                            onClick: handleSave,
+                            variant: 'outline',
+                            icon: <Bookmark className="h-4 w-4" />,
+                        },
                         {
                             id: 'clear',
                             label: 'Clear All',

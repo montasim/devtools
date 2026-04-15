@@ -1,18 +1,25 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import { Toolbar } from '@/components/toolbar';
 import { ExportPane, ExportShareDialog } from '@/components/export';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { Trash2, Share2 } from 'lucide-react';
+import { Trash2, Share2, Bookmark } from 'lucide-react';
 import { Combobox } from '@/components/ui/combobox';
 import type { ExportFormat } from '@/components/export/types';
-import { STORAGE_KEYS } from '@/lib/constants';
+import { saveJsonContent } from '@/lib/json-save-utils';
 
 interface JsonExportTabProps {
     onClear: () => void;
-    sharedData?: any;
+    sharedData?: {
+        title?: string;
+        comment?: string;
+        expiresAt?: string;
+        hasPassword?: boolean;
+        viewCount?: number;
+        createdAt?: string;
+    };
 }
 
 export function JsonExportTab({ onClear, sharedData }: JsonExportTabProps) {
@@ -49,6 +56,10 @@ export function JsonExportTab({ onClear, sharedData }: JsonExportTabProps) {
         onClear();
     };
 
+    const handleSave = useCallback(() => {
+        saveJsonContent('JSON Export', currentContent);
+    }, [currentContent]);
+
     const formatOptions: { value: ExportFormat; label: string; extension: string }[] = [
         { value: 'csv', label: 'CSV', extension: 'csv' },
         { value: 'xml', label: 'XML', extension: 'xml' },
@@ -73,6 +84,13 @@ export function JsonExportTab({ onClear, sharedData }: JsonExportTabProps) {
                     toggles={[]}
                     leftContent={formatSelector}
                     actions={[
+                        {
+                            id: 'save',
+                            label: 'Save',
+                            onClick: handleSave,
+                            variant: 'outline',
+                            icon: <Bookmark className="h-4 w-4" />,
+                        },
                         {
                             id: 'clear',
                             label: 'Clear All',

@@ -11,11 +11,11 @@ import {
 } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, FileCode, Image as ImageIcon, Share2, History } from 'lucide-react';
+import { FileCode, Image as ImageIcon, Share2, History, Bookmark } from 'lucide-react';
 import { MediaToBase64Tab } from '@/app/base64/tabs/media-to-base64-tab';
 import { Base64ToMediaTab } from '@/app/base64/tabs/base64-to-media-tab';
+import { Base64SavedTab } from '@/app/base64/tabs/base64-saved-tab';
 import { Base64HistoryTab } from '@/app/base64/tabs/base64-history-tab';
-import { JsonOptionsTab as OptionsTab } from '@/app/json/tabs/json-options-tab';
 import { JsonShareTab as ShareTab } from '@/app/json/tabs/json-share-tab';
 import { InvalidTabState } from '@/components/ui/invalid-tab-state';
 import { SharedContentBanner } from '@/components/shared/shared-content-banner';
@@ -23,7 +23,13 @@ import { BASE64_TABS } from '@/lib/constants/tabs';
 
 type TabValue = (typeof VALID_TABS)[number];
 
-const VALID_TABS = [BASE64_TABS.MEDIA_TO_BASE64, BASE64_TABS.BASE64_TO_MEDIA, 'options', 'shared', 'history'] as const;
+const VALID_TABS = [
+    BASE64_TABS.MEDIA_TO_BASE64,
+    BASE64_TABS.BASE64_TO_MEDIA,
+    'saved',
+    'shared',
+    'history',
+] as const;
 
 function Base64PageContent() {
     const searchParams = useSearchParams();
@@ -31,7 +37,14 @@ function Base64PageContent() {
     const pathname = usePathname();
     const isInitializingRef = useRef(true);
     const previousTabRef = useRef<string | null>(null);
-    const [sharedData, setSharedData] = useState<any>(null);
+    const [sharedData, setSharedData] = useState<{
+        title?: string;
+        comment?: string;
+        expiresAt?: string;
+        hasPassword?: boolean;
+        viewCount?: number;
+        createdAt?: string;
+    } | null>(null);
     const [activeTab, setActiveTab] = useState<TabValue>(() => {
         const tabFromUrl = searchParams.get('tab');
         if (tabFromUrl) {
@@ -58,12 +71,12 @@ function Base64PageContent() {
         if (sharedStateStr) {
             try {
                 const sharedState = JSON.parse(sharedStateStr);
-                setSharedData(sharedState);
+                setTimeout(() => setSharedData(sharedState), 0);
                 sessionStorage.removeItem('sharedState');
 
                 // Switch to the shared tab
                 const { tabName } = sharedState;
-                setActiveTab(tabName as any);
+                setTimeout(() => setActiveTab(tabName as TabValue), 0);
                 const params = new URLSearchParams();
                 params.set('tab', tabName);
                 router.replace(`${pathname}?${params.toString()}`, { scroll: false });
@@ -72,7 +85,7 @@ function Base64PageContent() {
                 sessionStorage.removeItem('sharedState');
             }
         }
-    }, []);
+    }, [pathname, router]);
 
     useLayoutEffect(() => {
         if (isInitializingRef.current) {
@@ -168,7 +181,7 @@ function Base64PageContent() {
                                 </div>
                                 <div className="hidden md:flex gap-2 min-w-max">
                                     {[
-                                        { value: 'options', label: 'Options', icon: Settings },
+                                        { value: 'saved', label: 'Saved', icon: Bookmark },
                                         { value: 'shared', label: 'Shared', icon: Share2 },
                                         { value: 'history', label: 'History', icon: History },
                                     ].map(({ value, label, icon: Icon }) => (
@@ -184,7 +197,7 @@ function Base64PageContent() {
                                 </div>
                                 <div className="flex md:hidden gap-2 min-w-max">
                                     {[
-                                        { value: 'options', label: 'Options', icon: Settings },
+                                        { value: 'saved', label: 'Saved', icon: Bookmark },
                                         { value: 'shared', label: 'Shared', icon: Share2 },
                                         { value: 'history', label: 'History', icon: History },
                                     ].map(({ value, label, icon: Icon }) => (
@@ -203,8 +216,8 @@ function Base64PageContent() {
                     </div>
                 </div>
 
-                <TabsContent value="options" className="mt-0">
-                    <OptionsTab />
+                <TabsContent value="saved" className="mt-0">
+                    <Base64SavedTab onTabChange={handleTabChange} />
                 </TabsContent>
 
                 <TabsContent value="shared" className="mt-0">

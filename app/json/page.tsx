@@ -257,7 +257,7 @@ function JsonPageContent() {
                 </div>
 
                 <TabsContent value="saved" className="mt-0">
-                    <SavedTab />
+                    <SavedTab onTabChange={handleTabChange} />
                 </TabsContent>
 
                 <TabsContent value="shared" className="mt-0">

@@ -11,20 +11,19 @@ import {
 } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, GitCompare, Sparkles, ArrowLeftRight, Share2, History } from 'lucide-react';
+import { GitCompare, Sparkles, ArrowLeftRight, Share2, History, Bookmark } from 'lucide-react';
 import { TextDiffTab } from '@/app/text/tabs/text-diff-tab';
 import { TextConvertTab } from '@/app/text/tabs/text-convert-tab';
 import { TextCleanTab } from '@/app/text/tabs/text-clean-tab';
+import { TextSavedTab } from '@/app/text/tabs/text-saved-tab';
 import { TextHistoryTab } from '@/app/text/tabs/text-history-tab';
-import { JsonOptionsTab as OptionsTab } from '@/app/json/tabs/json-options-tab';
-import { JsonHistoryTab as HistoryTab } from '@/app/json/tabs/json-history-tab';
 import { JsonShareTab as ShareTab } from '@/app/json/tabs/json-share-tab';
 import { InvalidTabState } from '@/components/ui/invalid-tab-state';
 import { SharedContentBanner } from '@/components/shared/shared-content-banner';
 
 type TabValue = (typeof VALID_TABS)[number];
 
-const VALID_TABS = ['diff', 'convert', 'clean', 'options', 'shared', 'history'] as const;
+const VALID_TABS = ['diff', 'convert', 'clean', 'saved', 'shared', 'history'] as const;
 
 function TextPageContent() {
     const searchParams = useSearchParams();
@@ -56,7 +55,14 @@ function TextPageContent() {
     }, [searchParams]);
 
     // Shared content state
-    const [sharedData, setSharedData] = useState<any>(null);
+    const [sharedData, setSharedData] = useState<{
+        title?: string;
+        comment?: string;
+        expiresAt?: string;
+        hasPassword?: boolean;
+        viewCount?: number;
+        createdAt?: string;
+    } | null>(null);
 
     // Check for shared state on mount
     useEffect(() => {
@@ -64,12 +70,12 @@ function TextPageContent() {
         if (sharedStateStr) {
             try {
                 const sharedState = JSON.parse(sharedStateStr);
-                setSharedData(sharedState);
+                setTimeout(() => setSharedData(sharedState), 0);
                 sessionStorage.removeItem('sharedState');
 
                 // Switch to the shared tab
                 const { tabName } = sharedState;
-                setActiveTab(tabName as any);
+                setTimeout(() => setActiveTab(tabName as TabValue), 0);
                 const params = new URLSearchParams();
                 params.set('tab', tabName);
                 router.replace(`${pathname}?${params.toString()}`, { scroll: false });
@@ -78,7 +84,7 @@ function TextPageContent() {
                 sessionStorage.removeItem('sharedState');
             }
         }
-    }, []);
+    }, [pathname, router]);
 
     // Set default URL on mount if needed
     useLayoutEffect(() => {
@@ -179,7 +185,7 @@ function TextPageContent() {
                                 </div>
                                 <div className="hidden md:flex gap-2 min-w-max">
                                     {[
-                                        { value: 'options', label: 'Options', icon: Settings },
+                                        { value: 'saved', label: 'Saved', icon: Bookmark },
                                         { value: 'shared', label: 'Shared', icon: Share2 },
                                         { value: 'history', label: 'History', icon: History },
                                     ].map(({ value, label, icon: Icon }) => (
@@ -195,7 +201,7 @@ function TextPageContent() {
                                 </div>
                                 <div className="flex md:hidden gap-2 min-w-max">
                                     {[
-                                        { value: 'options', label: 'Options', icon: Settings },
+                                        { value: 'saved', label: 'Saved', icon: Bookmark },
                                         { value: 'shared', label: 'Shared', icon: Share2 },
                                         { value: 'history', label: 'History', icon: History },
                                     ].map(({ value, label, icon: Icon }) => (
@@ -214,8 +220,8 @@ function TextPageContent() {
                     </div>
                 </div>
 
-                <TabsContent value="options" className="mt-0">
-                    <OptionsTab />
+                <TabsContent value="saved" className="mt-0">
+                    <TextSavedTab onTabChange={handleTabChange} />
                 </TabsContent>
 
                 <TabsContent value="shared" className="mt-0">

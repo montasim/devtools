@@ -13,6 +13,7 @@ import {
     Check,
     Circle,
     Copy,
+    Bookmark,
 } from 'lucide-react';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { EditorActions } from '@/components/editor/editor-actions';
@@ -21,6 +22,7 @@ import { Toolbar } from '@/components/toolbar/toolbar';
 import { Base64ShareDialog } from '@/components/base64';
 import { STORAGE_KEYS } from '@/lib/constants';
 import { PAGE_NAMES, BASE64_TABS } from '@/lib/constants/tabs';
+import { saveBase64Content } from '@/lib/base64-save-utils';
 
 export interface MediaToBase64TabProps {
     onClear?: () => void;
@@ -277,6 +279,12 @@ export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps)
         setFilePreview(null);
     }, []);
 
+    // Handle save
+    const handleSave = useCallback(() => {
+        const contentToSave = rightContent || leftContent;
+        saveBase64Content('Media to Base64', contentToSave);
+    }, [rightContent, leftContent]);
+
     // Define action buttons for Input Source section
     const inputActions = useMemo(
         () => [
@@ -344,6 +352,13 @@ export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps)
 
             <Toolbar
                 actions={[
+                    {
+                        id: 'save',
+                        label: 'Save',
+                        onClick: handleSave,
+                        variant: 'outline',
+                        icon: <Bookmark className="h-4 w-4" />,
+                    },
                     {
                         id: 'clear',
                         label: 'Clear All',

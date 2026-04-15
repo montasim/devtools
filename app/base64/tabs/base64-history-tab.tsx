@@ -327,12 +327,47 @@ export function Base64HistoryTab({ onTabChange }: HistoryTabProps) {
                 onOpenChange={(open) => !open && setViewingHistoryItem(null)}
             >
                 <DialogContent className="w-[90vw] max-w-[90vw] sm:max-w-[90vw] max-h-[85vh] overflow-hidden flex flex-col">
-                    <DialogHeader>
+                    <DialogHeader className="border-b">
                         <DialogTitle className="flex items-center gap-2">
                             <Eye className="w-5 h-5" />
-                            {viewingHistoryItem && getToolInfo(viewingHistoryItem.key).name}
+                            {viewingHistoryItem && getToolInfo(viewingHistoryItem.key).name} - Full
+                            Content
                         </DialogTitle>
-                        <DialogDescription>Full content from history</DialogDescription>
+                        <DialogDescription className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-2 items-start">
+                            <div className="flex items-center gap-2 sm:gap-4">
+                                {viewingHistoryItem && (
+                                    <Base64Stats content={viewingHistoryItem.content} />
+                                )}
+                            </div>
+                            {viewingHistoryItem && (
+                                <ActionButtonGroup
+                                    actions={[
+                                        {
+                                            icon: Copy,
+                                            onClick: () => {
+                                                navigator.clipboard.writeText(
+                                                    viewingHistoryItem.content,
+                                                );
+                                                toast.success('Copied to clipboard');
+                                            },
+                                            title: 'Copy to clipboard',
+                                        },
+                                        {
+                                            icon: RotateCcw,
+                                            onClick: () =>
+                                                restoreHistoryItem(viewingHistoryItem.key),
+                                            title: 'Restore to tool',
+                                        },
+                                        {
+                                            icon: Trash,
+                                            onClick: () => clearHistoryItem(viewingHistoryItem.key),
+                                            title: 'Clear history item',
+                                            className: 'text-destructive hover:text-destructive',
+                                        },
+                                    ]}
+                                />
+                            )}
+                        </DialogDescription>
                     </DialogHeader>
                     <div className="flex-1 overflow-auto mt-4">
                         <pre className="text-xs p-4 rounded-md overflow-auto max-h-[60vh] whitespace-pre-wrap break-words">

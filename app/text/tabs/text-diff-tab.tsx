@@ -4,10 +4,19 @@ import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import { TextDiffPane } from '@/components/text/diff-pane/diff-pane';
 import { Toolbar } from '@/components/toolbar/toolbar';
+import { Bookmark } from 'lucide-react';
+import { saveTextContent } from '@/lib/text-save-utils';
 
 export interface TextDiffTabProps {
     onClear?: () => void;
-    sharedData?: any;
+    sharedData?: {
+        title?: string;
+        comment?: string;
+        expiresAt?: string;
+        hasPassword?: boolean;
+        viewCount?: number;
+        createdAt?: string;
+    };
 }
 
 export function TextDiffTab({ onClear, sharedData }: TextDiffTabProps) {
@@ -30,10 +39,22 @@ export function TextDiffTab({ onClear, sharedData }: TextDiffTabProps) {
         setShareDialogOpen(true);
     };
 
+    const handleSave = useCallback(() => {
+        const contentToSave = currentLeftContent || currentRightContent;
+        saveTextContent('Text Diff', contentToSave);
+    }, [currentLeftContent, currentRightContent]);
+
     return (
         <>
             <Toolbar
                 actions={[
+                    {
+                        id: 'save',
+                        label: 'Save',
+                        onClick: handleSave,
+                        variant: 'outline',
+                        icon: <Bookmark className="h-4 w-4" />,
+                    },
                     {
                         id: 'clear',
                         label: 'Clear All',

@@ -1,14 +1,22 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { Toolbar } from '@/components/toolbar';
 import { EditorPane, type EditorPaneRef } from '@/components/editor';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { STORAGE_KEYS } from '@/lib/constants';
+import { Bookmark } from 'lucide-react';
+import { saveJsonContent } from '@/lib/json-save-utils';
 
 interface JsonDiffTabProps {
     onClear: () => void;
-    sharedData?: any;
+    sharedData?: {
+        title?: string;
+        comment?: string;
+        expiresAt?: string;
+        hasPassword?: boolean;
+        viewCount?: number;
+        createdAt?: string;
+    };
 }
 
 export function JsonDiffTab({ onClear, sharedData }: JsonDiffTabProps) {
@@ -59,6 +67,11 @@ export function JsonDiffTab({ onClear, sharedData }: JsonDiffTabProps) {
         onClear();
     };
 
+    const handleSave = useCallback(() => {
+        const contentToSave = currentLeftContent || currentRightContent;
+        saveJsonContent('JSON Diff', contentToSave);
+    }, [currentLeftContent, currentRightContent]);
+
     return (
         <div>
             <Toolbar
@@ -89,6 +102,13 @@ export function JsonDiffTab({ onClear, sharedData }: JsonDiffTabProps) {
                     },
                 ]}
                 actions={[
+                    {
+                        id: 'save',
+                        label: 'Save',
+                        onClick: handleSave,
+                        variant: 'outline',
+                        icon: <Bookmark className="h-4 w-4" />,
+                    },
                     {
                         id: 'clear',
                         label: 'Clear All',

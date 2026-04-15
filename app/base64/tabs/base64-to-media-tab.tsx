@@ -2,13 +2,25 @@
 
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
-import { Upload, X, FileText, File, HardDrive, Type, Check, Circle, Download } from 'lucide-react';
+import {
+    Upload,
+    X,
+    FileText,
+    File,
+    HardDrive,
+    Type,
+    Check,
+    Circle,
+    Download,
+    Bookmark,
+} from 'lucide-react';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { EditorActions } from '@/components/editor/editor-actions';
 import { Toolbar } from '@/components/toolbar/toolbar';
 import { Base64ShareDialog } from '@/components/base64';
 import { STORAGE_KEYS } from '@/lib/constants';
 import { PAGE_NAMES, BASE64_TABS } from '@/lib/constants/tabs';
+import { saveBase64Content } from '@/lib/base64-save-utils';
 
 export interface Base64ToMediaTabProps {
     onClear?: () => void;
@@ -269,6 +281,11 @@ export function Base64ToMediaTab({ onClear, sharedData }: Base64ToMediaTabProps)
         setIsShareSheetOpen(true);
     }, [currentLeftContent]);
 
+    // Handle save
+    const handleSave = useCallback(() => {
+        saveBase64Content('Base64 to Media', leftContent);
+    }, [leftContent]);
+
     // Define action buttons for Input Source section
     const leftContentActions = useMemo(
         () => [
@@ -351,6 +368,13 @@ export function Base64ToMediaTab({ onClear, sharedData }: Base64ToMediaTabProps)
 
             <Toolbar
                 actions={[
+                    {
+                        id: 'save',
+                        label: 'Save',
+                        onClick: handleSave,
+                        variant: 'outline',
+                        icon: <Bookmark className="h-4 w-4" />,
+                    },
                     {
                         id: 'clear',
                         label: 'Clear All',

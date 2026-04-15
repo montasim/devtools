@@ -2,16 +2,16 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
-import { Trash2, Copy, Download, Share2, X, Sparkles } from 'lucide-react';
+import { Copy, Download, Bookmark } from 'lucide-react';
 import { TextEditor } from '@/components/text/text-editor/text-editor';
 import { TextareaFooter } from '@/components/text/text-editor/textarea-footer';
 import { EditorActions } from '@/components/editor/editor-actions';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { useDebouncedSave } from '@/components/text/shared/use-debounced-save';
 import { ConvertShareDialog } from '@/components/text/convert-pane/convert-share-dialog';
-import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Toolbar } from '@/components/toolbar/toolbar';
+import { saveTextContent } from '@/lib/text-save-utils';
 import {
     toUpperCase,
     toLowerCase,
@@ -33,7 +33,14 @@ import {
 import { STORAGE_KEYS } from '@/lib/constants';
 
 export interface ConvertPaneProps {
-    sharedData?: any;
+    sharedData?: {
+        title?: string;
+        comment?: string;
+        expiresAt?: string;
+        hasPassword?: boolean;
+        viewCount?: number;
+        createdAt?: string;
+    };
     onContentChange?: (leftContent: string, rightContent: string) => void;
     currentLeftContent?: string;
     currentRightContent?: string;
@@ -52,7 +59,6 @@ export function ConvertPane({
         try {
             // Prioritize shared content if available
             if (sharedData?.tabName === 'convert' && sharedData?.state?.leftContent) {
-                sharedDataLoadedRef.current = true;
                 return sharedData.state.leftContent;
             }
             return localStorage.getItem(STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT) || '';
@@ -60,6 +66,13 @@ export function ConvertPane({
             return '';
         }
     });
+
+    // Mark shared data as loaded if we used it
+    useEffect(() => {
+        if (sharedData?.tabName === 'convert' && sharedData?.state?.leftContent) {
+            sharedDataLoadedRef.current = true;
+        }
+    }, [sharedData]);
     const [rightContent, setRightContent] = useState('');
     const [conversionType, setConversionType] = useState<string | null>(null);
     const [selectedConversion, setSelectedConversion] = useState<string | null>(null);
@@ -74,9 +87,13 @@ export function ConvertPane({
     // Handle async shared data arrival
     useEffect(() => {
         // If shared data just arrived (was undefined/null, now has value with leftContent)
-        if (sharedData?.tabName === 'convert' && sharedData?.state?.leftContent && !sharedDataLoadedRef.current) {
+        if (
+            sharedData?.tabName === 'convert' &&
+            sharedData?.state?.leftContent &&
+            !sharedDataLoadedRef.current
+        ) {
             sharedDataLoadedRef.current = true;
-            setLeftContent(sharedData.state.leftContent);
+            setTimeout(() => setLeftContent(sharedData.state.leftContent), 0);
         }
         sharedDataRef.current = sharedData;
     }, [sharedData]);
@@ -84,7 +101,7 @@ export function ConvertPane({
     // Notify parent of content changes for sharing
     useEffect(() => {
         onContentChange?.(leftContent, rightContent);
-    }, [leftContent, rightContent]);
+    }, [leftContent, rightContent, onContentChange]);
 
     const handleConvert = (operation: (text: string) => string, type: string, name: string) => {
         setRightContent(operation(leftContent));
@@ -131,6 +148,11 @@ export function ConvertPane({
             return;
         }
         setShareDialogOpen(true);
+    };
+
+    const handleSave = () => {
+        const contentToSave = rightContent || leftContent;
+        saveTextContent('Text Convert', contentToSave);
     };
 
     const handleClear = () => {
@@ -194,6 +216,13 @@ export function ConvertPane({
                     },
                 }))}
                 actions={[
+                    {
+                        id: 'save',
+                        label: 'Save',
+                        onClick: handleSave,
+                        variant: 'outline',
+                        icon: <Bookmark className="h-4 w-4" />,
+                    },
                     {
                         id: 'clear',
                         label: 'Clear All',

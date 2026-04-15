@@ -21,16 +21,14 @@ import {
     Trash,
     Bookmark,
     Trash2,
-    FileJson,
     GitCompare,
-    Code,
-    Minimize2,
-    FileDown,
+    Sparkles,
+    ArrowLeftRight,
 } from 'lucide-react';
 
-const SAVED_ITEMS_KEY = 'json-saved-items';
+const SAVED_ITEMS_KEY = 'text-saved-items';
 
-interface SavedItem {
+export interface SavedItem {
     id: string;
     name: string;
     tool: string;
@@ -38,11 +36,11 @@ interface SavedItem {
     createdAt: number;
 }
 
-interface SavedTabProps {
+interface TextSavedTabProps {
     onTabChange: (tab: string) => void;
 }
 
-export function JsonSavedTab({ onTabChange }: SavedTabProps) {
+export function TextSavedTab({ onTabChange }: TextSavedTabProps) {
     const [savedItems, setSavedItems] = useState<SavedItem[]>([]);
     const [showClearDialog, setShowClearDialog] = useState(false);
     const [showClearItemDialog, setShowClearItemDialog] = useState(false);
@@ -55,7 +53,6 @@ export function JsonSavedTab({ onTabChange }: SavedTabProps) {
             const saved = localStorage.getItem(SAVED_ITEMS_KEY);
             if (saved) {
                 const items = JSON.parse(saved) as SavedItem[];
-                // Use setTimeout to defer state update and avoid cascading renders
                 setTimeout(() => setSavedItems(items), 0);
             }
         } catch (error) {
@@ -93,26 +90,18 @@ export function JsonSavedTab({ onTabChange }: SavedTabProps) {
         try {
             // Map the tool name to the appropriate tab
             const toolToTabMap: Record<string, string> = {
-                'JSON Diff': 'diff',
-                'JSON Format': 'format',
-                'JSON Minify': 'minify',
-                'JSON Viewer': 'viewer',
-                'JSON Parser': 'parser',
-                'JSON Export': 'export',
-                'JSON Schema': 'schema',
+                'Text Diff': 'diff',
+                'Text Convert': 'convert',
+                'Text Clean': 'clean',
             };
 
             const tab = toolToTabMap[item.tool];
             if (tab) {
                 // Save the content to the appropriate storage key
                 const storageKeyMap: Record<string, string> = {
-                    'JSON Diff': 'json-diff-left-content',
-                    'JSON Format': 'json-format-left-content',
-                    'JSON Minify': 'json-minify-left-content',
-                    'JSON Viewer': 'json-viewer-content',
-                    'JSON Parser': 'json-parser-content',
-                    'JSON Export': 'json-export-content',
-                    'JSON Schema': 'json-schema-json-content',
+                    'Text Diff': 'text-diff-left-content',
+                    'Text Convert': 'text-convert-left-content',
+                    'Text Clean': 'text-clean-input-content',
                 };
 
                 const storageKey = storageKeyMap[item.tool];
@@ -136,44 +125,24 @@ export function JsonSavedTab({ onTabChange }: SavedTabProps) {
             string,
             { name: string; icon: React.ComponentType<{ className?: string }>; color: string }
         > = {
-            'JSON Diff': {
-                name: 'JSON Diff',
+            'Text Diff': {
+                name: 'Text Diff',
                 icon: GitCompare,
                 color: 'text-blue-500',
             },
-            'JSON Format': {
-                name: 'JSON Format',
-                icon: Code,
+            'Text Convert': {
+                name: 'Text Convert',
+                icon: ArrowLeftRight,
                 color: 'text-green-500',
             },
-            'JSON Minify': {
-                name: 'JSON Minify',
-                icon: Minimize2,
+            'Text Clean': {
+                name: 'Text Clean',
+                icon: Sparkles,
                 color: 'text-purple-500',
-            },
-            'JSON Viewer': {
-                name: 'JSON Viewer',
-                icon: Eye,
-                color: 'text-orange-500',
-            },
-            'JSON Parser': {
-                name: 'JSON Parser',
-                icon: FileJson,
-                color: 'text-pink-500',
-            },
-            'JSON Export': {
-                name: 'JSON Export',
-                icon: FileDown,
-                color: 'text-cyan-500',
-            },
-            'JSON Schema': {
-                name: 'JSON Schema',
-                icon: FileJson,
-                color: 'text-indigo-500',
             },
         };
 
-        return toolMap[tool] || { name: 'Unknown', icon: FileJson, color: 'text-gray-500' };
+        return toolMap[tool] || { name: 'Unknown', icon: Bookmark, color: 'text-gray-500' };
     };
 
     const truncateContent = (content: string, maxLength = 100) => {
@@ -205,10 +174,10 @@ export function JsonSavedTab({ onTabChange }: SavedTabProps) {
                     <EmptyState
                         icon={Bookmark}
                         title="No Saved Items"
-                        description="Save your JSON content to access it quickly later."
+                        description="Save your text content to access it quickly later."
                     >
                         <p className="text-sm text-muted-foreground">
-                            Use the save button in any JSON tool to store your work.
+                            Use the save button in any text tool to store your work.
                         </p>
                     </EmptyState>
                 ) : (
