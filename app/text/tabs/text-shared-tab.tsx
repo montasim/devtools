@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
 import { ActionButtonGroup } from '@/components/ui/action-button-group';
@@ -63,12 +63,6 @@ export function TextSharedTab({ onTabChange }: SharedTabProps) {
             toast.error(errorMessage);
         }
     }, [error]);
-
-    // Copy content to clipboard
-    const handleCopy = useCallback((content: string) => {
-        navigator.clipboard.writeText(content);
-        toast.success('Copied to clipboard');
-    }, []);
 
     // Copy share URL to clipboard
     const handleCopyUrl = useCallback((url: string) => {
@@ -224,7 +218,7 @@ export function TextSharedTab({ onTabChange }: SharedTabProps) {
                         </DialogHeader>
                         <div className="mt-4">
                             <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm whitespace-pre-wrap">
-                                {viewingItem.content}
+                                {JSON.stringify(viewingItem.content, null, 2)}
                             </pre>
                         </div>
                     </DialogContent>
