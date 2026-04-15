@@ -10,7 +10,7 @@ export const passwordSchema = z
 
 export function validatePassword(password: string): {
     valid: boolean;
-    errors: string[];
+    error?: string;
 } {
     const errors: string[] = [];
 
@@ -22,6 +22,25 @@ export function validatePassword(password: string): {
 
     return {
         valid: errors.length === 0,
-        errors,
+        error: errors.length > 0 ? errors.join(', ') : undefined,
     };
+}
+
+export function validateName(name: string): {
+    valid: boolean;
+    error?: string;
+} {
+    if (!name || name.trim().length === 0) {
+        return { valid: false, error: 'Name is required' };
+    }
+
+    if (name.length < 2) {
+        return { valid: false, error: 'Name must be at least 2 characters' };
+    }
+
+    if (name.length > 100) {
+        return { valid: false, error: 'Name must be less than 100 characters' };
+    }
+
+    return { valid: true };
 }

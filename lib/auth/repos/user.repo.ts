@@ -6,6 +6,11 @@ export interface CreateUserData {
     name: string;
 }
 
+export interface UpdateUserData {
+    name?: string;
+    emailVerified?: Date;
+}
+
 export async function createUser(data: CreateUserData) {
     return await prisma.user.create({
         data: {
@@ -26,6 +31,13 @@ export async function getUserByEmail(email: string) {
 export async function getUserById(id: string) {
     return await prisma.user.findUnique({
         where: { id },
+    });
+}
+
+export async function updateUser(userId: string, data: UpdateUserData) {
+    return await prisma.user.update({
+        where: { id: userId },
+        data,
     });
 }
 

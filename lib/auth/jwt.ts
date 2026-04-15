@@ -1,4 +1,7 @@
 import jwt from 'jsonwebtoken';
+import { NextRequest } from 'next/server';
+import { cookies } from 'next/headers';
+import { getUserById } from '@/lib/auth/repos/user.repo';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'default-secret-change-in-production';
 const TOKEN_EXPIRY = '7d';
@@ -28,5 +31,37 @@ export function verifyToken(token: string): JWTPayload {
             throw new Error('Invalid token');
         }
         throw error;
+    }
+}
+
+export async function getAuthUser(request?: NextRequest) {
+    try {
+        let token: string | undefined;
+
+        if (request) {
+            // Try to get token from Authorization header
+            const authHeader = request.headers.get('authorization');
+            if (authHeader && authHeader.startsWith('Bearer ')) {
+                token = authHeader.substring(7);
+            }
+        }
+
+        // If no token in header, try cookies
+        if (!token) {
+            const cookieStore = await cookies();
+            token = cookieStore.get('auth-token')?.value;
+        }
+
+        if (!token) {
+            return null;
+        }
+
+        const payload = verifyToken(token);
+        const user = await getUserById(payload.userId);
+
+        return user;
+    } catch (error) {
+        console.error('Error getting auth user:', error);
+        return null;
     }
 }

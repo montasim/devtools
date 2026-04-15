@@ -11,6 +11,7 @@ import { MenuItem } from '@/components/navbar/types';
 import { MobileMenuItem } from '@/components/navbar/menu-items';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -26,6 +27,7 @@ export const MobileMenu = ({ menu, auth }: MobileMenuProps) => {
     const [sheetOpen, setSheetOpen] = useState(false);
     const { user, logout } = useAuth();
     const router = useRouter();
+    const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
     async function handleLogout() {
         try {
@@ -99,7 +101,10 @@ export const MobileMenu = ({ menu, auth }: MobileMenuProps) => {
                                     >
                                         Settings
                                     </Button>
-                                    <Button variant="outline" onClick={handleLogout}>
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => setLogoutDialogOpen(true)}
+                                    >
                                         Log out
                                     </Button>
                                 </div>
@@ -120,6 +125,17 @@ export const MobileMenu = ({ menu, auth }: MobileMenuProps) => {
                         </div>
                     </SheetContent>
                 </Sheet>
+
+                <ConfirmDialog
+                    open={logoutDialogOpen}
+                    onOpenChange={setLogoutDialogOpen}
+                    title="Confirm Logout"
+                    description="Are you sure you want to logout? You will need to sign in again to access your account."
+                    confirmLabel="Logout"
+                    cancelLabel="Cancel"
+                    onConfirm={handleLogout}
+                    variant="destructive"
+                />
             </div>
         </div>
     );
