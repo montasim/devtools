@@ -137,10 +137,10 @@ export function Base64SharedTab({ onTabChange }: SharedTabProps) {
         return content.substring(0, maxLength) + '...';
     };
 
-    const isExpired = (item: SharedItem) => {
+    const isExpired = useCallback((item: SharedItem) => {
         if (!item.expiresAt) return false;
         return Date.now() > item.expiresAt;
-    };
+    }, []);
 
     const toolbarActions =
         Object.keys(sharedItems).length > 0

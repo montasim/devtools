@@ -37,7 +37,6 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
     const [leftContent, setLeftContent] = useState<string>(() => {
         // Priority 1: Use initial content if provided (shared data)
         if (initialLeftContent) {
-            leftSharedDataLoadedRef.current = true;
             return initialLeftContent;
         }
         // Priority 2: Load from localStorage
@@ -56,7 +55,6 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
     const [rightContent, setRightContent] = useState<string>(() => {
         // Priority 1: Use initial content if provided (shared data)
         if (initialRightContent) {
-            rightSharedDataLoadedRef.current = true;
             return initialRightContent;
         }
         // Priority 2: Load from localStorage
@@ -79,24 +77,15 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
     const initialLeftContentRef = useRef(initialLeftContent);
     const initialRightContentRef = useRef(initialRightContent);
 
-    // Update content when shared data arrives asynchronously
+    // Mark shared data as loaded on mount if initial content was provided
     useEffect(() => {
-        // If shared data just arrived (was undefined, now has value)
-        if (initialLeftContent && !leftSharedDataLoadedRef.current) {
+        if (initialLeftContent) {
             leftSharedDataLoadedRef.current = true;
-            setLeftContent(initialLeftContent);
         }
-        initialLeftContentRef.current = initialLeftContent;
-    }, [initialLeftContent]);
-
-    useEffect(() => {
-        // If shared data just arrived (was undefined, now has value)
-        if (initialRightContent && !rightSharedDataLoadedRef.current) {
+        if (initialRightContent) {
             rightSharedDataLoadedRef.current = true;
-            setRightContent(initialRightContent);
         }
-        initialRightContentRef.current = initialRightContent;
-    }, [initialRightContent]);
+    }, [initialLeftContent, initialRightContent]);
 
     // Notify parent of content changes
     useEffect(() => {

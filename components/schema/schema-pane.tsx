@@ -40,7 +40,6 @@ export const SchemaPane = ({
     const [jsonInput, setJsonInput] = useState<string>(() => {
         // Priority 1: Use initial content if provided (shared data)
         if (initialJsonContent) {
-            sharedDataLoadedRef.current = true;
             return initialJsonContent;
         }
         // Priority 2: Load from localStorage
@@ -66,14 +65,11 @@ export const SchemaPane = ({
     const initialJsonInputRef = useRef(initialJsonContent);
     const initialSchemaInputRef = useRef(schemaInput);
 
-    // Update content when shared data arrives asynchronously
+    // Mark shared data as loaded on mount if initial content was provided
     useEffect(() => {
-        // If shared data just arrived (was undefined, now has value)
-        if (initialJsonContent && !sharedDataLoadedRef.current) {
+        if (initialJsonContent) {
             sharedDataLoadedRef.current = true;
-            setJsonInput(initialJsonContent);
         }
-        initialJsonInputRef.current = initialJsonContent;
     }, [initialJsonContent]);
 
     // Save to localStorage

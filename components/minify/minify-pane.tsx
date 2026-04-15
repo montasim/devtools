@@ -27,7 +27,6 @@ export const MinifyPane = ({
     const [leftContent, setLeftContent] = useState<string>(() => {
         // Priority 1: Use initial content if provided (shared data)
         if (initialLeftContent) {
-            sharedDataLoadedRef.current = true;
             return initialLeftContent;
         }
         // Priority 2: Load from localStorage
@@ -48,14 +47,11 @@ export const MinifyPane = ({
     // Track initial content to avoid saving it to localStorage
     const initialLeftContentRef = useRef(initialLeftContent);
 
-    // Update content when shared data arrives asynchronously
+    // Mark shared data as loaded on mount if initial content was provided
     useEffect(() => {
-        // If shared data just arrived (was undefined, now has value)
-        if (initialLeftContent && !sharedDataLoadedRef.current) {
+        if (initialLeftContent) {
             sharedDataLoadedRef.current = true;
-            setLeftContent(initialLeftContent);
         }
-        initialLeftContentRef.current = initialLeftContent;
     }, [initialLeftContent]);
 
     // Save to localStorage whenever content changes (but not on initial render)

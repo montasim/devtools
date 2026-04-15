@@ -30,7 +30,6 @@ export const ViewerPane = ({
     const [leftContent, setLeftContent] = useState<string>(() => {
         // Priority 1: Use initial content if provided (shared data)
         if (initialContent) {
-            sharedDataLoadedRef.current = true;
             return initialContent;
         }
         // Priority 2: Load from localStorage
@@ -49,17 +48,12 @@ export const ViewerPane = ({
     // Track initial content to avoid saving it to localStorage
     const initialContentRef = useRef(initialContent);
 
-    // Update content when shared data arrives asynchronously
+    // Mark shared data as loaded on mount if initial content was provided
     useEffect(() => {
-        // If shared data just arrived (was undefined, now has value)
-        if (initialContent && !sharedDataLoadedRef.current) {
+        if (initialContent) {
             sharedDataLoadedRef.current = true;
-            setLeftContent(initialContent);
         }
-        // Notify parent of content change
-        onContentChange?.(leftContent);
-        initialContentRef.current = initialContent;
-    }, [initialContent, leftContent, onContentChange]);
+    }, [initialContent]);
 
     // Save to localStorage whenever content changes (but not on initial render)
     useEffect(() => {
