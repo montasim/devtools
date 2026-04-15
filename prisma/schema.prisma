@@ -39,3 +39,30 @@ model SharedContent {
 
   @@index([linkId])
 }
+
+// ─── Authentication ──────────────────────────────────────────────────────
+
+model User {
+  id             String    @id @default(uuid())
+  email          String    @unique
+  passwordHash   String
+  name           String
+  emailVerified  DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  otps           UserOtp[]
+}
+
+model UserOtp {
+  id        String   @id @default(uuid())
+  email     String
+  codeHash  String   // HMAC-SHA256(otp, OTP_HMAC_SECRET)
+  intent    String   // REGISTER | PASSWORD_RESET
+  used      Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+
+  @@index([email, intent, used, expiresAt])
+}
