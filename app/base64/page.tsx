@@ -16,7 +16,7 @@ import { MediaToBase64Tab } from '@/app/base64/tabs/media-to-base64-tab';
 import { Base64ToMediaTab } from '@/app/base64/tabs/base64-to-media-tab';
 import { Base64SavedTab } from '@/app/base64/tabs/base64-saved-tab';
 import { Base64HistoryTab } from '@/app/base64/tabs/base64-history-tab';
-import { JsonShareTab as ShareTab } from '@/app/json/tabs/json-share-tab';
+import { Base64SharedTab } from '@/app/base64/tabs/base64-shared-tab';
 import { InvalidTabState } from '@/components/ui/invalid-tab-state';
 import { SharedContentBanner } from '@/components/shared/shared-content-banner';
 import { BASE64_TABS } from '@/lib/constants/tabs';
@@ -38,6 +38,11 @@ function Base64PageContent() {
     const isInitializingRef = useRef(true);
     const previousTabRef = useRef<string | null>(null);
     const [sharedData, setSharedData] = useState<{
+        tabName?: string;
+        state?: {
+            leftContent?: string;
+            rightContent?: string;
+        };
         title?: string;
         comment?: string;
         expiresAt?: string;
@@ -139,12 +144,12 @@ function Base64PageContent() {
         <>
             {sharedData && (
                 <SharedContentBanner
-                    title={sharedData.title}
+                    title={sharedData.title || 'Shared Content'}
                     comment={sharedData.comment}
                     expiresAt={sharedData.expiresAt}
-                    hasPassword={sharedData.hasPassword}
-                    viewCount={sharedData.viewCount}
-                    createdAt={sharedData.createdAt}
+                    hasPassword={sharedData.hasPassword ?? false}
+                    viewCount={sharedData.viewCount ?? 0}
+                    createdAt={sharedData.createdAt || new Date().toISOString()}
                     onClose={() => setSharedData(null)}
                 />
             )}
@@ -221,7 +226,7 @@ function Base64PageContent() {
                 </TabsContent>
 
                 <TabsContent value="shared" className="mt-0">
-                    <ShareTab />
+                    <Base64SharedTab onTabChange={handleTabChange} />
                 </TabsContent>
 
                 <TabsContent value="history" className="mt-0">
@@ -229,11 +234,23 @@ function Base64PageContent() {
                 </TabsContent>
 
                 <TabsContent value={BASE64_TABS.MEDIA_TO_BASE64} className="mt-0">
-                    <MediaToBase64Tab onClear={handleClear} sharedData={sharedData} />
+                    <MediaToBase64Tab
+                        onClear={handleClear}
+                        sharedData={sharedData ? {
+                            tabName: sharedData.tabName,
+                            state: sharedData.state,
+                        } : undefined}
+                    />
                 </TabsContent>
 
                 <TabsContent value={BASE64_TABS.BASE64_TO_MEDIA} className="mt-0">
-                    <Base64ToMediaTab onClear={handleClear} sharedData={sharedData} />
+                    <Base64ToMediaTab
+                        onClear={handleClear}
+                        sharedData={sharedData ? {
+                            tabName: sharedData.tabName,
+                            state: sharedData.state,
+                        } : undefined}
+                    />
                 </TabsContent>
 
                 {invalidTab && (
