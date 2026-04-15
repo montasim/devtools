@@ -1,6 +1,6 @@
 'use client';
 
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { z } from 'zod';
 import type {
     CreateShareInput,
@@ -83,11 +83,13 @@ export const shareApi = {
                 error,
                 message: error instanceof Error ? error.message : 'Unknown error',
                 isAxiosError: axios.isAxiosError(error),
-                response: axios.isAxiosError(error) ? {
-                    status: error.response?.status,
-                    statusText: error.response?.statusText,
-                    data: error.response?.data,
-                } : null,
+                response: axios.isAxiosError(error)
+                    ? {
+                          status: error.response?.status,
+                          statusText: error.response?.statusText,
+                          data: error.response?.data,
+                      }
+                    : null,
             });
             throw handleApiError(error);
         }

@@ -1,32 +1,27 @@
-import { STORAGE_KEYS } from '@/lib/constants';
-
 /**
  * Get initial content with priority: shared data > localStorage > empty
  * @param sharedInput - The shared input data from sharedData?.state?.input
  * @param storageKey - The localStorage key to use as fallback
  * @returns The initial content string
  */
-export function getInitialContent(
-  sharedInput: string | undefined,
-  storageKey: string
-): string {
-  // Priority 1: Shared content
-  if (sharedInput) {
-    return sharedInput;
-  }
-
-  // Priority 2: LocalStorage
-  try {
-    const saved = localStorage.getItem(storageKey);
-    if (saved && saved.trim()) {
-      return saved;
+export function getInitialContent(sharedInput: string | undefined, storageKey: string): string {
+    // Priority 1: Shared content
+    if (sharedInput) {
+        return sharedInput;
     }
-  } catch (error) {
-    console.error('Failed to load from localStorage:', error);
-  }
 
-  // Priority 3: Empty string
-  return '';
+    // Priority 2: LocalStorage
+    try {
+        const saved = localStorage.getItem(storageKey);
+        if (saved && saved.trim()) {
+            return saved;
+        }
+    } catch (error) {
+        console.error('Failed to load from localStorage:', error);
+    }
+
+    // Priority 3: Empty string
+    return '';
 }
 
 /**
@@ -38,13 +33,13 @@ export function getInitialContent(
  * @returns Object with left and right content
  */
 export function getInitialDiffContent(
-  sharedInput: string | undefined,
-  sharedRightContent: string | undefined,
-  leftStorageKey: string,
-  rightStorageKey: string
+    sharedInput: string | undefined,
+    sharedRightContent: string | undefined,
+    leftStorageKey: string,
+    rightStorageKey: string,
 ): { leftContent: string; rightContent: string } {
-  return {
-    leftContent: getInitialContent(sharedInput, leftStorageKey),
-    rightContent: getInitialContent(sharedRightContent, rightStorageKey),
-  };
+    return {
+        leftContent: getInitialContent(sharedInput, leftStorageKey),
+        rightContent: getInitialContent(sharedRightContent, rightStorageKey),
+    };
 }

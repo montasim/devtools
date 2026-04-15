@@ -110,6 +110,7 @@ devtools/
 ## 🎨 Features Overview
 
 ### JSON Tools
+
 - **Diff** - Compare two JSON files side by side
 - **Format** - Beautify JSON with customizable options
 - **Minify** - Compress JSON to minimal size
@@ -119,11 +120,13 @@ devtools/
 - **Schema** - Generate and validate JSON schemas
 
 ### Text Tools
+
 - **Diff** - Compare text with visual highlighting
 - **Convert** - Transform text between formats
 - **Clean** - Remove extra spaces, lines, and characters
 
 ### Base64 Tools
+
 - **Media to Base64** - Convert images and files to Base64
 - **Base64 to Media** - Decode Base64 to downloadable files
 - **History** - Track recent conversions
@@ -144,6 +147,7 @@ npm test -- --coverage
 ## 📝 Code Style
 
 This project uses:
+
 - **ESLint** for code linting
 - **Prettier** for code formatting
 - **Husky** for git hooks

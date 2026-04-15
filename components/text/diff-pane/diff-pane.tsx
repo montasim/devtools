@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect, useRef } from 'react';
-import { toast } from 'sonner';
-import { Share2, MoreVertical, Plus, Minus, Replace, Percent } from 'lucide-react';
+import { MoreVertical, Plus, Minus, Replace, Percent } from 'lucide-react';
 import { TextEditor } from '@/components/text/text-editor/text-editor';
 import { DiffResults } from '@/components/text/diff-pane/diff-results';
 import { TextDiffOperationsMenu } from '@/components/text/diff-pane/text-diff-operations-menu';
@@ -19,7 +18,14 @@ import type { TextDiffViewMode } from '@/components/text/diff-pane/view-mode-tab
 export interface TextDiffPaneProps {
     shareDialogOpen?: boolean;
     onShareDialogOpenChange?: (open: boolean) => void;
-    sharedData?: any;
+    sharedData?: {
+        title?: string;
+        comment?: string;
+        expiresAt?: string;
+        hasPassword?: boolean;
+        viewCount?: number;
+        createdAt?: string;
+    };
     onContentChange?: (left: string, right: string) => void;
     currentLeftContent?: string;
     currentRightContent?: string;
@@ -42,7 +48,6 @@ export function TextDiffPane({
         try {
             // Prioritize shared content if available
             if (sharedData?.tabName === 'diff' && sharedData?.state?.leftContent) {
-                leftSharedDataLoadedRef.current = true;
                 return sharedData.state.leftContent;
             }
             return localStorage.getItem(STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT) || '';
@@ -54,7 +59,6 @@ export function TextDiffPane({
         try {
             // Prioritize shared content if available
             if (sharedData?.tabName === 'diff' && sharedData?.state?.rightContent) {
-                rightSharedDataLoadedRef.current = true;
                 return sharedData.state.rightContent;
             }
             return localStorage.getItem(STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT) || '';
@@ -62,6 +66,16 @@ export function TextDiffPane({
             return '';
         }
     });
+
+    // Mark shared data as loaded if we used it
+    useEffect(() => {
+        if (sharedData?.tabName === 'diff' && sharedData?.state?.leftContent) {
+            leftSharedDataLoadedRef.current = true;
+        }
+        if (sharedData?.tabName === 'diff' && sharedData?.state?.rightContent) {
+            rightSharedDataLoadedRef.current = true;
+        }
+    }, [sharedData]);
     const [diffViewType, setDiffViewType] = useState<TextDiffViewMode>('split');
 
     // Track sharedData to detect async arrival
@@ -78,14 +92,18 @@ export function TextDiffPane({
     // Notify parent of content changes for sharing
     useEffect(() => {
         onContentChange?.(leftText, rightText);
-    }, [leftText, rightText]);
+    }, [leftText, rightText, onContentChange]);
 
     // Handle async shared data arrival for left content
     useEffect(() => {
         // If shared data just arrived (was undefined/null, now has value with leftContent)
-        if (sharedData?.tabName === 'diff' && sharedData?.state?.leftContent && !leftSharedDataLoadedRef.current) {
+        if (
+            sharedData?.tabName === 'diff' &&
+            sharedData?.state?.leftContent &&
+            !leftSharedDataLoadedRef.current
+        ) {
             leftSharedDataLoadedRef.current = true;
-            setLeftText(sharedData.state.leftContent);
+            setTimeout(() => setLeftText(sharedData.state.leftContent), 0);
         }
         sharedDataRef.current = sharedData;
     }, [sharedData]);
@@ -93,9 +111,13 @@ export function TextDiffPane({
     // Handle async shared data arrival for right content
     useEffect(() => {
         // If shared data just arrived (was undefined/null, now has value with rightContent)
-        if (sharedData?.tabName === 'diff' && sharedData?.state?.rightContent && !rightSharedDataLoadedRef.current) {
+        if (
+            sharedData?.tabName === 'diff' &&
+            sharedData?.state?.rightContent &&
+            !rightSharedDataLoadedRef.current
+        ) {
             rightSharedDataLoadedRef.current = true;
-            setRightText(sharedData.state.rightContent);
+            setTimeout(() => setRightText(sharedData.state.rightContent), 0);
         }
     }, [sharedData]);
 
@@ -110,14 +132,6 @@ export function TextDiffPane({
     }, [stats]);
 
     const hasContent = leftText.trim().length > 0 || rightText.trim().length > 0;
-
-    const handleShare = () => {
-        if (!leftText && !rightText) {
-            toast.error('No content to share. Please enter some text first.');
-            return;
-        }
-        onShareDialogOpenChange?.(true);
-    };
 
     const handleClear = () => {
         setLeftText('');
