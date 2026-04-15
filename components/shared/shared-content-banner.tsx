@@ -4,12 +4,12 @@ import { Lock, Clock, Eye, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface SharedContentBannerProps {
-    title: string;
+    title?: string;
     comment?: string | null;
     expiresAt?: string | null;
-    hasPassword: boolean;
-    viewCount: number;
-    createdAt: string;
+    hasPassword?: boolean;
+    viewCount?: number;
+    createdAt?: string;
     onClose?: () => void;
 }
 
@@ -64,7 +64,9 @@ export function SharedContentBanner({
                             )}
                         </div>
 
-                        <h2 className="text-lg font-semibold truncate">Title: {title}</h2>
+                        {title && (
+                            <h2 className="text-lg font-semibold truncate">Title: {title}</h2>
+                        )}
 
                         {comment && (
                             <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
@@ -73,12 +75,14 @@ export function SharedContentBanner({
                         )}
 
                         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-sm text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                                <Eye className="h-3.5 w-3.5" />
-                                <span>
-                                    {viewCount} view{viewCount !== 1 ? 's' : ''}
-                                </span>
-                            </div>
+                            {viewCount && viewCount > 0 && (
+                                <div className="flex items-center gap-1">
+                                    <Eye className="h-3.5 w-3.5" />
+                                    <span>
+                                        {viewCount} view{viewCount !== 1 ? 's' : ''}
+                                    </span>
+                                </div>
+                            )}
 
                             {hasPassword && (
                                 <div className="flex items-center gap-1">
@@ -94,7 +98,7 @@ export function SharedContentBanner({
                                 </div>
                             )}
 
-                            <div>Created {formatCreatedDate(createdAt)}</div>
+                            {createdAt && <div>Created {formatCreatedDate(createdAt)}</div>}
                         </div>
                     </div>
                 </div>

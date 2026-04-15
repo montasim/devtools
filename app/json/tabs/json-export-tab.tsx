@@ -14,12 +14,17 @@ interface JsonExportTabProps {
     onClear: () => void;
     sharedData?: {
         title?: string;
-        comment?: string;
-        expiresAt?: string;
+        comment?: string | null;
+        expiresAt?: string | null;
         hasPassword?: boolean;
         viewCount?: number;
         createdAt?: string;
-    };
+        tabName?: string;
+        state?: {
+            leftContent?: string;
+            rightContent?: string;
+        };
+    } | null;
 }
 
 export function JsonExportTab({ onClear, sharedData }: JsonExportTabProps) {
@@ -115,7 +120,7 @@ export function JsonExportTab({ onClear, sharedData }: JsonExportTabProps) {
                     onContentChange={handleContentChange}
                     exportFormat={exportFormat}
                     onExportFormatChange={setExportFormat}
-                    initialContent={sharedData?.state?.input}
+                    initialContent={sharedData?.state?.leftContent}
                 />
             </div>
 

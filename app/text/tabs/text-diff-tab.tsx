@@ -10,13 +10,18 @@ import { saveTextContent } from '@/lib/text-save-utils';
 export interface TextDiffTabProps {
     onClear?: () => void;
     sharedData?: {
+        tabName?: string;
+        state?: {
+            leftContent?: string;
+            rightContent?: string;
+        };
         title?: string;
         comment?: string;
         expiresAt?: string;
         hasPassword?: boolean;
         viewCount?: number;
         createdAt?: string;
-    };
+    } | null;
 }
 
 export function TextDiffTab({ onClear, sharedData }: TextDiffTabProps) {

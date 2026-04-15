@@ -64,6 +64,10 @@ function JsonPageContent() {
         viewCount: number;
         createdAt: string;
         tabName: string;
+        state?: {
+            leftContent?: string;
+            rightContent?: string;
+        };
     } | null>(null);
     const [activeTab, setActiveTab] = useState<TabValue>(() => {
         // Initialize from URL during state creation

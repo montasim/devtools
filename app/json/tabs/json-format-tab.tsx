@@ -20,12 +20,17 @@ interface JsonFormatTabProps {
     onClear: () => void;
     sharedData?: {
         title?: string;
-        comment?: string;
-        expiresAt?: string;
+        comment?: string | null;
+        expiresAt?: string | null;
         hasPassword?: boolean;
         viewCount?: number;
         createdAt?: string;
-    };
+        tabName?: string;
+        state?: {
+            leftContent?: string;
+            rightContent?: string;
+        };
+    } | null;
 }
 
 export function JsonFormatTab({ onClear, sharedData }: JsonFormatTabProps) {
@@ -160,7 +165,7 @@ export function JsonFormatTab({ onClear, sharedData }: JsonFormatTabProps) {
                     onError={handleError}
                     onValidationChange={() => {}}
                     onContentChange={handleContentChange}
-                    initialLeftContent={sharedData?.state?.input}
+                    initialLeftContent={sharedData?.state?.leftContent}
                 />
             </div>
 

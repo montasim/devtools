@@ -19,13 +19,18 @@ export interface TextDiffPaneProps {
     shareDialogOpen?: boolean;
     onShareDialogOpenChange?: (open: boolean) => void;
     sharedData?: {
+        tabName?: string;
+        state?: {
+            leftContent?: string;
+            rightContent?: string;
+        };
         title?: string;
         comment?: string;
         expiresAt?: string;
         hasPassword?: boolean;
         viewCount?: number;
         createdAt?: string;
-    };
+    } | null;
     onContentChange?: (left: string, right: string) => void;
     currentLeftContent?: string;
     currentRightContent?: string;
@@ -103,7 +108,7 @@ export function TextDiffPane({
             !leftSharedDataLoadedRef.current
         ) {
             leftSharedDataLoadedRef.current = true;
-            setTimeout(() => setLeftText(sharedData.state.leftContent), 0);
+            setTimeout(() => setLeftText(sharedData.state?.leftContent || ''), 0);
         }
         sharedDataRef.current = sharedData;
     }, [sharedData]);
@@ -117,7 +122,7 @@ export function TextDiffPane({
             !rightSharedDataLoadedRef.current
         ) {
             rightSharedDataLoadedRef.current = true;
-            setTimeout(() => setRightText(sharedData.state.rightContent), 0);
+            setTimeout(() => setRightText(sharedData.state?.rightContent || ''), 0);
         }
     }, [sharedData]);
 

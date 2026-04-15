@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
 import { Copy, Share2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,7 @@ interface ParserShareDialogProps {
 }
 
 export function ParserShareDialog({ content, open, onOpenChange }: ParserShareDialogProps) {
+    const [copied, setCopied] = useState(false);
 
     // Copy JSON to clipboard
     const copyToClipboard = useCallback(async () => {

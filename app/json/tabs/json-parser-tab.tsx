@@ -12,12 +12,17 @@ interface ParserTabProps {
     onClear: () => void;
     sharedData?: {
         title?: string;
-        comment?: string;
-        expiresAt?: string;
+        comment?: string | null;
+        expiresAt?: string | null;
         hasPassword?: boolean;
         viewCount?: number;
         createdAt?: string;
-    };
+        tabName?: string;
+        state?: {
+            leftContent?: string;
+            rightContent?: string;
+        };
+    } | null;
 }
 
 export function JsonParserTab({ onClear, sharedData }: ParserTabProps) {
@@ -117,7 +122,7 @@ export function JsonParserTab({ onClear, sharedData }: ParserTabProps) {
                     onError={handleError}
                     onValidationChange={() => {}}
                     onContentChange={handleContentChange}
-                    initialContent={sharedData?.state?.input}
+                    initialContent={sharedData?.state?.leftContent}
                 />
             </div>
 

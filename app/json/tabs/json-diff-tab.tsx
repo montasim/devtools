@@ -11,12 +11,17 @@ interface JsonDiffTabProps {
     onClear: () => void;
     sharedData?: {
         title?: string;
-        comment?: string;
-        expiresAt?: string;
+        comment?: string | null;
+        expiresAt?: string | null;
         hasPassword?: boolean;
         viewCount?: number;
         createdAt?: string;
-    };
+        tabName?: string;
+        state?: {
+            leftContent?: string;
+            rightContent?: string;
+        };
+    } | null;
 }
 
 export function JsonDiffTab({ onClear, sharedData }: JsonDiffTabProps) {
@@ -136,7 +141,7 @@ export function JsonDiffTab({ onClear, sharedData }: JsonDiffTabProps) {
                     onError={handleError}
                     onValidationChange={handleValidationChange}
                     onContentChange={handleContentChange}
-                    initialLeftContent={sharedData?.state?.input}
+                    initialLeftContent={sharedData?.state?.leftContent}
                     initialRightContent={sharedData?.state?.rightContent}
                 />
             </div>

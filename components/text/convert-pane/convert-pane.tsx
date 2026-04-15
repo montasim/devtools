@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
-import { Copy, Download, Bookmark } from 'lucide-react';
+import { Copy, Download, Bookmark, X, Sparkles } from 'lucide-react';
 import { TextEditor } from '@/components/text/text-editor/text-editor';
 import { TextareaFooter } from '@/components/text/text-editor/textarea-footer';
 import { EditorActions } from '@/components/editor/editor-actions';
@@ -34,13 +34,18 @@ import { STORAGE_KEYS } from '@/lib/constants';
 
 export interface ConvertPaneProps {
     sharedData?: {
+        tabName?: string;
+        state?: {
+            leftContent?: string;
+            rightContent?: string;
+        };
         title?: string;
         comment?: string;
         expiresAt?: string;
         hasPassword?: boolean;
         viewCount?: number;
         createdAt?: string;
-    };
+    } | null;
     onContentChange?: (leftContent: string, rightContent: string) => void;
     currentLeftContent?: string;
     currentRightContent?: string;
@@ -93,7 +98,7 @@ export function ConvertPane({
             !sharedDataLoadedRef.current
         ) {
             sharedDataLoadedRef.current = true;
-            setTimeout(() => setLeftContent(sharedData.state.leftContent), 0);
+            setTimeout(() => setLeftContent(sharedData.state?.leftContent || ''), 0);
         }
         sharedDataRef.current = sharedData;
     }, [sharedData]);

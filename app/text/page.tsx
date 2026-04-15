@@ -56,6 +56,11 @@ function TextPageContent() {
 
     // Shared content state
     const [sharedData, setSharedData] = useState<{
+        tabName?: string;
+        state?: {
+            leftContent?: string;
+            rightContent?: string;
+        };
         title?: string;
         comment?: string;
         expiresAt?: string;

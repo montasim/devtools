@@ -12,12 +12,17 @@ interface SchemaTabProps {
     onClear: () => void;
     sharedData?: {
         title?: string;
-        comment?: string;
-        expiresAt?: string;
+        comment?: string | null;
+        expiresAt?: string | null;
         hasPassword?: boolean;
         viewCount?: number;
         createdAt?: string;
-    };
+        tabName?: string;
+        state?: {
+            leftContent?: string;
+            rightContent?: string;
+        };
+    } | null;
 }
 
 export function JsonSchemaTab({ onClear, sharedData }: SchemaTabProps) {
@@ -107,7 +112,7 @@ export function JsonSchemaTab({ onClear, sharedData }: SchemaTabProps) {
                     onError={handleError}
                     onValidationChange={() => {}}
                     onContentChange={handleContentChange}
-                    initialJsonContent={sharedData?.state?.input}
+                    initialJsonContent={sharedData?.state?.leftContent}
                 />
             </div>
 

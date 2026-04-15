@@ -30,13 +30,18 @@ export function TextCleanTab({
 }: {
     onClear?: () => void;
     sharedData?: {
+        tabName?: string;
+        state?: {
+            leftContent?: string;
+            rightContent?: string;
+        };
         title?: string;
         comment?: string;
         expiresAt?: string;
         hasPassword?: boolean;
         viewCount?: number;
         createdAt?: string;
-    };
+    } | null;
 }) {
     // Track if we've loaded shared data
     const sharedDataLoadedRef = useRef(false);
@@ -85,7 +90,7 @@ export function TextCleanTab({
             !sharedDataLoadedRef.current
         ) {
             sharedDataLoadedRef.current = true;
-            setTimeout(() => setLeftContent(sharedData.state.leftContent), 0);
+            setTimeout(() => setLeftContent(sharedData.state?.leftContent || ''), 0);
         }
         sharedDataRef.current = sharedData;
     }, [sharedData]);
