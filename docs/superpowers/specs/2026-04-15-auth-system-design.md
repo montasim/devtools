@@ -1,9 +1,9 @@
 # Authentication System Design for Devtools
 
 **Date:** 2026-04-15
-**Status:** In Revision
+**Status:** Ready for Final Review
 **Author:** Claude + User Collaboration
-**Version:** 1.1 (Addressing critical implementation issues)
+**Version:** 1.2 (All critical issues addressed)
 
 ## Overview
 
@@ -25,7 +25,7 @@ Integrate a simplified authentication system from the nextjs-saas-starter projec
 
 ### Registration Flow
 
-1. User visits `/auth/register`
+1. User visits `/signup`
 2. **Step 1**: Enter email address → Click "Send OTP"
 3. System generates 6-digit OTP, hashes it, stores in database
 4. System sends OTP email via Resend
@@ -33,13 +33,13 @@ Integrate a simplified authentication system from the nextjs-saas-starter projec
 6. System validates OTP, marks as used
 7. **Step 3**: User enters name and password → Click "Create Account"
 8. System creates User account with emailVerified timestamp
-9. Redirect to `/auth/login` with success message
+9. Redirect to `/login` with success message
 10. User logs in with email/password
 11. After successful login, redirect to `/json?tab=diff`
 
 ### Login Flow
 
-1. User visits `/auth/login`
+1. User visits `/login`
 2. Enter email and password → Click "Login"
 3. System validates credentials
 4. System checks email verification status
@@ -49,14 +49,14 @@ Integrate a simplified authentication system from the nextjs-saas-starter projec
 
 ### Password Reset Flow
 
-1. User visits `/auth/reset-password`
+1. User visits `/reset-password`
 2. **Step 1**: Enter email address → Click "Send OTP"
 3. System generates 6-digit OTP, hashes it, stores in database
 4. System sends OTP email via Resend
 5. **Step 2**: User enters 6-digit OTP and new password → Click "Reset Password"
 6. System validates OTP, marks as used
 7. System updates user password hash
-8. Redirect to `/auth/login`
+8. Redirect to `/login`
 
 ### Logout Flow
 
@@ -125,16 +125,14 @@ app/api/auth/
       ├── send-otp/route.ts    # POST - Send reset OTP
       └── confirm/route.ts     # POST - Verify OTP & reset password
 
-app/auth/
-  ├── login/page.tsx           # Login page
-  ├── register/page.tsx        # Multi-step registration (email → OTP → form)
-  └── reset-password/page.tsx  # Multi-step password reset
-
 app/
+  ├── login/page.tsx           # Login page (matches existing navigation config)
+  ├── signup/page.tsx          # Multi-step registration (matches existing navigation config)
+  ├── reset-password/page.tsx  # Multi-step password reset
   ├── profile/page.tsx         # Protected user profile
   └── settings/page.tsx        # Protected user settings
 
-middleware.ts                  # Enhanced with route protection
+middleware.ts                  # Enhanced with route protection (verify doesn't exist first)
 hooks/useAuth.ts              # Auth hook for components (new)
 context/AuthContext.tsx       # Auth state management (new)
 ```
@@ -276,6 +274,8 @@ If you didn't request this, please ignore this email.
 pnpm add jsonwebtoken @types/jsonwebtoken resend
 ```
 
+**Note:** `@types/bcrypt` is already in devDependencies (line 61 of package.json).
+
 ## Environment Variables
 
 ```env
@@ -293,6 +293,8 @@ RATE_LIMIT_MAX_REQUESTS=10
 RATE_LIMIT_WINDOW_MS=3600000
 ```
 
+**Note:** `JWT_SECRET` must be added to `.env.example` alongside existing `OTP_HMAC_SECRET` and `RESEND_API_KEY` variables.
+
 ### Secret Generation
 
 ```bash
@@ -307,7 +309,7 @@ openssl rand -base64 32
 
 ### Registration
 
-**POST /api/auth/register/send-otp**
+**POST /api/signup/send-otp**
 
 - Request: `{ email: string }`
 - Response: `{ success: true, message: string }`
@@ -315,7 +317,7 @@ openssl rand -base64 32
 - Generates OTP, hashes it, stores in database
 - Sends email via Resend
 
-**POST /api/auth/register/verify-otp**
+**POST /api/signup/verify-otp**
 
 - Request: `{ email: string, code: string, name: string, password: string }`
 - Response: `{ success: true, message: string }`
@@ -325,7 +327,7 @@ openssl rand -base64 32
 
 ### Login
 
-**POST /api/auth/login**
+**POST /api/login**
 
 - Request: `{ email: string, password: string }`
 - Response: `{ success: true, user: { id, email, name } }`
@@ -393,7 +395,7 @@ export function middleware(request: NextRequest) {
 
         if (!token) {
             // Redirect to login
-            return NextResponse.redirect(new URL('/auth/login', request.url));
+            return NextResponse.redirect(new URL('/login', request.url));
         }
 
         try {
@@ -404,7 +406,7 @@ export function middleware(request: NextRequest) {
             return NextResponse.next();
         } catch (error) {
             // Token is invalid, redirect to login
-            return NextResponse.redirect(new URL('/auth/login', request.url));
+            return NextResponse.redirect(new URL('/login', request.url));
         }
     }
 
@@ -415,7 +417,7 @@ export function middleware(request: NextRequest) {
 
 ## UI Components
 
-### Registration Page (`/auth/register`)
+### Registration Page (`/signup`)
 
 **State Management:**
 
@@ -463,7 +465,7 @@ const [error, setError] = useState('');
 - "Go to Login" button
 - Auto-redirect after 3 seconds
 
-### Login Page (`/auth/login`)
+### Login Page (`/login`)
 
 **Components:**
 
@@ -481,7 +483,7 @@ const [error, setError] = useState('');
 - Successful login → `/json?tab=diff`
 - Already logged in → `/json?tab=diff`
 
-### Reset Password Page (`/auth/reset-password`)
+### Reset Password Page (`/reset-password`)
 
 **Step 1: Email Input**
 
@@ -684,7 +686,7 @@ function useAuth() {
 ### Manual Testing
 
 1. **Registration Flow**
-    - Visit `/auth/register`
+    - Visit `/signup`
     - Enter email and request OTP
     - Check email for OTP code
     - Enter OTP and verify
@@ -693,14 +695,14 @@ function useAuth() {
     - Verify redirect to login
 
 2. **Login Flow**
-    - Visit `/auth/login`
+    - Visit `/login`
     - Enter credentials
     - Verify successful login
     - Verify redirect to `/json?tab=diff`
     - Check cookie is set
 
 3. **Password Reset Flow**
-    - Visit `/auth/reset-password`
+    - Visit `/reset-password`
     - Enter email and request OTP
     - Check email for OTP code
     - Enter OTP and new password
@@ -817,9 +819,9 @@ try {
     return NextResponse.next();
 } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
-        return NextResponse.redirect(new URL('/auth/login?error=expired', request.url));
+        return NextResponse.redirect(new URL('/login?error=expired', request.url));
     }
-    return NextResponse.redirect(new URL('/auth/login?error=invalid', request.url));
+    return NextResponse.redirect(new URL('/login?error=invalid', request.url));
 }
 ```
 
@@ -951,6 +953,9 @@ response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
 ```typescript
 // components/auth/password-input.tsx
+import { Eye, EyeOff } from 'lucide-react'; // ADD THIS IMPORT
+import { useState } from 'react';
+
 export function PasswordInput({ ...props }) {
   const [showPassword, setShowPassword] = useState(false);
   return (
@@ -990,7 +995,7 @@ export function middleware(request: NextRequest) {
         const token = request.cookies.get('auth-token')?.value;
 
         if (!token) {
-            const loginUrl = new URL('/auth/login', request.url);
+            const loginUrl = new URL('/login', request.url);
             loginUrl.searchParams.set('redirect', request.nextUrl.pathname);
             return NextResponse.redirect(loginUrl);
         }
@@ -999,7 +1004,7 @@ export function middleware(request: NextRequest) {
             jwt.verify(token, JWT_SECRET);
             return NextResponse.next();
         } catch (error) {
-            const loginUrl = new URL('/auth/login', request.url);
+            const loginUrl = new URL('/login', request.url);
             loginUrl.searchParams.set('error', 'invalid_token');
             return NextResponse.redirect(loginUrl);
         }
@@ -1012,6 +1017,8 @@ export const config = {
     matcher: ['/profile/:path*', '/settings/:path*'],
 };
 ```
+
+**Important:** Verify no `middleware.ts` file exists at project root before creating this new file. If it exists, integrate auth protection into the existing middleware.
 
 **AuthContext Integration:**
 
@@ -1061,7 +1068,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function login(email: string, password: string) {
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -1099,7 +1106,7 @@ export function useAuth() {
 **Root Layout Integration:**
 
 ```typescript
-// app/layout.tsx - ADD AuthProvider
+// app/layout.tsx - ADD AuthProvider to existing Providers
 import { AuthProvider } from '@/context/AuthContext';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -1107,9 +1114,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <ThemeProvider>
-          <AuthProvider> {/* ADD THIS */}
-            {children}
-          </AuthProvider>
+          <Providers> {/* EXISTING Providers wrapper */}
+            <AuthProvider> {/* ADD AuthProvider HERE */}
+              {children}
+            </AuthProvider>
+          </Providers>
         </ThemeProvider>
       </body>
     </html>
@@ -1117,15 +1126,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-**Navigation Configuration Update:**
+**Note:** Add `AuthProvider` inside the existing `Providers` component (lines 83-94 of layout.tsx), not nested inside `ThemeProvider`.
+
+**Navigation Configuration:**
 
 ```typescript
-// config/navigation.tsx - UPDATE
+// config/navigation.tsx - NO CHANGES NEEDED
 export const authButtons = {
-    login: { title: 'Login', url: '/auth/login' }, // UPDATED
-    signup: { title: 'Sign up', url: '/auth/register' }, // UPDATED
+    login: { title: 'Login', url: '/login' }, // Already correct
+    signup: { title: 'Sign up', url: '/signup' }, // Already correct
 };
 ```
+
+**Note:** Existing navigation config (lines 96-99) already uses `/login` and `/signup`, so no changes needed.
 
 **Password Policy Implementation:**
 
@@ -1163,7 +1176,7 @@ export function validatePassword(password: string): {
 **Rate Limiting Extension:**
 
 ```typescript
-// lib/rate-limit.ts - EXTEND existing
+// lib/rate-limit.ts - EXTEND existing function-based implementation
 // Add new rate limit types for auth
 const AUTH_LIMITS = {
     otp_request: { max: 3, window: 3600000 }, // 3 per hour
@@ -1171,14 +1184,14 @@ const AUTH_LIMITS = {
     password_reset: { max: 3, window: 3600000 }, // 3 per hour
 };
 
-// Extend existing RateLimiter class to support auth types
-export class AuthRateLimiter extends RateLimiter {
-    constructor() {
-        super();
-        // Merge auth limits with existing limits
-        this.limits = { ...this.limits, ...AUTH_LIMITS };
-    }
-}
+// Extend existing rate limit types to support auth
+export const RATE_LIMIT_TYPES = {
+    ...existingRateLimitTypes, // preserve existing types
+    ...AUTH_LIMITS,
+};
+
+// Use existing checkRateLimit(ip, type) function for auth operations
+// Example: checkRateLimit(ip, 'otp_request')
 ```
 
 ### Database Migration Safety
@@ -1191,6 +1204,10 @@ npx prisma migrate dev --name add_auth_system --create-only
 
 # Review generated SQL
 # Test in development first
+
+# Run migration and generate Prisma client
+npx prisma migrate dev --name add_auth_system
+npx prisma generate  # ADD THIS EXPLICIT STEP
 
 # If migration fails in production:
 npx prisma migrate resolve --applied add_auth_system
