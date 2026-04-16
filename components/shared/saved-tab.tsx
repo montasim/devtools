@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { ActionButtonGroup } from '@/components/ui/action-button-group';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Toolbar } from '@/components/toolbar/toolbar';
 import { EmptyState } from '@/components/ui/empty-state';
+import { AuthPrompt } from '@/components/shared/auth-prompt';
 import {
     Dialog,
     DialogContent,
@@ -15,6 +17,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { Eye, RotateCcw, Copy, Trash, Bookmark, Trash2 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 export interface SavedItem {
     id: string;
@@ -51,6 +54,10 @@ export function SavedTab({
     onTabChange,
 }: SavedTabProps) {
     const queryClient = useQueryClient();
+    const { user, loading: authLoading } = useAuth();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const currentPath = `${pathname}?${searchParams.toString()}`;
     const [showClearDialog, setShowClearDialog] = useState(false);
     const [showClearItemDialog, setShowClearItemDialog] = useState(false);
     const [itemToClear, setItemToClear] = useState<string | null>(null);
@@ -73,6 +80,7 @@ export function SavedTab({
             }
             return response.json() as Promise<SavedItem[]>;
         },
+        enabled: !!user, // Only run when authenticated
     });
 
     // Handle loading and error states
@@ -173,9 +181,14 @@ export function SavedTab({
 
     const getContent = extractContent ? extractContent : defaultExtractContent;
 
+    // Show auth prompt if not authenticated
+    if (!user && !authLoading) {
+        return <AuthPrompt featureName="Saved Items" currentPath={currentPath} />;
+    }
+
     return (
         <>
-            {isLoading ? (
+            {isLoading || authLoading ? (
                 <div className="flex items-center justify-center py-12">
                     <div className="text-muted-foreground">Loading your saved items...</div>
                 </div>
