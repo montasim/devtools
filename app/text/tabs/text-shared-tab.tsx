@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ActionButtonGroup } from '@/components/ui/action-button-group';
 import { Toolbar } from '@/components/toolbar/toolbar';
 import { EmptyState } from '@/components/ui/empty-state';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import {
     Dialog,
     DialogContent,
@@ -272,33 +273,16 @@ export function TextSharedTab({ onTabChange }: SharedTabProps) {
             )}
 
             {/* Delete Confirmation Dialog */}
-            {deleteCandidate && (
-                <Dialog open={!!deleteCandidate} onOpenChange={() => setDeleteCandidate(null)}>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>Delete Share?</DialogTitle>
-                            <DialogDescription>
-                                Are you sure you want to delete &quot;{deleteCandidate.title}&quot;?
-                                This action cannot be undone.
-                            </DialogDescription>
-                        </DialogHeader>
-                        <div className="flex justify-end gap-2 mt-4">
-                            <button
-                                onClick={() => setDeleteCandidate(null)}
-                                className="px-4 py-2 border rounded-md hover:bg-muted"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleDeleteShare}
-                                className="px-4 py-2 bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90"
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    </DialogContent>
-                </Dialog>
-            )}
+            <ConfirmDialog
+                open={!!deleteCandidate}
+                onOpenChange={() => setDeleteCandidate(null)}
+                title="Delete Share?"
+                description={`Are you sure you want to delete "${deleteCandidate?.title}"? This action cannot be undone.`}
+                confirmLabel="Delete"
+                cancelLabel="Cancel"
+                onConfirm={handleDeleteShare}
+                variant="destructive"
+            />
         </div>
     );
 }
