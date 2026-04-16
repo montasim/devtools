@@ -6,7 +6,9 @@
 
 ## Overview
 
-This design extends the successful page-level optimization pattern to tab components, creating a configuration-driven architecture that eliminates code duplication while maintaining all functionality. The goal is to reduce the 6 tab wrapper components across text, JSON, and Base64 tools to a generic, configuration-based system.
+This design extends the successful page-level optimization pattern to tab components, creating a configuration-driven architecture that eliminates code duplication while maintaining all functionality. The goal is to reduce the 6 tab wrapper components (Saved and Shared tabs for text, JSON, and Base64 tools) to a generic, configuration-based system.
+
+**Scope:** This optimization covers Saved and Shared tabs only. History tabs are not in scope for this optimization.
 
 ## Problem Statement
 
@@ -30,6 +32,29 @@ These wrappers are thin configuration layers that pass hardcoded values to the s
 Create generic factory functions that generate tab components from configuration, following the same pattern used successfully for page optimization.
 
 ### Configuration Structure
+
+**Icon Imports in `lib/config/tools.ts`:**
+
+All icons used in configurations must be imported at the top of the file:
+
+```typescript
+import {
+    GitCompare,
+    Sparkles,
+    ArrowLeftRight,
+    Share2,
+    History,
+    Bookmark,
+    Code,
+    Minimize2,
+    Eye,
+    FileJson,
+    FileDown,
+    FileCode,
+    Image as ImageIcon,
+    FileText,
+} from 'lucide-react';
+```
 
 **Extended `lib/config/tools.ts`:**
 
@@ -164,7 +189,57 @@ export const TEXT_CONFIG: ToolConfig = {
 };
 ```
 
-Similar configurations for `JSON_CONFIG` and `BASE64_CONFIG`.
+**BASE64_CONFIG extension:**
+
+```typescript
+export const BASE64_CONFIG: ToolConfig = {
+    pageName: 'base64',
+    defaultTab: 'media-to-base64',
+    mainTabs: [
+        { value: 'media-to-base64', label: 'Media to Base64', icon: FileCode },
+        { value: 'base64-to-media', label: 'Base64 to Media', icon: ImageIcon },
+    ],
+    savedTabs: {
+        pageName: 'base64',
+        queryKey: 'base64',
+        toolMapping: {
+            'Media to Base64': { name: 'Media to Base64', icon: FileCode, color: 'text-blue-500' },
+            'Base64 to Media': { name: 'Base64 to Media', icon: ImageIcon, color: 'text-green-500' },
+        },
+        tabMapping: {
+            'Media to Base64': 'media-to-base64',
+            'Base64 to Media': 'base64-to-media',
+        },
+        storageKeyMapping: {
+            'Media to Base64': 'base64-media-input-content',
+            'Base64 to Media': 'base64-media-input-content',
+        },
+        extractContent: (item) => {
+            // Note: Base64 uses rightContent first (different from text/JSON)
+            const mainContent = item.content.rightContent || item.content.leftContent || JSON.stringify(item.content);
+            return typeof mainContent === 'string' ? mainContent : JSON.stringify(mainContent);
+        },
+    },
+    sharedTabs: {
+        pageName: 'base64',
+        queryKey: 'base64',
+        toolMapping: {
+            'Media to Base64': { name: 'Media to Base64', icon: FileText, color: 'text-blue-500' },
+            'Base64 to Media': { name: 'Base64 to Media', icon: ImageIcon, color: 'text-green-500' },
+        },
+        tabMapping: {
+            'Media to Base64': 'media-to-base64',
+            'Base64 to Media': 'base64-to-media',
+        },
+        renderStats: (item) => {
+            const content = (item.content.rightContent || item.content.leftContent || JSON.stringify(item.content)) as string;
+            return <Base64Stats content={content} />;
+        },
+    },
+};
+```
+
+Similar configuration for `JSON_CONFIG` with all 7 tools including `'JSON Schema'`.
 
 ### Page File Usage
 
@@ -175,28 +250,63 @@ Similar configurations for `JSON_CONFIG` and `BASE64_CONFIG`.
 import { TEXT_CONFIG } from '@/lib/config/tools';
 import { createSavedTab, createSharedTab } from '@/lib/components/tab-factory';
 
+// Create components once (outside render function)
 const TextSavedTab = createSavedTab(TEXT_CONFIG.savedTabs!);
 const TextSharedTab = createSharedTab(TEXT_CONFIG.sharedTabs!);
 
+function TextPageContent() {
+    const components = {
+        diff: TextDiffTab,
+        convert: TextConvertTab,
+        clean: TextCleanTab,
+        saved: TextSavedTab,  // Factory-created component
+        shared: TextSharedTab, // Factory-created component
+        history: TextHistoryTab,
+    };
+
+    return <ToolPage config={TEXT_CONFIG} components={components} />;
+}
+
 export default function TextPage() {
-    return (
-        <ToolPage
-            config={TEXT_CONFIG}
-            savedTab={TextSavedTab}
-            sharedTab={TextSharedTab}
-        />
-    );
+    return <TextPageContent />;
 }
 ```
 
+**Note:** Components are created once outside the render function to avoid recreating them on every render. The `ToolPage` component receives a `components` object, not individual tab props.
+
 ## Implementation Steps
 
-1. **Create factory functions:** Create `lib/components/tab-factory.ts` with `createSavedTab` and `createSharedTab`
-2. **Extend configuration:** Add `savedTabs` and `sharedTabs` to `TEXT_CONFIG`, `JSON_CONFIG`, and `BASE64_CONFIG` in `lib/config/tools.ts`
-3. **Update page files:** Modify `app/text/page.tsx`, `app/json/page.tsx`, and `app/base64/page.tsx` to use factory functions
-4. **Delete wrapper files:** Remove all 6 tab wrapper component files
-5. **Verify build:** Run `npm run build` to ensure no TypeScript errors
-6. **Functional testing:** Test all Saved/Shared tabs across all three tools
+1. **Add icon imports:** Import all required icons at the top of `lib/config/tools.ts`
+2. **Create factory functions:** Create `lib/components/tab-factory.ts` with `createSavedTab` and `createSharedTab`
+3. **Extend configuration:** Add `savedTabs` and `sharedTabs` to `TEXT_CONFIG`, `JSON_CONFIG`, and `BASE64_CONFIG` in `lib/config/tools.ts`
+4. **Update page files:** Modify `app/text/page.tsx`, `app/json/page.tsx`, and `app/base64/page.tsx` to use factory functions
+5. **Delete wrapper files:** Remove all 6 tab wrapper component files
+6. **Verify build:** Run `npm run build` to ensure no TypeScript errors
+7. **Functional testing:** Test all Saved/Shared tabs across all three tools
+
+## Migration and Rollback
+
+**Migration Strategy:**
+
+- All changes can be deployed atomically in a single commit
+- No database migrations required
+- No API changes required
+- Local storage keys remain unchanged (user data preserved)
+
+**Rollback Plan:**
+
+- Keep the implementation in a feature branch until testing is complete
+- If issues arise, revert the single commit to restore previous functionality
+- No data migration needed (local storage and database unchanged)
+- Simple git revert will restore all deleted files and remove new code
+
+**Deployment Safety:**
+
+- Run full test suite before merging
+- Test all three tools (text, JSON, Base64) thoroughly
+- Verify authentication gates still work
+- Confirm save/restore and share/restore functionality
+- No gradual rollout needed - changes are purely structural
 
 ## Data Flow
 
@@ -221,23 +331,86 @@ export default function TextPage() {
 - No `any` types or type assertions needed
 - TypeScript will catch missing required fields
 
+## Performance Considerations
+
+**Factory Function Overhead:**
+
+- Factory functions are called once per page load (module initialization), not on every render
+- Components are created once and reused across renders
+- No performance impact compared to current implementation
+
+**Runtime Performance:**
+
+- Configuration objects are created once at module load time
+- No additional runtime overhead compared to hardcoded values
+- React component rendering behavior unchanged
+
+**Build Performance:**
+
+- Minimal impact on build time (slight increase due to additional TypeScript type checking)
+- No changes to bundle size (same components, just different organization)
+
 ## Testing Strategy
+
+### Pre-Implementation Verification
+
+**Configuration Accuracy:**
+
+- Verify all tool names match exactly with current implementation
+- Cross-reference all storage keys with actual usage
+- Confirm all icon imports are included in `tools.ts`
+- Verify `extractContent` functions match current logic (note: Base64 uses rightContent first)
+- Ensure JSON Schema tool is included in shared tabs configuration
+
+**Storage Key Verification:**
+
+- Text Diff: `'text-diff-left-input'`
+- Text Convert: `'text-convert-input'`
+- Text Clean: `'text-clean-input'`
+- JSON Diff: `'json-diff-left-input'`
+- JSON Format: `'json-format-input'`
+- JSON Minify: `'json-minify-input'`
+- JSON Viewer: `'json-viewer-input'`
+- JSON Parser: `'json-parser-input'`
+- JSON Export: `'json-export-input'`
+- Base64 (both tools): `'base64-media-input-content'`
 
 ### Build Verification
 
 - Run `npm run build` to ensure no TypeScript errors
 - Verify all imports resolve correctly
 - Check for missing configuration fields
+- Confirm all icon types are compatible
 
 ### Functional Testing
 
-- **Text Tool:** Test Saved/Shared tabs for Diff, Convert, Clean
-- **JSON Tool:** Test Saved/Shared tabs for all 7 tools
-- **Base64 Tool:** Test Saved/Shared tabs for both tools
+**Text Tool:**
+
+- Test Saved tab for Diff, Convert, Clean
+- Test Shared tab for Diff, Convert, Clean
 - Verify authentication gates work correctly
 - Test save/restore functionality for each tool
 - Test share/restore functionality for each tool
-- Verify content extraction works correctly
+- Verify content extraction uses correct order (leftContent first)
+
+**JSON Tool:**
+
+- Test Saved tab for all 7 tools (Diff, Format, Minify, Viewer, Parser, Export, Schema)
+- Test Shared tab for all 7 tools
+- Verify authentication gates work correctly
+- Test save/restore functionality for each tool
+- Test share/restore functionality for each tool
+- Verify content extraction uses correct order (leftContent first)
+
+**Base64 Tool:**
+
+- Test Saved tab for both tools (Media to Base64, Base64 to Media)
+- Test Shared tab for both tools
+- Verify authentication gates work correctly
+- Test save/restore functionality for each tool
+- Test share/restore functionality for each tool
+- Verify content extraction uses correct order (rightContent first)
+- Verify `renderStats` displays `Base64Stats` component correctly
 
 ### Regression Testing
 
@@ -246,6 +419,8 @@ export default function TextPage() {
 - No breaking changes to user experience
 - API endpoints unchanged
 - Local storage keys unchanged
+- Existing saved/shared items still accessible
+- URL structure unchanged
 
 ## Benefits
 
@@ -287,13 +462,21 @@ export default function TextPage() {
 
 ## Success Criteria
 
-- [ ] Build succeeds with no TypeScript errors
+- [ ] All required icons imported in `lib/config/tools.ts`
+- [ ] Factory functions created in `lib/components/tab-factory.ts`
+- [ ] TEXT_CONFIG extended with savedTabs and sharedTabs
+- [ ] JSON_CONFIG extended with savedTabs and sharedTabs (including JSON Schema)
+- [ ] BASE64_CONFIG extended with savedTabs and sharedTabs (with renderStats)
+- [ ] Page files updated to use factory functions
 - [ ] All 6 tab wrapper files deleted
-- [ ] Factory functions created and working
-- [ ] All three tools have complete configurations
-- [ ] Saved tabs work correctly for all tools
-- [ ] Shared tabs work correctly for all tools
+- [ ] Build succeeds with no TypeScript errors
+- [ ] Text Saved/Shared tabs work correctly (Diff, Convert, Clean)
+- [ ] JSON Saved/Shared tabs work correctly (all 7 tools)
+- [ ] Base64 Saved/Shared tabs work correctly (both tools)
 - [ ] Authentication gates work as before
-- [ ] Save/restore functionality works
-- [ ] Share/restore functionality works
+- [ ] Save/restore functionality works for all tools
+- [ ] Share/restore functionality works for all tools
+- [ ] Base64Stats renders correctly in Base64 shared tab
+- [ ] Content extraction works correctly (note: Base64 uses rightContent first)
+- [ ] All storage keys verified and correct
 - [ ] No functionality removed compared to current implementation
