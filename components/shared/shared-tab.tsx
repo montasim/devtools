@@ -16,6 +16,9 @@ import {
 } from '@/components/ui/dialog';
 import { Eye, RotateCcw, Copy, Trash, Share2, ExternalLink } from 'lucide-react';
 import { ReactNode } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { AuthPrompt } from '@/components/shared/auth-prompt';
 
 export interface SharedItem {
     id: string;
@@ -57,6 +60,11 @@ export function SharedTab({
     const [viewingItem, setViewingItem] = useState<SharedItem | null>(null);
     const [deleteCandidate, setDeleteCandidate] = useState<SharedItem | null>(null);
 
+    const { user, loading: authLoading } = useAuth();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const currentPath = `${pathname}?${searchParams.toString()}`;
+
     // Fetch user's shares from database
     const {
         data: sharedItems = [],
@@ -75,15 +83,16 @@ export function SharedTab({
             }
             return response.json() as Promise<SharedItem[]>;
         },
+        enabled: !!user, // Only run when authenticated
     });
 
     // Handle loading and error states
-    useEffect(() => {
-        if (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Failed to fetch shares';
-            toast.error(errorMessage);
-        }
-    }, [error]);
+    // useEffect(() => {
+    //     if (error) {
+    //         const errorMessage = error instanceof Error ? error.message : 'Failed to fetch shares';
+    //         toast.error(errorMessage);
+    //     }
+    // }, [error]);
 
     // Copy URL to clipboard
     const handleCopyUrl = useCallback((url: string) => {
@@ -170,9 +179,14 @@ export function SharedTab({
         return Date.now() > item.expiresAt;
     }, []);
 
+    // Show auth prompt if not authenticated
+    if (!user && !authLoading) {
+        return <AuthPrompt featureName="Shared Links" currentPath={currentPath} />;
+    }
+
     return (
         <>
-            {isLoading ? (
+            {isLoading || authLoading ? (
                 <div className="flex items-center justify-center py-12">
                     <div className="text-muted-foreground">Loading your shares...</div>
                 </div>
