@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { useRedirectIfAuthenticated } from '@/hooks/useRedirectIfAuthenticated';
@@ -12,9 +13,22 @@ import { AuthPageLayout } from '@/components/auth/auth-page-layout';
 import { FormField } from '@/components/auth/form-field';
 import { AuthFooter } from '@/components/auth/auth-footer';
 
-export default function LoginPage() {
+function isValidRedirect(url: string | null): boolean {
+    if (!url) return false;
+    try {
+        const parsed = new URL(url, window.location.origin);
+        // Only allow relative URLs or URLs on the same domain
+        return parsed.origin === window.location.origin;
+    } catch {
+        return false;
+    }
+}
+
+function LoginForm() {
     useRedirectIfAuthenticated();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirect = searchParams.get('redirect');
     const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -27,7 +41,8 @@ export default function LoginPage() {
         try {
             await login(email, password);
             toast.success('Login successful');
-            router.push('/json?tab=diff');
+            // Use redirect parameter if provided and valid, otherwise fallback to default
+            router.push(isValidRedirect(redirect) ? redirect! : '/json?tab=diff');
         } catch (error) {
             toast.error(error instanceof Error ? error.message : 'Login failed');
         } finally {
@@ -89,5 +104,13 @@ export default function LoginPage() {
                 </Button>
             </form>
         </AuthPageLayout>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <LoginForm />
+        </Suspense>
     );
 }
