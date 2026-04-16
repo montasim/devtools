@@ -358,7 +358,15 @@ export function Base64SharedTab({ onTabChange }: SharedTabProps) {
                             <DialogTitle>{viewingItem.title}</DialogTitle>
                             <DialogDescription className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-2 items-start">
                                 <div className="flex items-center gap-2 sm:gap-4">
-                                    {viewingItem && <Base64Stats content={viewingItem.content} />}
+                                    {viewingItem && (
+                                        <Base64Stats
+                                            content={
+                                                (viewingItem.content.rightContent ||
+                                                    viewingItem.content.leftContent ||
+                                                    JSON.stringify(viewingItem.content)) as string
+                                            }
+                                        />
+                                    )}
                                 </div>
                                 {viewingItem && (
                                     <ActionButtonGroup

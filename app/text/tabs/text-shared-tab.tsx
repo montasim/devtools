@@ -66,15 +66,10 @@ export function TextSharedTab({ onTabChange }: SharedTabProps) {
         }
     }, [error]);
 
-    // Copy share URL to clipboard
+    // Copy URL to clipboard
     const handleCopyUrl = useCallback((url: string) => {
         navigator.clipboard.writeText(url);
-        toast.success('Share URL copied to clipboard');
-    }, []);
-
-    // Open shared URL in new tab
-    const handleOpenUrl = useCallback((url: string) => {
-        window.open(url, '_blank');
+        toast.success('URL copied to clipboard');
     }, []);
 
     // Copy content to clipboard
@@ -147,8 +142,24 @@ export function TextSharedTab({ onTabChange }: SharedTabProps) {
         [onTabChange],
     );
 
+    // Sort items by creation date (newest first)
+    const sortedItems = [...sharedItems].sort((a, b) => b.createdAt - a.createdAt);
+
+    // Truncate content for preview
+    const truncateContent = useCallback((content: Record<string, unknown>, maxLength = 100) => {
+        const contentStr = JSON.stringify(content);
+        if (contentStr.length <= maxLength) return contentStr;
+        return contentStr.substring(0, maxLength) + '...';
+    }, []);
+
+    // Check if item is expired
+    const isExpired = useCallback((item: SharedItem) => {
+        if (!item.expiresAt) return false;
+        return Date.now() > item.expiresAt;
+    }, []);
+
     return (
-        <div className="py-6">
+        <>
             {isLoading ? (
                 <div className="flex items-center justify-center py-12">
                     <div className="text-muted-foreground">Loading your shares...</div>
@@ -156,6 +167,7 @@ export function TextSharedTab({ onTabChange }: SharedTabProps) {
             ) : (
                 <>
                     <Toolbar
+                        leftContent={<h2 className="text-lg font-semibold">Shared</h2>}
                         actions={[
                             {
                                 id: 'refresh',
@@ -166,106 +178,235 @@ export function TextSharedTab({ onTabChange }: SharedTabProps) {
                         ]}
                     />
 
-                    {sharedItems.length === 0 ? (
-                        <EmptyState
-                            icon={Share2}
-                            title="No shared items yet"
-                            description="Share your text content to see it here"
-                        />
-                    ) : (
-                        <div className="space-y-4">
-                            {sharedItems.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
-                                >
-                                    <div className="flex items-start justify-between gap-4">
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <FileText className="w-4 h-4 shrink-0" />
-                                                <h3 className="font-semibold truncate">
-                                                    {item.title}
-                                                </h3>
-                                            </div>
+                    <div className="mx-auto py-4">
+                        {sharedItems.length === 0 ? (
+                            <EmptyState
+                                icon={Share2}
+                                title="No Shared Items"
+                                description="Share your text content with others through shareable links."
+                            >
+                                <p className="text-sm text-muted-foreground">
+                                    Use the share button in any text tool to create a shareable
+                                    link.
+                                </p>
+                            </EmptyState>
+                        ) : (
+                            <div className="grid gap-4">
+                                {sortedItems.map((item) => {
+                                    const expired = isExpired(item);
 
-                                            {item.comment && (
-                                                <p className="text-sm text-muted-foreground mb-2 line-clamp-2">
-                                                    {item.comment}
-                                                </p>
-                                            )}
+                                    return (
+                                        <div
+                                            key={item.id}
+                                            className={`border rounded-lg p-3 sm:p-4 hover:border-primary/50 transition-colors overflow-hidden ${
+                                                expired ? 'opacity-60' : ''
+                                            }`}
+                                        >
+                                            <div className="flex flex-col gap-3">
+                                                {/* Shareable URL Section */}
+                                                <div className="flex items-center justify-between gap-2 border-b pb-3">
+                                                    <div className="flex items-center gap-2">
+                                                        <Share2 className="w-4 h-4 text-muted-foreground" />
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="flex items-center gap-4">
+                                                                <code className="text-xs flex-1 truncate">
+                                                                    {item.url}
+                                                                </code>
+                                                                <div className="flex items-center gap-2">
+                                                                    <Copy
+                                                                        className="w-4 h-4 text-muted-foreground"
+                                                                        onClick={() =>
+                                                                            handleCopyUrl(item.url)
+                                                                        }
+                                                                    />
+                                                                    <ExternalLink
+                                                                        className="w-4 h-4 text-muted-foreground"
+                                                                        onClick={() =>
+                                                                            window.open(
+                                                                                item.url,
+                                                                                '_blank',
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
-                                                <span>Tab: {item.tab}</span>
-                                                <span>
-                                                    Created:{' '}
-                                                    {new Date(item.createdAt).toLocaleDateString()}
-                                                </span>
-                                                {item.expiresAt && (
-                                                    <span>
-                                                        Expires:{' '}
-                                                        {new Date(
-                                                            item.expiresAt,
-                                                        ).toLocaleDateString()}
-                                                    </span>
+                                                    <ActionButtonGroup
+                                                        actions={[
+                                                            {
+                                                                icon: Eye,
+                                                                onClick: () => setViewingItem(item),
+                                                                title: 'View full content',
+                                                            },
+                                                            {
+                                                                icon: Copy,
+                                                                onClick: () =>
+                                                                    handleCopyContent(item),
+                                                                title: 'Copy content',
+                                                            },
+                                                            {
+                                                                icon: RotateCcw,
+                                                                onClick: () =>
+                                                                    restoreSharedItem(item),
+                                                                title: 'Restore to tool',
+                                                            },
+                                                            {
+                                                                icon: Trash,
+                                                                onClick: () =>
+                                                                    setDeleteCandidate(item),
+                                                                title: 'Delete share',
+                                                                variant: 'destructive',
+                                                            },
+                                                        ]}
+                                                    />
+                                                </div>
+
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex items-center gap-2 min-w-0">
+                                                        <h3 className="flex items-center gap-1 font-semibold truncate text-sm">
+                                                            <FileText className="w-4 h-4 shrink-0 text-blue-500" />
+                                                            <span className="truncate">
+                                                                {item.title}
+                                                            </span>
+                                                            {expired && (
+                                                                <span className="text-xs text-muted-foreground">
+                                                                    (Expired)
+                                                                </span>
+                                                            )}
+                                                        </h3>
+                                                    </div>
+
+                                                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                                        <span>Tab: {item.tab}</span>
+                                                        <span>•</span>
+                                                        <span>
+                                                            Created:{' '}
+                                                            {new Date(
+                                                                item.createdAt,
+                                                            ).toLocaleDateString()}
+                                                        </span>
+                                                        <span>•</span>
+                                                        <span>Views: {item.viewCount}</span>
+                                                        {item.expiresAt && (
+                                                            <>
+                                                                <span>•</span>
+                                                                <span>
+                                                                    Expires:{' '}
+                                                                    {new Date(
+                                                                        item.expiresAt,
+                                                                    ).toLocaleDateString()}
+                                                                </span>
+                                                            </>
+                                                        )}
+                                                        {item.hasPassword && (
+                                                            <>
+                                                                <span>•</span>
+                                                                <span>🔒 Protected</span>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <pre className="text-xs p-3 rounded-md overflow-x-auto max-h-32 overflow-y-auto">
+                                                    <code className="break-all">
+                                                        {truncateContent(item.content, 200)}
+                                                    </code>
+                                                </pre>
+
+                                                {item.comment && (
+                                                    <p className="text-xs text-muted-foreground italic">
+                                                        {item.comment}
+                                                    </p>
                                                 )}
                                             </div>
                                         </div>
-
-                                        <ActionButtonGroup
-                                            actions={[
-                                                {
-                                                    title: 'View',
-                                                    icon: Eye,
-                                                    onClick: () => setViewingItem(item),
-                                                },
-                                                {
-                                                    title: 'Copy content',
-                                                    icon: Copy,
-                                                    onClick: () => handleCopyContent(item),
-                                                },
-                                                {
-                                                    title: 'Restore',
-                                                    icon: RotateCcw,
-                                                    onClick: () => restoreSharedItem(item),
-                                                },
-                                                {
-                                                    title: 'Copy URL',
-                                                    icon: ExternalLink,
-                                                    onClick: () => handleCopyUrl(item.url),
-                                                },
-                                                {
-                                                    title: 'Open URL',
-                                                    icon: ExternalLink,
-                                                    onClick: () => handleOpenUrl(item.url),
-                                                },
-                                                {
-                                                    title: 'Delete',
-                                                    icon: Trash,
-                                                    onClick: () => setDeleteCandidate(item),
-                                                    variant: 'destructive',
-                                                },
-                                            ]}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
                 </>
             )}
 
             {viewingItem && (
                 <Dialog open={!!viewingItem} onOpenChange={() => setViewingItem(null)}>
-                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                        <DialogHeader>
+                    <DialogContent className="w-[90vw] max-w-[90vw] max-h-[85vh] overflow-hidden flex flex-col sm:max-w-[90vw]">
+                        <DialogHeader className="border-b">
                             <DialogTitle>{viewingItem.title}</DialogTitle>
-                            {viewingItem.comment && (
-                                <DialogDescription>{viewingItem.comment}</DialogDescription>
-                            )}
+                            <DialogDescription className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-2 items-start">
+                                <div className="flex items-center gap-2 sm:gap-4">
+                                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                        <span>Tab: {viewingItem.tab}</span>
+                                        <span>•</span>
+                                        <span>
+                                            Created:{' '}
+                                            {new Date(viewingItem.createdAt).toLocaleDateString()}
+                                        </span>
+                                        <span>•</span>
+                                        <span>Views: {viewingItem.viewCount}</span>
+                                        {viewingItem.expiresAt && (
+                                            <>
+                                                <span>•</span>
+                                                <span>
+                                                    Expires:{' '}
+                                                    {new Date(
+                                                        viewingItem.expiresAt,
+                                                    ).toLocaleDateString()}
+                                                </span>
+                                            </>
+                                        )}
+                                        {viewingItem.hasPassword && (
+                                            <>
+                                                <span>•</span>
+                                                <span>🔒 Protected</span>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                                {viewingItem && (
+                                    <ActionButtonGroup
+                                        actions={[
+                                            {
+                                                icon: Copy,
+                                                onClick: () => handleCopyUrl(viewingItem.url),
+                                                title: 'Copy URL',
+                                            },
+                                            {
+                                                icon: Copy,
+                                                onClick: () => handleCopyContent(viewingItem),
+                                                title: 'Copy content',
+                                            },
+                                            {
+                                                icon: ExternalLink,
+                                                onClick: () =>
+                                                    window.open(viewingItem.url, '_blank'),
+                                                title: 'Open shared URL',
+                                            },
+                                            {
+                                                icon: RotateCcw,
+                                                onClick: () => {
+                                                    restoreSharedItem(viewingItem);
+                                                    setViewingItem(null);
+                                                },
+                                                title: 'Restore to tool',
+                                            },
+                                        ]}
+                                    />
+                                )}
+                            </DialogDescription>
                         </DialogHeader>
-                        <div className="mt-4">
-                            <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm whitespace-pre-wrap">
-                                {JSON.stringify(viewingItem.content, null, 2)}
+                        {viewingItem.comment && (
+                            <div className="px-6 pt-4">
+                                <p className="text-sm text-muted-foreground italic">
+                                    {viewingItem.comment}
+                                </p>
+                            </div>
+                        )}
+                        <div className="flex-1 overflow-auto px-6 pb-6">
+                            <pre className="text-sm p-4 rounded-md overflow-auto">
+                                <code>{JSON.stringify(viewingItem?.content, null, 2)}</code>
                             </pre>
                         </div>
                     </DialogContent>
@@ -283,6 +424,6 @@ export function TextSharedTab({ onTabChange }: SharedTabProps) {
                 onConfirm={handleDeleteShare}
                 variant="destructive"
             />
-        </div>
+        </>
     );
 }
