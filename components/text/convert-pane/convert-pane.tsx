@@ -61,15 +61,18 @@ export function ConvertPane({
     const sharedDataLoadedRef = useRef(false);
 
     const [leftContent, setLeftContent] = useState<string>(() => {
-        try {
-            // Prioritize shared content if available
-            if (sharedData?.tabName === 'convert' && sharedData?.state?.leftContent) {
-                return sharedData.state.leftContent;
-            }
-            return localStorage.getItem(STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT) || '';
-        } catch {
-            return '';
+        if (sharedData?.tabName === 'convert' && sharedData?.state?.leftContent) {
+            return sharedData.state.leftContent;
         }
+        if (typeof window !== 'undefined') {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT);
+                if (saved) return saved;
+            } catch (error) {
+                console.error('Failed to load from localStorage:', error);
+            }
+        }
+        return '';
     });
 
     // Mark shared data as loaded if we used it

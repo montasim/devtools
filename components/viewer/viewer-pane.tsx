@@ -23,49 +23,48 @@ export const ViewerPane = ({
     initialContent = '',
     className,
 }: ViewerPaneProps) => {
-    // Track if we've loaded shared data
-    const sharedDataLoadedRef = useRef(!!initialContent);
+    // Track if we've loaded from localStorage to avoid duplicate saves on mount
+    const hasLoadedFromLocalStorageRef = useRef(false);
 
     // State with simplified initialization: shared content > localStorage > empty
     const [leftContent, setLeftContent] = useState<string>(() => {
-        // Priority 1: Use initial content if provided (shared data)
-        if (initialContent) {
+        // If initial content is provided, use it
+        if (initialContent !== undefined) {
             return initialContent;
         }
-        // Priority 2: Load from localStorage
-        try {
-            const saved = localStorage.getItem(STORAGE_KEYS.JSON_VIEWER_CONTENT);
-            if (saved) {
-                return saved;
+        // Otherwise, try to load from localStorage
+        if (typeof window !== 'undefined') {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.JSON_VIEWER_CONTENT);
+                if (saved) {
+                    return saved;
+                }
+            } catch (error) {
+                console.error('Failed to load from localStorage:', error);
             }
-        } catch (error) {
-            console.error('Failed to load from localStorage:', error);
         }
-        // Priority 3: Empty string
         return '';
     });
 
-    // Track initial content to avoid saving it to localStorage
-    const initialContentRef = useRef(initialContent);
-
-    // Mark shared data as loaded on mount if initial content was provided
+    // Save to localStorage whenever content changes (except for shared content)
     useEffect(() => {
-        if (initialContent) {
-            sharedDataLoadedRef.current = true;
+        // Don't save shared content
+        if (initialContent !== undefined) {
+            return;
         }
-    }, [initialContent]);
 
-    // Save to localStorage whenever content changes (but not on initial render)
-    useEffect(() => {
-        // Only save if content is different from initial props
-        if (leftContent !== initialContentRef.current) {
-            try {
-                localStorage.setItem(STORAGE_KEYS.JSON_VIEWER_CONTENT, leftContent);
-            } catch (error) {
-                console.error('Failed to save content to localStorage:', error);
-            }
+        // Don't save on first render if we just loaded from localStorage
+        if (!hasLoadedFromLocalStorageRef.current) {
+            hasLoadedFromLocalStorageRef.current = true;
+            return;
         }
-    }, [leftContent]);
+
+        try {
+            localStorage.setItem(STORAGE_KEYS.JSON_VIEWER_CONTENT, leftContent);
+        } catch (error) {
+            console.error('Failed to save content to localStorage:', error);
+        }
+    }, [leftContent, initialContent]);
 
     // Parse JSON tree using props
     const viewerOptions = { showTypes, showPaths, sortKeys };
@@ -82,6 +81,15 @@ export const ViewerPane = ({
             onError?.(new Error(treeResult.error.message));
         }
     }, [treeResult.error, onError]);
+
+    // Handle content changes
+    const handleContentChange = useCallback(
+        (content: string) => {
+            setLeftContent(content);
+            onContentChange?.(content);
+        },
+        [onContentChange],
+    );
 
     // Handle copy
     const handleCopy = useCallback(async () => {
@@ -124,7 +132,7 @@ export const ViewerPane = ({
                     <JsonEditor
                         label="JSON Input"
                         value={leftContent}
-                        onChange={setLeftContent}
+                        onChange={handleContentChange}
                         onError={() => {}}
                         height="600px"
                         showEmptyPrompt={true}

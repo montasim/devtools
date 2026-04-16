@@ -24,34 +24,24 @@ export const ExportPane = ({
     // Track if we've loaded shared data
     const sharedDataLoadedRef = useRef(!!initialContent);
 
-    // State with simplified initialization: shared content > localStorage > empty
-    const [leftContent, setLeftContent] = useState<string>(() => {
-        // Priority 1: Use initial content if provided (shared data)
-        if (initialContent) {
-            return initialContent;
-        }
-        // Priority 2: Load from localStorage
-        try {
-            const saved = localStorage.getItem(STORAGE_KEYS.JSON_EXPORT_CONTENT);
-            if (saved) {
-                return saved;
-            }
-        } catch (error) {
-            console.error('Failed to load from localStorage:', error);
-        }
-        // Priority 3: Empty string
-        return '';
-    });
-
     // Track initial content to avoid saving it to localStorage
     const initialContentRef = useRef(initialContent);
 
-    // Mark shared data as loaded on mount if initial content was provided
-    useEffect(() => {
+    // State with localStorage loading during initialization: shared content > localStorage > empty
+    const [leftContent, setLeftContent] = useState<string>(() => {
         if (initialContent) {
-            sharedDataLoadedRef.current = true;
+            return initialContent;
         }
-    }, [initialContent]);
+        if (typeof window !== 'undefined') {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.JSON_EXPORT_CONTENT);
+                if (saved) return saved;
+            } catch (error) {
+                console.error('Failed to load from localStorage:', error);
+            }
+        }
+        return '';
+    });
 
     // Save to localStorage whenever content changes (but not on initial render)
     useEffect(() => {
@@ -70,13 +60,6 @@ export const ExportPane = ({
     // Export options state - use prop if provided, otherwise use local state
     const [localExportFormat, setLocalExportFormat] = useState<ExportFormat>('csv');
     const exportFormat = propExportFormat ?? localExportFormat;
-    const handleExportFormatChange = (format: ExportFormat) => {
-        if (onExportFormatChange) {
-            onExportFormatChange(format);
-        } else {
-            setLocalExportFormat(format);
-        }
-    };
 
     // Export JSON
     const exportResult = useJsonExport(leftContent, { format: exportFormat });

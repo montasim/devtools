@@ -48,28 +48,35 @@ export function TextDiffPane({
     const leftSharedDataLoadedRef = useRef(false);
     const rightSharedDataLoadedRef = useRef(false);
 
-    // Initialize state from localStorage or shared data
+    // Initialize state with shared content > localStorage > empty
     const [leftText, setLeftText] = useState<string>(() => {
-        try {
-            // Prioritize shared content if available
-            if (sharedData?.tabName === 'diff' && sharedData?.state?.leftContent) {
-                return sharedData.state.leftContent;
-            }
-            return localStorage.getItem(STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT) || '';
-        } catch {
-            return '';
+        if (sharedData?.tabName === 'diff' && sharedData?.state?.leftContent) {
+            return sharedData.state.leftContent;
         }
+        if (typeof window !== 'undefined') {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT);
+                if (saved) return saved;
+            } catch (error) {
+                console.error('Failed to load from localStorage:', error);
+            }
+        }
+        return '';
     });
+
     const [rightText, setRightText] = useState<string>(() => {
-        try {
-            // Prioritize shared content if available
-            if (sharedData?.tabName === 'diff' && sharedData?.state?.rightContent) {
-                return sharedData.state.rightContent;
-            }
-            return localStorage.getItem(STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT) || '';
-        } catch {
-            return '';
+        if (sharedData?.tabName === 'diff' && sharedData?.state?.rightContent) {
+            return sharedData.state.rightContent;
         }
+        if (typeof window !== 'undefined') {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT);
+                if (saved) return saved;
+            } catch (error) {
+                console.error('Failed to load from localStorage:', error);
+            }
+        }
+        return '';
     });
 
     // Mark shared data as loaded if we used it

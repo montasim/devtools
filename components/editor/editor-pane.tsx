@@ -33,49 +33,43 @@ export const EditorPane = forwardRef<EditorPaneRef, EditorPaneProps>(function Ed
     const leftSharedDataLoadedRef = useRef(!!initialLeftContent);
     const rightSharedDataLoadedRef = useRef(!!initialRightContent);
 
-    // State with simplified initialization: shared content > localStorage > empty
+    // Save to localStorage whenever content changes (but not on initial render)
+    const initialLeftContentRef = useRef(initialLeftContent);
+    const initialRightContentRef = useRef(initialRightContent);
+
+    // State with localStorage loading during initialization
     const [leftContent, setLeftContent] = useState<string>(() => {
-        // Priority 1: Use initial content if provided (shared data)
         if (initialLeftContent) {
             return initialLeftContent;
         }
-        // Priority 2: Load from localStorage
-        try {
-            const saved = localStorage.getItem(STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT);
-            if (saved) {
-                return saved;
+        if (typeof window !== 'undefined') {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT);
+                if (saved) return saved;
+            } catch (error) {
+                console.error('Failed to load from localStorage:', error);
             }
-        } catch (error) {
-            console.error('Failed to load from localStorage:', error);
         }
-        // Priority 3: Empty string
         return '';
     });
 
     const [rightContent, setRightContent] = useState<string>(() => {
-        // Priority 1: Use initial content if provided (shared data)
         if (initialRightContent) {
             return initialRightContent;
         }
-        // Priority 2: Load from localStorage
-        try {
-            const saved = localStorage.getItem(STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT);
-            if (saved) {
-                return saved;
+        if (typeof window !== 'undefined') {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT);
+                if (saved) return saved;
+            } catch (error) {
+                console.error('Failed to load from localStorage:', error);
             }
-        } catch (error) {
-            console.error('Failed to load from localStorage:', error);
         }
-        // Priority 3: Empty string
         return '';
     });
 
     const [leftValid, setLeftValid] = useState<boolean>(false);
     const [rightValid, setRightValid] = useState<boolean>(false);
-
-    // Save to localStorage whenever content changes (but not on initial render)
-    const initialLeftContentRef = useRef(initialLeftContent);
-    const initialRightContentRef = useRef(initialRightContent);
 
     // Mark shared data as loaded on mount if initial content was provided
     useEffect(() => {
