@@ -18,7 +18,9 @@ import {
 } from 'lucide-react';
 import type { ComponentType } from 'react';
 import type { ReactNode } from 'react';
-import { Base64Stats } from '@/components/base64';
+import { Base64Stats } from '@/components/base64/base64-stats';
+import { TextStats } from '@/components/layout/text-stats';
+import { JsonStats } from '@/components/layout/json-stats';
 
 export interface TabDefinition {
     value: string;
@@ -32,6 +34,15 @@ export interface ToolConfig {
     mainTabs: TabDefinition[];
     savedTabs?: SavedTabConfig;
     sharedTabs?: SharedTabConfig;
+    historyTabs?: HistoryTabConfig;
+}
+
+export interface HistoryTabConfig {
+    pageName: string;
+    storageKeyFilter: (key: string) => boolean;
+    toolMapping: Record<string, ToolMapping>;
+    tabMapping: Record<string, string>;
+    statsComponent: ComponentType<{ content: string }>;
 }
 
 export interface SavedTabConfig {
@@ -106,6 +117,39 @@ export const TEXT_CONFIG: ToolConfig = {
             'Text Clean': 'clean',
         },
     },
+    historyTabs: {
+        pageName: 'text',
+        storageKeyFilter: (key) => key.startsWith('text-'),
+        toolMapping: {
+            'text-diff-left-input': {
+                name: 'Diff (Left)',
+                icon: GitCompare,
+                color: 'text-blue-500',
+            },
+            'text-diff-right-input': {
+                name: 'Diff (Right)',
+                icon: GitCompare,
+                color: 'text-blue-500',
+            },
+            'text-convert-input-content': {
+                name: 'Convert',
+                icon: FileText,
+                color: 'text-green-500',
+            },
+            'text-clean-input-content': {
+                name: 'Clean',
+                icon: Sparkles,
+                color: 'text-purple-500',
+            },
+        },
+        tabMapping: {
+            'text-diff-left-input': 'diff',
+            'text-diff-right-input': 'diff',
+            'text-convert-input-content': 'convert',
+            'text-clean-input-content': 'clean',
+        },
+        statsComponent: TextStats,
+    },
 };
 
 // JSON Tool Configuration
@@ -178,6 +222,63 @@ export const JSON_CONFIG: ToolConfig = {
             'JSON Schema': 'schema',
         },
     },
+    historyTabs: {
+        pageName: 'json',
+        storageKeyFilter: (key) => key.startsWith('json-'),
+        toolMapping: {
+            'json-diff-left-input': {
+                name: 'Diff (Left)',
+                icon: GitCompare,
+                color: 'text-blue-500',
+            },
+            'json-diff-right-input': {
+                name: 'Diff (Right)',
+                icon: GitCompare,
+                color: 'text-blue-500',
+            },
+            'json-format-input': {
+                name: 'Format',
+                icon: Code,
+                color: 'text-green-500',
+            },
+            'json-minify-input': {
+                name: 'Minify',
+                icon: Minimize2,
+                color: 'text-purple-500',
+            },
+            'json-viewer-input': {
+                name: 'Viewer',
+                icon: Eye,
+                color: 'text-orange-500',
+            },
+            'json-parser-input': {
+                name: 'Parser',
+                icon: FileJson,
+                color: 'text-pink-500',
+            },
+            'json-export-input': {
+                name: 'Export',
+                icon: FileDown,
+                color: 'text-cyan-500',
+            },
+            'json-schema-json-content': {
+                name: 'Schema',
+                icon: FileJson,
+                color: 'text-indigo-500',
+            },
+        },
+        tabMapping: {
+            'json-diff-left-input': 'diff',
+            'json-diff-right-input': 'diff',
+            'json-format-input': 'format',
+            'json-minify-input': 'minify',
+            'json-viewer-input': 'viewer',
+            'json-parser-input': 'parser',
+            'json-export-input': 'export',
+            'json-schema-json-content': 'schema',
+        },
+        statsComponent: JsonStats,
+    },
 };
 
 // Base64 Tool Configuration
@@ -237,6 +338,36 @@ export const BASE64_CONFIG: ToolConfig = {
                 JSON.stringify(item.content)) as string;
             return <Base64Stats content={content} />;
         },
+    },
+    historyTabs: {
+        pageName: 'base64',
+        storageKeyFilter: (key) =>
+            key === 'base64-media-to-base64-input' ||
+            key === 'base64-media-to-base64-output' ||
+            key === 'base64-to-media-input',
+        toolMapping: {
+            'base64-media-to-base64-input': {
+                name: 'Media to Base64 (Input)',
+                icon: FileText,
+                color: 'text-blue-500',
+            },
+            'base64-media-to-base64-output': {
+                name: 'Media to Base64 (Output)',
+                icon: FileCode,
+                color: 'text-green-500',
+            },
+            'base64-to-media-input': {
+                name: 'Base64 to Media (Input)',
+                icon: ImageIcon,
+                color: 'text-purple-500',
+            },
+        },
+        tabMapping: {
+            'base64-media-to-base64-input': 'media-to-base64',
+            'base64-media-to-base64-output': 'media-to-base64',
+            'base64-to-media-input': 'base64-to-media',
+        },
+        statsComponent: Base64Stats,
     },
 };
 

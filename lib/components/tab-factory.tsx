@@ -2,7 +2,8 @@
 
 import { SavedTab } from '@/components/shared/saved-tab';
 import { SharedTab } from '@/components/shared/shared-tab';
-import type { SavedTabConfig, SharedTabConfig } from '@/lib/config/tools';
+import { HistoryTab } from '@/components/history-tab';
+import type { SavedTabConfig, SharedTabConfig, HistoryTabConfig } from '@/lib/config/tools';
 import type { ComponentType } from 'react';
 
 export function createSavedTab(config: SavedTabConfig): ComponentType<Record<string, unknown>> {
@@ -42,4 +43,14 @@ export function createSharedTab(config: SharedTabConfig): ComponentType<Record<s
 
     SharedTabWrapper.displayName = `SharedTab(${config.pageName})`;
     return SharedTabWrapper;
+}
+
+export function createHistoryTab(config: HistoryTabConfig): ComponentType<Record<string, unknown>> {
+    const HistoryTabWrapper = (props: Record<string, unknown>) => {
+        const { onTabChange } = props as { onTabChange: (tab: string) => void };
+        return <HistoryTab config={config} onTabChange={onTabChange} />;
+    };
+
+    HistoryTabWrapper.displayName = `HistoryTab(${config.pageName})`;
+    return HistoryTabWrapper;
 }

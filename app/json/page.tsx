@@ -3,7 +3,7 @@
 import { Suspense } from 'react';
 import { ToolPage } from '@/components/pages/tool-page';
 import { JSON_CONFIG } from '@/lib/config/tools';
-import { createSavedTab, createSharedTab } from '@/lib/components/tab-factory';
+import { createSavedTab, createSharedTab, createHistoryTab } from '@/lib/components/tab-factory';
 import { JsonDiffTab } from '@/app/json/tabs/json-diff-tab';
 import { JsonFormatTab } from '@/app/json/tabs/json-format-tab';
 import { JsonMinifyTab } from '@/app/json/tabs/json-minify-tab';
@@ -11,12 +11,12 @@ import { JsonViewerTab } from '@/app/json/tabs/json-viewer-tab';
 import { JsonParserTab } from '@/app/json/tabs/json-parser-tab';
 import { JsonExportTab } from '@/app/json/tabs/json-export-tab';
 import { JsonSchemaTab } from '@/app/json/tabs/json-schema-tab';
-import { JsonHistoryTab } from '@/app/json/tabs/json-history-tab';
 import type { ComponentType } from 'react';
 
 // Create components once (outside render function)
 const JsonSavedTab = createSavedTab(JSON_CONFIG.savedTabs!);
 const JsonSharedTab = createSharedTab(JSON_CONFIG.sharedTabs!);
+const JsonHistoryTab = createHistoryTab(JSON_CONFIG.historyTabs!);
 
 function JsonPageContent() {
     const components = {
