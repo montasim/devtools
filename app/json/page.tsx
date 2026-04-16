@@ -265,7 +265,7 @@ function JsonPageContent() {
                 </TabsContent>
 
                 <TabsContent value="shared" className="mt-0">
-                    <ShareTab />
+                    <ShareTab onTabChange={handleTabChange} />
                 </TabsContent>
 
                 <TabsContent value="history" className="mt-0">
