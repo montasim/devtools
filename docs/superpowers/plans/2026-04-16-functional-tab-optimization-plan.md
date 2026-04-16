@@ -10,6 +10,47 @@
 
 ---
 
+## Phase 0: Add Missing Constants
+
+### Task 0: Add Missing Storage Key Constants
+
+**Files:**
+
+- Modify: `lib/constants.ts`
+
+- [ ] **Step 1: Check current constants**
+
+Run: `grep -n "TEXT_" lib/constants.ts | head -5`
+Expected: Verify if TEXT keys exist
+
+- [ ] **Step 2: Add missing TEXT storage keys**
+
+```typescript
+// lib/constants.ts - add to STORAGE_KEYS object
+export const STORAGE_KEYS = {
+    // ... existing keys ...
+    TEXT_CONVERT_INPUT_CONTENT: 'text-convert-input-content',
+    TEXT_DIFF_LEFT_CONTENT: 'text-diff-left-input',
+    TEXT_DIFF_RIGHT_CONTENT: 'text-diff-right-input',
+    TEXT_CLEAN_INPUT_CONTENT: 'text-clean-input-content',
+} as const;
+```
+
+- [ ] **Step 3: Verify TypeScript compilation**
+
+Run: `npm run type-check`
+Expected: No errors
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add lib/constants.ts
+git commit -m "feat: add missing TEXT storage key constants
+
+Add TEXT_CONVERT_INPUT_CONTENT, TEXT_DIFF_LEFT_CONTENT,
+TEXT_DIFF_RIGHT_CONTENT, TEXT_CLEAN_INPUT_CONTENT"
+```
+
 ## Phase 1: Foundation - Types and Utilities
 
 ### Task 1: Create Unified Type Definitions
@@ -518,6 +559,7 @@ Expected: FAIL with "Cannot find module '@/hooks/useShareDialog'"
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import type { TabContentType } from '@/types/tab-data';
+import type { ReactNode } from 'react';
 
 interface UseShareDialogOptions {
     contentType: TabContentType;
@@ -554,9 +596,9 @@ export function useShareDialog({
         setIsShareDialogOpen(false);
     }, []);
 
-    const renderShareDialog = useCallback((content: string) => {
-        // This will be implemented when we migrate tabs
-        // For now, return null
+    const renderShareDialog = useCallback((content: string): ReactNode => {
+        // Import dynamically to avoid circular dependencies
+        // Will be implemented per content type in tabs
         return null;
     }, []);
 
@@ -682,6 +724,7 @@ Expected: FAIL with "Cannot find module '@/hooks/useClearDialog'"
 ```typescript
 // hooks/useClearDialog.ts
 import { useState, useCallback } from 'react';
+import type { ReactNode } from 'react';
 
 interface UseClearDialogOptions {
     onConfirm: () => void;
@@ -715,9 +758,8 @@ export function useClearDialog({
         setShowClearDialog(false);
     }, [onConfirm]);
 
-    const renderClearDialog = useCallback(() => {
-        // This will be implemented when we migrate tabs
-        // For now, return null
+    const renderClearDialog = useCallback((): ReactNode => {
+        // Will be implemented in tabs with ConfirmDialog
         return null;
     }, []);
 
@@ -943,17 +985,22 @@ export interface TextConvertTabProps {
 }
 
 export function TextConvertTab({ onClear, sharedData }: TextConvertTabProps) {
-    // Use shared hooks
-    const { content, setContent, currentLeftContent, currentRightContent, hasContent } =
-        useTabState({
-            storageKeys: STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT,
-            tabName: 'convert',
-            sharedData,
-            initialContent: '',
-        });
+    // Use shared hooks for content management
+    const { content, setContent, currentContent, hasContent } = useTabState({
+        storageKeys: STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT,
+        tabName: 'convert',
+        sharedData,
+        initialContent: '',
+    });
+
+    // Track left/right content for ConvertPane (it's a dual-pane component)
+    const [currentLeftContent, setCurrentLeftContent] = useState('');
+    const [currentRightContent, setCurrentRightContent] = useState('');
 
     const handleContentChange = useCallback((left: string, right: string) => {
-        setContent(right); // Save right content for sharing
+        setCurrentLeftContent(left);
+        setCurrentRightContent(right);
+        setContent(right); // Save right content for sharing/persistence
     }, [setContent]);
 
     // Share dialog
@@ -967,6 +1014,8 @@ export function TextConvertTab({ onClear, sharedData }: TextConvertTabProps) {
     const { openClearDialog, confirmClear, renderClearDialog } = useClearDialog({
         onConfirm: () => {
             setContent('');
+            setCurrentLeftContent('');
+            setCurrentRightContent('');
             onClear?.();
         },
         toolName: 'Text Convert',
@@ -1153,45 +1202,23 @@ Expected: FAIL - dual-pane tests fail
 // hooks/useTabState.ts - extend existing implementation
 import { useState, useEffect, useCallback } from 'react';
 import type { SharedTabData, SinglePaneTabState, DualPaneTabState } from '@/types/tab-data';
-
-type StorageKeys = string | { left: string; right: string };
-type InitialContent = string | { left: string; right: string };
-
-interface UseTabStateOptions<T extends StorageKeys> {
-    storageKeys: T;
-    initialContent?: T extends string ? string : { left: string; right: string };
-    sharedData?: SharedTabData;
-    tabName: string;
-}
+import type { ReactNode } from 'react';
 
 // Type guard for dual-pane
-function isDualPane(keys: StorageKeys): keys is { left: string; right: string } {
+function isDualPaneKeys(
+    keys: string | { left: string; right: string },
+): keys is { left: string; right: string } {
     return typeof keys === 'object' && 'left' in keys && 'right' in keys;
 }
 
-// Overload signatures for type inference
 export function useTabState(options: {
-    storageKeys: string;
-    initialContent?: string;
+    storageKeys: string | { left: string; right: string };
+    initialContent?: string | { left: string; right: string };
     sharedData?: SharedTabData;
     tabName: string;
-}): SinglePaneTabState;
-
-export function useTabState(options: {
-    storageKeys: { left: string; right: string };
-    initialContent?: { left: string; right: string };
-    sharedData?: SharedTabData;
-    tabName: string;
-}): DualPaneTabState;
-
-// Implementation
-export function useTabState<T extends StorageKeys>({
-    storageKeys,
-    initialContent,
-    sharedData,
-    tabName,
-}: UseTabStateOptions<T>): SinglePaneTabState | DualPaneTabState {
-    const isDual = isDualPane(storageKeys);
+}): SinglePaneTabState | DualPaneTabState {
+    const { storageKeys, initialContent, sharedData, tabName } = options;
+    const isDual = isDualPaneKeys(storageKeys);
 
     // Initialize content based on storageKeys type
     const [content, setContent] = useState(() => {
@@ -1201,13 +1228,11 @@ export function useTabState<T extends StorageKeys>({
 
         try {
             if (isDual) {
-                const left =
-                    localStorage.getItem(storageKeys.left) || (initialContent as any)?.left || '';
-                const right =
-                    localStorage.getItem(storageKeys.right) || (initialContent as any)?.right || '';
+                const left = localStorage.getItem(storageKeys.left) || '';
+                const right = localStorage.getItem(storageKeys.right) || '';
                 return { left, right };
             } else {
-                return localStorage.getItem(storageKeys) || initialContent || '';
+                return localStorage.getItem(storageKeys) || '';
             }
         } catch {
             return initialContent || (isDual ? { left: '', right: '' } : '');
