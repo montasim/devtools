@@ -7,7 +7,7 @@ import { ActionButtonGroup } from '@/components/ui/action-button-group';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Toolbar } from '@/components/toolbar/toolbar';
-import { EmptyState } from '@/components/ui/empty-state';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import {
     Dialog,
     DialogContent,
@@ -276,15 +276,17 @@ export function JsonHistoryTab({ onTabChange }: HistoryTabProps) {
             />
             <div className="mx-auto py-4">
                 {Object.keys(historyData).length === 0 ? (
-                    <EmptyState
-                        icon={Clock}
-                        title="No History Yet"
-                        description="Start using the JSON tools to build up your history"
-                    >
-                        <Button variant="outline" onClick={() => onTabChange('diff')}>
-                            Get Started
-                        </Button>
-                    </EmptyState>
+                    <div className="border rounded-lg border-dashed px-4 py-8 sm:py-12">
+                        <EmptyEditorPrompt
+                            icon={Clock}
+                            title="No History Yet"
+                            description="Start using the JSON tools to build up your history"
+                            actionLabel="Get Started"
+                            onAction={() => onTabChange('diff')}
+                            showActions={false}
+                            className="border-0 p-0"
+                        />
+                    </div>
                 ) : (
                     <div className="grid gap-4">
                         {Object.entries(historyData).map(([key, content]) => {

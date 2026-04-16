@@ -2,8 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { Lock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { EmptyState } from '@/components/ui/empty-state';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 
 interface AuthPromptProps {
     featureName: string;
@@ -19,11 +18,16 @@ export function AuthPrompt({ featureName, currentPath }: AuthPromptProps) {
     };
 
     return (
-        <EmptyState icon={Lock} title="Authentication Required">
-            <p className="text-sm text-muted-foreground mb-4">
-                Please login to access {featureName}
-            </p>
-            <Button onClick={handleLoginClick}>Login to Access</Button>
-        </EmptyState>
+        <div className="border rounded-lg border-dashed px-4 py-8 sm:py-12">
+            <EmptyEditorPrompt
+                icon={Lock}
+                title="Authentication Required"
+                description={`Please login to access ${featureName}`}
+                actionLabel="Login to Access"
+                onAction={handleLoginClick}
+                showActions={false}
+                className="border-0 p-0"
+            />
+        </div>
     );
 }

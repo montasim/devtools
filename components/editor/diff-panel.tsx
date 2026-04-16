@@ -6,7 +6,7 @@ import { DiffPanelProps, DiffResult, ViewMode, DiffLine } from '@/components/edi
 import { DiffPanelToolbar } from '@/components/editor/diff-panel-toolbar';
 import { ShareDialog } from '@/components/editor/share-dialog';
 import { ChevronRight, X, CheckCircle, Loader2, Bookmark } from 'lucide-react';
-import { EmptyState } from '@/components/ui/empty-state';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 
 /**
  * DiffPanel - Main component for displaying code diffs
@@ -296,11 +296,15 @@ export function DiffPanel({
 
     if (!diffResult || diffResult.hunks.length === 0) {
         return (
-            <EmptyState
-                icon={CheckCircle}
-                title="No Differences"
-                description="No differences found between the provided content"
-            />
+            <div className="border rounded-lg border-dashed px-4 py-8 sm:py-12">
+                <EmptyEditorPrompt
+                    icon={CheckCircle}
+                    title="No Differences"
+                    description="No differences found between the provided content"
+                    showActions={false}
+                    className="border-0 p-0"
+                />
+            </div>
         );
     }
 

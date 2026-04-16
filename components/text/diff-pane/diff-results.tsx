@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDiffViewer, { ReactDiffViewerStylesOverride } from 'react-diff-viewer-continued';
 import { FileText, CheckCircle } from 'lucide-react';
-import { EmptyState } from '@/components/ui/empty-state';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import type { TextDiffViewMode } from '@/components/text/diff-pane/view-mode-tabs';
 
 interface DiffResultsProps {
@@ -24,12 +24,15 @@ export function DiffResults({
     if (!leftText && !rightText) {
         return (
             <div className="flex items-center justify-center h-full w-full">
-                <EmptyState
-                    className="w-full"
-                    icon={FileText}
-                    title="No Content"
-                    description="Enter text in both panes to see the diff"
-                />
+                <div className="border rounded-lg border-dashed px-4 py-8 sm:py-12 w-full">
+                    <EmptyEditorPrompt
+                        icon={FileText}
+                        title="No Content"
+                        description="Enter text in both panes to see the diff"
+                        showActions={false}
+                        className="border-0 p-0"
+                    />
+                </div>
             </div>
         );
     }
@@ -38,12 +41,15 @@ export function DiffResults({
     if (leftText === rightText) {
         return (
             <div className="flex items-center justify-center h-full w-full">
-                <EmptyState
-                    className="w-full"
-                    icon={CheckCircle}
-                    title="No Differences"
-                    description="The texts are identical"
-                />
+                <div className="border rounded-lg border-dashed px-4 py-8 sm:py-12 w-full">
+                    <EmptyEditorPrompt
+                        icon={CheckCircle}
+                        title="No Differences"
+                        description="The texts are identical"
+                        showActions={false}
+                        className="border-0 p-0"
+                    />
+                </div>
             </div>
         );
     }

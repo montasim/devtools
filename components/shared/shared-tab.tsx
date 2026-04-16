@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
 import { ActionButtonGroup } from '@/components/ui/action-button-group';
 import { Toolbar } from '@/components/toolbar/toolbar';
-import { EmptyState } from '@/components/ui/empty-state';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import {
     Dialog,
@@ -206,16 +206,15 @@ export function SharedTab({
 
                     <div className="mx-auto py-4">
                         {sharedItems.length === 0 ? (
-                            <EmptyState
-                                icon={Share2}
-                                title="No Shared Items"
-                                description={`Share your ${pageName} content with others through shareable links.`}
-                            >
-                                <p className="text-sm text-muted-foreground">
-                                    Use the share button in any {pageName} tool to create a
-                                    shareable link.
-                                </p>
-                            </EmptyState>
+                            <div className="border rounded-lg border-dashed px-4 py-8 sm:py-12">
+                                <EmptyEditorPrompt
+                                    icon={Share2}
+                                    title="No Shared Items"
+                                    description={`Share your ${pageName} content with others through shareable links. Use the share button in any ${pageName} tool to create a shareable link.`}
+                                    showActions={false}
+                                    className="border-0 p-0"
+                                />
+                            </div>
                         ) : (
                             <div className="grid gap-4">
                                 {sortedItems.map((item) => {

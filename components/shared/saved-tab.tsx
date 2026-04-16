@@ -7,7 +7,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { ActionButtonGroup } from '@/components/ui/action-button-group';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Toolbar } from '@/components/toolbar/toolbar';
-import { EmptyState } from '@/components/ui/empty-state';
+import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { AuthPrompt } from '@/components/shared/auth-prompt';
 import {
     Dialog,
@@ -209,15 +209,15 @@ export function SavedTab({
                     />
 
                     {savedItems.length === 0 ? (
-                        <EmptyState
-                            icon={Bookmark}
-                            title="No saved items yet"
-                            description={`Save your ${pageName} content to see it here`}
-                        >
-                            <p className="text-sm text-muted-foreground">
-                                Use the save button in any {pageName} tool to save your work.
-                            </p>
-                        </EmptyState>
+                        <div className="border rounded-lg border-dashed px-4 py-8 sm:py-12">
+                            <EmptyEditorPrompt
+                                icon={Bookmark}
+                                title="No saved items yet"
+                                description={`Save your ${pageName} content to see it here. Use the save button in any ${pageName} tool to save your work.`}
+                                showActions={false}
+                                className="border-0 p-0"
+                            />
+                        </div>
                     ) : (
                         <div className="grid gap-4">
                             {savedItems.map((item) => {
