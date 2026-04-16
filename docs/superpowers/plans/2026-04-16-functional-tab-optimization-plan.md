@@ -969,12 +969,12 @@ Expected: 41 lines, uses ConvertPane component
 // app/text/tabs/text-convert-tab.tsx
 'use client';
 
-import { useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { ConvertPane } from '@/components/text/convert-pane/convert-pane';
 import { useTabState } from '@/hooks/useTabState';
 import { useShareDialog } from '@/hooks/useShareDialog';
 import { useClearDialog } from '@/hooks/useClearDialog';
-import { ToolLayout, ToolToolbar, ToolDialogs, StandardActions } from '@/components/tool-layout';
+import { ToolLayout, ToolToolbar, ToolDialogs } from '@/components/tool-layout';
 import { saveContent } from '@/lib/utils/saveContent';
 import { STORAGE_KEYS } from '@/lib/constants';
 import type { SharedTabData } from '@/types/tab-data';
@@ -1288,8 +1288,8 @@ export function useTabState(options: {
 
     return {
         content,
-        setContent: setContent as any,
-        currentContent: currentContent as any,
+        setContent,
+        currentContent,
         hasContent,
         isSharedData,
     } as SinglePaneTabState | DualPaneTabState;
