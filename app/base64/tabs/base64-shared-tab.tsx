@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
 import { ActionButtonGroup } from '@/components/ui/action-button-group';
-import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Toolbar } from '@/components/toolbar/toolbar';
 import { EmptyState } from '@/components/ui/empty-state';
 import {
@@ -18,7 +17,6 @@ import {
     Eye,
     RotateCcw,
     Copy,
-    Trash,
     Share2,
     FileText,
     Image as ImageIcon,
@@ -33,7 +31,7 @@ export interface SharedItem {
     title: string;
     comment?: string;
     tab: string;
-    content: string;
+    content: Record<string, unknown>; // Changed from string to object
     createdAt: number;
     expiresAt?: number;
     viewCount: number;
@@ -136,9 +134,14 @@ export function Base64SharedTab({ onTabChange }: SharedTabProps) {
         return toolMap[tab] || { name: 'Unknown', icon: Share2, color: 'text-gray-500' };
     };
 
-    const truncateContent = (content: string, maxLength = 100) => {
-        if (content.length <= maxLength) return content;
-        return content.substring(0, maxLength) + '...';
+    const truncateContent = (content: Record<string, unknown>, maxLength = 100) => {
+        // Extract the main content from the state object
+        const mainContent = content.rightContent || content.leftContent || JSON.stringify(content);
+        const contentStr =
+            typeof mainContent === 'string' ? mainContent : JSON.stringify(mainContent);
+
+        if (contentStr.length <= maxLength) return contentStr;
+        return contentStr.substring(0, maxLength) + '...';
     };
 
     const isExpired = useCallback((item: SharedItem) => {
@@ -256,7 +259,15 @@ export function Base64SharedTab({ onTabChange }: SharedTabProps) {
                                                         </h3>
                                                     </div>
 
-                                                    <Base64Stats content={item.content} />
+                                                    <Base64Stats
+                                                        content={
+                                                            (item.content.rightContent ||
+                                                                item.content.leftContent ||
+                                                                JSON.stringify(
+                                                                    item.content,
+                                                                )) as string
+                                                        }
+                                                    />
                                                 </div>
 
                                                 <pre className="text-xs p-3 rounded-md overflow-x-auto max-h-32 overflow-y-auto">

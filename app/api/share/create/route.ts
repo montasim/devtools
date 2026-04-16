@@ -15,16 +15,13 @@ export async function POST(request: NextRequest) {
     try {
         console.log('🐛 [API /api/share/create] Request received');
 
-        // Get authenticated user
+        // Get authenticated user (optional)
         const user = await getAuthUser(request);
-        if (!user) {
-            console.log('🐛 [API] Unauthorized: No user found');
-            return NextResponse.json(
-                { error: 'UNAUTHORIZED', message: 'You must be logged in to create shares' },
-                { status: 401 },
-            );
+        if (user) {
+            console.log('🐛 [API] User authenticated:', { userId: user.id, email: user.email });
+        } else {
+            console.log('🐛 [API] No user authenticated - creating anonymous share');
         }
-        console.log('🐛 [API] User authenticated:', { userId: user.id, email: user.email });
 
         // Rate limiting
         const ip = getClientIp(request);
@@ -46,7 +43,7 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const { pageName, tabName, title, comment, state, expiration, password } = body;
 
-        console.log('🐛 [API] Request body:', {
+        console.log('🐛 [API] Request body parsed:', {
             pageName,
             tabName,
             title,
@@ -101,21 +98,34 @@ export async function POST(request: NextRequest) {
 
         // Create shared link
         console.log('🐛 [API] Creating shared link in database...');
-        const sharedLink = await prisma.sharedLink.create({
-            data: {
-                userId: user.id,
-                pageName,
-                tabName,
-                title: sanitizeTitle(title),
-                comment: comment ? sanitizeComment(comment) : null,
-                expiresAt,
-                passwordHash,
-                content: {
-                    create: {
-                        state,
-                    },
+
+        // Build data object - conditionally include user relation only if authenticated
+        const createData: Record<string, unknown> = {
+            pageName,
+            tabName,
+            title: sanitizeTitle(title),
+            comment: comment ? sanitizeComment(comment) : null,
+            expiresAt,
+            passwordHash,
+            content: {
+                create: {
+                    state,
                 },
             },
+        };
+
+        // Only include user relation if authenticated
+        if (user) {
+            createData.user = {
+                connect: {
+                    id: user.id,
+                },
+            };
+        }
+
+        const sharedLink = await prisma.sharedLink.create({
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            data: createData as any, // Type assertion needed for conditional user relation
             include: {
                 content: true,
             },
