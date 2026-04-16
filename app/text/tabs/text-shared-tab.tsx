@@ -13,7 +13,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
-import { Eye, RotateCcw, Share2, FileText, ExternalLink } from 'lucide-react';
+import { Eye, RotateCcw, Copy, Trash, Share2, FileText, ExternalLink } from 'lucide-react';
 
 interface SharedItem {
     id: string;
@@ -35,6 +35,7 @@ interface SharedTabProps {
 
 export function TextSharedTab({ onTabChange }: SharedTabProps) {
     const [viewingItem, setViewingItem] = useState<SharedItem | null>(null);
+    const [deleteCandidate, setDeleteCandidate] = useState<SharedItem | null>(null);
 
     // Fetch user's shares from database
     const {
@@ -74,6 +75,40 @@ export function TextSharedTab({ onTabChange }: SharedTabProps) {
     const handleOpenUrl = useCallback((url: string) => {
         window.open(url, '_blank');
     }, []);
+
+    // Copy content to clipboard
+    const handleCopyContent = useCallback((item: SharedItem) => {
+        try {
+            const contentStr = JSON.stringify(item.content, null, 2);
+            navigator.clipboard.writeText(contentStr);
+            toast.success('Content copied to clipboard');
+        } catch (error) {
+            console.error('Failed to copy content:', error);
+            toast.error('Failed to copy content');
+        }
+    }, []);
+
+    // Delete share
+    const handleDeleteShare = useCallback(async () => {
+        if (!deleteCandidate) return;
+
+        try {
+            const response = await fetch(`/api/share/${deleteCandidate.id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete share');
+            }
+
+            toast.success(`"${deleteCandidate.title}" deleted successfully`);
+            setDeleteCandidate(null);
+            refetch(); // Refresh the list
+        } catch (error) {
+            console.error('Failed to delete share:', error);
+            toast.error('Failed to delete share');
+        }
+    }, [deleteCandidate, refetch]);
 
     // Restore shared item to the tool
     const restoreSharedItem = useCallback(
@@ -183,6 +218,11 @@ export function TextSharedTab({ onTabChange }: SharedTabProps) {
                                                     onClick: () => setViewingItem(item),
                                                 },
                                                 {
+                                                    title: 'Copy content',
+                                                    icon: Copy,
+                                                    onClick: () => handleCopyContent(item),
+                                                },
+                                                {
                                                     title: 'Restore',
                                                     icon: RotateCcw,
                                                     onClick: () => restoreSharedItem(item),
@@ -196,6 +236,12 @@ export function TextSharedTab({ onTabChange }: SharedTabProps) {
                                                     title: 'Open URL',
                                                     icon: ExternalLink,
                                                     onClick: () => handleOpenUrl(item.url),
+                                                },
+                                                {
+                                                    title: 'Delete',
+                                                    icon: Trash,
+                                                    onClick: () => setDeleteCandidate(item),
+                                                    variant: 'destructive',
                                                 },
                                             ]}
                                         />
@@ -220,6 +266,35 @@ export function TextSharedTab({ onTabChange }: SharedTabProps) {
                             <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm whitespace-pre-wrap">
                                 {JSON.stringify(viewingItem.content, null, 2)}
                             </pre>
+                        </div>
+                    </DialogContent>
+                </Dialog>
+            )}
+
+            {/* Delete Confirmation Dialog */}
+            {deleteCandidate && (
+                <Dialog open={!!deleteCandidate} onOpenChange={() => setDeleteCandidate(null)}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Delete Share?</DialogTitle>
+                            <DialogDescription>
+                                Are you sure you want to delete &quot;{deleteCandidate.title}&quot;?
+                                This action cannot be undone.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="flex justify-end gap-2 mt-4">
+                            <button
+                                onClick={() => setDeleteCandidate(null)}
+                                className="px-4 py-2 border rounded-md hover:bg-muted"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleDeleteShare}
+                                className="px-4 py-2 bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90"
+                            >
+                                Delete
+                            </button>
                         </div>
                     </DialogContent>
                 </Dialog>
