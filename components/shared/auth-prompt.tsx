@@ -27,6 +27,10 @@ export function AuthPrompt({ featureName, currentPath }: AuthPromptProps) {
                 onAction={handleLoginClick}
                 showActions={false}
                 className="border-0 p-0"
+                iconOpacity="opacity-60"
+                titleOpacity="opacity-80"
+                descriptionOpacity="opacity-70"
+                buttonOpacity="opacity-100"
             />
         </div>
     );

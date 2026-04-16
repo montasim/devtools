@@ -9,6 +9,11 @@ interface EmptyEditorPromptProps {
     onAction?: () => void;
     className?: string;
     showActions?: boolean;
+    iconOpacity?: string;
+    titleOpacity?: string;
+    descriptionOpacity?: string;
+    actionsOpacity?: string;
+    buttonOpacity?: string;
 }
 
 export function EmptyEditorPrompt({
@@ -19,6 +24,11 @@ export function EmptyEditorPrompt({
     onAction,
     className,
     showActions = true,
+    iconOpacity = 'opacity-20',
+    titleOpacity = 'opacity-40',
+    descriptionOpacity = 'opacity-30',
+    actionsOpacity = 'opacity-40',
+    buttonOpacity = 'opacity-90',
 }: EmptyEditorPromptProps) {
     return (
         <div
@@ -27,14 +37,18 @@ export function EmptyEditorPrompt({
                 className,
             )}
         >
-            {Icon && <Icon className="h-12 w-12 text-muted-foreground mb-4 opacity-20" />}
+            {Icon && <Icon className={`h-12 w-12 text-muted-foreground mb-4 ${iconOpacity}`} />}
 
-            <h3 className="text-lg font-semibold text-muted-foreground mb-2 opacity-40">{title}</h3>
-            <p className="text-sm text-muted-foreground mb-6 max-w-md opacity-30">{description}</p>
+            <h3 className={`text-lg font-semibold text-muted-foreground mb-2 ${titleOpacity}`}>
+                {title}
+            </h3>
+            <p className={`text-sm text-muted-foreground mb-6 max-w-md ${descriptionOpacity}`}>
+                {description}
+            </p>
 
             {showActions && (
-                <div className="flex flex-col items-center gap-3 opacity-40">
-                    <div className="text-xs text-muted-foreground text-left space-y-1">
+                <div className={`flex flex-col items-center gap-3 ${actionsOpacity}`}>
+                    <div className="text-xs text-left space-y-1">
                         <div className="flex items-center gap-2">
                             <span className="font-mono bg-muted px-1.5 py-0.5 rounded text-[10px]">
                                 Click
@@ -58,7 +72,12 @@ export function EmptyEditorPrompt({
             )}
 
             {actionLabel && onAction && (
-                <Button variant="outline" onClick={onAction} size="sm" className="mt-4 opacity-50">
+                <Button
+                    variant="default"
+                    onClick={onAction}
+                    size="sm"
+                    className={`mt-4 ${buttonOpacity}`}
+                >
                     {actionLabel}
                 </Button>
             )}
