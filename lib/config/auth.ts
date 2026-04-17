@@ -1,7 +1,8 @@
 export const authConfig = {
     isDevelopment: process.env.NODE_ENV === 'development',
     isProduction: process.env.NODE_ENV === 'production',
-    cookieDomain: process.env.NODE_ENV === 'production' ? '.yourdomain.com' : undefined,
+    // Use environment variable for cookie domain, or undefined for current domain only
+    cookieDomain: process.env.COOKIE_DOMAIN || undefined,
     secureCookies: process.env.NODE_ENV === 'production',
     // Log OTPs in development instead of sending emails
     logOtpsInDev: process.env.NODE_ENV === 'development',

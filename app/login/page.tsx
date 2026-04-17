@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
-import { useRedirectIfAuthenticated } from '@/hooks/useRedirectIfAuthenticated';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
@@ -25,18 +24,23 @@ function isValidRedirect(url: string | null): boolean {
 }
 
 function LoginForm() {
-    useRedirectIfAuthenticated();
     const router = useRouter();
     const searchParams = useSearchParams();
     const redirect = searchParams.get('redirect');
-    const { login } = useAuth();
+    const { login, user, loading } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Redirect if already authenticated (but not if there's a redirect param)
+    if (!loading && user && !redirect) {
+        router.push('/profile');
+        return null;
+    }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        setLoading(true);
+        setIsLoading(true);
 
         try {
             await login(email, password);
@@ -46,7 +50,7 @@ function LoginForm() {
         } catch (error) {
             toast.error(error instanceof Error ? error.message : 'Login failed');
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     }
 
@@ -99,8 +103,8 @@ function LoginForm() {
                         Forgot password?
                     </Link>
                 </div>
-                <Button type="submit" disabled={loading} className="w-full">
-                    {loading ? 'Signing in...' : 'Sign in'}
+                <Button type="submit" disabled={isLoading} className="w-full">
+                    {isLoading ? 'Signing in...' : 'Sign in'}
                 </Button>
             </form>
         </AuthPageLayout>

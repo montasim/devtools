@@ -29,13 +29,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     async function refreshUser() {
         try {
-            const res = await fetch('/api/auth/me');
+            const res = await fetch('/api/auth/me', {
+                credentials: 'include',
+                cache: 'no-store',
+            });
             if (res.ok) {
                 const data = await res.json();
                 setUser(data.user);
+            } else {
+                setUser(null);
             }
         } catch (error) {
             console.error('Failed to fetch user:', error);
+            setUser(null);
         } finally {
             setLoading(false);
         }
@@ -45,6 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const res = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify({ email, password }),
         });
 
@@ -54,11 +61,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         const data = await res.json();
-        setUser(data.user);
+        // Call refreshUser to verify auth state with server
+        await refreshUser();
     }
 
     async function logout() {
-        await fetch('/api/auth/logout', { method: 'POST' });
+        await fetch('/api/auth/logout', {
+            method: 'POST',
+            credentials: 'include',
+        });
         setUser(null);
     }
 
