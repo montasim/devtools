@@ -12,6 +12,7 @@ import { ConvertShareDialog } from '@/components/text/convert-pane/convert-share
 import { Separator } from '@/components/ui/separator';
 import { Toolbar } from '@/components/toolbar/toolbar';
 import { saveTextContent } from '@/lib/text-save-utils';
+import { useAuth } from '@/hooks/useAuth';
 import {
     toUpperCase,
     toLowerCase,
@@ -57,6 +58,7 @@ export function ConvertPane({
     currentLeftContent,
     currentRightContent,
 }: ConvertPaneProps) {
+    const { user } = useAuth();
     // Track if we've loaded shared data
     const sharedDataLoadedRef = useRef(false);
 
@@ -175,6 +177,34 @@ export function ConvertPane({
         }
     };
 
+    // Build actions array conditionally based on auth state
+    const actions = [
+        {
+            id: 'clear',
+            label: 'Clear All',
+            onClick: handleClear,
+            variant: 'outline' as const,
+        },
+        ...(user
+            ? [
+                  {
+                      id: 'save',
+                      label: 'Save',
+                      onClick: handleSave,
+                      variant: 'outline' as const,
+                      icon: <Bookmark className="h-4 w-4" />,
+                  },
+              ]
+            : []),
+        {
+            id: 'share',
+            label: 'Share',
+            onClick: handleShare,
+            variant: 'outline' as const,
+            disabled: !rightContent,
+        },
+    ];
+
     const handleClearInput = () => {
         setLeftContent('');
         setRightContent('');
@@ -223,28 +253,7 @@ export function ConvertPane({
                         }
                     },
                 }))}
-                actions={[
-                    {
-                        id: 'clear',
-                        label: 'Clear All',
-                        onClick: handleClear,
-                        variant: 'outline',
-                    },
-                    {
-                        id: 'save',
-                        label: 'Save',
-                        onClick: handleSave,
-                        variant: 'outline',
-                        icon: <Bookmark className="h-4 w-4" />,
-                    },
-                    {
-                        id: 'share',
-                        label: 'Share',
-                        onClick: handleShare,
-                        variant: 'outline',
-                        disabled: !rightContent,
-                    },
-                ]}
+                actions={actions}
             />
 
             {/* Text editors */}

@@ -23,6 +23,7 @@ import { Base64ShareDialog } from '@/components/base64';
 import { STORAGE_KEYS } from '@/lib/constants';
 import { PAGE_NAMES, BASE64_TABS } from '@/lib/constants/tabs';
 import { saveBase64Content } from '@/lib/base64-save-utils';
+import { useAuth } from '@/hooks/useAuth';
 
 export interface MediaToBase64TabProps {
     onClear?: () => void;
@@ -30,6 +31,7 @@ export interface MediaToBase64TabProps {
 }
 
 export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps) {
+    const { user } = useAuth();
     // Track if we've loaded shared data
     const sharedDataLoadedRef = useRef(false);
 
@@ -285,6 +287,34 @@ export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps)
         saveBase64Content('Media to Base64', contentToSave);
     }, [rightContent, leftContent]);
 
+    // Build actions array conditionally based on auth state
+    const toolbarActions = [
+        {
+            id: 'clear',
+            label: 'Clear All',
+            onClick: onClear || handleClear,
+            variant: 'outline' as const,
+        },
+        ...(user
+            ? [
+                  {
+                      id: 'save',
+                      label: 'Save',
+                      onClick: handleSave,
+                      variant: 'outline' as const,
+                      icon: <Bookmark className="h-4 w-4" />,
+                  },
+              ]
+            : []),
+        {
+            id: 'share',
+            label: 'Share',
+            onClick: handleShare,
+            variant: 'outline' as const,
+            disabled: !rightContent,
+        },
+    ];
+
     // Define action buttons for Input Source section
     const inputActions = useMemo(
         () => [
@@ -350,30 +380,7 @@ export function MediaToBase64Tab({ onClear, sharedData }: MediaToBase64TabProps)
                 onOpenChange={setIsShareSheetOpen}
             />
 
-            <Toolbar
-                actions={[
-                    {
-                        id: 'clear',
-                        label: 'Clear All',
-                        onClick: onClear || handleClear,
-                        variant: 'outline',
-                    },
-                    {
-                        id: 'save',
-                        label: 'Save',
-                        onClick: handleSave,
-                        variant: 'outline',
-                        icon: <Bookmark className="h-4 w-4" />,
-                    },
-                    {
-                        id: 'share',
-                        label: 'Share',
-                        onClick: handleShare,
-                        variant: 'outline',
-                        disabled: !rightContent,
-                    },
-                ]}
-            />
+            <Toolbar actions={toolbarActions} />
 
             <div className="flex flex-col lg:flex-row gap-4">
                 {/* Left side - Input */}

@@ -9,6 +9,7 @@ import { Trash2, Share2, Bookmark } from 'lucide-react';
 import { Combobox } from '@/components/ui/combobox';
 import type { ExportFormat } from '@/components/export/types';
 import { saveJsonContent } from '@/lib/json-save-utils';
+import { useAuth } from '@/hooks/useAuth';
 
 interface JsonExportTabProps {
     onClear: () => void;
@@ -28,6 +29,7 @@ interface JsonExportTabProps {
 }
 
 export function JsonExportTab({ onClear, sharedData }: JsonExportTabProps) {
+    const { user } = useAuth();
     const [exportFormat, setExportFormat] = useState<ExportFormat>('csv');
     const [exportShareDialogOpen, setExportShareDialogOpen] = useState(false);
     const [currentContent, setCurrentContent] = useState('');
@@ -82,36 +84,39 @@ export function JsonExportTab({ onClear, sharedData }: JsonExportTabProps) {
         />
     );
 
+    // Build actions array conditionally based on auth state
+    const actions = [
+        {
+            id: 'clear',
+            label: 'Clear All',
+            onClick: handleClearClick,
+            variant: 'outline' as const,
+            icon: <Trash2 className="h-4 w-4" />,
+        },
+        ...(user
+            ? [
+                  {
+                      id: 'save',
+                      label: 'Save',
+                      onClick: handleSave,
+                      variant: 'outline' as const,
+                      icon: <Bookmark className="h-4 w-4" />,
+                  },
+              ]
+            : []),
+        {
+            id: 'share',
+            label: 'Share',
+            onClick: handleExportShare,
+            variant: 'outline' as const,
+            icon: <Share2 className="h-4 w-4" />,
+        },
+    ];
+
     return (
         <>
             <div>
-                <Toolbar
-                    toggles={[]}
-                    leftContent={formatSelector}
-                    actions={[
-                        {
-                            id: 'clear',
-                            label: 'Clear All',
-                            onClick: handleClearClick,
-                            variant: 'outline',
-                            icon: <Trash2 className="h-4 w-4" />,
-                        },
-                        {
-                            id: 'save',
-                            label: 'Save',
-                            onClick: handleSave,
-                            variant: 'outline',
-                            icon: <Bookmark className="h-4 w-4" />,
-                        },
-                        {
-                            id: 'share',
-                            label: 'Share',
-                            onClick: handleExportShare,
-                            variant: 'outline',
-                            icon: <Share2 className="h-4 w-4" />,
-                        },
-                    ]}
-                />
+                <Toolbar toggles={[]} leftContent={formatSelector} actions={actions} />
 
                 <ExportPane
                     className="mx-auto"

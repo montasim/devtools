@@ -6,6 +6,7 @@ import { TextDiffPane } from '@/components/text/diff-pane/diff-pane';
 import { Toolbar } from '@/components/toolbar/toolbar';
 import { Bookmark } from 'lucide-react';
 import { saveTextContent } from '@/lib/text-save-utils';
+import { useAuth } from '@/hooks/useAuth';
 
 export interface TextDiffTabProps {
     onClear?: () => void;
@@ -25,6 +26,7 @@ export interface TextDiffTabProps {
 }
 
 export function TextDiffTab({ onClear, sharedData }: TextDiffTabProps) {
+    const { user } = useAuth();
     const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
     // Track current content for real-time sharing
@@ -49,31 +51,36 @@ export function TextDiffTab({ onClear, sharedData }: TextDiffTabProps) {
         saveTextContent('Text Diff', contentToSave);
     }, [currentLeftContent, currentRightContent]);
 
+    // Build actions array conditionally based on auth state
+    const actions = [
+        {
+            id: 'clear',
+            label: 'Clear All',
+            onClick: onClear || (() => {}),
+            variant: 'outline' as const,
+        },
+        ...(user
+            ? [
+                  {
+                      id: 'save',
+                      label: 'Save',
+                      onClick: handleSave,
+                      variant: 'outline' as const,
+                      icon: <Bookmark className="h-4 w-4" />,
+                  },
+              ]
+            : []),
+        {
+            id: 'share',
+            label: 'Share',
+            onClick: handleShare,
+            variant: 'outline' as const,
+        },
+    ];
+
     return (
         <>
-            <Toolbar
-                actions={[
-                    {
-                        id: 'clear',
-                        label: 'Clear All',
-                        onClick: onClear || (() => {}),
-                        variant: 'outline',
-                    },
-                    {
-                        id: 'save',
-                        label: 'Save',
-                        onClick: handleSave,
-                        variant: 'outline',
-                        icon: <Bookmark className="h-4 w-4" />,
-                    },
-                    {
-                        id: 'share',
-                        label: 'Share',
-                        onClick: handleShare,
-                        variant: 'outline',
-                    },
-                ]}
-            />
+            <Toolbar actions={actions} />
             <TextDiffPane
                 shareDialogOpen={shareDialogOpen}
                 onShareDialogOpenChange={setShareDialogOpen}

@@ -7,6 +7,7 @@ import { SchemaPane, SchemaShareDialog } from '@/components/schema';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Trash2, Share2, Bookmark } from 'lucide-react';
 import { saveJsonContent } from '@/lib/json-save-utils';
+import { useAuth } from '@/hooks/useAuth';
 
 interface SchemaTabProps {
     onClear: () => void;
@@ -26,6 +27,7 @@ interface SchemaTabProps {
 }
 
 export function JsonSchemaTab({ onClear, sharedData }: SchemaTabProps) {
+    const { user } = useAuth();
     const [schemaMode, setSchemaMode] = useState<'generate' | 'validate'>('generate');
     const [schemaShareDialogOpen, setSchemaShareDialogOpen] = useState(false);
     const [currentJsonContent, setCurrentJsonContent] = useState('');
@@ -63,6 +65,35 @@ export function JsonSchemaTab({ onClear, sharedData }: SchemaTabProps) {
         saveJsonContent('JSON Schema', currentJsonContent);
     }, [currentJsonContent]);
 
+    // Build actions array conditionally based on auth state
+    const actions = [
+        {
+            id: 'clear',
+            label: 'Clear All',
+            onClick: handleClearClick,
+            variant: 'outline' as const,
+            icon: <Trash2 className="h-4 w-4" />,
+        },
+        ...(user
+            ? [
+                  {
+                      id: 'save',
+                      label: 'Save',
+                      onClick: handleSave,
+                      variant: 'outline' as const,
+                      icon: <Bookmark className="h-4 w-4" />,
+                  },
+              ]
+            : []),
+        {
+            id: 'share',
+            label: 'Share',
+            onClick: handleSchemaShare,
+            variant: 'outline' as const,
+            icon: <Share2 className="h-4 w-4" />,
+        },
+    ];
+
     return (
         <>
             <div>
@@ -81,29 +112,7 @@ export function JsonSchemaTab({ onClear, sharedData }: SchemaTabProps) {
                             onChange: () => setSchemaMode('validate'),
                         },
                     ]}
-                    actions={[
-                        {
-                            id: 'clear',
-                            label: 'Clear All',
-                            onClick: handleClearClick,
-                            variant: 'outline',
-                            icon: <Trash2 className="h-4 w-4" />,
-                        },
-                        {
-                            id: 'save',
-                            label: 'Save',
-                            onClick: handleSave,
-                            variant: 'outline',
-                            icon: <Bookmark className="h-4 w-4" />,
-                        },
-                        {
-                            id: 'share',
-                            label: 'Share',
-                            onClick: handleSchemaShare,
-                            variant: 'outline',
-                            icon: <Share2 className="h-4 w-4" />,
-                        },
-                    ]}
+                    actions={actions}
                 />
 
                 <SchemaPane

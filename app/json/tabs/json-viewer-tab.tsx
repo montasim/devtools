@@ -7,6 +7,7 @@ import { ViewerPane, ViewerShareDialog } from '@/components/viewer';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Trash2, Share2, Bookmark } from 'lucide-react';
 import { saveJsonContent } from '@/lib/json-save-utils';
+import { useAuth } from '@/hooks/useAuth';
 
 interface ViewerTabProps {
     onClear: () => void;
@@ -26,6 +27,7 @@ interface ViewerTabProps {
 }
 
 export function JsonViewerTab({ onClear, sharedData }: ViewerTabProps) {
+    const { user } = useAuth();
     const [viewerShowTypes, setViewerShowTypes] = useState(false);
     const [viewerShowPaths, setViewerShowPaths] = useState(false);
     const [viewerSortKeys, setViewerSortKeys] = useState(false);
@@ -65,6 +67,35 @@ export function JsonViewerTab({ onClear, sharedData }: ViewerTabProps) {
         saveJsonContent('JSON Viewer', currentContent);
     }, [currentContent]);
 
+    // Build actions array conditionally based on auth state
+    const actions = [
+        {
+            id: 'clear',
+            label: 'Clear All',
+            onClick: handleClearClick,
+            variant: 'outline' as const,
+            icon: <Trash2 className="h-4 w-4" />,
+        },
+        ...(user
+            ? [
+                  {
+                      id: 'save',
+                      label: 'Save',
+                      onClick: handleSave,
+                      variant: 'outline' as const,
+                      icon: <Bookmark className="h-4 w-4" />,
+                  },
+              ]
+            : []),
+        {
+            id: 'share',
+            label: 'Share',
+            onClick: handleViewerShare,
+            variant: 'outline' as const,
+            icon: <Share2 className="h-4 w-4" />,
+        },
+    ];
+
     return (
         <>
             <div>
@@ -89,29 +120,7 @@ export function JsonViewerTab({ onClear, sharedData }: ViewerTabProps) {
                             onChange: setViewerSortKeys,
                         },
                     ]}
-                    actions={[
-                        {
-                            id: 'clear',
-                            label: 'Clear All',
-                            onClick: handleClearClick,
-                            variant: 'outline',
-                            icon: <Trash2 className="h-4 w-4" />,
-                        },
-                        {
-                            id: 'save',
-                            label: 'Save',
-                            onClick: handleSave,
-                            variant: 'outline',
-                            icon: <Bookmark className="h-4 w-4" />,
-                        },
-                        {
-                            id: 'share',
-                            label: 'Share',
-                            onClick: handleViewerShare,
-                            variant: 'outline',
-                            icon: <Share2 className="h-4 w-4" />,
-                        },
-                    ]}
+                    actions={actions}
                 />
 
                 <ViewerPane

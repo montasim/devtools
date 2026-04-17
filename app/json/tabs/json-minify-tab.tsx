@@ -7,6 +7,7 @@ import { MinifyPane, MinifyShareDialog } from '@/components/minify';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Trash2, Share2, Bookmark } from 'lucide-react';
 import { saveJsonContent } from '@/lib/json-save-utils';
+import { useAuth } from '@/hooks/useAuth';
 
 interface MinifyTabProps {
     onClear: () => void;
@@ -26,6 +27,7 @@ interface MinifyTabProps {
 }
 
 export function JsonMinifyTab({ onClear, sharedData }: MinifyTabProps) {
+    const { user } = useAuth();
     const [minifySortKeys, setMinifySortKeys] = useState(false);
     const [minifyRemoveWhitespace, setMinifyRemoveWhitespace] = useState(true);
     const [minifyShareDialogOpen, setMinifyShareDialogOpen] = useState(false);
@@ -64,6 +66,35 @@ export function JsonMinifyTab({ onClear, sharedData }: MinifyTabProps) {
         saveJsonContent('JSON Minify', currentContent);
     }, [currentContent]);
 
+    // Build actions array conditionally based on auth state
+    const actions = [
+        {
+            id: 'clear',
+            label: 'Clear All',
+            onClick: handleClearClick,
+            variant: 'outline' as const,
+            icon: <Trash2 className="h-4 w-4" />,
+        },
+        ...(user
+            ? [
+                  {
+                      id: 'save',
+                      label: 'Save',
+                      onClick: handleSave,
+                      variant: 'outline' as const,
+                      icon: <Bookmark className="h-4 w-4" />,
+                  },
+              ]
+            : []),
+        {
+            id: 'share',
+            label: 'Share',
+            onClick: handleMinifyShare,
+            variant: 'outline' as const,
+            icon: <Share2 className="h-4 w-4" />,
+        },
+    ];
+
     return (
         <>
             <div>
@@ -82,29 +113,7 @@ export function JsonMinifyTab({ onClear, sharedData }: MinifyTabProps) {
                             onChange: setMinifyRemoveWhitespace,
                         },
                     ]}
-                    actions={[
-                        {
-                            id: 'clear',
-                            label: 'Clear All',
-                            onClick: handleClearClick,
-                            variant: 'outline',
-                            icon: <Trash2 className="h-4 w-4" />,
-                        },
-                        {
-                            id: 'save',
-                            label: 'Save',
-                            onClick: handleSave,
-                            variant: 'outline',
-                            icon: <Bookmark className="h-4 w-4" />,
-                        },
-                        {
-                            id: 'share',
-                            label: 'Share',
-                            onClick: handleMinifyShare,
-                            variant: 'outline',
-                            icon: <Share2 className="h-4 w-4" />,
-                        },
-                    ]}
+                    actions={actions}
                 />
 
                 <MinifyPane

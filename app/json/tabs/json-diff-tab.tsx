@@ -6,6 +6,7 @@ import { EditorPane, type EditorPaneRef } from '@/components/editor';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Bookmark } from 'lucide-react';
 import { saveJsonContent } from '@/lib/json-save-utils';
+import { useAuth } from '@/hooks/useAuth';
 
 interface JsonDiffTabProps {
     onClear: () => void;
@@ -25,6 +26,7 @@ interface JsonDiffTabProps {
 }
 
 export function JsonDiffTab({ onClear, sharedData }: JsonDiffTabProps) {
+    const { user } = useAuth();
     const [ignoreKeyOrder, setIgnoreKeyOrder] = useState(true);
     const [showClearDialog, setShowClearDialog] = useState(false);
     const [prettyPrint, setPrettyPrint] = useState(true);
@@ -77,6 +79,34 @@ export function JsonDiffTab({ onClear, sharedData }: JsonDiffTabProps) {
         saveJsonContent('JSON Diff', contentToSave);
     }, [currentLeftContent, currentRightContent]);
 
+    // Build actions array conditionally based on auth state
+    const actions = [
+        ...(user
+            ? [
+                  {
+                      id: 'save',
+                      label: 'Save',
+                      onClick: handleSave,
+                      variant: 'outline' as const,
+                      icon: <Bookmark className="h-4 w-4" />,
+                  },
+              ]
+            : []),
+        {
+            id: 'clear',
+            label: 'Clear All',
+            onClick: handleClearClick,
+            variant: 'outline' as const,
+        },
+        {
+            id: 'compare',
+            label: isComputing ? 'Computing...' : 'Compare',
+            onClick: handleCompareClick,
+            variant: 'default' as const,
+            disabled: !canCompare || isComputing,
+        },
+    ];
+
     return (
         <div>
             <Toolbar
@@ -106,28 +136,7 @@ export function JsonDiffTab({ onClear, sharedData }: JsonDiffTabProps) {
                         onChange: setSemanticTypeDiff,
                     },
                 ]}
-                actions={[
-                    {
-                        id: 'save',
-                        label: 'Save',
-                        onClick: handleSave,
-                        variant: 'outline',
-                        icon: <Bookmark className="h-4 w-4" />,
-                    },
-                    {
-                        id: 'clear',
-                        label: 'Clear All',
-                        onClick: handleClearClick,
-                        variant: 'outline',
-                    },
-                    {
-                        id: 'compare',
-                        label: isComputing ? 'Computing...' : 'Compare',
-                        onClick: handleCompareClick,
-                        variant: 'default',
-                        disabled: !canCompare || isComputing,
-                    },
-                ]}
+                actions={actions}
             />
 
             <div className="mx-auto">

@@ -12,6 +12,7 @@ import { TextCleanShareDialog } from '@/components/text/clean-pane';
 import { Separator } from '@/components/ui/separator';
 import { Toolbar } from '@/components/toolbar/toolbar';
 import { saveTextContent } from '@/lib/text-save-utils';
+import { useAuth } from '@/hooks/useAuth';
 import {
     trim,
     removeExtraSpaces,
@@ -43,6 +44,7 @@ export function TextCleanTab({
         createdAt?: string;
     } | null;
 }) {
+    const { user } = useAuth();
     // Track if we've loaded shared data
     const sharedDataLoadedRef = useRef(false);
 
@@ -213,6 +215,35 @@ export function TextCleanTab({
         { name: 'Reverse Lines', operation: reverseLines, description: 'Reverse line order' },
     ];
 
+    // Build actions array conditionally based on auth state
+    const actions = [
+        {
+            id: 'clear',
+            label: 'Clear All',
+            onClick: handleClear,
+            variant: 'outline' as const,
+            disabled: !leftContent && !rightContent,
+        },
+        ...(user
+            ? [
+                  {
+                      id: 'save',
+                      label: 'Save',
+                      onClick: handleSave,
+                      variant: 'outline' as const,
+                      icon: <Bookmark className="h-4 w-4" />,
+                  },
+              ]
+            : []),
+        {
+            id: 'share',
+            label: 'Share',
+            onClick: handleShare,
+            variant: 'outline' as const,
+            disabled: !rightContent,
+        },
+    ];
+
     return (
         <div className="">
             <Toolbar
@@ -230,29 +261,7 @@ export function TextCleanTab({
                         }
                     },
                 }))}
-                actions={[
-                    {
-                        id: 'clear',
-                        label: 'Clear All',
-                        onClick: handleClear,
-                        variant: 'outline',
-                        disabled: !leftContent && !rightContent,
-                    },
-                    {
-                        id: 'save',
-                        label: 'Save',
-                        onClick: handleSave,
-                        variant: 'outline',
-                        icon: <Bookmark className="h-4 w-4" />,
-                    },
-                    {
-                        id: 'share',
-                        label: 'Share',
-                        onClick: handleShare,
-                        variant: 'outline',
-                        disabled: !rightContent,
-                    },
-                ]}
+                actions={actions}
             />
 
             <div className="flex flex-col lg:flex-row gap-4">
