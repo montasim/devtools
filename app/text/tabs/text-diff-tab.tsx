@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 
 export interface TextDiffTabProps {
     onClear?: () => void;
+    onContentChange?: () => void;
     sharedData?: {
         tabName?: string;
         state?: {
@@ -25,18 +26,32 @@ export interface TextDiffTabProps {
     } | null;
 }
 
-export function TextDiffTab({ onClear, sharedData }: TextDiffTabProps) {
+export function TextDiffTab({ onClear, sharedData, onContentChange }: TextDiffTabProps) {
     const { user } = useAuth();
     const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
     // Track current content for real-time sharing
     const [currentLeftContent, setCurrentLeftContent] = useState('');
     const [currentRightContent, setCurrentRightContent] = useState('');
+    const [hasEdited, setHasEdited] = useState(false);
 
-    const handleContentChange = useCallback((left: string, right: string) => {
-        setCurrentLeftContent(left);
-        setCurrentRightContent(right);
-    }, []);
+    const handleContentChange = useCallback(
+        (left: string, right: string) => {
+            setCurrentLeftContent(left);
+            setCurrentRightContent(right);
+
+            // Detect if user has edited the content from the original shared content
+            if (!hasEdited && sharedData?.state) {
+                const originalLeft = sharedData.state.leftContent || '';
+                const originalRight = sharedData.state.rightContent || '';
+                if (left !== originalLeft || right !== originalRight) {
+                    setHasEdited(true);
+                    onContentChange?.();
+                }
+            }
+        },
+        [hasEdited, sharedData, onContentChange],
+    );
 
     const handleShare = () => {
         if (!currentLeftContent && !currentRightContent) {

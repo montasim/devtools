@@ -114,12 +114,25 @@ export function ToolPage({ config, components }: ToolPageProps) {
         (tab: string) => {
             setActiveTab(tab);
             previousTabRef.current = tab;
+
+            // Hide shared content banner when switching tabs
+            if (sharedData) {
+                setSharedData(null);
+            }
+
             const params = new URLSearchParams(searchParams.toString());
             params.set('tab', tab);
             router.replace(`${pathname}?${params.toString()}`, { scroll: false });
         },
-        [searchParams, pathname, router],
+        [searchParams, pathname, router, sharedData],
     );
+
+    // Handle content changes - hide shared banner when user edits content
+    const handleContentChange = useCallback(() => {
+        if (sharedData) {
+            setSharedData(null);
+        }
+    }, [sharedData]);
 
     // Sync URL changes with state (for browser back/forward navigation)
     useEffect(() => {
@@ -227,7 +240,11 @@ export function ToolPage({ config, components }: ToolPageProps) {
                     if (!Component) return null;
                     return (
                         <TabsContent key={value} value={value} className="mt-0">
-                            <Component onClear={handleClear} sharedData={sharedData} />
+                            <Component
+                                onClear={handleClear}
+                                sharedData={sharedData}
+                                onContentChange={handleContentChange}
+                            />
                         </TabsContent>
                     );
                 })}
