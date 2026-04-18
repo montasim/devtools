@@ -9,7 +9,7 @@ interface PageHeaderProps {
 
 export function PageHeader({ icon, title, description, actions }: PageHeaderProps) {
     return (
-        <div className="border-b backdrop-blur-sm sticky top-0">
+        <div className="sticky top-[57px] z-40 border-b bg-background/95 backdrop-blur-sm">
             <div className="mx-auto py-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                     <div className="flex items-center gap-3">
