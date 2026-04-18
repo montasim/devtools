@@ -6,6 +6,7 @@ import { EmptyStateCard } from '@/components/ui/empty-state-card';
 import { useHistoryItems } from './hooks/use-history-items';
 import { HistoryItemCard } from './components/history-item-card';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
+import { useConfirmAction } from '@/hooks/use-confirm-action';
 import type { HistoryTabConfig, HistoryItem } from './types';
 import type { PluginTabProps } from '../../types/tool';
 
@@ -13,6 +14,7 @@ export function createHistoryTabPlugin(config: HistoryTabConfig) {
     return function HistoryTabPlugin({ onTabChange }: PluginTabProps) {
         const { items, deleteItem, clearAll } = useHistoryItems(config);
         const { copy } = useClipboard();
+        const { confirm, dialog } = useConfirmAction();
 
         const handleRestore = (item: HistoryItem) => {
             const tabId = config.tabMapping[item.tabName];
@@ -33,7 +35,15 @@ export function createHistoryTabPlugin(config: HistoryTabConfig) {
                         <Button
                             variant="outline"
                             size="sm"
-                            onClick={clearAll}
+                            onClick={() =>
+                                confirm(clearAll, {
+                                    title: 'Clear All History',
+                                    description:
+                                        'This will permanently delete all your history items. This action cannot be undone.',
+                                    confirmLabel: 'Clear All',
+                                    variant: 'destructive',
+                                })
+                            }
                             className="flex items-center gap-1.5 bg-destructive/10 text-destructive hover:bg-destructive/20"
                         >
                             <Trash2 className="h-4 w-4" />
@@ -61,6 +71,7 @@ export function createHistoryTabPlugin(config: HistoryTabConfig) {
                         ))}
                     </div>
                 )}
+                {dialog}
             </div>
         );
     };

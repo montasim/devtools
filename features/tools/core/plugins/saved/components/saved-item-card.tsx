@@ -1,6 +1,6 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
+import { ContentItemCard } from '@/features/tools/core/components/content-item-card';
 import type { SavedItemData, SavedTabConfig } from '../types';
 
 interface SavedItemCardProps {
@@ -8,40 +8,41 @@ interface SavedItemCardProps {
     config: SavedTabConfig;
     onRestore: (item: SavedItemData) => void;
     onDelete: (id: string) => void;
+    onCopy: (content: string) => void;
 }
 
-export function SavedItemCard({ item, config, onRestore, onDelete }: SavedItemCardProps) {
+function getContentString(item: SavedItemData): string {
+    const data = item.content;
+    if (typeof data === 'string') return data;
+    if (typeof data.text === 'string') return data.text;
+    if (typeof data.content === 'string') return data.content;
+    return JSON.stringify(data, null, 2);
+}
+
+export function SavedItemCard({ item, config, onRestore, onDelete, onCopy }: SavedItemCardProps) {
     const toolInfo = config.toolMapping[item.tabName];
+    const content = getContentString(item);
 
     return (
-        <div className="flex items-center justify-between rounded-lg border p-4">
-            <div className="flex items-center gap-3">
-                {toolInfo && (
-                    <div className={`rounded-md p-2 ${toolInfo.color}`}>
-                        <toolInfo.icon className="h-4 w-4" />
-                    </div>
-                )}
-                <div>
-                    <p className="font-medium">{item.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                        {new Date(item.createdAt).toLocaleDateString()}
-                    </p>
-                </div>
-            </div>
-            <div className="flex items-center gap-2">
-                <button
-                    onClick={() => onRestore(item)}
-                    className="rounded-md px-3 py-1.5 text-sm font-medium text-primary hover:bg-accent"
-                >
-                    Restore
-                </button>
-                <button
-                    onClick={() => onDelete(item.id)}
-                    className="rounded-md px-3 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
-                >
-                    Delete
-                </button>
-            </div>
-        </div>
+        <ContentItemCard
+            title={item.name}
+            content={content}
+            toolInfo={toolInfo}
+            subtitle={
+                <>
+                    <span>Tool: {item.tabName}</span>
+                    <span>•</span>
+                    <span>Saved: {new Date(item.createdAt).toLocaleDateString()}</span>
+                </>
+            }
+            onCopy={onCopy}
+            onRestore={() => onRestore(item)}
+            onDelete={() => onDelete(item.id)}
+            deleteLabel="Delete Item"
+            deleteDescription="This action cannot be undone. Are you sure you want to delete this saved item?"
+            restoreLabel="Restore Item"
+            restoreDescription="This will replace your current editor content with this saved item. Continue?"
+            viewDialogDescription="Full content of this saved entry"
+        />
     );
 }

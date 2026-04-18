@@ -9,6 +9,7 @@ import { AuthPageLayout } from '@/components/auth/auth-page-layout';
 import { FormField } from '@/components/auth/form-field';
 import { AuthFooter } from '@/components/auth/auth-footer';
 import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useRedirectIfAuthenticated } from '@/features/auth/hooks/use-redirect-if-authenticated';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 
@@ -23,6 +24,7 @@ function isValidRedirect(url: string | null): boolean {
 }
 
 function LoginForm() {
+    useRedirectIfAuthenticated();
     const router = useRouter();
     const searchParams = useSearchParams();
     const redirect = searchParams.get('redirect');

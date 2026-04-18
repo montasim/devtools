@@ -1,7 +1,16 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
-import { Lock, Eye, Clock } from 'lucide-react';
+import { useState } from 'react';
+import { Copy, ExternalLink, Globe } from 'lucide-react';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+} from '@/components/ui/dialog';
+import { ContentItemCard } from '@/features/tools/core/components/content-item-card';
+import { useSharedContent } from '../hooks/use-shared-content';
 import type { SharedLinkItemData, SharedTabConfig } from '../types';
 
 interface SharedLinkCardProps {
@@ -10,6 +19,24 @@ interface SharedLinkCardProps {
     onRestore: (id: string) => void;
     onDelete: (id: string) => void;
     onCopyUrl: (id: string) => void;
+    onCopyContent: (content: string) => void;
+}
+
+function isExpired(expiresAt: string | null): boolean {
+    if (!expiresAt) return false;
+    return new Date(expiresAt) < new Date();
+}
+
+function buildShareUrl(pageName: string, id: string): string {
+    if (typeof window === 'undefined') return '';
+    return `${window.location.origin}/share/${pageName}/${id}`;
+}
+
+function extractStateText(state: Record<string, unknown> | null): string {
+    if (!state) return '';
+    const text = state.text ?? state.leftContent ?? state.inputContent ?? state.content;
+    if (typeof text === 'string') return text;
+    return JSON.stringify(state, null, 2);
 }
 
 export function SharedLinkCard({
@@ -18,63 +45,125 @@ export function SharedLinkCard({
     onRestore,
     onDelete,
     onCopyUrl,
+    onCopyContent,
 }: SharedLinkCardProps) {
     const toolInfo = config.toolMapping[item.tabName];
-    const isExpired = item.expiresAt ? new Date(item.expiresAt) < new Date() : false;
+    const expired = isExpired(item.expiresAt);
+    const url = buildShareUrl(config.pageName, item.id);
+    const displayTitle = expired ? `${item.title} (Expired)` : item.title;
+
+    const [viewOpen, setViewOpen] = useState(false);
+    const { fetchContent, loading } = useSharedContent();
+    const [stateText, setStateText] = useState('');
+
+    const handleOpen = async () => {
+        setViewOpen(true);
+        const result = await fetchContent(item.id);
+        setStateText(extractStateText(result?.state ?? null));
+    };
 
     return (
-        <div className="flex items-center justify-between rounded-lg border p-4">
-            <div className="flex items-center gap-3">
-                {toolInfo && (
-                    <div className={`rounded-md p-2 ${toolInfo.color}`}>
-                        <toolInfo.icon className="h-4 w-4" />
-                    </div>
-                )}
-                <div>
-                    <div className="flex items-center gap-2">
-                        <p className="font-medium">{item.title}</p>
-                        {item.hasPassword && <Lock className="h-3.5 w-3.5 text-muted-foreground" />}
-                        {isExpired && (
-                            <Badge variant="secondary" className="text-xs">
-                                Expired
-                            </Badge>
+        <>
+            <ContentItemCard
+                title={displayTitle}
+                content={item.comment || item.title}
+                toolInfo={toolInfo}
+                className={expired ? 'opacity-60' : ''}
+                onCopy={() => onCopyContent(item.comment || item.title)}
+                onRestore={() => onRestore(item.id)}
+                onDelete={() => onDelete(item.id)}
+                deleteLabel="Delete Link"
+                deleteDescription="This action cannot be undone. Anyone with the link will lose access."
+                restoreLabel="Restore Item"
+                restoreDescription="This will replace your current editor content with this shared item. Continue?"
+                viewDialogDescription="Details of this shared link"
+                onViewClick={handleOpen}
+                header={
+                    <div className="flex items-center gap-2 border-b pb-3 mb-3 min-w-0">
+                        <Globe className="w-4 h-4 shrink-0 text-muted-foreground" />
+                        <code className="text-xs truncate">{url || '...'}</code>
+                        <Copy
+                            className="w-4 h-4 shrink-0 cursor-pointer text-muted-foreground hover:text-foreground"
+                            onClick={() => onCopyUrl(item.id)}
+                        />
+                        {url && (
+                            <ExternalLink
+                                className="w-4 h-4 shrink-0 cursor-pointer text-muted-foreground hover:text-foreground"
+                                onClick={() => window.open(url, '_blank')}
+                            />
                         )}
                     </div>
-                    <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                        <span>{new Date(item.createdAt).toLocaleDateString()}</span>
-                        <span className="flex items-center gap-1">
-                            <Eye className="h-3 w-3" />
-                            {item.viewCount}
-                        </span>
-                        {item.expiresAt && !isExpired && (
-                            <span className="flex items-center gap-1">
-                                <Clock className="h-3 w-3" />
-                                {new Date(item.expiresAt).toLocaleDateString()}
-                            </span>
+                }
+                subtitle={
+                    <>
+                        <span>Tab: {item.tabName}</span>
+                        <span>•</span>
+                        <span>Created: {new Date(item.createdAt).toLocaleDateString()}</span>
+                        <span>•</span>
+                        <span>Views: {item.viewCount}</span>
+                        {item.expiresAt && !expired && (
+                            <>
+                                <span>•</span>
+                                <span>
+                                    Expires: {new Date(item.expiresAt).toLocaleDateString()}
+                                </span>
+                            </>
+                        )}
+                        {item.hasPassword && (
+                            <>
+                                <span>•</span>
+                                <span>Protected</span>
+                            </>
+                        )}
+                    </>
+                }
+                footer={
+                    item.comment ? (
+                        <p className="text-xs text-muted-foreground italic mt-2">{item.comment}</p>
+                    ) : undefined
+                }
+            />
+
+            <Dialog open={viewOpen} onOpenChange={setViewOpen}>
+                <DialogContent className="max-h-[85vh] overflow-hidden w-[90vw] max-w-[90vw] sm:max-w-4xl">
+                    <DialogHeader className="border-b">
+                        <DialogTitle className="flex items-center gap-2">
+                            {toolInfo && (
+                                <toolInfo.icon className={`w-4 h-4 shrink-0 ${toolInfo.color}`} />
+                            )}
+                            {displayTitle}
+                        </DialogTitle>
+                        <DialogDescription className="flex flex-wrap items-center gap-2 text-xs">
+                            <span>Tab: {item.tabName}</span>
+                            <span>•</span>
+                            <span>Created: {new Date(item.createdAt).toLocaleDateString()}</span>
+                            <span>•</span>
+                            <span>Views: {item.viewCount}</span>
+                            {item.hasPassword && (
+                                <>
+                                    <span>•</span>
+                                    <span>Protected</span>
+                                </>
+                            )}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex-1 overflow-auto">
+                        {loading ? (
+                            <div className="p-4 text-sm text-muted-foreground">
+                                Loading content...
+                            </div>
+                        ) : stateText ? (
+                            <pre className="text-sm p-4 rounded-md overflow-auto">
+                                <code>{stateText}</code>
+                            </pre>
+                        ) : (
+                            <div className="p-4 text-sm text-muted-foreground">
+                                No content available
+                            </div>
                         )}
                     </div>
-                </div>
-            </div>
-            <div className="flex items-center gap-2">
-                <button
-                    onClick={() => onCopyUrl(item.id)}
-                    className="rounded-md px-3 py-1.5 text-sm font-medium text-primary hover:bg-accent"
-                >
-                    Copy URL
-                </button>
-                <button
-                    onClick={() => onRestore(item.id)}
-                    className="rounded-md px-3 py-1.5 text-sm font-medium text-primary hover:bg-accent"
-                >
-                    Restore
-                </button>
-                <button
-                    onClick={() => onDelete(item.id)}
-                    className="rounded-md px-3 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
-                >
-                    Delete
-                </button>
-            </div>
-        </div>
+                </DialogContent>
+            </Dialog>
+        </>
     );
 }

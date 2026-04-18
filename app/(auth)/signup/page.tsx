@@ -10,6 +10,7 @@ import { FormField } from '@/components/auth/form-field';
 import { AuthFooter } from '@/components/auth/auth-footer';
 import { OtpInput } from '@/components/auth/otp-input';
 import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useRedirectIfAuthenticated } from '@/features/auth/hooks/use-redirect-if-authenticated';
 import { apiClient } from '@/lib/api/client';
 import { handleApiError } from '@/lib/hooks/use-error-handler';
 import { toast } from 'sonner';
@@ -18,6 +19,7 @@ import { Loader2 } from 'lucide-react';
 type Step = 'email' | 'otp' | 'account';
 
 export default function SignupPage() {
+    useRedirectIfAuthenticated();
     const router = useRouter();
     const { signup } = useAuth();
     const [step, setStep] = useState<Step>('email');

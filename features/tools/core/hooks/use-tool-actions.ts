@@ -23,10 +23,13 @@ export function useToolActions(options: UseToolActionsOptions) {
 
     const handleSave = async () => {
         try {
+            const timestamp = new Date().toLocaleString();
+            const name = `${options.pageName} - ${options.tabId} (${timestamp})`;
             const res = await apiClient.post('/api/saved', {
                 pageName: options.pageName,
                 tabName: options.tabId,
-                content: options.getContent(),
+                name,
+                content: { text: options.getContent() },
             });
             if (!res.ok) {
                 handleApiError('Failed to save', res.error);

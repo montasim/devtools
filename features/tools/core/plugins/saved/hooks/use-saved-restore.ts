@@ -12,9 +12,17 @@ export function useSavedRestore(config: SavedTabConfig) {
             const storageKey = config.storageKeyMapping[tabId];
             if (!storageKey) return;
 
-            const content = config.extractContent
-                ? config.extractContent(item)
-                : (item.content.content as string) || JSON.stringify(item.content);
+            const data = item.content;
+            let content: string;
+            if (typeof data === 'string') {
+                content = data;
+            } else if (typeof data.text === 'string') {
+                content = data.text;
+            } else if (config.extractContent) {
+                content = config.extractContent(item);
+            } else {
+                content = JSON.stringify(data);
+            }
 
             try {
                 localStorage.setItem(storageKey, JSON.stringify(content));

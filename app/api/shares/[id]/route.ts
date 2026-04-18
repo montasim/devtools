@@ -10,6 +10,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
             where: { id },
             select: {
                 id: true,
+                userId: true,
                 pageName: true,
                 tabName: true,
                 title: true,
@@ -35,6 +36,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
             );
         }
 
+        const token = await getTokenFromCookies();
+        const payload = token ? verifyToken(token) : null;
+
+        const isOwner = payload && link.userId === payload.userId;
+
+        const content = isOwner
+            ? await prisma.sharedContent.findUnique({ where: { linkId: id } })
+            : null;
+
         return NextResponse.json({
             ok: true,
             data: {
@@ -47,6 +57,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
                 hasPassword: !!link.passwordHash,
                 viewCount: link.viewCount,
                 createdAt: link.createdAt,
+                ...(content ? { state: content.state } : {}),
             },
         });
     } catch (error) {
