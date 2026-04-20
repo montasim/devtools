@@ -55,6 +55,16 @@ export function SharedLinkCard({
     const [viewOpen, setViewOpen] = useState(false);
     const { fetchContent, loading } = useSharedContent();
     const [stateText, setStateText] = useState('');
+    const [previewText, setPreviewText] = useState('');
+    const [previewLoaded, setPreviewLoaded] = useState(false);
+
+    const loadPreview = async () => {
+        if (previewLoaded) return;
+        const result = await fetchContent(item.id);
+        const text = extractStateText(result?.state ?? null);
+        setPreviewText(text);
+        setPreviewLoaded(true);
+    };
 
     const handleOpen = async () => {
         setViewOpen(true);
@@ -62,14 +72,18 @@ export function SharedLinkCard({
         setStateText(extractStateText(result?.state ?? null));
     };
 
+    const handleCopy = () => {
+        onCopyContent(previewText || item.title);
+    };
+
     return (
-        <>
+        <div onMouseEnter={loadPreview} onFocusCapture={loadPreview}>
             <ContentItemCard
                 title={displayTitle}
-                content={item.comment || item.title}
+                content={previewText || item.comment || item.title}
                 toolInfo={toolInfo}
                 className={expired ? 'opacity-60' : ''}
-                onCopy={() => onCopyContent(item.comment || item.title)}
+                onCopy={handleCopy}
                 onRestore={() => onRestore(item.id)}
                 onDelete={() => onDelete(item.id)}
                 deleteLabel="Delete Link"
@@ -164,6 +178,6 @@ export function SharedLinkCard({
                     </div>
                 </DialogContent>
             </Dialog>
-        </>
+        </div>
     );
 }
