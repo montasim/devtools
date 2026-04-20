@@ -1,4 +1,4 @@
-import { Book, FileJson, FileText, FileCode, Share2, GitBranch } from 'lucide-react';
+import { Book, FileJson, FileText, FileCode, Share2, GitBranch, Link2 } from 'lucide-react';
 
 export interface MenuItem {
     title: string;
@@ -36,6 +36,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Generate consistent git branch names',
                 icon: <GitBranch className="size-5 shrink-0" />,
                 url: '/git-branch-generator',
+            },
+            {
+                title: 'URL Shortener',
+                description: 'Shorten long URLs into compact links',
+                icon: <Link2 className="size-5 shrink-0" />,
+                url: '/url-shortener',
             },
         ],
     },
