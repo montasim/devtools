@@ -8,6 +8,7 @@ const footerSections = [
             { label: 'JSON Tools', href: '/json' },
             { label: 'Text Tools', href: '/text' },
             { label: 'Base64 Tools', href: '/base64' },
+            { label: 'Share Text', href: '/share/text' },
         ],
     },
     {

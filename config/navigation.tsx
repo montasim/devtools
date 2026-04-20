@@ -1,4 +1,4 @@
-import { Book, FileJson, FileText, FileCode } from 'lucide-react';
+import { Book, FileJson, FileText, FileCode, Share2 } from 'lucide-react';
 
 export interface MenuItem {
     title: string;
@@ -32,6 +32,10 @@ export const navigationMenu: MenuItem[] = [
                 url: '/base64',
             },
         ],
+    },
+    {
+        title: 'Share Text',
+        url: '/share/text',
     },
     {
         title: 'Resources',
