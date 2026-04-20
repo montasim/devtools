@@ -36,7 +36,7 @@ export function TextEditor({
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder={placeholder}
-                className="min-h-[250px] resize-none font-mono text-sm md:min-h-[400px] lg:min-h-[500px]"
+                className="min-h-[350px] resize-none font-mono text-sm md:min-h-[400px] lg:min-h-[500px]"
                 style={{ fieldSizing: 'fixed', overflow: 'auto' }}
                 readOnly={readOnly}
             />

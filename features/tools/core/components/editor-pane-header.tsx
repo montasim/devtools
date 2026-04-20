@@ -21,6 +21,7 @@ interface EditorPaneHeaderProps {
     accept?: string;
     downloadFilename?: string;
     hideInputActions?: boolean;
+    actions?: React.ReactNode;
 }
 
 export function EditorPaneHeader({
@@ -31,6 +32,7 @@ export function EditorPaneHeader({
     accept = '.json,.txt,.csv,.xml,.yaml,.yml',
     downloadFilename,
     hideInputActions = false,
+    actions,
 }: EditorPaneHeaderProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [urlDialogOpen, setUrlDialogOpen] = useState(false);
@@ -233,6 +235,7 @@ export function EditorPaneHeader({
                         <TooltipContent>Clear</TooltipContent>
                     </Tooltip>
                 )}
+                {actions}
             </div>
 
             <Dialog open={urlDialogOpen} onOpenChange={setUrlDialogOpen}>

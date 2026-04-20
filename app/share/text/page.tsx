@@ -1,18 +1,35 @@
 'use client';
 
-import { useState, useEffect, useRef, Suspense } from 'react';
-import { Copy, Upload, Trash2, Share2, Type } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState, useEffect, Suspense } from 'react';
+import { Type, Globe, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
-import { EditorFooter } from '@/features/tools/core/components/editor-footer';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { TextEditor } from '@/features/tools/text/components/text-editor';
+import { EditorPaneHeader } from '@/features/tools/core/components/editor-pane-header';
 import { SharedContentBanner } from '@/features/sharing/components/shared-content-banner';
 import { ShareSidebarModal } from '@/features/tools/core/plugins/share-sidebar';
+import { createSharedTabPlugin } from '@/features/tools/core/plugins/shared';
 import { STORAGE_KEYS } from '@/lib/utils/constants';
 import type { ShareAccessResponse } from '@/features/sharing/types/share';
 
 const SESSION_KEY = 'share-text-access-data';
+
+const tabTriggerClass =
+    'gap-2 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary data-[state=active]:text-primary data-[state=active]:font-semibold data-[state=active]:bg-primary/10';
+
+const SharedTab = createSharedTabPlugin({
+    pageName: 'share-text',
+    queryKey: 'share-text-shared',
+    toolMapping: {
+        share: {
+            name: 'Share Text',
+            icon: Type,
+            color: 'bg-primary/10 text-primary',
+        },
+    },
+    tabMapping: { share: 'editor' },
+    storageKeys: { share: STORAGE_KEYS.SHARE_TEXT_CONTENT },
+});
 
 function extractStateContent(state: Record<string, unknown> | undefined): string {
     if (!state) return '';
@@ -64,13 +81,13 @@ function loadSharedData(): {
 }
 
 function ShareTextPageContent() {
-    const fileInputRef = useRef<HTMLInputElement>(null);
     const initial = loadSharedData();
 
     const [content, setContent] = useState(initial.content);
     const [shareOpen, setShareOpen] = useState(false);
-    const [accessData, setAccessData] = useState<ShareAccessResponse | null>(initial.accessData);
+    const [accessData] = useState<ShareAccessResponse | null>(initial.accessData);
     const [sharedSnapshot] = useState(initial.isShared ? initial.content : null);
+    const [activeTab, setActiveTab] = useState('editor');
 
     useEffect(() => {
         try {
@@ -82,131 +99,83 @@ function ShareTextPageContent() {
 
     const isReadOnly = sharedSnapshot !== null && content === sharedSnapshot;
 
-    const handleClear = () => {
-        setContent('');
-        setAccessData(null);
-        toast.success('Editor cleared');
-    };
-
-    const handleUpload = () => {
-        fileInputRef.current?.click();
-    };
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const text = e.target?.result as string;
-            setContent(text);
-            setAccessData(null);
-            toast.success('File uploaded successfully');
-        };
-        reader.onerror = () => toast.error('Failed to read file');
-        reader.readAsText(file);
-        event.target.value = '';
-    };
-
     return (
         <div className="mx-auto py-4">
             {sharedSnapshot && accessData?.metadata && (
                 <SharedContentBanner metadata={accessData.metadata} />
             )}
 
-            <input
-                ref={fileInputRef}
-                type="file"
-                accept=".txt,.md,.json,.csv,.xml,.yaml,.yml,text/*"
-                onChange={handleFileChange}
-                className="hidden"
-            />
-
-            <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Type className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">Text Editor</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={handleUpload}
-                            disabled={isReadOnly}
-                            title="Upload from file"
-                        >
-                            <Upload className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={async () => {
-                                try {
-                                    await navigator.clipboard.writeText(content);
-                                    toast.success('Copied to clipboard');
-                                } catch {
-                                    toast.error('Failed to copy');
-                                }
-                            }}
-                            disabled={!content}
-                            title="Copy to clipboard"
-                        >
-                            <Copy className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={handleClear}
-                            disabled={!content || isReadOnly}
-                            title="Clear editor"
-                        >
-                            <Trash2 className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => setShareOpen(true)}
-                            disabled={!content || isReadOnly}
-                            title="Share text"
-                            className="text-primary"
-                        >
-                            <Share2 className="h-4 w-4" />
-                        </Button>
-                    </div>
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <div className=" border-b pb-2">
+                    <TabsList
+                        variant="line"
+                        className="h-auto w-full justify-start overflow-x-auto border-0 bg-transparent p-0 scrollbar-hide"
+                    >
+                        <div className="flex w-full min-w-max justify-between gap-2">
+                            <div className="flex min-w-max gap-1">
+                                <TabsTrigger value="editor" className={tabTriggerClass}>
+                                    <Type className="h-4 w-4 shrink-0" />
+                                    Editor
+                                </TabsTrigger>
+                            </div>
+                            <div className="flex min-w-max gap-1">
+                                <TabsTrigger value="shared" className={tabTriggerClass}>
+                                    <Globe className="h-4 w-4 shrink-0" />
+                                    Shared
+                                </TabsTrigger>
+                            </div>
+                        </div>
+                    </TabsList>
                 </div>
 
-                <div className="relative">
-                    <Textarea
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        readOnly={isReadOnly}
-                        className="min-h-[500px] resize-none font-mono text-sm md:min-h-[600px]"
-                        style={{ fieldSizing: 'fixed', overflow: 'auto' }}
-                    />
-                    {!content && (
-                        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                            <EmptyEditorPrompt
-                                icon={Type}
-                                title="No text yet"
-                                description="Start typing, paste content, or upload a file"
-                                showActions
+                <div className="mx-auto">
+                    <TabsContent value="editor" className="mt-0">
+                        <div className="flex flex-col gap-2">
+                            <EditorPaneHeader
+                                label="Text Editor"
+                                content={content}
+                                onContentChange={isReadOnly ? undefined : setContent}
+                                onClear={isReadOnly ? undefined : () => setContent('')}
+                                hideInputActions={isReadOnly}
+                                actions={
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => setShareOpen(true)}
+                                        disabled={!content || isReadOnly}
+                                        title="Share text"
+                                        className="h-7 w-7 text-primary"
+                                    >
+                                        <Share2 className="h-3.5 w-3.5" />
+                                    </Button>
+                                }
+                            />
+                            <TextEditor
+                                value={content}
+                                onChange={setContent}
+                                readOnly={isReadOnly}
+                                emptyTitle="No text yet"
+                                emptyDescription="Start typing, paste content, or upload a file"
+                                showEmptyPrompt
                             />
                         </div>
-                    )}
+
+                        <ShareSidebarModal
+                            open={shareOpen}
+                            onOpenChange={setShareOpen}
+                            config={{
+                                pageName: 'share-text',
+                                tabName: 'share',
+                                getState: () => ({ content }),
+                            }}
+                        />
+                    </TabsContent>
+
+                    <TabsContent value="shared" className="mt-0">
+                        <SharedTab onTabChange={() => setActiveTab('editor')} />
+                    </TabsContent>
                 </div>
-
-                <EditorFooter content={content} mode="text" />
-            </div>
-
-            <ShareSidebarModal
-                open={shareOpen}
-                onOpenChange={setShareOpen}
-                config={{
-                    pageName: 'text',
-                    tabName: 'share',
-                    getState: () => ({ content }),
-                }}
-            />
+            </Tabs>
         </div>
     );
 }
