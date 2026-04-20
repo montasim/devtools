@@ -10,7 +10,7 @@ import { STORAGE_KEYS } from '@/lib/utils/constants';
 import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 import type { TabComponentProps } from '../../core/types/tool';
 
-export default function TextDiffTab({ sharedData }: TabComponentProps) {
+export default function TextDiffTab({ sharedData, readOnly }: TabComponentProps) {
     const {
         content: leftContent,
         setContent: setLeftContent,
@@ -19,6 +19,7 @@ export default function TextDiffTab({ sharedData }: TabComponentProps) {
         storageKey: STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT,
         sharedData,
         tabId: 'diff',
+        readOnly,
     });
     const [rightContent, setRightContent] = useLocalStorage(
         STORAGE_KEYS.TEXT_DIFF_RIGHT_CONTENT,
@@ -36,6 +37,7 @@ export default function TextDiffTab({ sharedData }: TabComponentProps) {
         },
         shareDialogOpen: shareOpen,
         setShareDialogOpen: setShareOpen,
+        readOnly,
     });
 
     if (!isReady) return null;
@@ -49,6 +51,7 @@ export default function TextDiffTab({ sharedData }: TabComponentProps) {
                 rightLabel="Modified Text"
                 onLeftChange={setLeftContent}
                 onRightChange={setRightContent}
+                readOnly={readOnly}
             />
             <ShareSidebarModal
                 open={shareOpen}

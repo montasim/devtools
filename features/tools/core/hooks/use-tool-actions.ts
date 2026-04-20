@@ -5,6 +5,7 @@ import { Eraser, Save, Share2 } from 'lucide-react';
 import { useAuth } from '@/features/auth/hooks/use-auth';
 import { apiClient } from '@/lib/api/client';
 import { handleApiError } from '@/lib/hooks/use-error-handler';
+import { toast } from 'sonner';
 
 interface UseToolActionsOptions {
     pageName: string;
@@ -13,6 +14,7 @@ interface UseToolActionsOptions {
     onClear: () => void;
     shareDialogOpen: boolean;
     setShareDialogOpen: (open: boolean) => void;
+    readOnly?: boolean;
 }
 
 export function useToolActions(options: UseToolActionsOptions) {
@@ -20,6 +22,8 @@ export function useToolActions(options: UseToolActionsOptions) {
     const { isAuthenticated } = useAuth();
 
     const hasContent = options.getContent().trim().length > 0;
+
+    if (options.readOnly) return { actions: [] as ActionItem[] };
 
     const handleSave = async () => {
         try {
@@ -33,6 +37,8 @@ export function useToolActions(options: UseToolActionsOptions) {
             });
             if (!res.ok) {
                 handleApiError('Failed to save', res.error);
+            } else {
+                toast.success('Content saved successfully');
             }
         } catch (error) {
             handleApiError('Failed to save', error);

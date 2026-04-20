@@ -26,11 +26,12 @@ const CASE_OPERATIONS = [
     { value: 'reverse', label: 'Reverse' },
 ];
 
-export default function ConvertTab({ sharedData }: TabComponentProps) {
+export default function ConvertTab({ sharedData, readOnly }: TabComponentProps) {
     const { content, setContent, isReady } = useToolState({
         storageKey: STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT,
         sharedData,
         tabId: 'convert',
+        readOnly,
     });
     const [operation, setOperation] = useState('uppercase');
     const [shareOpen, setShareOpen] = useState(false);
@@ -48,6 +49,7 @@ export default function ConvertTab({ sharedData }: TabComponentProps) {
         onClear: () => setContent(''),
         shareDialogOpen: shareOpen,
         setShareDialogOpen: setShareOpen,
+        readOnly,
     });
 
     if (!isReady) return null;
@@ -79,10 +81,12 @@ export default function ConvertTab({ sharedData }: TabComponentProps) {
                             content={content}
                             onContentChange={setContent}
                             onClear={() => setContent('')}
+                            hideInputActions={readOnly}
                         />
                         <TextEditor
                             value={content}
                             onChange={setContent}
+                            readOnly={readOnly}
                             emptyIcon={ArrowLeftRight}
                             emptyTitle="Add text to convert"
                             emptyDescription="Type or paste text, then choose a case conversion above"

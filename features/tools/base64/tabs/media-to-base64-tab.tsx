@@ -15,7 +15,7 @@ import { EditorPaneHeader } from '../../core/components/editor-pane-header';
 import { EditorFooter } from '../../core/components/editor-footer';
 import type { TabComponentProps } from '../../core/types/tool';
 
-export default function MediaToBase64Tab({ sharedData }: TabComponentProps) {
+export default function MediaToBase64Tab({ sharedData, readOnly }: TabComponentProps) {
     const [output, setOutput] = useLocalStorage(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT, '');
     const [shareOpen, setShareOpen] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
@@ -63,6 +63,7 @@ export default function MediaToBase64Tab({ sharedData }: TabComponentProps) {
         onClear: handleClear,
         shareDialogOpen: shareOpen,
         setShareDialogOpen: setShareOpen,
+        readOnly,
     });
 
     return (
@@ -92,7 +93,9 @@ export default function MediaToBase64Tab({ sharedData }: TabComponentProps) {
                                 </span>
                             </div>
                         ) : (
-                            <label className="flex min-h-[250px] cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-4 text-muted-foreground hover:bg-primary/10 hover:text-primary md:min-h-[400px] lg:min-h-[500px]">
+                            <label
+                                className={`flex min-h-[250px] cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-4 text-muted-foreground hover:bg-primary/10 hover:text-primary md:min-h-[400px] lg:min-h-[500px] ${readOnly ? 'pointer-events-none opacity-50' : ''}`}
+                            >
                                 <Upload className="h-8 w-8" />
                                 <span className="text-sm font-medium">
                                     {isConverting
@@ -106,6 +109,7 @@ export default function MediaToBase64Tab({ sharedData }: TabComponentProps) {
                                     className="hidden"
                                     onChange={handleFileUpload}
                                     accept="image/*,audio/*,video/*,.pdf,.zip"
+                                    disabled={readOnly}
                                 />
                             </label>
                         )}

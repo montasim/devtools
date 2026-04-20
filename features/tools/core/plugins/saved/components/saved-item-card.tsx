@@ -14,8 +14,12 @@ interface SavedItemCardProps {
 function getContentString(item: SavedItemData): string {
     const data = item.content;
     if (typeof data === 'string') return data;
-    if (typeof data.text === 'string') return data.text;
-    if (typeof data.content === 'string') return data.content;
+    if (data && typeof data === 'object') {
+        if (typeof data.text === 'string') return data.text;
+        if (typeof data.content === 'string') return data.content;
+        const values = Object.values(data);
+        if (values.length === 1 && typeof values[0] === 'string') return values[0];
+    }
     return JSON.stringify(data, null, 2);
 }
 

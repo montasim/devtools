@@ -8,6 +8,7 @@ interface UseToolStateOptions {
     sharedData?: SharedData | null;
     tabId: string;
     initialValue?: string;
+    readOnly?: boolean;
 }
 
 function getStorageValue(key: string, fallback: string): string {
@@ -40,7 +41,7 @@ function resolveInitialContent(
 }
 
 export function useToolState(options: UseToolStateOptions) {
-    const { storageKey, sharedData, tabId, initialValue = '' } = options;
+    const { storageKey, sharedData, tabId, initialValue = '', readOnly = false } = options;
 
     const [content, setContent] = useState(() =>
         resolveInitialContent(storageKey, initialValue, sharedData, tabId),
@@ -54,6 +55,7 @@ export function useToolState(options: UseToolStateOptions) {
 
     const setAndSave = useCallback(
         (value: string) => {
+            if (readOnly) return;
             setContent(value);
             if (typeof window !== 'undefined') {
                 try {
@@ -63,8 +65,8 @@ export function useToolState(options: UseToolStateOptions) {
                 }
             }
         },
-        [storageKey],
+        [storageKey, readOnly],
     );
 
-    return { content, setContent: setAndSave, isReady };
+    return { content, setContent: setAndSave, isReady, readOnly };
 }

@@ -13,11 +13,12 @@ import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Copy, Braces, Minimize2 } from 'lucide-react';
 import type { TabComponentProps } from '../../core/types/tool';
 
-export default function MinifyTab({ sharedData }: TabComponentProps) {
+export default function MinifyTab({ sharedData, readOnly }: TabComponentProps) {
     const { content, setContent, isReady } = useToolState({
         storageKey: STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT,
         sharedData,
         tabId: 'minify',
+        readOnly,
     });
     const [shareOpen, setShareOpen] = useState(false);
     const { minified, error } = useJsonMinify(content);
@@ -30,6 +31,7 @@ export default function MinifyTab({ sharedData }: TabComponentProps) {
         onClear: () => setContent(''),
         shareDialogOpen: shareOpen,
         setShareDialogOpen: setShareOpen,
+        readOnly,
     });
 
     if (!isReady) return null;
@@ -44,10 +46,12 @@ export default function MinifyTab({ sharedData }: TabComponentProps) {
                             content={content}
                             onContentChange={setContent}
                             onClear={() => setContent('')}
+                            hideInputActions={readOnly}
                         />
                         <JsonEditor
                             value={content}
                             onChange={setContent}
+                            readOnly={readOnly}
                             emptyIcon={Braces}
                             emptyTitle="Add JSON to minify"
                             emptyDescription="Paste formatted JSON or start typing to see minified output"

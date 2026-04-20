@@ -122,7 +122,7 @@ function ToolPageInner({ definition, sharedData }: ToolPageProps) {
             <div className="mx-auto">
                 {mainTabItems.map((tab) => (
                     <TabsContent key={tab.id} value={tab.id} className="mt-0">
-                        <tab.component sharedData={sharedData} />
+                        <tab.component sharedData={sharedData} readOnly={!!sharedData} />
                     </TabsContent>
                 ))}
                 {pluginTabs.map((tab) => (

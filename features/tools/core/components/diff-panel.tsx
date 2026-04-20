@@ -25,6 +25,7 @@ interface DiffPanelProps {
     showEditor?: boolean;
     mode?: 'text' | 'json' | 'base64';
     diffStats?: DiffStats | null;
+    readOnly?: boolean;
 }
 
 const getServerSnapshot = () => true;
@@ -46,6 +47,7 @@ export function DiffPanel({
     showEditor = true,
     mode = 'text',
     diffStats,
+    readOnly,
 }: DiffPanelProps) {
     const isLargeScreen = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
@@ -63,11 +65,13 @@ export function DiffPanel({
                                 content={safeLeft}
                                 onContentChange={onLeftChange}
                                 onClear={() => onLeftChange?.('')}
+                                hideInputActions={readOnly}
                             />
                             <div className="relative flex-1 mt-2">
                                 <Textarea
                                     value={safeLeft}
                                     onChange={(e) => onLeftChange?.(e.target.value)}
+                                    readOnly={readOnly}
                                     className="min-h-[250px] resize-none font-mono text-sm md:min-h-[400px]"
                                     style={{ fieldSizing: 'fixed', overflow: 'auto' }}
                                 />
@@ -90,11 +94,13 @@ export function DiffPanel({
                                 content={safeRight}
                                 onContentChange={onRightChange}
                                 onClear={() => onRightChange?.('')}
+                                hideInputActions={readOnly}
                             />
                             <div className="relative flex-1 mt-2">
                                 <Textarea
                                     value={safeRight}
                                     onChange={(e) => onRightChange?.(e.target.value)}
+                                    readOnly={readOnly}
                                     className="min-h-[250px] resize-none font-mono text-sm md:min-h-[400px]"
                                     style={{ fieldSizing: 'fixed', overflow: 'auto' }}
                                 />

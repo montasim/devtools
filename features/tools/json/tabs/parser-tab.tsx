@@ -14,11 +14,12 @@ import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { Braces, SearchCode } from 'lucide-react';
 import type { TabComponentProps } from '../../core/types/tool';
 
-export default function ParserTab({ sharedData }: TabComponentProps) {
+export default function ParserTab({ sharedData, readOnly }: TabComponentProps) {
     const { content, setContent, isReady } = useToolState({
         storageKey: STORAGE_KEYS.JSON_PARSER_CONTENT,
         sharedData,
         tabId: 'parser',
+        readOnly,
     });
     const [shareOpen, setShareOpen] = useState(false);
     const { parsed, type, keys, error } = useJsonParser(content);
@@ -30,6 +31,7 @@ export default function ParserTab({ sharedData }: TabComponentProps) {
         onClear: () => setContent(''),
         shareDialogOpen: shareOpen,
         setShareDialogOpen: setShareOpen,
+        readOnly,
     });
 
     if (!isReady) return null;
@@ -44,10 +46,12 @@ export default function ParserTab({ sharedData }: TabComponentProps) {
                             content={content}
                             onContentChange={setContent}
                             onClear={() => setContent('')}
+                            hideInputActions={readOnly}
                         />
                         <JsonEditor
                             value={content}
                             onChange={setContent}
+                            readOnly={readOnly}
                             emptyIcon={Braces}
                             emptyTitle="Add JSON to parse"
                             emptyDescription="Paste JSON data to inspect its structure and properties"

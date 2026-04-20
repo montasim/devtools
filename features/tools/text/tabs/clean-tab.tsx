@@ -25,11 +25,12 @@ const CLEAN_OPERATIONS = [
     { id: 'removeHtmlTags', label: 'Remove HTML tags' },
 ];
 
-export default function CleanTab({ sharedData }: TabComponentProps) {
+export default function CleanTab({ sharedData, readOnly }: TabComponentProps) {
     const { content, setContent, isReady } = useToolState({
         storageKey: STORAGE_KEYS.TEXT_CLEAN_INPUT_CONTENT,
         sharedData,
         tabId: 'clean',
+        readOnly,
     });
     const [selectedOps, setSelectedOps] = useState<string[]>(['trim', 'removeEmptyLines']);
     const [shareOpen, setShareOpen] = useState(false);
@@ -53,6 +54,7 @@ export default function CleanTab({ sharedData }: TabComponentProps) {
         onClear: () => setContent(''),
         shareDialogOpen: shareOpen,
         setShareDialogOpen: setShareOpen,
+        readOnly,
     });
 
     if (!isReady) return null;
@@ -84,10 +86,12 @@ export default function CleanTab({ sharedData }: TabComponentProps) {
                             content={content}
                             onContentChange={setContent}
                             onClear={() => setContent('')}
+                            hideInputActions={readOnly}
                         />
                         <TextEditor
                             value={content}
                             onChange={setContent}
+                            readOnly={readOnly}
                             emptyIcon={Sparkles}
                             emptyTitle="Add text to clean"
                             emptyDescription="Paste or type text, then select cleaning operations above"

@@ -15,11 +15,12 @@ import { Button } from '@/components/ui/button';
 import { Copy, Download, Braces, FileOutput } from 'lucide-react';
 import type { TabComponentProps } from '../../core/types/tool';
 
-export default function ExportTab({ sharedData }: TabComponentProps) {
+export default function ExportTab({ sharedData, readOnly }: TabComponentProps) {
     const { content, setContent, isReady } = useToolState({
         storageKey: STORAGE_KEYS.JSON_EXPORT_CONTENT,
         sharedData,
         tabId: 'export',
+        readOnly,
     });
     const [format, setFormat] = useState<'csv' | 'xml' | 'yaml'>('csv');
     const [shareOpen, setShareOpen] = useState(false);
@@ -34,6 +35,7 @@ export default function ExportTab({ sharedData }: TabComponentProps) {
         onClear: () => setContent(''),
         shareDialogOpen: shareOpen,
         setShareDialogOpen: setShareOpen,
+        readOnly,
     });
 
     if (!isReady) return null;
@@ -65,10 +67,12 @@ export default function ExportTab({ sharedData }: TabComponentProps) {
                             content={content}
                             onContentChange={setContent}
                             onClear={() => setContent('')}
+                            hideInputActions={readOnly}
                         />
                         <JsonEditor
                             value={content}
                             onChange={setContent}
+                            readOnly={readOnly}
                             emptyIcon={Braces}
                             emptyTitle="Add JSON to export"
                             emptyDescription="Paste JSON data to convert it to CSV, XML, or YAML"

@@ -130,7 +130,7 @@ export function EditorPaneHeader({
     };
 
     return (
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-2">
             <label className="text-sm font-medium text-muted-foreground">{label}</label>
             <div className="flex items-center gap-2">
                 <input

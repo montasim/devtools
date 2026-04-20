@@ -15,7 +15,7 @@ import { EditorPaneHeader } from '../../core/components/editor-pane-header';
 import { EditorFooter } from '../../core/components/editor-footer';
 import type { TabComponentProps } from '../../core/types/tool';
 
-export default function Base64ToMediaTab({ sharedData }: TabComponentProps) {
+export default function Base64ToMediaTab({ sharedData, readOnly }: TabComponentProps) {
     const [input, setInput] = useState('');
     const [shareOpen, setShareOpen] = useState(false);
     const { copy } = useClipboard();
@@ -47,6 +47,7 @@ export default function Base64ToMediaTab({ sharedData }: TabComponentProps) {
         onClear: () => setInput(''),
         shareDialogOpen: shareOpen,
         setShareDialogOpen: setShareOpen,
+        readOnly,
     });
 
     return (
@@ -59,11 +60,13 @@ export default function Base64ToMediaTab({ sharedData }: TabComponentProps) {
                             content={input}
                             onContentChange={setInput}
                             onClear={() => setInput('')}
+                            hideInputActions={readOnly}
                         />
                         <div className="relative">
                             <Textarea
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
+                                readOnly={readOnly}
                                 className="min-h-[250px] resize-none font-mono text-xs md:min-h-[400px] lg:min-h-[500px]"
                                 style={{ fieldSizing: 'fixed', overflow: 'auto' }}
                             />

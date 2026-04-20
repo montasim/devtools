@@ -14,11 +14,12 @@ import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { EditorPaneHeader } from '../../core/components/editor-pane-header';
 import type { TabComponentProps } from '../../core/types/tool';
 
-export default function ViewerTab({ sharedData }: TabComponentProps) {
+export default function ViewerTab({ sharedData, readOnly }: TabComponentProps) {
     const { content, setContent, isReady } = useToolState({
         storageKey: STORAGE_KEYS.JSON_VIEWER_CONTENT,
         sharedData,
         tabId: 'viewer',
+        readOnly,
     });
     const [shareOpen, setShareOpen] = useState(false);
     const { tree } = useJsonTree(content);
@@ -30,6 +31,7 @@ export default function ViewerTab({ sharedData }: TabComponentProps) {
         onClear: () => setContent(''),
         shareDialogOpen: shareOpen,
         setShareDialogOpen: setShareOpen,
+        readOnly,
     });
 
     if (!isReady) return null;
@@ -44,10 +46,12 @@ export default function ViewerTab({ sharedData }: TabComponentProps) {
                             content={content}
                             onContentChange={setContent}
                             onClear={() => setContent('')}
+                            hideInputActions={readOnly}
                         />
                         <JsonEditor
                             value={content}
                             onChange={setContent}
+                            readOnly={readOnly}
                             emptyIcon={Braces}
                             emptyTitle="Add JSON to visualize"
                             emptyDescription="Paste JSON data to see an interactive tree view"

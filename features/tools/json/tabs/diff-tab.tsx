@@ -11,7 +11,7 @@ import { useJsonDiff } from '../hooks/use-json-diff';
 import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 import type { TabComponentProps, SharedData } from '../../core/types/tool';
 
-export default function DiffTab({ sharedData }: TabComponentProps) {
+export default function DiffTab({ sharedData, readOnly }: TabComponentProps) {
     const {
         content: leftContent,
         setContent: setLeftContent,
@@ -20,6 +20,7 @@ export default function DiffTab({ sharedData }: TabComponentProps) {
         storageKey: STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT,
         sharedData,
         tabId: 'diff',
+        readOnly,
     });
     const [rightContent, setRightContent] = useLocalStorage(
         STORAGE_KEYS.JSON_DIFF_RIGHT_CONTENT,
@@ -38,6 +39,7 @@ export default function DiffTab({ sharedData }: TabComponentProps) {
         },
         shareDialogOpen: shareOpen,
         setShareDialogOpen: setShareOpen,
+        readOnly,
     });
 
     if (!isReady) return null;
@@ -53,6 +55,7 @@ export default function DiffTab({ sharedData }: TabComponentProps) {
                 onRightChange={setRightContent}
                 mode="json"
                 diffStats={stats}
+                readOnly={readOnly}
             />
             <ShareSidebarModal
                 open={shareOpen}

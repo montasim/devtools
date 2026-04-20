@@ -18,6 +18,7 @@ export interface TabDefinition {
 export interface TabComponentProps {
     sharedData?: SharedData | null;
     onShareDialogOpen?: (open: boolean) => void;
+    readOnly?: boolean;
 }
 
 export interface ToolDefinition {

@@ -14,11 +14,12 @@ import { Copy, Braces, FileCode } from 'lucide-react';
 import { EditorPaneHeader } from '../../core/components/editor-pane-header';
 import type { TabComponentProps } from '../../core/types/tool';
 
-export default function FormatTab({ sharedData }: TabComponentProps) {
+export default function FormatTab({ sharedData, readOnly }: TabComponentProps) {
     const { content, setContent, isReady } = useToolState({
         storageKey: STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT,
         sharedData,
         tabId: 'format',
+        readOnly,
     });
     const [shareOpen, setShareOpen] = useState(false);
     const { formatted, error } = useJsonFormat(content);
@@ -31,6 +32,7 @@ export default function FormatTab({ sharedData }: TabComponentProps) {
         onClear: () => setContent(''),
         shareDialogOpen: shareOpen,
         setShareDialogOpen: setShareOpen,
+        readOnly,
     });
 
     if (!isReady) return null;
@@ -45,10 +47,12 @@ export default function FormatTab({ sharedData }: TabComponentProps) {
                             content={content}
                             onContentChange={setContent}
                             onClear={() => setContent('')}
+                            hideInputActions={readOnly}
                         />
                         <JsonEditor
                             value={content}
                             onChange={setContent}
+                            readOnly={readOnly}
                             emptyIcon={Braces}
                             emptyTitle="Add JSON to format"
                             emptyDescription="Paste unformatted JSON or start typing to see formatted output"

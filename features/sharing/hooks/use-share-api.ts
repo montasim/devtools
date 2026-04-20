@@ -20,7 +20,7 @@ export function useShareMetadata(shareId: string) {
     });
 }
 
-export function useShareAccess(shareId: string, password?: string) {
+export function useShareAccess(shareId: string, password?: string, hasPassword?: boolean) {
     return useQuery({
         queryKey: ['share-access', shareId, password],
         queryFn: async () => {
@@ -34,6 +34,6 @@ export function useShareAccess(shareId: string, password?: string) {
             }
             return res.data ?? null;
         },
-        enabled: !!shareId,
+        enabled: !!shareId && hasPassword !== undefined && (!hasPassword || !!password),
     });
 }

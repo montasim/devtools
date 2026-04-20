@@ -15,7 +15,7 @@ import { Braces, Shield } from 'lucide-react';
 import { EditorPaneHeader } from '../../core/components/editor-pane-header';
 import type { TabComponentProps } from '../../core/types/tool';
 
-export default function SchemaTab({ sharedData }: TabComponentProps) {
+export default function SchemaTab({ sharedData, readOnly }: TabComponentProps) {
     const {
         content: jsonContent,
         setContent: setJsonContent,
@@ -24,6 +24,7 @@ export default function SchemaTab({ sharedData }: TabComponentProps) {
         storageKey: STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT,
         sharedData,
         tabId: 'schema',
+        readOnly,
     });
     const [schemaContent, setSchemaContent] = useLocalStorage(
         STORAGE_KEYS.JSON_SCHEMA_SCHEMA_CONTENT,
@@ -43,6 +44,7 @@ export default function SchemaTab({ sharedData }: TabComponentProps) {
         },
         shareDialogOpen: shareOpen,
         setShareDialogOpen: setShareOpen,
+        readOnly,
     });
 
     if (!isReady) return null;
@@ -77,10 +79,12 @@ export default function SchemaTab({ sharedData }: TabComponentProps) {
                             content={jsonContent}
                             onContentChange={setJsonContent}
                             onClear={() => setJsonContent('')}
+                            hideInputActions={readOnly}
                         />
                         <JsonEditor
                             value={jsonContent}
                             onChange={setJsonContent}
+                            readOnly={readOnly}
                             emptyIcon={Braces}
                             emptyTitle="Add JSON data"
                             emptyDescription="Paste JSON data to validate against a schema or generate one"
@@ -97,10 +101,12 @@ export default function SchemaTab({ sharedData }: TabComponentProps) {
                                     onContentChange={setSchemaContent}
                                     onClear={() => setSchemaContent('')}
                                     downloadFilename="schema.json"
+                                    hideInputActions={readOnly}
                                 />
                                 <JsonEditor
                                     value={schemaContent}
                                     onChange={setSchemaContent}
+                                    readOnly={readOnly}
                                     emptyIcon={Shield}
                                     emptyTitle="Add JSON Schema"
                                     emptyDescription="Paste a JSON Schema to validate your data against"

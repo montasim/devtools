@@ -9,6 +9,10 @@ import { Loader2 } from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { getToolDefinition } from '@/features/tools/core/config/tool-registry';
 
+import '@/app/(tools)/json/page';
+import '@/app/(tools)/text/page';
+import '@/app/(tools)/base64/page';
+
 export default function SharedContentPage({
     params,
 }: {
@@ -22,6 +26,7 @@ export default function SharedContentPage({
     const { data: accessData, isLoading: accessLoading } = useShareAccess(
         id,
         metadata?.hasPassword ? password : undefined,
+        metadata?.hasPassword,
     );
 
     const handlePasswordSubmit = (pwd: string) => {
