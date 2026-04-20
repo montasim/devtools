@@ -33,9 +33,7 @@ export function Footer() {
             <div className="mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-2 gap-8 py-12 md:grid-cols-4 lg:grid-cols-5">
                     <div className="col-span-2 lg:col-span-1">
-                        <Link href="/" className="inline-block">
-                            <Logo />
-                        </Link>
+                        <Logo />
                         <p className="mt-4 text-sm text-muted-foreground">
                             Powerful developer tools for JSON, text, and Base64 data processing.
                         </p>
