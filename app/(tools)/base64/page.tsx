@@ -4,8 +4,10 @@ import { lazy, type ComponentType } from 'react';
 import { Upload, Download, Binary } from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { createSharedTabPlugin } from '@/features/tools/core/plugins/shared';
+import { createSavedTabPlugin } from '@/features/tools/core/plugins/saved';
 import { createHistoryTabPlugin } from '@/features/tools/core/plugins/history';
 import { registerTool } from '@/features/tools/core/config/tool-registry';
+import { STORAGE_KEYS } from '@/lib/utils/constants';
 import type { TabComponentProps } from '@/features/tools/core/types/tool';
 
 const MediaToBase64Tab = lazy(
@@ -40,6 +42,30 @@ function registerToolAndGet() {
             },
         ],
         plugins: {
+            saved: createSavedTabPlugin({
+                pageName: 'base64',
+                queryKey: 'base64-saved',
+                toolMapping: {
+                    'media-to-base64': {
+                        name: 'Media to Base64',
+                        icon: Upload,
+                        color: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
+                    },
+                    'base64-to-media': {
+                        name: 'Base64 to Media',
+                        icon: Download,
+                        color: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
+                    },
+                },
+                tabMapping: {
+                    'media-to-base64': 'media-to-base64',
+                    'base64-to-media': 'base64-to-media',
+                },
+                storageKeyMapping: {
+                    'media-to-base64': STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT,
+                    'base64-to-media': STORAGE_KEYS.BASE64_TO_MEDIA_INPUT,
+                },
+            }),
             shared: createSharedTabPlugin({
                 pageName: 'base64',
                 queryKey: 'base64-shared',
