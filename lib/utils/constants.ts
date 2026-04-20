@@ -22,6 +22,8 @@ export const STORAGE_KEYS = {
     BASE64_MEDIA_TO_BASE64_INPUT: 'base64-media-to-base64-input',
     BASE64_MEDIA_TO_BASE64_OUTPUT: 'base64-media-to-base64-output',
     BASE64_TO_MEDIA_INPUT: 'base64-to-media-input',
+    QR_CREATE_INPUT: 'qr-create-input',
+    QR_CREATE_SETTINGS: 'qr-create-settings',
     THEME: 'theme',
 } as const;
 
@@ -29,6 +31,7 @@ export const PAGE_NAMES = {
     TEXT: 'text',
     JSON: 'json',
     BASE64: 'base64',
+    QRCODE: 'qrcode',
     SHARE: 'share',
 } as const;
 
@@ -57,9 +60,14 @@ export const SHARE_TABS = {
     TEXT: 'text',
 } as const;
 
+export const QRCODE_TABS = {
+    CREATE: 'create',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
     ...JSON_TABS,
     ...SHARE_TABS,
+    ...QRCODE_TABS,
 } as const;

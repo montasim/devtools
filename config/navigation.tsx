@@ -1,4 +1,4 @@
-import { Book, FileJson, FileText, FileCode, Share2, GitBranch, Link2 } from 'lucide-react';
+import { Book, FileJson, FileText, FileCode, Share2, GitBranch, Link2, QrCode } from 'lucide-react';
 
 export interface MenuItem {
     title: string;
@@ -42,6 +42,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Shorten long URLs into compact links',
                 icon: <Link2 className="size-5 shrink-0" />,
                 url: '/url-shortener',
+            },
+            {
+                title: 'QR Code Generator',
+                description: 'Generate customizable QR codes',
+                icon: <QrCode className="size-5 shrink-0" />,
+                url: '/qrcode',
             },
         ],
     },

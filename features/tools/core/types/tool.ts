@@ -12,7 +12,7 @@ export interface TabDefinition {
     icon: LucideIcon;
     component: ComponentType<TabComponentProps>;
     storageKeys?: Record<string, string>;
-    contentType: 'json' | 'text' | 'base64';
+    contentType: 'json' | 'text' | 'base64' | 'qrcode';
 }
 
 export interface TabComponentProps {

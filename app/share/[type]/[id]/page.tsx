@@ -12,6 +12,7 @@ import { getToolDefinition } from '@/features/tools/core/config/tool-registry';
 import '@/app/(tools)/json/page';
 import '@/app/(tools)/text/page';
 import '@/app/(tools)/base64/page';
+import '@/app/(tools)/qrcode/page';
 
 export default function SharedContentPage({
     params,
