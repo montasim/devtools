@@ -12,7 +12,11 @@ export function PasswordInput({ ...props }: PasswordInputProps) {
 
     return (
         <div className="relative">
-            <Input type={showPassword ? 'text' : 'password'} {...props} />
+            <Input
+                className="placeholder:opacity-30"
+                type={showPassword ? 'text' : 'password'}
+                {...props}
+            />
             <Button
                 type="button"
                 variant="ghost"

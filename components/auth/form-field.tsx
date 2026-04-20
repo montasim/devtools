@@ -31,14 +31,16 @@ export function FormField({
         value,
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value),
         placeholder,
-        className: 'mt-2',
+        className: '',
         ...(maxLength !== undefined && { maxLength }),
         ...(minLength !== undefined && { minLength }),
     };
 
     return (
         <div>
-            <Label htmlFor={id}>{label}</Label>
+            <Label className="mb-2" htmlFor={id}>
+                {label}
+            </Label>
             {type === 'password' ? (
                 <PasswordInput {...inputProps} />
             ) : (

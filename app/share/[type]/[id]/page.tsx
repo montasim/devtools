@@ -47,11 +47,7 @@ export default function SharedContentPage({
     }
 
     if (metadata.hasPassword && !passwordSubmitted) {
-        return (
-            <div className="mx-auto max-w-md py-12">
-                <PasswordPrompt onSubmit={handlePasswordSubmit} isLoading={accessLoading} />
-            </div>
-        );
+        return <PasswordPrompt onSubmit={handlePasswordSubmit} isLoading={accessLoading} />;
     }
 
     const toolDefinition = getToolDefinition(type);
