@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
+import { getTokenFromCookies, verifyToken } from '@/lib/auth/jwt';
 import bcrypt from 'bcrypt';
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -33,25 +34,31 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
         }
 
         if (link.passwordHash) {
-            if (!password) {
-                return NextResponse.json(
-                    {
-                        ok: false,
-                        error: { code: 'PASSWORD_REQUIRED', message: 'Password required' },
-                    },
-                    { status: 401 },
-                );
-            }
+            const token = await getTokenFromCookies();
+            const payload = token ? verifyToken(token) : null;
+            const isOwner = payload && link.userId === payload.userId;
 
-            const valid = await bcrypt.compare(password, link.passwordHash);
-            if (!valid) {
-                return NextResponse.json(
-                    {
-                        ok: false,
-                        error: { code: 'INVALID_PASSWORD', message: 'Incorrect password' },
-                    },
-                    { status: 401 },
-                );
+            if (!isOwner) {
+                if (!password) {
+                    return NextResponse.json(
+                        {
+                            ok: false,
+                            error: { code: 'PASSWORD_REQUIRED', message: 'Password required' },
+                        },
+                        { status: 401 },
+                    );
+                }
+
+                const valid = await bcrypt.compare(password, link.passwordHash);
+                if (!valid) {
+                    return NextResponse.json(
+                        {
+                            ok: false,
+                            error: { code: 'INVALID_PASSWORD', message: 'Incorrect password' },
+                        },
+                        { status: 401 },
+                    );
+                }
             }
         }
 

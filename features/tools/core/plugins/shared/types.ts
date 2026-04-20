@@ -6,6 +6,7 @@ export interface SharedTabConfig {
     queryKey: string;
     toolMapping: Record<string, { name: string; icon: LucideIcon; color: string }>;
     tabMapping: Record<string, string>;
+    storageKeys?: Record<string, string>;
     renderStats?: (item: SharedLinkItemData) => ReactNode;
 }
 

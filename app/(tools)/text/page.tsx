@@ -7,6 +7,7 @@ import { createSavedTabPlugin } from '@/features/tools/core/plugins/saved';
 import { createSharedTabPlugin } from '@/features/tools/core/plugins/shared';
 import { createHistoryTabPlugin } from '@/features/tools/core/plugins/history';
 import { registerTool } from '@/features/tools/core/config/tool-registry';
+import { STORAGE_KEYS } from '@/lib/utils/constants';
 import type { TabComponentProps } from '@/features/tools/core/types/tool';
 
 const TextDiffTab = lazy(
@@ -99,6 +100,11 @@ function registerToolAndGet() {
                     },
                 },
                 tabMapping: { diff: 'diff', convert: 'convert', clean: 'clean' },
+                storageKeys: {
+                    diff: STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT,
+                    convert: STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT,
+                    clean: STORAGE_KEYS.TEXT_CLEAN_INPUT_CONTENT,
+                },
             }),
             history: createHistoryTabPlugin({
                 pageName: 'text',

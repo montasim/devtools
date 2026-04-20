@@ -7,6 +7,7 @@ import { createSavedTabPlugin } from '@/features/tools/core/plugins/saved';
 import { createSharedTabPlugin } from '@/features/tools/core/plugins/shared';
 import { createHistoryTabPlugin } from '@/features/tools/core/plugins/history';
 import { registerTool } from '@/features/tools/core/config/tool-registry';
+import { STORAGE_KEYS } from '@/lib/utils/constants';
 import type { TabComponentProps } from '@/features/tools/core/types/tool';
 
 const DiffTab = lazy(
@@ -198,6 +199,15 @@ function registerToolAndGet(pageName: string) {
                     parser: 'parser',
                     export: 'export',
                     schema: 'schema',
+                },
+                storageKeys: {
+                    diff: STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT,
+                    format: STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT,
+                    minify: STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT,
+                    viewer: STORAGE_KEYS.JSON_VIEWER_CONTENT,
+                    parser: STORAGE_KEYS.JSON_PARSER_CONTENT,
+                    export: STORAGE_KEYS.JSON_EXPORT_CONTENT,
+                    schema: STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT,
                 },
             }),
             history: createHistoryTabPlugin({
