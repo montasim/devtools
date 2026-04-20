@@ -32,6 +32,7 @@ function resolveInitialContent(
     const sharedValue =
         sharedData?.tabName === tabId && sharedData?.state
             ? ((sharedData.state as Record<string, unknown>).leftContent as string) ||
+              ((sharedData.state as Record<string, unknown>).content as string) ||
               ((sharedData.state as Record<string, unknown>).inputContent as string) ||
               ''
             : '';
