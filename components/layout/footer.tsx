@@ -29,7 +29,7 @@ export function Footer() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="border-t bg-background">
+        <footer className="border-t bg-background mt-10">
             <div className="mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-2 gap-8 py-12 md:grid-cols-4 lg:grid-cols-5">
                     <div className="col-span-2 lg:col-span-1">

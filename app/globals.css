@@ -70,6 +70,8 @@
     --shadow-opacity: var(--shadow-opacity);
     --color-shadow-color: var(--shadow-color);
     --color-destructive-foreground: var(--destructive-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
 }
 
 :root {
@@ -106,6 +108,8 @@
     --sidebar-border: oklch(0.8699 0 0);
     --sidebar-ring: oklch(0.6487 0.1538 150.3071);
     --destructive-foreground: oklch(1 0 0);
+    --warning: oklch(0.75 0.183 55);
+    --warning-foreground: oklch(0.25 0.05 55);
     --font-sans: Plus Jakarta Sans, sans-serif;
     --font-serif: Source Serif 4, serif;
     --font-mono: JetBrains Mono, monospace;
@@ -161,6 +165,8 @@
     --sidebar-border: oklch(0.3867 0 0);
     --sidebar-ring: oklch(0.6487 0.1538 150.3071);
     --destructive-foreground: oklch(1 0 0);
+    --warning: oklch(0.75 0.183 55);
+    --warning-foreground: oklch(0.2 0.05 55);
     --radius: 0.5rem;
     --font-sans: Plus Jakarta Sans, sans-serif;
     --font-serif: Source Serif 4, serif;

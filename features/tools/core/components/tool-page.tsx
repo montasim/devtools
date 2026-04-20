@@ -85,7 +85,7 @@ function ToolPageInner({ definition, sharedData }: ToolPageProps) {
     return (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <div className="border-b">
-                <div className="mx-auto py-4">
+                <div className="mx-auto py-2">
                     <TabsList
                         variant="line"
                         className="h-auto w-full justify-start overflow-x-auto border-0 bg-transparent p-0 scrollbar-hide"

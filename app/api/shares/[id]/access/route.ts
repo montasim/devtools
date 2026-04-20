@@ -5,7 +5,13 @@ import bcrypt from 'bcrypt';
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { id } = await params;
-        const { password } = await request.json();
+        let body: { password?: string } = {};
+        try {
+            body = await request.json();
+        } catch {
+            body = {};
+        }
+        const { password } = body;
 
         const link = await prisma.sharedLink.findUnique({
             where: { id },

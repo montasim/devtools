@@ -23,8 +23,17 @@ export function ShareResult({ url }: ShareResultProps) {
     return (
         <div className="flex items-center gap-2">
             <Input value={url} readOnly className="font-mono text-sm" />
-            <Button variant="outline" size="icon" onClick={handleCopy}>
-                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+            <Button
+                variant="outline"
+                size="icon"
+                onClick={handleCopy}
+                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+            >
+                {copied ? (
+                    <Check className="h-4 w-4 text-primary-foreground" />
+                ) : (
+                    <Copy className="h-4 w-4" />
+                )}
             </Button>
         </div>
     );

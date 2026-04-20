@@ -132,7 +132,7 @@ export function EditorPaneHeader({
     return (
         <div className="flex items-center justify-between">
             <label className="text-sm font-medium text-muted-foreground">{label}</label>
-            <div className="flex items-center gap-0.5">
+            <div className="flex items-center gap-2">
                 <input
                     ref={fileInputRef}
                     type="file"
@@ -145,7 +145,7 @@ export function EditorPaneHeader({
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
-                                    variant="ghost"
+                                    variant="outline"
                                     size="icon"
                                     className="h-7 w-7"
                                     onClick={handleUpload}
@@ -158,7 +158,7 @@ export function EditorPaneHeader({
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
-                                    variant="ghost"
+                                    variant="outline"
                                     size="icon"
                                     className="h-7 w-7"
                                     onClick={() => {
@@ -174,7 +174,7 @@ export function EditorPaneHeader({
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
-                                    variant="ghost"
+                                    variant="outline"
                                     size="icon"
                                     className="h-7 w-7"
                                     onClick={handlePaste}
@@ -190,7 +190,7 @@ export function EditorPaneHeader({
                 <Tooltip>
                     <TooltipTrigger asChild>
                         <Button
-                            variant="ghost"
+                            variant="outline"
                             size="icon"
                             className="h-7 w-7"
                             onClick={handleCopy}
@@ -205,7 +205,7 @@ export function EditorPaneHeader({
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Button
-                                variant="ghost"
+                                variant="outline"
                                 size="icon"
                                 className="h-7 w-7"
                                 onClick={handleDownload}
@@ -221,7 +221,7 @@ export function EditorPaneHeader({
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Button
-                                variant="ghost"
+                                variant="outline"
                                 size="icon"
                                 className="h-7 w-7"
                                 onClick={handleClear}

@@ -8,6 +8,24 @@ import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
+const EXPIRATION_OPTIONS = [
+    { value: 'never', label: 'Never', ms: 0 },
+    { value: '1h', label: '1 Hour', ms: 3600_000 },
+    { value: '24h', label: '24 Hours', ms: 86400_000 },
+    { value: '7d', label: '7 Days', ms: 604_800_000 },
+    { value: '30d', label: '30 Days', ms: 2592_000_000 },
+] as const;
+
+const FORM_FIELDS = [
+    { id: 'share-title', label: 'Title', placeholder: 'Enter a title...', type: 'input' },
+    {
+        id: 'share-comment',
+        label: 'Comment (optional)',
+        placeholder: 'Add a comment...',
+        type: 'textarea',
+    },
+] as const;
+
 interface ShareFormProps {
     onSubmit: (data: {
         title: string;
@@ -26,19 +44,9 @@ export function ShareForm({ onSubmit, isLoading }: ShareFormProps) {
     const [password, setPassword] = useState('');
 
     const getExpiresAt = (): string | null => {
-        const now = new Date();
-        switch (expiration) {
-            case '1h':
-                return new Date(now.getTime() + 60 * 60 * 1000).toISOString();
-            case '24h':
-                return new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString();
-            case '7d':
-                return new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString();
-            case '30d':
-                return new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
-            default:
-                return null;
-        }
+        const option = EXPIRATION_OPTIONS.find((o) => o.value === expiration);
+        if (!option || option.ms === 0) return null;
+        return new Date(Date.now() + option.ms).toISOString();
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -51,50 +59,44 @@ export function ShareForm({ onSubmit, isLoading }: ShareFormProps) {
         });
     };
 
+    const formValues: Record<string, string> = { 'share-title': title, 'share-comment': comment };
+    const formSetters: Record<string, (v: string) => void> = {
+        'share-title': setTitle,
+        'share-comment': setComment,
+    };
+
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-                <Label htmlFor="share-title">Title</Label>
-                <Input
-                    id="share-title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Enter a title..."
-                />
-            </div>
-            <div className="flex flex-col gap-2">
-                <Label htmlFor="share-comment">Comment (optional)</Label>
-                <Textarea
-                    id="share-comment"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="Add a comment..."
-                    rows={2}
-                />
-            </div>
+            {FORM_FIELDS.map((field) => (
+                <div key={field.id} className="flex flex-col gap-2">
+                    <Label htmlFor={field.id}>{field.label}</Label>
+                    {field.type === 'textarea' ? (
+                        <Textarea
+                            id={field.id}
+                            value={formValues[field.id]}
+                            onChange={(e) => formSetters[field.id](e.target.value)}
+                            placeholder={field.placeholder}
+                            rows={2}
+                        />
+                    ) : (
+                        <Input
+                            id={field.id}
+                            value={formValues[field.id]}
+                            onChange={(e) => formSetters[field.id](e.target.value)}
+                            placeholder={field.placeholder}
+                        />
+                    )}
+                </div>
+            ))}
             <div className="flex flex-col gap-2">
                 <Label>Expiration</Label>
                 <RadioGroup value={expiration} onValueChange={setExpiration}>
-                    <div className="flex items-center gap-2">
-                        <RadioGroupItem value="never" id="never" />
-                        <Label htmlFor="never">Never</Label>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <RadioGroupItem value="1h" id="1h" />
-                        <Label htmlFor="1h">1 Hour</Label>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <RadioGroupItem value="24h" id="24h" />
-                        <Label htmlFor="24h">24 Hours</Label>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <RadioGroupItem value="7d" id="7d" />
-                        <Label htmlFor="7d">7 Days</Label>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <RadioGroupItem value="30d" id="30d" />
-                        <Label htmlFor="30d">30 Days</Label>
-                    </div>
+                    {EXPIRATION_OPTIONS.map((option) => (
+                        <div key={option.value} className="flex items-center gap-2">
+                            <RadioGroupItem value={option.value} id={option.value} />
+                            <Label htmlFor={option.value}>{option.label}</Label>
+                        </div>
+                    ))}
                 </RadioGroup>
             </div>
             <div className="flex items-center gap-3">

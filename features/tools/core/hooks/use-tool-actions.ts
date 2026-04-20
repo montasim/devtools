@@ -48,6 +48,7 @@ export function useToolActions(options: UseToolActionsOptions) {
             icon: Save,
             onClick: handleSave,
             variant: 'outline',
+            className: 'bg-warning/10 text-warning hover:bg-warning/20',
             disabled: !hasContent,
         });
     }

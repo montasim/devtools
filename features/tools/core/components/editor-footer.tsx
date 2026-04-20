@@ -111,23 +111,49 @@ export function EditorFooter({ content, mode = 'text' }: EditorFooterProps) {
     }, [content, mode]);
 
     return (
-        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-            <Stat icon={HardDrive} label={formatSize(stats.data.bytes)} />
-            <Stat icon={Type} label={`${stats.data.chars.toLocaleString()} chars`} />
-            <Stat icon={AlignLeft} label={`${stats.data.lines.toLocaleString()} lines`} />
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                <Stat icon={HardDrive} label={formatSize(stats.data.bytes)} />
+                <Stat icon={Type} label={`${stats.data.chars.toLocaleString()} chars`} />
+                <Stat icon={AlignLeft} label={`${stats.data.lines.toLocaleString()} lines`} />
 
-            {stats.mode === 'text' && (
-                <>
-                    <Stat icon={WholeWord} label={`${stats.data.words.toLocaleString()} words`} />
+                {stats.mode === 'text' && (
+                    <>
+                        <Stat
+                            icon={WholeWord}
+                            label={`${stats.data.words.toLocaleString()} words`}
+                        />
+                        <Stat
+                            icon={MessageSquare}
+                            label={`${stats.data.sentences.toLocaleString()} sentences`}
+                        />
+                    </>
+                )}
+
+                {stats.mode === 'json' && (
+                    <>
+                        {stats.data.type !== '-' && (
+                            <Stat icon={Braces} label={`Type: ${stats.data.type}`} />
+                        )}
+                        {stats.data.keys > 0 && (
+                            <Stat icon={Key} label={`${stats.data.keys.toLocaleString()} keys`} />
+                        )}
+                        {stats.data.depth > 0 && (
+                            <Stat icon={Layers} label={`Depth: ${stats.data.depth}`} />
+                        )}
+                    </>
+                )}
+
+                {stats.mode === 'base64' && (
                     <Stat
-                        icon={MessageSquare}
-                        label={`${stats.data.sentences.toLocaleString()} sentences`}
+                        icon={FileDown}
+                        label={`Decoded: ${formatSize(stats.data.decodedBytes)}`}
                     />
-                </>
-            )}
+                )}
+            </div>
 
             {stats.mode === 'json' && (
-                <>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
                     {stats.data.valid ? (
                         <span className="inline-flex items-center gap-1 text-green-600 dark:text-green-400">
                             <CheckCircle className="h-3 w-3" />
@@ -141,20 +167,7 @@ export function EditorFooter({ content, mode = 'text' }: EditorFooterProps) {
                             </span>
                         )
                     )}
-                    {stats.data.type !== '-' && (
-                        <Stat icon={Braces} label={`Type: ${stats.data.type}`} />
-                    )}
-                    {stats.data.keys > 0 && (
-                        <Stat icon={Key} label={`${stats.data.keys.toLocaleString()} keys`} />
-                    )}
-                    {stats.data.depth > 0 && (
-                        <Stat icon={Layers} label={`Depth: ${stats.data.depth}`} />
-                    )}
-                </>
-            )}
-
-            {stats.mode === 'base64' && (
-                <Stat icon={FileDown} label={`Decoded: ${formatSize(stats.data.decodedBytes)}`} />
+                </div>
             )}
         </div>
     );
