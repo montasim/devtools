@@ -9,6 +9,7 @@ const footerSections = [
             { label: 'Text Tools', href: '/text' },
             { label: 'Base64 Tools', href: '/base64' },
             { label: 'Share Text', href: '/share/text' },
+            { label: 'Git Branch Generator', href: '/git-branch-generator' },
         ],
     },
     {
