@@ -1,28 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth/jwt';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+const PROTECTED_PATHS = ['/profile', '/settings'];
 
 export function proxy(request: NextRequest) {
-    // Protected routes
-    const protectedPaths = ['/profile', '/settings'];
-    const isProtectedRoute = protectedPaths.some((path) =>
-        request.nextUrl.pathname.startsWith(path),
-    );
+    const token = request.cookies.get('auth-token');
+    const { pathname } = request.nextUrl;
 
-    if (isProtectedRoute) {
-        const token = request.cookies.get('auth-token')?.value;
-
-        if (!token) {
+    for (const path of PROTECTED_PATHS) {
+        if (pathname.startsWith(path) && !token) {
             const loginUrl = new URL('/login', request.url);
-            loginUrl.searchParams.set('redirect', request.nextUrl.pathname);
-            return NextResponse.redirect(loginUrl);
-        }
-
-        try {
-            verifyToken(token);
-            return NextResponse.next();
-        } catch (error) {
-            const loginUrl = new URL('/login', request.url);
-            loginUrl.searchParams.set('error', 'invalid_token');
+            loginUrl.searchParams.set('callbackUrl', pathname);
             return NextResponse.redirect(loginUrl);
         }
     }

@@ -11,10 +11,6 @@ interface UseLogoutConfirmDialogProps {
 export function useLogoutConfirmDialog({ onConfirm }: UseLogoutConfirmDialogProps) {
     const [showDialog, setShowDialog] = useState(false);
 
-    const handleLogoutClick = () => {
-        setShowDialog(true);
-    };
-
     const handleConfirmLogout = () => {
         onConfirm();
         setShowDialog(false);
@@ -22,7 +18,7 @@ export function useLogoutConfirmDialog({ onConfirm }: UseLogoutConfirmDialogProp
 
     const LogoutButton = ({ children, ...props }: React.ComponentProps<typeof Button>) => (
         <>
-            <Button {...props} onClick={handleLogoutClick}>
+            <Button {...props} onClick={() => setShowDialog(true)}>
                 {children}
             </Button>
             <ConfirmDialog
@@ -38,5 +34,5 @@ export function useLogoutConfirmDialog({ onConfirm }: UseLogoutConfirmDialogProp
         </>
     );
 
-    return { LogoutButton, showDialog, setShowDialog };
+    return { LogoutButton };
 }

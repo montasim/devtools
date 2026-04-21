@@ -1,85 +1,71 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import bcrypt from 'bcrypt';
-import { getUserByEmail } from '@/lib/auth/repos/user.repo';
-import { generateToken } from '@/lib/auth/jwt';
-import { checkRateLimit } from '@/lib/rate-limit';
-import { authConfig } from '@/lib/config/auth';
+import { NextResponse } from 'next/server';
+import { findUserByEmail, verifyPassword } from '@/lib/auth/repos/user.repo';
+import { signToken, setAuthCookie } from '@/lib/auth/jwt';
+import { rateLimit } from '@/lib/rate-limit';
 
-// Request validation schema
-const loginSchema = z.object({
-    email: z.string().email('Invalid email format'),
-    password: z.string().min(1, 'Password is required'),
-});
+export async function POST(request: Request) {
+    const limiter = rateLimit(request.headers.get('x-forwarded-for') ?? 'unknown', {
+        limit: 5,
+        windowMs: 60_000,
+    });
+    if (!limiter.success) {
+        return NextResponse.json(
+            { ok: false, error: { code: 'RATE_LIMITED', message: 'Too many attempts' } },
+            { status: 429 },
+        );
+    }
 
-export async function POST(request: NextRequest) {
     try {
-        // Parse request body
-        const body = await request.json();
-
-        // Validate request format
-        const validation = loginSchema.safeParse(body);
-        if (!validation.success) {
+        const { email, password } = await request.json();
+        if (!email || !password) {
             return NextResponse.json(
-                { error: validation.error.issues[0].message },
+                {
+                    ok: false,
+                    error: { code: 'VALIDATION', message: 'Email and password required' },
+                },
                 { status: 400 },
             );
         }
 
-        const { email, password } = validation.data;
-
-        // Check rate limit (5 login attempts per 15 minutes per IP)
-        const ip = request.headers.get('x-forwarded-for') || 'unknown';
-        const rateLimitResult = await checkRateLimit(ip, 'login_attempt');
-
-        if (!rateLimitResult.success) {
+        const user = await findUserByEmail(email);
+        if (!user) {
             return NextResponse.json(
-                { error: 'Too many login attempts. Please try again later.' },
-                { status: 429 },
+                {
+                    ok: false,
+                    error: { code: 'INVALID_CREDENTIALS', message: 'Invalid email or password' },
+                },
+                { status: 401 },
             );
         }
 
-        // Get user by email
-        const user = await getUserByEmail(email);
-        if (!user) {
-            // Use generic error message to prevent user enumeration
-            return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+        const valid = await verifyPassword(password, user.passwordHash);
+        if (!valid) {
+            return NextResponse.json(
+                {
+                    ok: false,
+                    error: { code: 'INVALID_CREDENTIALS', message: 'Invalid email or password' },
+                },
+                { status: 401 },
+            );
         }
 
-        // Verify password using bcrypt compare
-        const isValid = await bcrypt.compare(password, user.passwordHash);
-        if (!isValid) {
-            return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-        }
+        const token = signToken({ userId: user.id, email: user.email });
+        await setAuthCookie(token);
 
-        // Generate JWT token
-        const token = generateToken({
-            userId: user.id,
-            email: user.email,
-        });
-
-        // Set HTTP-only cookie
-        const response = NextResponse.json({
-            success: true,
-            user: {
+        return NextResponse.json({
+            ok: true,
+            data: {
                 id: user.id,
                 email: user.email,
                 name: user.name,
+                emailVerified: user.emailVerified,
             },
         });
-
-        response.cookies.set('auth-token', token, {
-            httpOnly: true,
-            secure: authConfig.secureCookies,
-            sameSite: 'strict',
-            maxAge: 7 * 24 * 60 * 60, // 7 days
-            path: '/',
-            domain: authConfig.cookieDomain,
-        });
-
-        return response;
     } catch (error) {
         console.error('Login error:', error);
-        return NextResponse.json({ error: 'Login failed. Please try again.' }, { status: 500 });
+        return NextResponse.json(
+            { ok: false, error: { code: 'INTERNAL', message: 'Internal server error' } },
+            { status: 500 },
+        );
     }
 }

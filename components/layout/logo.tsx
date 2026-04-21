@@ -1,9 +1,11 @@
-import { config } from '@/config/config';
+import Link from 'next/link';
 import { Terminal } from 'lucide-react';
 
-export const Logo = () => (
-    <div className="flex items-center gap-2">
-        <Terminal className="h-8 w-8 text-primary" />
-        {config.app.title}
-    </div>
-);
+export function Logo() {
+    return (
+        <Link href="/" className="flex items-center gap-2 font-bold text-xl">
+            <Terminal className="h-8 w-8 text-primary" />
+            <span className="font-medium">DevTools</span>
+        </Link>
+    );
+}

@@ -1,9 +1,7 @@
 'use client';
 
-/* eslint-disable react-hooks/set-state-in-effect */
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
-import { STORAGE_KEYS } from '@/lib/constants';
 import {
     GitBranch,
     Copy,
@@ -18,121 +16,80 @@ import {
     Palette,
     Cpu,
     Slash,
+    Check,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { STORAGE_KEYS } from '@/lib/utils/constants';
+import { useClipboard } from '@/lib/hooks/use-clipboard';
+import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 
 const ISSUE_TYPES = [
-    { value: 'none', label: 'None', color: 'bg-slate-400', icon: Slash },
-    { value: 'feature', label: 'Feature', color: 'bg-green-400', icon: Sparkles },
-    { value: 'fix', label: 'Bug Fix', color: 'bg-red-400', icon: Wrench },
-    { value: 'hotfix', label: 'Hotfix', color: 'bg-orange-400', icon: Flame },
-    { value: 'refactor', label: 'Refactor', color: 'bg-blue-400', icon: RefreshCw },
-    { value: 'docs', label: 'Documentation', color: 'bg-purple-400', icon: FileText },
-    { value: 'test', label: 'Test', color: 'bg-yellow-400', icon: CheckCircle },
-    { value: 'chore', label: 'Chore', color: 'bg-gray-400', icon: Settings },
-    { value: 'perf', label: 'Performance', color: 'bg-pink-400', icon: Zap },
-    { value: 'style', label: 'Style', color: 'bg-indigo-400', icon: Palette },
-    { value: 'ci', label: 'CI/CD', color: 'bg-cyan-400', icon: Cpu },
+    { value: 'none', label: 'None', color: 'bg-slate-500', icon: Slash },
+    { value: 'feature', label: 'Feature', color: 'bg-green-500', icon: Sparkles },
+    { value: 'fix', label: 'Bug Fix', color: 'bg-red-500', icon: Wrench },
+    { value: 'hotfix', label: 'Hotfix', color: 'bg-orange-500', icon: Flame },
+    { value: 'refactor', label: 'Refactor', color: 'bg-blue-500', icon: RefreshCw },
+    { value: 'docs', label: 'Docs', color: 'bg-purple-500', icon: FileText },
+    { value: 'test', label: 'Test', color: 'bg-yellow-500', icon: CheckCircle },
+    { value: 'chore', label: 'Chore', color: 'bg-gray-500', icon: Settings },
+    { value: 'perf', label: 'Perf', color: 'bg-pink-500', icon: Zap },
+    { value: 'style', label: 'Style', color: 'bg-indigo-500', icon: Palette },
+    { value: 'ci', label: 'CI/CD', color: 'bg-cyan-500', icon: Cpu },
 ];
 
-// Structured data for SEO
-const StructuredData = () => (
-    <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-                '@context': 'https://schema.org',
-                '@type': 'WebApplication',
-                name: 'Git Branch Name Generator',
-                description:
-                    'Generate consistent and well-formatted git branch names instantly. Support for issue types, issue IDs, and customizable word separators.',
-                url: 'https://devtools.com/git-branch-generator',
-                applicationCategory: 'DeveloperApplication',
-                operatingSystem: 'Web',
-                offers: {
-                    '@type': 'Offer',
-                    price: '0',
-                    priceCurrency: 'USD',
-                },
-                featureList: [
-                    'Multiple issue types (feature, fix, hotfix, refactor, docs, test, etc.)',
-                    'Optional issue ID support (JIRA, GitHub Issues, etc.)',
-                    'Customizable word separators (dash or underscore)',
-                    'One-click copy to clipboard',
-                    'Local storage for persistent preferences',
-                ],
-                browserRequirements: 'Requires JavaScript. Works on all modern browsers.',
-            }),
-        }}
-    />
-);
+const EXAMPLES = [
+    { branch: 'feature/123/add-user-auth', label: 'Feature with issue ID' },
+    { branch: 'fix/fix-login-bug', label: 'Bug fix without ID' },
+    { branch: 'docs/JIRA-456/update-api-docs', label: 'Docs with JIRA ID' },
+];
 
 export default function GitBranchGeneratorPage() {
-    const [issueType, setIssueType] = useState('none');
+    const [issueType, setIssueType] = useLocalStorage('git-branch-type', 'none');
     const [issueId, setIssueId] = useState('');
     const [description, setDescription] = useState('');
-    const [generatedBranch, setGeneratedBranch] = useState('');
+    const [generatedBranch, setGeneratedBranch] = useLocalStorage(
+        STORAGE_KEYS.GIT_BRANCH_LAST_GENERATED,
+        '',
+    );
+    const [copied, setCopied] = useState(false);
+    const { copy } = useClipboard();
 
-    // Load saved branch name on client-side mount
-    useEffect(() => {
-        try {
-            const saved = localStorage.getItem(STORAGE_KEYS.GIT_BRANCH_LAST_GENERATED);
-            if (saved) {
-                setGeneratedBranch(saved);
-            }
-        } catch (error) {
-            console.error('Failed to load saved branch name:', error);
-        }
-    }, []);
-
-    const generateBranchName = () => {
+    const generateBranchName = useCallback(() => {
         if (!description.trim()) {
             toast.error('Please enter a description');
             return;
         }
 
-        // Clean and format the description
         const cleanedDescription = description
             .toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
+            .replace(/[^a-z0-9\s-]/g, '')
             .trim()
-            .replace(/\s+/g, '-') // Replace spaces with hyphens
-            .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
-            .substring(0, 50); // Limit to 50 characters
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .substring(0, 50);
 
         let branchName = '';
-
-        // Only add issue type prefix if it's not "none"
         if (issueType !== 'none') {
             branchName = `${issueType}`;
         }
-
         if (issueId.trim()) {
             branchName += (branchName ? '/' : '') + issueId.trim();
         }
-
         branchName += (branchName ? '/' : '') + cleanedDescription;
 
         setGeneratedBranch(branchName);
+    }, [description, issueType, issueId, setGeneratedBranch]);
 
-        // Save to localStorage
-        try {
-            localStorage.setItem(STORAGE_KEYS.GIT_BRANCH_LAST_GENERATED, branchName);
-        } catch (error) {
-            console.error('Failed to save branch name:', error);
-        }
-    };
-
-    const copyToClipboard = () => {
+    const handleCopy = () => {
         if (!generatedBranch) {
             toast.error('No branch name to copy');
             return;
         }
-
-        navigator.clipboard.writeText(generatedBranch);
-        toast.success('Branch name copied to clipboard');
+        copy(generatedBranch);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
     };
 
     const resetForm = () => {
@@ -140,203 +97,132 @@ export default function GitBranchGeneratorPage() {
         setIssueId('');
         setDescription('');
         setGeneratedBranch('');
-
-        // Clear from localStorage
-        try {
-            localStorage.removeItem(STORAGE_KEYS.GIT_BRANCH_LAST_GENERATED);
-        } catch (error) {
-            console.error('Failed to clear saved branch name:', error);
-        }
     };
 
     return (
-        <>
-            <StructuredData />
-            <div className="min-h-screen">
-                {/* Header */}
-                <div className="mx-auto border-b border-gray-200 dark:border-gray-800">
-                    <div className="mx-auto py-4">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-                                <GitBranch className="w-6 h-6 text-white" />
-                            </div>
-                            <div>
-                                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                                    Git Branch Name Generator
-                                </h1>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    Generate consistent and well-formatted git branch names
-                                </p>
-                            </div>
-                        </div>
+        <div className="mx-auto py-4">
+            <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
+                    <GitBranch className="h-5 w-5" />
+                </div>
+                <div>
+                    <h1 className="text-2xl font-bold">Git Branch Name Generator</h1>
+                    <p className="text-sm text-muted-foreground">
+                        Generate consistent and well-formatted git branch names
+                    </p>
+                </div>
+            </div>
+
+            <div className="space-y-6">
+                <div>
+                    <Label className="mb-3 block text-sm font-semibold">Issue Type</Label>
+                    <div className="flex flex-wrap gap-2">
+                        {ISSUE_TYPES.map((type) => {
+                            const Icon = type.icon;
+                            const active = issueType === type.value;
+                            return (
+                                <button
+                                    key={type.value}
+                                    onClick={() => setIssueType(type.value)}
+                                    className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all ${
+                                        active
+                                            ? `${type.color} text-white shadow-md`
+                                            : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                                    }`}
+                                >
+                                    <Icon className="h-3.5 w-3.5" />
+                                    {type.label}
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
 
-                {/* Main Content */}
-                <div className="mx-auto py-4">
-                    <div className="mx-auto">
-                        <div className="py-4">
-                            {/* Issue Type */}
-                            <div className="mb-6">
-                                <Label
-                                    htmlFor="issue-type"
-                                    className="text-base font-semibold mb-3 block"
-                                >
-                                    Issue Type
-                                </Label>
-                                <div className="flex md:grid md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-9 gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-2 px-2 md:mx-0 md:px-0">
-                                    {ISSUE_TYPES.map((type) => {
-                                        const Icon = type.icon;
-                                        return (
-                                            <button
-                                                key={type.value}
-                                                onClick={() => setIssueType(type.value)}
-                                                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all shrink-0 ${
-                                                    issueType === type.value
-                                                        ? `${type.color} text-white shadow-md`
-                                                        : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                                                }`}
-                                            >
-                                                <Icon className="w-4 h-4" />
-                                                <span>{type.label}</span>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            </div>
+                <div>
+                    <Label htmlFor="issue-id" className="mb-2 block text-sm font-semibold">
+                        Issue ID{' '}
+                        <span className="font-normal text-muted-foreground">(optional)</span>
+                    </Label>
+                    <Input
+                        id="issue-id"
+                        type="text"
+                        value={issueId}
+                        onChange={(e) => setIssueId(e.target.value)}
+                        placeholder="e.g., 123, JIRA-123"
+                    />
+                    <p className="mt-1 text-xs text-muted-foreground">
+                        Ticket number or issue identifier
+                    </p>
+                </div>
 
-                            {/* Issue ID */}
-                            <div className="mb-6">
-                                <Label
-                                    htmlFor="issue-id"
-                                    className="text-base font-semibold mb-2 block"
-                                >
-                                    Issue ID{' '}
-                                    <span className="text-sm font-normal text-gray-500">
-                                        (optional)
-                                    </span>
-                                </Label>
-                                <Input
-                                    id="issue-id"
-                                    type="text"
-                                    value={issueId}
-                                    onChange={(e) => setIssueId(e.target.value)}
-                                    placeholder="e.g., 123, JIRA-123"
-                                    className="w-full"
-                                />
-                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                    Ticket number or issue identifier
-                                </p>
-                            </div>
+                <div>
+                    <Label htmlFor="description" className="mb-2 block text-sm font-semibold">
+                        Description
+                    </Label>
+                    <Input
+                        id="description"
+                        type="text"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        placeholder="e.g., Add user authentication"
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') generateBranchName();
+                        }}
+                    />
+                    <p className="mt-1 text-xs text-muted-foreground">
+                        Brief description of the changes
+                    </p>
+                </div>
 
-                            {/* Description */}
-                            <div className="mb-6">
-                                <Label
-                                    htmlFor="description"
-                                    className="text-base font-semibold mb-2 block"
-                                >
-                                    Description
-                                </Label>
-                                <Input
-                                    id="description"
-                                    type="text"
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    placeholder="e.g., Add user authentication"
-                                    className="w-full"
-                                    onKeyPress={(e) => {
-                                        if (e.key === 'Enter') {
-                                            generateBranchName();
-                                        }
-                                    }}
-                                />
-                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                    Brief description of the changes
-                                </p>
-                            </div>
+                <div className="flex gap-3">
+                    <Button onClick={generateBranchName} className="gap-2">
+                        <GitBranch className="h-4 w-4" />
+                        Generate
+                    </Button>
+                    <Button onClick={resetForm} variant="outline" className="gap-2">
+                        <RefreshCw className="h-4 w-4" />
+                        Reset
+                    </Button>
+                </div>
 
-                            {/* Action Buttons */}
-                            <div className="flex flex-col sm:flex-row gap-3 mb-6">
-                                <Button onClick={generateBranchName} className="gap-2" size="lg">
-                                    <GitBranch className="w-4 h-4" />
-                                    Generate Branch Name
-                                </Button>
-                                <Button
-                                    onClick={resetForm}
-                                    variant="outline"
-                                    className="gap-2"
-                                    size="lg"
-                                >
-                                    <RefreshCw className="w-4 h-4" />
-                                    Reset
-                                </Button>
-                            </div>
-
-                            {/* Generated Branch Name */}
-                            {generatedBranch && (
-                                <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border border-green-200 dark:border-green-800 rounded-lg p-6">
-                                    <div className="flex items-center justify-between mb-3">
-                                        <Label className="text-base font-semibold text-green-900 dark:text-green-100">
-                                            Generated Branch Name
-                                        </Label>
-                                        <Button
-                                            onClick={copyToClipboard}
-                                            variant="outline"
-                                            size="sm"
-                                            className="gap-2"
-                                        >
-                                            <Copy className="w-4 h-4" />
-                                            Copy
-                                        </Button>
-                                    </div>
-                                    <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-green-200 dark:border-green-800">
-                                        <code className="text-sm sm:text-base font-mono text-green-700 dark:text-green-300 break-all">
-                                            {generatedBranch}
-                                        </code>
-                                    </div>
-                                    <p className="text-xs text-green-600 dark:text-green-400 mt-2">
-                                        Press Enter in the description field or click Generate to
-                                        create the branch name
-                                    </p>
-                                </div>
-                            )}
+                {generatedBranch && (
+                    <div className="rounded-lg border bg-primary/5 p-4">
+                        <div className="mb-2 flex items-center justify-between">
+                            <Label className="text-sm font-semibold">Generated Branch Name</Label>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={handleCopy}
+                                className="gap-1.5"
+                            >
+                                {copied ? (
+                                    <Check className="h-3.5 w-3.5" />
+                                ) : (
+                                    <Copy className="h-3.5 w-3.5" />
+                                )}
+                                {copied ? 'Copied' : 'Copy'}
+                            </Button>
                         </div>
-
-                        {/* Examples */}
-                        <div className="mt-4 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                                Branch Name Examples
-                            </h2>
-                            <div className="space-y-3">
-                                <div className="flex items-center gap-3 text-sm">
-                                    <span className="font-mono text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 px-2 py-1 rounded">
-                                        feature/123/add-user-auth
-                                    </span>
-                                    <span className="text-gray-600 dark:text-gray-400">
-                                        Feature with issue ID
-                                    </span>
-                                </div>
-                                <div className="flex items-center gap-3 text-sm">
-                                    <span className="font-mono text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 px-2 py-1 rounded">
-                                        fix/fix-login-bug
-                                    </span>
-                                    <span className="text-gray-600 dark:text-gray-400">
-                                        Bug fix without ID
-                                    </span>
-                                </div>
-                                <div className="flex items-center gap-3 text-sm">
-                                    <span className="font-mono bg-purple-600 dark:bg-purple-400 text-white px-2 py-1 rounded">
-                                        docs/JIRA-456-update-api-docs
-                                    </span>
-                                    <span className="text-gray-600 dark:text-gray-400">
-                                        Documentation with JIRA ID
-                                    </span>
-                                </div>
-                            </div>
+                        <div className="rounded-md border bg-background p-3">
+                            <code className="break-all font-mono text-sm">{generatedBranch}</code>
                         </div>
+                    </div>
+                )}
+
+                <div className="rounded-lg border p-4">
+                    <h2 className="mb-3 text-sm font-semibold">Examples</h2>
+                    <div className="space-y-2">
+                        {EXAMPLES.map((ex) => (
+                            <div key={ex.branch} className="flex items-center gap-3 text-sm">
+                                <code className="rounded bg-primary/10 px-2 py-1 font-mono text-xs text-primary">
+                                    {ex.branch}
+                                </code>
+                                <span className="text-muted-foreground">{ex.label}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

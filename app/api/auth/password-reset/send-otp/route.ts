@@ -1,62 +1,50 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { generateOTP, hashOTP } from '@/lib/auth/otp';
-import { createOTP } from '@/lib/auth/repos/otp.repo';
-import { sendOTPEmail } from '@/lib/auth/email';
-import { checkRateLimit } from '@/lib/rate-limit';
+import { NextResponse } from 'next/server';
+import { generateOtp, hashOtp, getOtpExpiry } from '@/lib/auth/otp';
+import { sendOtpEmail } from '@/lib/auth/email';
+import { createOtp, invalidateOtps } from '@/lib/auth/repos/otp.repo';
+import { findUserByEmail } from '@/lib/auth/repos/user.repo';
+import { rateLimit } from '@/lib/rate-limit';
 
-const sendResetOTPSchema = z.object({
-    email: z.string().email('Invalid email format'),
-});
+export async function POST(request: Request) {
+    const limiter = rateLimit(request.headers.get('x-forwarded-for') ?? 'unknown', {
+        limit: 3,
+        windowMs: 60_000,
+    });
+    if (!limiter.success) {
+        return NextResponse.json(
+            { ok: false, error: { code: 'RATE_LIMITED', message: 'Too many attempts' } },
+            { status: 429 },
+        );
+    }
 
-export async function POST(request: NextRequest) {
     try {
-        const body = await request.json();
-        const validation = sendResetOTPSchema.safeParse(body);
-
-        if (!validation.success) {
+        const { email } = await request.json();
+        if (!email) {
             return NextResponse.json(
-                { error: validation.error.issues[0].message },
+                { ok: false, error: { code: 'VALIDATION', message: 'Email required' } },
                 { status: 400 },
             );
         }
 
-        const { email } = validation.data;
-
-        // Check rate limit
-        const ip = request.headers.get('x-forwarded-for') || 'unknown';
-        const rateLimitResult = await checkRateLimit(ip, 'password_reset');
-
-        if (!rateLimitResult.success) {
-            return NextResponse.json(
-                { error: 'Too many reset attempts. Please try again later.' },
-                { status: 429 },
-            );
+        const user = await findUserByEmail(email);
+        if (!user) {
+            return NextResponse.json({ ok: true });
         }
 
-        // Generate OTP
-        const otp = generateOTP();
-        const otpHash = hashOTP(otp);
+        await invalidateOtps(email, 'PASSWORD_RESET');
 
-        // Store OTP (even if user doesn't exist - prevents enumeration)
-        await createOTP({
-            email,
-            codeHash: otpHash,
-            intent: 'PASSWORD_RESET',
-        });
+        const otp = generateOtp();
+        const codeHash = hashOtp(otp);
+        const expiresAt = getOtpExpiry();
 
-        // Send OTP email
-        await sendOTPEmail(email, otp, 'PASSWORD_RESET');
+        await createOtp({ email, codeHash, intent: 'PASSWORD_RESET', expiresAt, userId: user.id });
+        await sendOtpEmail(email, otp, 'password-reset');
 
-        // Always return success (don't reveal if email exists)
-        return NextResponse.json({
-            success: true,
-            message: 'If email exists, password reset OTP has been sent',
-        });
+        return NextResponse.json({ ok: true });
     } catch (error) {
-        console.error('Send reset OTP error:', error);
+        console.error('Password reset send OTP error:', error);
         return NextResponse.json(
-            { error: 'Failed to send reset OTP. Please try again.' },
+            { ok: false, error: { code: 'INTERNAL', message: 'Internal server error' } },
             { status: 500 },
         );
     }

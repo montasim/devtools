@@ -10,6 +10,8 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 
 interface ConfirmDialogProps {
     open: boolean;
@@ -32,11 +34,6 @@ export function ConfirmDialog({
     onConfirm,
     variant = 'default',
 }: ConfirmDialogProps) {
-    const handleConfirm = () => {
-        onConfirm();
-        onOpenChange(false);
-    };
-
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
             <AlertDialogContent>
@@ -47,10 +44,10 @@ export function ConfirmDialog({
                 <AlertDialogFooter>
                     <AlertDialogCancel>{cancelLabel}</AlertDialogCancel>
                     <AlertDialogAction
-                        onClick={handleConfirm}
+                        onClick={onConfirm}
                         className={
                             variant === 'destructive'
-                                ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+                                ? 'bg-destructive text-white hover:bg-destructive/90'
                                 : ''
                         }
                     >
@@ -60,4 +57,42 @@ export function ConfirmDialog({
             </AlertDialogContent>
         </AlertDialog>
     );
+}
+
+interface UseConfirmDialogOptions {
+    title: string;
+    description: string;
+    confirmLabel?: string;
+    cancelLabel?: string;
+    onConfirm: () => void;
+}
+
+export function useConfirmDialog({
+    title,
+    description,
+    confirmLabel,
+    cancelLabel,
+    onConfirm,
+}: UseConfirmDialogOptions) {
+    const [open, setOpen] = useState(false);
+
+    const trigger = () => setOpen(true);
+    const handleConfirm = () => {
+        onConfirm();
+        setOpen(false);
+    };
+
+    const dialog = (
+        <ConfirmDialog
+            open={open}
+            onOpenChange={setOpen}
+            title={title}
+            description={description}
+            confirmLabel={confirmLabel}
+            cancelLabel={cancelLabel}
+            onConfirm={handleConfirm}
+        />
+    );
+
+    return { trigger, dialog };
 }

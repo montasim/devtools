@@ -1,65 +1,44 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { generateOTP, hashOTP } from '@/lib/auth/otp';
-import { createOTP } from '@/lib/auth/repos/otp.repo';
-import { sendOTPEmail } from '@/lib/auth/email';
-import { checkRateLimit } from '@/lib/rate-limit';
+import { NextResponse } from 'next/server';
+import { generateOtp, hashOtp, getOtpExpiry } from '@/lib/auth/otp';
+import { sendOtpEmail } from '@/lib/auth/email';
+import { createOtp, invalidateOtps } from '@/lib/auth/repos/otp.repo';
+import { rateLimit } from '@/lib/rate-limit';
 
-// Request validation schema
-const sendOTPSchema = z.object({
-    email: z.string().email('Invalid email format'),
-});
+export async function POST(request: Request) {
+    const limiter = rateLimit(request.headers.get('x-forwarded-for') ?? 'unknown', {
+        limit: 3,
+        windowMs: 60_000,
+    });
+    if (!limiter.success) {
+        return NextResponse.json(
+            { ok: false, error: { code: 'RATE_LIMITED', message: 'Too many attempts' } },
+            { status: 429 },
+        );
+    }
 
-export async function POST(request: NextRequest) {
     try {
-        // Parse request body
-        const body = await request.json();
-
-        // Validate email format
-        const validation = sendOTPSchema.safeParse(body);
-        if (!validation.success) {
+        const { email } = await request.json();
+        if (!email) {
             return NextResponse.json(
-                { error: validation.error.issues[0].message },
+                { ok: false, error: { code: 'VALIDATION', message: 'Email required' } },
                 { status: 400 },
             );
         }
 
-        const { email } = validation.data;
+        await invalidateOtps(email, 'REGISTER');
 
-        // Check rate limit (3 OTP requests per hour per email)
-        const ip = request.headers.get('x-forwarded-for') || 'unknown';
-        const rateLimitResult = await checkRateLimit(ip, 'otp_request');
+        const otp = generateOtp();
+        const codeHash = hashOtp(otp);
+        const expiresAt = getOtpExpiry();
 
-        if (!rateLimitResult.success) {
-            return NextResponse.json(
-                { error: 'Too many OTP requests. Please try again later.' },
-                { status: 429 },
-            );
-        }
+        await createOtp({ email, codeHash, intent: 'REGISTER', expiresAt });
+        await sendOtpEmail(email, otp, 'register');
 
-        // Generate OTP
-        const otp = generateOTP();
-        const otpHash = hashOTP(otp);
-
-        // Store OTP in database
-        await createOTP({
-            email,
-            codeHash: otpHash,
-            intent: 'REGISTER',
-        });
-
-        // Send OTP email
-        await sendOTPEmail(email, otp, 'REGISTER');
-
-        // Return success (don't reveal if email exists or not)
-        return NextResponse.json({
-            success: true,
-            message: 'If email exists, OTP has been sent',
-        });
+        return NextResponse.json({ ok: true });
     } catch (error) {
         console.error('Send OTP error:', error);
         return NextResponse.json(
-            { error: 'Failed to send OTP. Please try again.' },
+            { ok: false, error: { code: 'INTERNAL', message: 'Failed to send verification code' } },
             { status: 500 },
         );
     }

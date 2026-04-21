@@ -1,120 +1,67 @@
 import Link from 'next/link';
-import { Logo } from '@/components/layout/logo';
+import { Logo } from './logo';
 
-const footerLinks = {
-    product: [
-        { label: 'JSON Tools', href: '/json' },
-        { label: 'Text Tools', href: '/text' },
-        { label: 'XML Tools', href: '/xml' },
-        { label: 'CSV Tools', href: '/csv' },
-    ],
-    resources: [
-        { label: 'Documentation', href: '/docs' },
-        { label: 'Shortcuts', href: '/shortcuts' },
-        { label: 'History', href: '/history' },
-        { label: 'Changelog', href: '/changelog' },
-    ],
-    company: [
-        { label: 'About', href: '/about' },
-        { label: 'Blog', href: '/blog' },
-        { label: 'Careers', href: '/careers' },
-        { label: 'Contact', href: '/contact' },
-    ],
-    legal: [
-        { label: 'Privacy Policy', href: '/privacy' },
-        { label: 'Terms of Service', href: '/terms' },
-        { label: 'Cookie Policy', href: '/cookies' },
-        { label: 'Disclaimer', href: '/disclaimer' },
-    ],
-};
+const footerSections = [
+    {
+        title: 'Product',
+        links: [
+            { label: 'JSON Tools', href: '/json' },
+            { label: 'Text Tools', href: '/text' },
+            { label: 'Base64 Tools', href: '/base64' },
+            { label: 'Share Text', href: '/share/text' },
+            { label: 'Git Branch Generator', href: '/git-branch-generator' },
+            { label: 'URL Shortener', href: '/url-shortener' },
+            { label: 'QR Code Generator', href: '/qrcode' },
+        ],
+    },
+    {
+        title: 'Resources',
+        links: [{ label: 'Documentation', href: '/docs' }],
+    },
+    {
+        title: 'Legal',
+        links: [
+            { label: 'Privacy Policy', href: '/privacy' },
+            { label: 'Terms of Service', href: '/terms' },
+            { label: 'Cookie Policy', href: '/cookies' },
+            { label: 'Disclaimer', href: '/disclaimer' },
+        ],
+    },
+];
 
-const Footer = () => {
+export function Footer() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="border-t bg-background">
+        <footer className="border-t bg-background mt-10">
             <div className="mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-2 gap-8 py-12 md:grid-cols-4 lg:grid-cols-5">
-                    {/* Brand Column */}
                     <div className="col-span-2 lg:col-span-1">
-                        <Link href="/" className="inline-block">
-                            <Logo />
-                        </Link>
+                        <Logo />
                         <p className="mt-4 text-sm text-muted-foreground">
-                            Powerful developer tools for JSON, text, XML, and CSV data processing.
+                            Powerful developer tools for JSON, text, and Base64 data processing.
                         </p>
                     </div>
 
-                    {/* Product Links */}
-                    <div>
-                        <h3 className="mb-4 text-sm font-semibold">Product</h3>
-                        <ul className="space-y-3">
-                            {footerLinks.product.map((link) => (
-                                <li key={link.label}>
-                                    <Link
-                                        href={link.href}
-                                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                                    >
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Resources Links */}
-                    <div>
-                        <h3 className="mb-4 text-sm font-semibold">Resources</h3>
-                        <ul className="space-y-3">
-                            {footerLinks.resources.map((link) => (
-                                <li key={link.label}>
-                                    <Link
-                                        href={link.href}
-                                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                                    >
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Company Links */}
-                    <div>
-                        <h3 className="mb-4 text-sm font-semibold">Company</h3>
-                        <ul className="space-y-3">
-                            {footerLinks.company.map((link) => (
-                                <li key={link.label}>
-                                    <Link
-                                        href={link.href}
-                                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                                    >
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Legal Links */}
-                    <div>
-                        <h3 className="mb-4 text-sm font-semibold">Legal</h3>
-                        <ul className="space-y-3">
-                            {footerLinks.legal.map((link) => (
-                                <li key={link.label}>
-                                    <Link
-                                        href={link.href}
-                                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                                    >
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    {footerSections.map((section) => (
+                        <div key={section.title}>
+                            <h3 className="mb-4 text-sm font-semibold">{section.title}</h3>
+                            <ul className="space-y-3">
+                                {section.links.map((link) => (
+                                    <li key={link.label}>
+                                        <Link
+                                            href={link.href}
+                                            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
                 </div>
 
-                {/* Bottom Section */}
                 <div className="border-t py-8">
                     <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
                         <p className="text-sm text-muted-foreground">
@@ -163,6 +110,4 @@ const Footer = () => {
             </div>
         </footer>
     );
-};
-
-export default Footer;
+}

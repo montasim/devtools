@@ -1,69 +1,47 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { hashPassword } from '@/lib/crypto';
-import { hashOTP } from '@/lib/auth/otp';
-import { getValidOTP, markOTPUsed } from '@/lib/auth/repos/otp.repo';
-import { getUserByEmail, updateUserPassword } from '@/lib/auth/repos/user.repo';
-import { passwordSchema } from '@/lib/auth/password-policy';
+import { NextResponse } from 'next/server';
+import { findValidOtp, markOtpUsed } from '@/lib/auth/repos/otp.repo';
+import { findUserByEmail, updateUserPassword } from '@/lib/auth/repos/user.repo';
+import { verifyOtp } from '@/lib/auth/otp';
+import { signToken, setAuthCookie } from '@/lib/auth/jwt';
 
-const confirmResetSchema = z.object({
-    email: z.string().email('Invalid email format'),
-    code: z.string().regex(/^\d{6}$/, 'OTP must be 6 digits'),
-    password: z.string().min(1, 'Password is required'),
-});
-
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
     try {
-        const body = await request.json();
-        const validation = confirmResetSchema.safeParse(body);
-
-        if (!validation.success) {
+        const { email, password, otp } = await request.json();
+        if (!email || !password || !otp) {
             return NextResponse.json(
-                { error: validation.error.issues[0].message },
+                { ok: false, error: { code: 'VALIDATION', message: 'All fields required' } },
                 { status: 400 },
             );
         }
 
-        const { email, code, password } = validation.data;
-
-        // Validate password strength
-        const passwordValidation = passwordSchema.safeParse(password);
-        if (!passwordValidation.success) {
+        const validOtp = await findValidOtp(email, 'PASSWORD_RESET', otp, verifyOtp);
+        if (!validOtp) {
             return NextResponse.json(
-                { error: passwordValidation.error.issues[0].message },
+                { ok: false, error: { code: 'INVALID_OTP', message: 'Invalid or expired code' } },
                 { status: 400 },
             );
         }
 
-        // Verify OTP
-        const otpHash = hashOTP(code);
-        const validOTP = await getValidOTP(email, 'PASSWORD_RESET', otpHash);
+        await markOtpUsed(validOtp.id);
 
-        if (!validOTP) {
-            return NextResponse.json({ error: 'Invalid or expired OTP' }, { status: 400 });
-        }
-
-        // Get user
-        const user = await getUserByEmail(email);
+        const user = await findUserByEmail(email);
         if (!user) {
-            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+            return NextResponse.json(
+                { ok: false, error: { code: 'USER_NOT_FOUND', message: 'User not found' } },
+                { status: 404 },
+            );
         }
 
-        // Update password
-        const passwordHash = await hashPassword(password);
-        await updateUserPassword(user.id, passwordHash);
+        await updateUserPassword(user.id, password);
 
-        // Mark OTP as used
-        await markOTPUsed(validOTP.id);
+        const token = signToken({ userId: user.id, email: user.email });
+        await setAuthCookie(token);
 
-        return NextResponse.json({
-            success: true,
-            message: 'Password reset successfully',
-        });
+        return NextResponse.json({ ok: true });
     } catch (error) {
-        console.error('Confirm password reset error:', error);
+        console.error('Password reset confirm error:', error);
         return NextResponse.json(
-            { error: 'Failed to reset password. Please try again.' },
+            { ok: false, error: { code: 'INTERNAL', message: 'Internal server error' } },
             { status: 500 },
         );
     }

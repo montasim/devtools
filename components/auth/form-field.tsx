@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { PasswordInput } from '@/components/auth/password-input';
+import { PasswordInput } from './password-input';
 
 interface FormFieldProps {
     id: string;
@@ -11,8 +11,7 @@ interface FormFieldProps {
     placeholder?: string;
     required?: boolean;
     maxLength?: number;
-    pattern?: string;
-    className?: string;
+    minLength?: number;
 }
 
 export function FormField({
@@ -24,25 +23,24 @@ export function FormField({
     placeholder,
     required = false,
     maxLength,
-    pattern,
-    className,
+    minLength,
 }: FormFieldProps) {
-    const baseClassName = 'mt-2 placeholder:text-gray-400 dark:placeholder:text-gray-500';
-
     const inputProps = {
         id,
         required,
         value,
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value),
         placeholder,
-        className: className || baseClassName,
+        className: '',
         ...(maxLength !== undefined && { maxLength }),
-        ...(pattern !== undefined && { pattern }),
+        ...(minLength !== undefined && { minLength }),
     };
 
     return (
         <div>
-            <Label htmlFor={id}>{label}</Label>
+            <Label className="mb-2" htmlFor={id}>
+                {label}
+            </Label>
             {type === 'password' ? (
                 <PasswordInput {...inputProps} />
             ) : (

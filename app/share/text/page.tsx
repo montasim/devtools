@@ -1,252 +1,195 @@
 'use client';
 
-import { useState, useEffect, useRef, Suspense } from 'react';
-import { toast } from 'sonner';
-import { Copy, Share2, Sparkles, Type, Trash2, Upload } from 'lucide-react';
-import { TextareaFooter } from '@/components/text/text-editor/textarea-footer';
-import { EditorActions } from '@/components/editor/editor-actions';
-import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
-import { useDebouncedSave } from '@/components/text/shared/use-debounced-save';
-import { SharedContentBanner } from '@/components/shared/shared-content-banner';
-import { TextShareShareDialog } from '@/components/share-text/text-share-share-dialog';
-import { STORAGE_KEYS } from '@/lib/constants';
+import { useState, useEffect, Suspense } from 'react';
+import { Type, Globe, Share2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { TextEditor } from '@/features/tools/text/components/text-editor';
+import { EditorPaneHeader } from '@/features/tools/core/components/editor-pane-header';
+import { SharedContentBanner } from '@/features/sharing/components/shared-content-banner';
+import { ShareSidebarModal } from '@/features/tools/core/plugins/share-sidebar';
+import { createSharedTabPlugin } from '@/features/tools/core/plugins/shared';
+import { STORAGE_KEYS } from '@/lib/utils/constants';
+import type { ShareAccessResponse } from '@/features/sharing/types/share';
 
-interface SharedData {
-    title: string;
-    comment?: string | null;
-    expiresAt?: string | null;
-    hasPassword: boolean;
-    viewCount: number;
-    createdAt: string;
-    state?: {
-        content?: string;
-    };
+const SESSION_KEY = 'share-text-access-data';
+
+const tabTriggerClass =
+    'gap-2 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary data-[state=active]:text-primary data-[state=active]:font-semibold data-[state=active]:bg-primary/10';
+
+const SharedTab = createSharedTabPlugin({
+    pageName: 'share-text',
+    queryKey: 'share-text-shared',
+    toolMapping: {
+        share: {
+            name: 'Share Text',
+            icon: Type,
+            color: 'bg-primary/10 text-primary',
+        },
+    },
+    tabMapping: { share: 'editor' },
+    storageKeys: { share: STORAGE_KEYS.SHARE_TEXT_CONTENT },
+});
+
+function extractStateContent(state: Record<string, unknown> | undefined): string {
+    if (!state) return '';
+    const text = state.content ?? state.leftContent ?? state.inputContent ?? state.text;
+    if (typeof text === 'string') return text;
+    return '';
+}
+
+function loadSharedData(): {
+    content: string;
+    accessData: ShareAccessResponse | null;
+    isShared: boolean;
+} {
+    if (typeof window === 'undefined') {
+        return { content: '', accessData: null, isShared: false };
+    }
+    try {
+        const raw = sessionStorage.getItem(SESSION_KEY);
+        if (!raw) {
+            return {
+                content: localStorage.getItem(STORAGE_KEYS.SHARE_TEXT_CONTENT) || '',
+                accessData: null,
+                isShared: false,
+            };
+        }
+        const data: ShareAccessResponse = JSON.parse(raw);
+        sessionStorage.removeItem(SESSION_KEY);
+        const stateContent = extractStateContent(data.content.state);
+        if (stateContent) {
+            return { content: stateContent, accessData: data, isShared: true };
+        }
+        return {
+            content: localStorage.getItem(STORAGE_KEYS.SHARE_TEXT_CONTENT) || '',
+            accessData: data,
+            isShared: false,
+        };
+    } catch {
+        try {
+            sessionStorage.removeItem(SESSION_KEY);
+        } catch {
+            // ignore
+        }
+        return {
+            content: localStorage.getItem(STORAGE_KEYS.SHARE_TEXT_CONTENT) || '',
+            accessData: null,
+            isShared: false,
+        };
+    }
 }
 
 function ShareTextPageContent() {
-    const sharedDataLoadedRef = useRef(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const initial = loadSharedData();
 
-    const [sharedData, setSharedData] = useState<SharedData | null>(null);
-    const [content, setContent] = useState<string>(() => {
+    const [content, setContent] = useState(initial.content);
+    const [shareOpen, setShareOpen] = useState(false);
+    const [accessData] = useState<ShareAccessResponse | null>(initial.accessData);
+    const [sharedSnapshot] = useState(initial.isShared ? initial.content : null);
+    const [activeTab, setActiveTab] = useState('editor');
+
+    useEffect(() => {
         try {
-            return localStorage.getItem(STORAGE_KEYS.SHARE_TEXT_CONTENT) || '';
+            localStorage.setItem(STORAGE_KEYS.SHARE_TEXT_CONTENT, content);
         } catch {
-            return '';
+            // ignore
         }
-    });
-    const [shareDialogOpen, setShareDialogOpen] = useState(false);
-    const [initialSharedContent, setInitialSharedContent] = useState<string>('');
+    }, [content]);
 
-    // Handle async shared data arrival
-    useEffect(() => {
-        if (sharedData?.state?.content && !sharedDataLoadedRef.current) {
-            sharedDataLoadedRef.current = true;
-            // eslint-disable-next-line react-hooks/set-state-in-effect -- Required for shared data synchronization
-            setContent(sharedData.state.content);
-            setInitialSharedContent(sharedData.state.content);
-        }
-    }, [sharedData]);
-
-    // Check for shared state on mount
-    useEffect(() => {
-        const sharedStateStr = sessionStorage.getItem('sharedState');
-        if (sharedStateStr) {
-            try {
-                const sharedState = JSON.parse(sharedStateStr);
-                // eslint-disable-next-line react-hooks/set-state-in-effect -- Required for shared data synchronization
-                setSharedData(sharedState);
-                sessionStorage.removeItem('sharedState');
-            } catch (error) {
-                console.error('Failed to parse shared state:', error);
-                sessionStorage.removeItem('sharedState');
-            }
-        }
-    }, []);
-
-    // Debounced save to localStorage
-    useDebouncedSave(content, STORAGE_KEYS.SHARE_TEXT_CONTENT);
-
-    const handleClear = () => {
-        setContent('');
-        try {
-            localStorage.removeItem(STORAGE_KEYS.SHARE_TEXT_CONTENT);
-        } catch (error) {
-            console.error('Failed to clear share text content:', error);
-        }
-    };
-
-    const handleCopy = async () => {
-        try {
-            await navigator.clipboard.writeText(content);
-            toast.success('Copied to clipboard');
-        } catch (error) {
-            console.error('Failed to copy:', error);
-            toast.error('Failed to copy to clipboard');
-        }
-    };
-
-    const handleUpload = () => {
-        fileInputRef.current?.click();
-    };
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
-
-        // Check if file is a text file
-        if (
-            !file.type.startsWith('text/') &&
-            !file.name.endsWith('.txt') &&
-            !file.name.endsWith('.md')
-        ) {
-            toast.error('Please upload a text file');
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const text = e.target?.result as string;
-            setContent(text);
-            toast.success('File uploaded successfully');
-        };
-        reader.onerror = () => {
-            toast.error('Failed to read file');
-        };
-        reader.readAsText(file);
-
-        // Reset the input
-        event.target.value = '';
-    };
-
-    const handleShare = () => {
-        if (!content) {
-            toast.error('No content to share. Please add some text first.');
-            return;
-        }
-        setShareDialogOpen(true);
-    };
+    const isReadOnly = sharedSnapshot !== null && content === sharedSnapshot;
 
     return (
-        <>
-            {sharedData && content === initialSharedContent && (
-                <SharedContentBanner
-                    title={sharedData.title}
-                    comment={sharedData.comment}
-                    expiresAt={sharedData.expiresAt}
-                    hasPassword={sharedData.hasPassword}
-                    viewCount={sharedData.viewCount}
-                    createdAt={sharedData.createdAt}
-                    onClose={() => setSharedData(null)}
-                />
+        <div className="mx-auto py-4">
+            {sharedSnapshot && accessData?.metadata && (
+                <SharedContentBanner metadata={accessData.metadata} />
             )}
-            <div className="mt-2">
-                {/* Hidden file input */}
-                <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".txt,.md,text/*"
-                    onChange={handleFileChange}
-                    className="hidden"
-                />
 
-                <div className="flex flex-col gap-4">
-                    <div className="w-full">
-                        <div className="flex flex-col h-full py-2">
-                            {/* Header with label and actions */}
-                            <div className="flex items-center justify-between mb-2 shrink-0">
-                                <div className="flex items-center gap-2">
-                                    <Type className="h-4 w-4 text-muted-foreground" />
-                                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        Share Text
-                                    </label>
-                                </div>
-                                <EditorActions
-                                    buttons={[
-                                        {
-                                            id: 'upload',
-                                            icon: Upload,
-                                            label: 'Upload',
-                                            onClick: handleUpload,
-                                            title: 'Upload from file',
-                                        },
-                                        {
-                                            id: 'copy',
-                                            icon: Copy,
-                                            label: 'Copy',
-                                            onClick: handleCopy,
-                                            disabled: !content,
-                                            title: 'Copy to clipboard',
-                                        },
-                                        {
-                                            id: 'clear',
-                                            icon: Trash2,
-                                            label: 'Clear',
-                                            onClick: handleClear,
-                                            disabled: !content,
-                                            title: 'Clear editor',
-                                        },
-                                        {
-                                            id: 'share',
-                                            icon: Share2,
-                                            label: 'Share',
-                                            onClick: handleShare,
-                                            disabled: !content,
-                                            title: 'Share text',
-                                        },
-                                    ]}
-                                />
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <div className=" border-b pb-2">
+                    <TabsList
+                        variant="line"
+                        className="h-auto w-full justify-start overflow-x-auto border-0 bg-transparent p-0 scrollbar-hide"
+                    >
+                        <div className="flex w-full min-w-max justify-between gap-2">
+                            <div className="flex min-w-max gap-1">
+                                <TabsTrigger value="editor" className={tabTriggerClass}>
+                                    <Type className="h-4 w-4 shrink-0" />
+                                    Editor
+                                </TabsTrigger>
                             </div>
-
-                            {/* Textarea container with overlay */}
-                            <div
-                                className="border border-input rounded-md shrink-0 overflow-hidden relative"
-                                style={{ height: '600px', position: 'relative' }}
-                            >
-                                <textarea
-                                    value={content}
-                                    onChange={(e) => setContent(e.target.value)}
-                                    className="w-full h-full resize-none p-3 font-mono text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                                />
-
-                                {/* Empty state overlay - shown on top when editor is empty */}
-                                {!content && (
-                                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                                        <EmptyEditorPrompt
-                                            icon={Sparkles}
-                                            title="No text yet"
-                                            description="Start typing or paste text to share"
-                                            showActions={true}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Footer with statistics */}
-                            <div className="shrink-0">
-                                <TextareaFooter content={content} error={null} />
+                            <div className="flex min-w-max gap-1">
+                                <TabsTrigger value="shared" className={tabTriggerClass}>
+                                    <Globe className="h-4 w-4 shrink-0" />
+                                    Shared
+                                </TabsTrigger>
                             </div>
                         </div>
-                    </div>
+                    </TabsList>
                 </div>
-            </div>
 
-            {/* Share dialog */}
-            <TextShareShareDialog
-                content={content}
-                open={shareDialogOpen}
-                onOpenChange={setShareDialogOpen}
-            />
-        </>
+                <div className="mx-auto">
+                    <TabsContent value="editor" className="mt-0">
+                        <div className="flex flex-col gap-2">
+                            <EditorPaneHeader
+                                label="Text Editor"
+                                content={content}
+                                onContentChange={isReadOnly ? undefined : setContent}
+                                onClear={isReadOnly ? undefined : () => setContent('')}
+                                hideInputActions={isReadOnly}
+                                actions={
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => setShareOpen(true)}
+                                        disabled={!content || isReadOnly}
+                                        title="Share text"
+                                        className="h-7 w-7 text-primary"
+                                    >
+                                        <Share2 className="h-3.5 w-3.5" />
+                                    </Button>
+                                }
+                            />
+                            <TextEditor
+                                value={content}
+                                onChange={setContent}
+                                readOnly={isReadOnly}
+                                emptyTitle="No text yet"
+                                emptyDescription="Start typing, paste content, or upload a file"
+                                showEmptyPrompt
+                            />
+                        </div>
+
+                        <ShareSidebarModal
+                            open={shareOpen}
+                            onOpenChange={setShareOpen}
+                            config={{
+                                pageName: 'share-text',
+                                tabName: 'share',
+                                getState: () => ({ content }),
+                            }}
+                        />
+                    </TabsContent>
+
+                    <TabsContent value="shared" className="mt-0">
+                        <SharedTab onTabChange={() => setActiveTab('editor')} />
+                    </TabsContent>
+                </div>
+            </Tabs>
+        </div>
     );
 }
 
 export default function ShareTextPage() {
     return (
-        <div className="min-h-screen">
-            <Suspense fallback={<div className="min-h-screen" />}>
-                <ShareTextPageContent />
-            </Suspense>
-        </div>
+        <Suspense
+            fallback={
+                <div className="flex min-h-screen items-center justify-center">
+                    <Type className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+            }
+        >
+            <ShareTextPageContent />
+        </Suspense>
     );
 }

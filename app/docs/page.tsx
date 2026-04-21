@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import {
-    GitBranch,
     Code,
     FileCode,
     FileJson,
@@ -25,140 +24,78 @@ import {
     PageSection,
     PageContent,
     MobileNav,
-} from '@/components/docs';
+} from '@/components/page-content';
+import { useScrollSpy } from '@/hooks/use-scroll-spy';
 
-interface DocSection {
-    id: string;
-    title: string;
-    icon: React.ReactNode;
-}
-
-const docSections: DocSection[] = [
-    {
-        id: 'overview',
-        title: 'Overview',
-        icon: <BookOpen className="w-5 h-5" />,
-    },
-    {
-        id: 'json-tools',
-        title: 'JSON Tools',
-        icon: <FileJson className="w-5 h-5" />,
-    },
-    {
-        id: 'text-tools',
-        title: 'Text Tools',
-        icon: <FileText className="w-5 h-5" />,
-    },
-    {
-        id: 'base64-tools',
-        title: 'Base64 Tools',
-        icon: <FileCode className="w-5 h-5" />,
-    },
-    {
-        id: 'git-tools',
-        title: 'Git Tools',
-        icon: <GitBranch className="w-5 h-5" />,
-    },
-    {
-        id: 'features',
-        title: 'Key Features',
-        icon: <Sparkles className="w-5 h-5" />,
-    },
-    {
-        id: 'getting-started',
-        title: 'Getting Started',
-        icon: <Play className="w-5 h-5" />,
-    },
+const docSections = [
+    { id: 'overview', title: 'Overview', icon: <BookOpen className="h-5 w-5" /> },
+    { id: 'json-tools', title: 'JSON Tools', icon: <FileJson className="h-5 w-5" /> },
+    { id: 'text-tools', title: 'Text Tools', icon: <FileText className="h-5 w-5" /> },
+    { id: 'base64-tools', title: 'Base64 Tools', icon: <FileCode className="h-5 w-5" /> },
+    { id: 'features', title: 'Key Features', icon: <Sparkles className="h-5 w-5" /> },
+    { id: 'getting-started', title: 'Getting Started', icon: <Play className="h-5 w-5" /> },
 ];
 
 export default function DocsPage() {
-    const [activeSection, setActiveSection] = useState('overview');
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const sections = docSections.map((section) => document.getElementById(section.id));
-            const scrollPosition = window.scrollY + 100;
-
-            for (let i = sections.length - 1; i >= 0; i--) {
-                const section = sections[i];
-                if (section && section.offsetTop <= scrollPosition) {
-                    setActiveSection(docSections[i].id);
-                    break;
-                }
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    const scrollToSection = (sectionId: string) => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-            setActiveSection(sectionId);
-        }
-    };
+    const sections = useMemo(() => docSections, []);
+    const { activeSection, scrollToSection } = useScrollSpy(sections);
 
     return (
         <PageLayout>
             <PageHeader
-                icon={<FileText className="w-6 h-6 text-white" />}
+                icon={<FileText className="h-6 w-6 text-white" />}
                 title="DevTools Documentation"
                 description="Complete guide to all development tools"
             />
             <PageContent
                 sidebar={
                     <SidebarNav
-                        sections={docSections}
+                        sections={sections}
                         activeSection={activeSection}
                         onSectionClick={scrollToSection}
                     />
                 }
                 mobileNav={
                     <MobileNav
-                        sections={docSections}
+                        sections={sections}
                         activeSection={activeSection}
                         onSectionClick={scrollToSection}
                     />
                 }
             >
-                {/* Overview Section */}
                 <PageSection
                     id="overview"
                     title="Overview"
-                    description="A comprehensive suite of developer tools for JSON, text, and git workflows. Boost your productivity with powerful utilities designed for modern development."
+                    description="A comprehensive suite of developer tools for JSON, text, and Base64 workflows. Boost your productivity with powerful utilities designed for modern development."
                 >
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border border-blue-200 dark:border-blue-800">
-                            <div className="w-8 h-8 mb-2 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                                <Code className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                        <div className="rounded-xl border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-5 dark:border-blue-800 dark:from-blue-950/30 dark:to-indigo-950/30">
+                            <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10">
+                                <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                             </div>
-                            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                            <h3 className="mb-1 font-semibold text-blue-900 dark:text-blue-100">
                                 Powerful
                             </h3>
                             <p className="text-sm text-blue-700/70 dark:text-blue-300/70">
                                 Advanced tools for complex tasks
                             </p>
                         </div>
-
-                        <div className="p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border border-emerald-200 dark:border-emerald-800">
-                            <div className="w-8 h-8 mb-2 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                                <Zap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                        <div className="rounded-xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-5 dark:border-emerald-800 dark:from-emerald-950/30 dark:to-teal-950/30">
+                            <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10">
+                                <Zap className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                             </div>
-                            <h3 className="font-semibold text-emerald-900 dark:text-emerald-100 mb-1">
+                            <h3 className="mb-1 font-semibold text-emerald-900 dark:text-emerald-100">
                                 Fast
                             </h3>
                             <p className="text-sm text-emerald-700/70 dark:text-emerald-300/70">
                                 Optimized for quick workflows
                             </p>
                         </div>
-
-                        <div className="p-5 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border border-purple-200 dark:border-purple-800">
-                            <div className="w-8 h-8 mb-2 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                                <Shield className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                        <div className="rounded-xl border border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50 p-5 dark:border-purple-800 dark:from-purple-950/30 dark:to-pink-950/30">
+                            <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10">
+                                <Shield className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                             </div>
-                            <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-1">
+                            <h3 className="mb-1 font-semibold text-purple-900 dark:text-purple-100">
                                 Secure
                             </h3>
                             <p className="text-sm text-purple-700/70 dark:text-purple-300/70">
@@ -168,314 +105,213 @@ export default function DocsPage() {
                     </div>
                 </PageSection>
 
-                {/* JSON Tools Section */}
                 <PageSection
                     id="json-tools"
                     title="JSON Tools"
                     description="Complete JSON toolkit for validation, formatting, comparison, and transformation."
                 >
                     <div className="space-y-4">
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    JSON Diff
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Layers className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">JSON Diff</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Compare two JSON files with multiple view modes (unified, split,
-                                inline, tree). Filter by change type, export diffs, and use keyboard
-                                shortcuts for power users.
+                            <p className="text-sm text-muted-foreground">
+                                Compare two JSON files with split and unified view modes. See added,
+                                removed, and changed lines with detailed stats.
                             </p>
                         </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Wrench className="w-5 h-5 text-green-600 dark:text-green-400" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    JSON Format & Minify
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Wrench className="h-5 w-5 text-green-600 dark:text-green-400" />
+                                <h3 className="font-semibold">JSON Format & Minify</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Beautify or minify JSON with customizable indentation and formatting
-                                options. Real-time validation and syntax highlighting.
+                            <p className="text-sm text-muted-foreground">
+                                Beautify or minify JSON with real-time validation and syntax
+                                highlighting.
                             </p>
                         </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Code className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    JSON Parser & Viewer
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Code className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                <h3 className="font-semibold">JSON Parser & Viewer</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Parse and validate JSON with detailed error messages. View JSON in
                                 an expandable tree structure with syntax highlighting.
                             </p>
                         </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <FileJson className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    JSON Schema & Export
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <FileJson className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                                <h3 className="font-semibold">JSON Schema & Export</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Validate JSON against schemas and export data in multiple formats.
-                                Generate JSON Patch and Merge Patch documents.
                             </p>
                         </div>
                     </div>
                 </PageSection>
 
-                {/* Text Tools Section */}
                 <PageSection
                     id="text-tools"
                     title="Text Tools"
                     description="Process and manipulate text with powerful transformation and analysis tools."
                 >
                     <div className="space-y-4">
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Text Diff
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Layers className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">Text Diff</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Compare two text blocks side-by-side with line-by-line highlighting.
-                                Perfect for reviewing document changes and code modifications.
                             </p>
                         </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Text Convert
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Settings className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                <h3 className="font-semibold">Text Convert</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Transform text with case conversion (upper, lower, title, sentence),
-                                encoding/decoding, and format conversions.
+                            <p className="text-sm text-muted-foreground">
+                                Transform text with case conversion, encoding/decoding, and format
+                                conversions.
                             </p>
                         </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Sparkles className="w-5 h-5 text-pink-600 dark:text-pink-400" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Text Clean
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Sparkles className="h-5 w-5 text-pink-600 dark:text-pink-400" />
+                                <h3 className="font-semibold">Text Clean</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Remove extra spaces, trim lines, eliminate special characters, and
-                                normalize whitespace in your text.
+                                normalize whitespace.
                             </p>
                         </div>
                     </div>
                 </PageSection>
 
-                {/* Base64 Tools Section */}
                 <PageSection
                     id="base64-tools"
                     title="Base64 Tools"
                     description="Encode and decode Base64 data with support for media files and automatic MIME type detection."
                 >
                     <div className="space-y-4">
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <FileCode className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Media to Base64
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <FileCode className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">Media to Base64</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Convert any media file (images, PDFs, documents) to Base64 encoding.
-                                Upload files directly or fetch from URLs. Preview images and
-                                download the Base64 output. View character count and file size
-                                statistics.
+                            <p className="text-sm text-muted-foreground">
+                                Convert any media file to Base64 encoding. Upload files directly,
+                                preview images, and view file size statistics.
                             </p>
                         </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Code className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Base64 to Media
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Code className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                <h3 className="font-semibold">Base64 to Media</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Decode Base64 strings back to media files with automatic MIME type
-                                detection. Supports PNG, JPEG, GIF, WebP, PDF, and SVG formats.
-                                Preview decoded images and download the converted files.
+                                detection. Preview decoded images and download converted files.
                             </p>
                         </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <History className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Base64 History
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <History className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                                <h3 className="font-semibold">Base64 History</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Access your Base64 conversion history with persistent storage. View,
-                                restore, copy, or clear individual history items. Filter by tool
-                                type and manage your data efficiently.
+                                restore, copy, or clear individual history items.
                             </p>
                         </div>
                     </div>
                 </PageSection>
 
-                {/* Git Tools Section */}
-                <PageSection
-                    id="git-tools"
-                    title="Git Tools"
-                    description="Streamline your git workflow with intelligent branch name generation."
-                >
-                    <div className="space-y-4">
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <GitBranch className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Branch Name Generator
-                                </h3>
-                            </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Generate consistent git branch names with issue type prefixes,
-                                ticket numbers, and formatted descriptions. Supports 11 issue types
-                                including feature, fix, hotfix, refactor, docs, test, chore,
-                                performance, style, and CI/CD. Saves your last generated branch for
-                                quick reference.
-                            </p>
-                        </div>
-                    </div>
-                </PageSection>
-
-                {/* Features Section */}
                 <PageSection id="features" title="Key Features">
                     <div className="space-y-4">
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Save className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Auto-Save
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Save className="h-5 w-5 text-muted-foreground" />
+                                <h3 className="font-semibold">Auto-Save</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 All your content is automatically saved to localStorage as you work.
-                                Never lose your data due to accidental page refreshes or browser
-                                crashes.
+                                Never lose your data due to accidental page refreshes.
                             </p>
                         </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <History className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    History Management
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <History className="h-5 w-5 text-muted-foreground" />
+                                <h3 className="font-semibold">History Management</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Access your tool usage history across all pages. View, restore,
-                                copy, or clear individual history items. Grouped by JSON, Text, and
-                                Base64 tools.
+                                copy, or clear individual history items.
                             </p>
                         </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Zap className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Keyboard Shortcuts
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Zap className="h-5 w-5 text-muted-foreground" />
+                                <h3 className="font-semibold">Keyboard Shortcuts</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Power user keyboard shortcuts for quick filtering, exporting, and
-                                panel toggling. Visit the Shortcuts page for the complete list.
+                                panel toggling.
                             </p>
                         </div>
-
-                        <div className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Shield className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                                    Privacy First
-                                </h3>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Shield className="h-5 w-5 text-muted-foreground" />
+                                <h3 className="font-semibold">Privacy First</h3>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                All data processing happens locally in your browser. No information
-                                is sent to external servers. Your data stays yours.
+                            <p className="text-sm text-muted-foreground">
+                                All data processing happens locally in your browser. Your data stays
+                                yours.
                             </p>
                         </div>
                     </div>
                 </PageSection>
 
-                {/* Getting Started Section */}
                 <PageSection id="getting-started" title="Getting Started">
                     <div className="space-y-4">
-                        <div className="flex gap-4 p-5 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border border-emerald-200 dark:border-emerald-800">
-                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-sm">
-                                1
+                        {[
+                            {
+                                step: 1,
+                                title: 'Choose Your Tool',
+                                desc: 'Select from JSON Tools, Text Tools, or Base64 Tools from the navigation menu based on your task.',
+                            },
+                            {
+                                step: 2,
+                                title: 'Input Your Data',
+                                desc: 'Paste, type, or upload files into the editor panels. The tools support syntax highlighting and real-time validation.',
+                            },
+                            {
+                                step: 3,
+                                title: 'Configure & Process',
+                                desc: 'Adjust options to customize the output. Click the action button to process your data and view results instantly.',
+                            },
+                            {
+                                step: 4,
+                                title: 'Export & Share',
+                                desc: 'Copy results to clipboard, download files, or generate shareable links. Your work is automatically saved for later access.',
+                            },
+                        ].map((item) => (
+                            <div
+                                key={item.step}
+                                className="flex gap-4 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-5 dark:border-emerald-800 dark:from-emerald-950/30 dark:to-teal-950/30"
+                            >
+                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-sm font-bold text-white">
+                                    {item.step}
+                                </div>
+                                <div>
+                                    <h3 className="mb-1 font-semibold">{item.title}</h3>
+                                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                    Choose Your Tool
-                                </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    Select from JSON Tools, Text Tools, XML Tools, CSV Tools, Base64
-                                    Tools, or Git Tools from the navigation menu based on your task.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-4 p-5 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border border-emerald-200 dark:border-emerald-800">
-                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-sm">
-                                2
-                            </div>
-                            <div>
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                    Input Your Data
-                                </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    Paste, type, or upload files into the editor panels. The tools
-                                    support syntax highlighting and real-time validation.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-4 p-5 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border border-emerald-200 dark:border-emerald-800">
-                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-sm">
-                                3
-                            </div>
-                            <div>
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                    Configure & Process
-                                </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    Adjust options to customize the output. Click the action button
-                                    to process your data and view results instantly.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-4 p-5 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border border-emerald-200 dark:border-emerald-800">
-                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-sm">
-                                4
-                            </div>
-                            <div>
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                    Export & Share
-                                </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    Copy results to clipboard, download files, or generate shareable
-                                    links. Your work is automatically saved for later access.
-                                </p>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </PageSection>
             </PageContent>

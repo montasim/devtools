@@ -1,42 +1,49 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getAuthUser } from '@/lib/auth/jwt';
-import { updateUser } from '@/lib/auth/repos/user.repo';
-import { validateName } from '@/lib/auth/password-policy';
+import { NextResponse } from 'next/server';
+import { getTokenFromCookies, verifyToken } from '@/lib/auth/jwt';
+import { findUserById, updateUserName } from '@/lib/auth/repos/user.repo';
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
     try {
-        const user = await getAuthUser(request);
-        if (!user) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        const token = await getTokenFromCookies();
+        if (!token) {
+            return NextResponse.json(
+                { ok: false, error: { code: 'UNAUTHORIZED', message: 'Not authenticated' } },
+                { status: 401 },
+            );
         }
 
-        const body = await request.json();
-        const { name } = body;
-
-        // Validate name
-        if (!name || typeof name !== 'string') {
-            return NextResponse.json({ error: 'Name is required' }, { status: 400 });
+        const payload = verifyToken(token);
+        if (!payload) {
+            return NextResponse.json(
+                { ok: false, error: { code: 'INVALID_TOKEN', message: 'Invalid token' } },
+                { status: 401 },
+            );
         }
 
-        const nameValidation = validateName(name);
-        if (!nameValidation.valid) {
-            return NextResponse.json({ error: nameValidation.error }, { status: 400 });
+        const { name } = await request.json();
+        if (!name) {
+            return NextResponse.json(
+                { ok: false, error: { code: 'VALIDATION', message: 'Name required' } },
+                { status: 400 },
+            );
         }
 
-        // Update user name
-        const updatedUser = await updateUser(user.id, { name });
+        const user = await updateUserName(payload.userId, name);
 
         return NextResponse.json({
-            success: true,
-            user: {
-                id: updatedUser.id,
-                email: updatedUser.email,
-                name: updatedUser.name,
-                emailVerified: updatedUser.emailVerified,
+            ok: true,
+            data: {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                emailVerified: user.emailVerified,
             },
         });
     } catch (error) {
-        console.error('Error updating name:', error);
-        return NextResponse.json({ error: 'Failed to update name' }, { status: 500 });
+        console.error('Update name error:', error);
+        return NextResponse.json(
+            { ok: false, error: { code: 'INTERNAL', message: 'Internal server error' } },
+            { status: 500 },
+        );
     }
 }

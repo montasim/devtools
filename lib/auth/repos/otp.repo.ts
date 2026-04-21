@@ -1,66 +1,46 @@
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/db/prisma';
 
-export interface CreateOTPData {
+export async function createOtp(data: {
     email: string;
     codeHash: string;
-    intent: 'REGISTER' | 'PASSWORD_RESET';
+    intent: string;
+    expiresAt: Date;
+    userId?: string;
+}) {
+    return prisma.userOtp.create({ data });
 }
 
-export async function createOTP(data: CreateOTPData) {
-    // Calculate expiry: 15 minutes from now
-    const expiresAt = new Date();
-    expiresAt.setMinutes(expiresAt.getMinutes() + 15);
-
-    return await prisma.userOtp.create({
-        data: {
-            email: data.email,
-            codeHash: data.codeHash,
-            intent: data.intent,
-            expiresAt,
-        },
-    });
-}
-
-export async function getValidOTP(email: string, intent: string, codeHash: string) {
-    return await prisma.userOtp.findFirst({
+export async function findValidOtp(
+    email: string,
+    intent: string,
+    code: string,
+    verifyFn: (code: string, hash: string) => boolean,
+) {
+    const otps = await prisma.userOtp.findMany({
         where: {
             email,
             intent,
-            codeHash,
             used: false,
-            expiresAt: {
-                gte: new Date(),
-            },
+            expiresAt: { gt: new Date() },
         },
+        orderBy: { createdAt: 'desc' },
     });
+
+    for (const otp of otps) {
+        if (verifyFn(code, otp.codeHash)) {
+            return otp;
+        }
+    }
+    return null;
 }
 
-export async function markOTPUsed(otpId: string) {
-    return await prisma.userOtp.update({
-        where: { id: otpId },
+export async function markOtpUsed(id: string) {
+    return prisma.userOtp.update({ where: { id }, data: { used: true } });
+}
+
+export async function invalidateOtps(email: string, intent: string) {
+    return prisma.userOtp.updateMany({
+        where: { email, intent, used: false },
         data: { used: true },
-    });
-}
-
-export async function cleanupExpiredOTPs() {
-    return await prisma.userOtp.deleteMany({
-        where: {
-            expiresAt: {
-                lt: new Date(),
-            },
-        },
-    });
-}
-
-export async function deleteOldOTPs(minutesOld: number = 60) {
-    const cutoff = new Date();
-    cutoff.setMinutes(cutoff.getMinutes() - minutesOld);
-
-    return await prisma.userOtp.deleteMany({
-        where: {
-            createdAt: {
-                lt: cutoff,
-            },
-        },
     });
 }

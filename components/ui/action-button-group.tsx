@@ -1,8 +1,8 @@
 'use client';
 
+import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { LucideIcon } from 'lucide-react';
 
 export interface ActionButton {
     icon: LucideIcon;
@@ -12,7 +12,7 @@ export interface ActionButton {
     variant?: 'default' | 'outline' | 'ghost' | 'destructive' | 'secondary' | 'link';
 }
 
-export interface ActionButtonGroupProps {
+interface ActionButtonGroupProps {
     actions: ActionButton[];
     className?: string;
 }
@@ -28,7 +28,7 @@ export function ActionButtonGroup({ actions, className = '' }: ActionButtonGroup
                                 variant={variant}
                                 size="sm"
                                 onClick={onClick}
-                                className={`gap-2 ${btnClassName}`}
+                                className={`gap-2 ${btnClassName || ''}`}
                             >
                                 <Icon className="h-4 w-4" />
                             </Button>

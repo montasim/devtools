@@ -1,61 +1,36 @@
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/db/prisma';
+import bcrypt from 'bcrypt';
 
-export interface CreateUserData {
-    email: string;
-    passwordHash: string;
-    name: string;
+const SALT_ROUNDS = 12;
+
+export async function findUserByEmail(email: string) {
+    return prisma.user.findUnique({ where: { email } });
 }
 
-export interface UpdateUserData {
-    name?: string;
-    emailVerified?: Date;
+export async function findUserById(id: string) {
+    return prisma.user.findUnique({ where: { id } });
 }
 
-export async function createUser(data: CreateUserData) {
-    return await prisma.user.create({
-        data: {
-            email: data.email,
-            passwordHash: data.passwordHash,
-            name: data.name,
-            emailVerified: new Date(), // Mark as verified after OTP verification
-        },
+export async function createUser(email: string, password: string, name: string) {
+    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+    return prisma.user.create({
+        data: { email, passwordHash, name },
     });
 }
 
-export async function getUserByEmail(email: string) {
-    return await prisma.user.findUnique({
-        where: { email },
-    });
+export async function verifyPassword(password: string, hash: string): Promise<boolean> {
+    return bcrypt.compare(password, hash);
 }
 
-export async function getUserById(id: string) {
-    return await prisma.user.findUnique({
-        where: { id },
-    });
+export async function updateUserName(id: string, name: string) {
+    return prisma.user.update({ where: { id }, data: { name } });
 }
 
-export async function updateUser(userId: string, data: UpdateUserData) {
-    return await prisma.user.update({
-        where: { id: userId },
-        data,
-    });
+export async function updateUserPassword(id: string, password: string) {
+    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+    return prisma.user.update({ where: { id }, data: { passwordHash } });
 }
 
-export async function updateUserPassword(userId: string, passwordHash: string) {
-    return await prisma.user.update({
-        where: { id: userId },
-        data: { passwordHash },
-    });
-}
-
-export async function markEmailVerified(userId: string) {
-    return await prisma.user.update({
-        where: { id: userId },
-        data: { emailVerified: new Date() },
-    });
-}
-
-export async function userExists(email: string): Promise<boolean> {
-    const user = await getUserByEmail(email);
-    return user !== null;
+export async function verifyUserEmail(id: string) {
+    return prisma.user.update({ where: { id }, data: { emailVerified: new Date() } });
 }

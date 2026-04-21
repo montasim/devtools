@@ -8,7 +8,7 @@ interface AuthFooterProps {
 
 export function AuthFooter({ linkText, linkHref, linkLabel }: AuthFooterProps) {
     return (
-        <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-center text-sm text-muted-foreground">
             {linkText}{' '}
             <Link href={linkHref} className="font-medium text-primary/90 hover:underline">
                 {linkLabel}

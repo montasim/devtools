@@ -1,17 +1,14 @@
-import {
-    Book,
-    Clock,
-    FileCode,
-    GitBranch,
-    Keyboard,
-    Share2,
-    Sunset,
-    Trees,
-    Zap,
-} from 'lucide-react';
+import { Book, FileJson, FileText, FileCode, Share2, GitBranch, Link2, QrCode } from 'lucide-react';
 
-export const navigationMenu = [
-    { title: 'Home', url: '/' },
+export interface MenuItem {
+    title: string;
+    url: string;
+    description?: string;
+    icon?: React.ReactNode;
+    items?: MenuItem[];
+}
+
+export const navigationMenu: MenuItem[] = [
     {
         title: 'Tools',
         url: '#',
@@ -19,32 +16,14 @@ export const navigationMenu = [
             {
                 title: 'JSON Tools',
                 description: 'Validate, format, and transform JSON data',
-                icon: <Book className="size-5 shrink-0" />,
+                icon: <FileJson className="size-5 shrink-0" />,
                 url: '/json',
             },
             {
                 title: 'Text Tools',
                 description: 'Process and manipulate text',
-                icon: <Trees className="size-5 shrink-0" />,
+                icon: <FileText className="size-5 shrink-0" />,
                 url: '/text',
-            },
-            {
-                title: 'Share Text',
-                description: 'Share text with others via link',
-                icon: <Share2 className="size-5 shrink-0" />,
-                url: '/share/text',
-            },
-            {
-                title: 'XML Tools',
-                description: 'Parse, validate, and convert XML',
-                icon: <Sunset className="size-5 shrink-0" />,
-                url: '/xml',
-            },
-            {
-                title: 'CSV Tools',
-                description: 'Convert, validate, and transform CSV',
-                icon: <Zap className="size-5 shrink-0" />,
-                url: '/csv',
             },
             {
                 title: 'Base64 Tools',
@@ -53,44 +32,41 @@ export const navigationMenu = [
                 url: '/base64',
             },
             {
-                title: 'Git Branch Name Generator',
+                title: 'Git Branch Generator',
                 description: 'Generate consistent git branch names',
                 icon: <GitBranch className="size-5 shrink-0" />,
                 url: '/git-branch-generator',
             },
+            {
+                title: 'URL Shortener',
+                description: 'Shorten long URLs into compact links',
+                icon: <Link2 className="size-5 shrink-0" />,
+                url: '/url-shortener',
+            },
+            {
+                title: 'QR Code Generator',
+                description: 'Generate customizable QR codes',
+                icon: <QrCode className="size-5 shrink-0" />,
+                url: '/qrcode',
+            },
         ],
+    },
+    {
+        title: 'Share Text',
+        url: '/share/text',
     },
     {
         title: 'Resources',
         url: '#',
         items: [
             {
-                title: 'History',
-                description: 'View your recent tool usage',
-                icon: <Clock className="size-5 shrink-0" />,
-                url: '/history',
-            },
-            {
-                title: 'Shortcuts',
-                description: 'Keyboard shortcuts and quick actions',
-                icon: <Keyboard className="size-5 shrink-0" />,
-                url: '/shortcuts',
-            },
-            {
                 title: 'Documentation',
                 description: 'Guides and API references',
-                icon: <Zap className="size-5 shrink-0" />,
-                url: '/docs',
-            },
-            {
-                title: 'Changelog',
-                description: 'Latest updates and features',
                 icon: <Book className="size-5 shrink-0" />,
-                url: '/changelog',
+                url: '/docs',
             },
         ],
     },
-    { title: 'About', url: '/about' },
 ];
 
 export const authButtons = {
