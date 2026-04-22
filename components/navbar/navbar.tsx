@@ -36,16 +36,23 @@ function DropdownLink({ item }: { item: MenuItem }) {
 }
 
 function HoverDropdown({ item }: { item: MenuItem }) {
+    const items = item.items ?? [];
+    const cols = items.length > 6 ? 3 : items.length > 3 ? 2 : 1;
     return (
         <div className="group relative">
             <Button variant="ghost" size="sm" className="gap-1">
                 {item.title}
                 <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
             </Button>
-            <div className="invisible absolute left-0 top-full z-50 min-w-[280px] rounded-lg border bg-popover p-1 opacity-0 shadow-md transition-all group-hover:visible group-hover:opacity-100">
-                {item.items?.map((subItem) => (
-                    <DropdownLink key={subItem.title} item={subItem} />
-                ))}
+            <div className="invisible absolute left-0 z-50 rounded-lg border bg-popover p-2 opacity-0 shadow-md transition-all group-hover:visible group-hover:opacity-100">
+                <div
+                    className="grid gap-1"
+                    style={{ gridTemplateColumns: `repeat(${cols}, minmax(220px, 1fr))` }}
+                >
+                    {items.map((subItem) => (
+                        <DropdownLink key={subItem.title} item={subItem} />
+                    ))}
+                </div>
             </div>
         </div>
     );
