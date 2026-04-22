@@ -62,6 +62,12 @@ export const navigationMenu: MenuItem[] = [
                 url: '/id',
             },
             {
+                title: 'Markdown Preview',
+                description: 'Write Markdown with live preview',
+                icon: <FileText className="size-5 shrink-0" />,
+                url: '/markdown',
+            },
+            {
                 title: 'Git Branch Generator',
                 description: 'Generate consistent git branch names',
                 icon: <GitBranch className="size-5 shrink-0" />,
