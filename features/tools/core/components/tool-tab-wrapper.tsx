@@ -14,11 +14,12 @@ export function ToolTabWrapper({ actions, children, leadingContent }: ToolTabWra
     return (
         <div className="flex flex-col">
             {(actions && actions.length > 0) || leadingContent ? (
-                <div className="flex items-center justify-between border-b bg-background py-2 sm:gap-4">
+                <div className="flex flex-col-reverse gap-2 border-b bg-background py-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-y-2 sm:gap-x-4">
                     {leadingContent && (
-                        <div className="flex items-center gap-3">{leadingContent}</div>
+                        <div className="flex items-center gap-3 min-w-0 shrink">
+                            {leadingContent}
+                        </div>
                     )}
-                    <div className="flex-1" />
                     {actions && actions.length > 0 && <Toolbar actions={actions} />}
                 </div>
             ) : null}

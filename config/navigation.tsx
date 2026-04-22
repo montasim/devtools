@@ -10,6 +10,7 @@ import {
     Hash,
     Link,
     Fingerprint,
+    Regex,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -66,6 +67,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Write Markdown with live preview',
                 icon: <FileText className="size-5 shrink-0" />,
                 url: '/markdown',
+            },
+            {
+                title: 'Regex Tester',
+                description: 'Test regex with live matching and capture groups',
+                icon: <Regex className="size-5 shrink-0" />,
+                url: '/regex',
             },
             {
                 title: 'Git Branch Generator',

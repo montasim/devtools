@@ -35,6 +35,7 @@ export const STORAGE_KEYS = {
     ULID_QUANTITY: 'ulid-quantity',
     ULID_RESULTS: 'ulid-results',
     MARKDOWN_PREVIEW_INPUT: 'markdown-preview-input',
+    REGEX_TEST_INPUT: 'regex-test-input',
     THEME: 'theme',
 } as const;
 
@@ -48,6 +49,7 @@ export const PAGE_NAMES = {
     URL_ENCODE: 'url-encode',
     ID: 'id',
     MARKDOWN: 'markdown',
+    REGEX: 'regex',
 } as const;
 
 export const BASE64_TABS = {
@@ -98,6 +100,10 @@ export const MARKDOWN_TABS = {
     PREVIEW: 'preview',
 } as const;
 
+export const REGEX_TABS = {
+    TEST: 'test',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -108,4 +114,5 @@ export const TAB_NAMES = {
     ...URL_ENCODE_TABS,
     ...ID_TABS,
     ...MARKDOWN_TABS,
+    ...REGEX_TABS,
 } as const;

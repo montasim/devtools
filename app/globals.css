@@ -374,3 +374,22 @@
 .markdown-preview p:first-child {
     margin-top: 0;
 }
+
+.regex-highlight {
+    background: oklch(0.82 0.14 155 / 0.35);
+    border-radius: 2px;
+    padding: 1px 0;
+    color: inherit;
+}
+
+.dark .regex-highlight {
+    background: oklch(0.55 0.14 155 / 0.4);
+}
+
+.regex-tester-highlight mark:nth-of-type(even) {
+    background: oklch(0.78 0.12 260 / 0.35);
+}
+
+.dark .regex-tester-highlight mark:nth-of-type(even) {
+    background: oklch(0.5 0.12 260 / 0.4);
+}
