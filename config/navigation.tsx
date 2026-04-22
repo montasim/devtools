@@ -1,4 +1,14 @@
-import { Book, FileJson, FileText, FileCode, Share2, GitBranch, Link2, QrCode } from 'lucide-react';
+import {
+    Book,
+    FileJson,
+    FileText,
+    FileCode,
+    Share2,
+    GitBranch,
+    Link2,
+    QrCode,
+    Hash,
+} from 'lucide-react';
 
 export interface MenuItem {
     title: string;
@@ -30,6 +40,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Encode and decode Base64 data',
                 icon: <FileCode className="size-5 shrink-0" />,
                 url: '/base64',
+            },
+            {
+                title: 'Hash Generator',
+                description: 'Generate MD5, SHA-1, SHA-256, SHA-512 hashes',
+                icon: <Hash className="size-5 shrink-0" />,
+                url: '/hash',
             },
             {
                 title: 'Git Branch Generator',
