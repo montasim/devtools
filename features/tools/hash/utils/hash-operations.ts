@@ -147,3 +147,51 @@ export async function computeAllHashes(text: string): Promise<Record<HashAlgorit
     );
     return Object.fromEntries(entries) as Record<HashAlgorithm, string>;
 }
+
+export type HmacAlgorithm = Exclude<HashAlgorithm, 'md5'>;
+
+export interface HmacAlgorithmOption {
+    value: HmacAlgorithm;
+    label: string;
+    description: string;
+}
+
+export const HMAC_ALGORITHMS: HmacAlgorithmOption[] = [
+    { value: 'sha-256', label: 'HMAC-SHA256', description: '256-bit (recommended)' },
+    { value: 'sha-1', label: 'HMAC-SHA1', description: '160-bit (legacy)' },
+    { value: 'sha-512', label: 'HMAC-SHA512', description: '512-bit (high security)' },
+];
+
+export async function computeHmac(
+    message: string,
+    key: string,
+    algorithm: HmacAlgorithm,
+): Promise<string> {
+    const encoder = new TextEncoder();
+    const keyData = encoder.encode(key);
+    const messageData = encoder.encode(message);
+
+    const cryptoKey = await crypto.subtle.importKey(
+        'raw',
+        keyData,
+        { name: 'HMAC', hash: SHA_ALGO_MAP[algorithm] },
+        false,
+        ['sign'],
+    );
+
+    const signature = await crypto.subtle.sign('HMAC', cryptoKey, messageData);
+    return bufferToHex(signature);
+}
+
+export async function computeAllHmacs(
+    message: string,
+    key: string,
+): Promise<Record<HmacAlgorithm, string>> {
+    const entries = await Promise.all(
+        HMAC_ALGORITHMS.map(async (algo) => {
+            const hmac = await computeHmac(message, key, algo.value);
+            return [algo.value, hmac] as const;
+        }),
+    );
+    return Object.fromEntries(entries) as Record<HmacAlgorithm, string>;
+}

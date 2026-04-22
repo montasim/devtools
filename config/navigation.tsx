@@ -43,7 +43,7 @@ export const navigationMenu: MenuItem[] = [
             },
             {
                 title: 'Hash Generator',
-                description: 'Generate MD5, SHA-1, SHA-256, SHA-512 hashes',
+                description: 'Generate hashes and HMAC signatures',
                 icon: <Hash className="size-5 shrink-0" />,
                 url: '/hash',
             },

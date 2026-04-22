@@ -25,6 +25,8 @@ export const STORAGE_KEYS = {
     QR_CREATE_INPUT: 'qr-create-input',
     QR_CREATE_SETTINGS: 'qr-create-settings',
     HASH_GENERATE_INPUT: 'hash-generate-input',
+    HASH_HMAC_INPUT: 'hash-hmac-input',
+    HASH_HMAC_KEY: 'hash-hmac-key',
     THEME: 'theme',
 } as const;
 
@@ -68,6 +70,7 @@ export const QRCODE_TABS = {
 
 export const HASH_TABS = {
     GENERATE: 'generate',
+    HMAC: 'hmac',
 } as const;
 
 export const TAB_NAMES = {
