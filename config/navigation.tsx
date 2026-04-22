@@ -11,6 +11,7 @@ import {
     Link,
     Fingerprint,
     Regex,
+    KeyRound,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -73,6 +74,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Test regex with live matching and capture groups',
                 icon: <Regex className="size-5 shrink-0" />,
                 url: '/regex',
+            },
+            {
+                title: 'Password Generator',
+                description: 'Generate secure passwords with strength meter',
+                icon: <KeyRound className="size-5 shrink-0" />,
+                url: '/password',
             },
             {
                 title: 'Git Branch Generator',

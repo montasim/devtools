@@ -36,6 +36,8 @@ export const STORAGE_KEYS = {
     ULID_RESULTS: 'ulid-results',
     MARKDOWN_PREVIEW_INPUT: 'markdown-preview-input',
     REGEX_TEST_INPUT: 'regex-test-input',
+    PASSWORD_CONFIG: 'password-config',
+    PASSWORD_RESULTS: 'password-results',
     THEME: 'theme',
 } as const;
 
@@ -50,6 +52,7 @@ export const PAGE_NAMES = {
     ID: 'id',
     MARKDOWN: 'markdown',
     REGEX: 'regex',
+    PASSWORD: 'password',
 } as const;
 
 export const BASE64_TABS = {
@@ -104,6 +107,10 @@ export const REGEX_TABS = {
     TEST: 'test',
 } as const;
 
+export const PASSWORD_TABS = {
+    GENERATE: 'generate',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -115,4 +122,5 @@ export const TAB_NAMES = {
     ...ID_TABS,
     ...MARKDOWN_TABS,
     ...REGEX_TABS,
+    ...PASSWORD_TABS,
 } as const;
