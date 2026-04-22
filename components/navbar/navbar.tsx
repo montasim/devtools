@@ -44,7 +44,9 @@ function HoverDropdown({ item }: { item: MenuItem }) {
                 {item.title}
                 <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
             </Button>
-            <div className="invisible absolute left-0 z-50 rounded-lg border bg-popover p-2 opacity-0 shadow-md transition-all group-hover:visible group-hover:opacity-100">
+            <div
+                className={`${items.length > 4 ? 'h-92' : ''} overflow-y-auto overflow-x-hidden invisible absolute left-0 z-50 rounded-lg border bg-popover p-2 opacity-0 shadow-md transition-all group-hover:visible group-hover:opacity-100`}
+            >
                 <div
                     className="grid gap-1"
                     style={{ gridTemplateColumns: `repeat(${cols}, minmax(220px, 1fr))` }}
@@ -146,7 +148,7 @@ function MobileMenu() {
 
 export function Navbar() {
     return (
-        <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
             <div className="mx-auto px-4 py-2 sm:px-6 lg:px-8">
                 <DesktopMenu />
                 <MobileMenu />
