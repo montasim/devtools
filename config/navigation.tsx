@@ -16,6 +16,7 @@ import {
     Binary,
     ArrowLeftRight,
     Globe,
+    Ruler,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -114,6 +115,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Searchable file extension ↔ MIME type mapping',
                 icon: <FileText className="size-5 shrink-0" />,
                 url: '/mime-type',
+            },
+            {
+                title: 'CSS Unit Converter',
+                description: 'Convert between px, rem, em, vw, vh, pt, cm and more',
+                icon: <Ruler className="size-5 shrink-0" />,
+                url: '/css-unit',
             },
             {
                 title: 'Git Branch Generator',
