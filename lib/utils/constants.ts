@@ -45,6 +45,8 @@ export const STORAGE_KEYS = {
     UNIT_DATA_STATE: 'unit-data-state',
     UNIT_TIME_STATE: 'unit-time-state',
     UNIT_TIMEZONE_STATE: 'unit-timezone-state',
+    HTTP_STATUS_SEARCH: 'http-status-search',
+    MIME_TYPE_SEARCH: 'mime-type-search',
     THEME: 'theme',
 } as const;
 
@@ -63,6 +65,8 @@ export const PAGE_NAMES = {
     COLOR: 'color',
     NUMBER_BASE: 'number-base',
     UNIT: 'unit',
+    HTTP_STATUS: 'http-status',
+    MIME_TYPE: 'mime-type',
 } as const;
 
 export const BASE64_TABS = {
@@ -136,6 +140,14 @@ export const UNIT_TABS = {
     TIMEZONE: 'timezone',
 } as const;
 
+export const HTTP_STATUS_TABS = {
+    REFERENCE: 'reference',
+} as const;
+
+export const MIME_TYPE_TABS = {
+    REFERENCE: 'reference',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -151,4 +163,6 @@ export const TAB_NAMES = {
     ...COLOR_TABS,
     ...NUMBER_BASE_TABS,
     ...UNIT_TABS,
+    ...HTTP_STATUS_TABS,
+    ...MIME_TYPE_TABS,
 } as const;

@@ -15,6 +15,7 @@ import {
     Pipette,
     Binary,
     ArrowLeftRight,
+    Globe,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -101,6 +102,18 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Convert data sizes, time durations, and time zones',
                 icon: <ArrowLeftRight className="size-5 shrink-0" />,
                 url: '/unit',
+            },
+            {
+                title: 'HTTP Status Codes',
+                description: 'Searchable reference for HTTP status codes with descriptions',
+                icon: <Globe className="size-5 shrink-0" />,
+                url: '/http-status',
+            },
+            {
+                title: 'MIME Type Reference',
+                description: 'Searchable file extension ↔ MIME type mapping',
+                icon: <FileText className="size-5 shrink-0" />,
+                url: '/mime-type',
             },
             {
                 title: 'Git Branch Generator',
