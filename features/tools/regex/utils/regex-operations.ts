@@ -94,7 +94,11 @@ export function highlightMatches(testString: string, matches: MatchResult[]): st
         .map((p) => {
             const escaped = escapeHtml(p.text);
             if (p.isMatch) {
-                return `<mark class="regex-highlight" data-index="${p.matchIndex}">${escaped}</mark>`;
+                const bg =
+                    p.matchIndex % 2 === 0
+                        ? 'background:rgba(72,187,120,0.3);color:inherit;border-radius:2px;padding:1px 0;'
+                        : 'background:rgba(99,145,255,0.3);color:inherit;border-radius:2px;padding:1px 0;';
+                return `<mark style="${bg}" data-index="${p.matchIndex}">${escaped}</mark>`;
             }
             return escaped.replace(/\n/g, '<br/>');
         })

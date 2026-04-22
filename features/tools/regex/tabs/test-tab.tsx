@@ -151,7 +151,7 @@ export default function TestTab({ sharedData, readOnly }: TabComponentProps) {
                         ) : result.matches.length > 0 ? (
                             <div className="flex flex-col gap-3 min-h-[350px] md:min-h-[400px] lg:min-h-[500px]">
                                 <div
-                                    className="regex-tester-highlight flex-1 overflow-y-auto whitespace-pre-wrap break-words rounded-lg border p-4 font-mono text-sm"
+                                    className="flex-1 overflow-y-auto whitespace-pre-wrap break-words rounded-lg border p-4 font-mono text-sm"
                                     dangerouslySetInnerHTML={{ __html: highlighted }}
                                 />
                                 {result.matches.some(

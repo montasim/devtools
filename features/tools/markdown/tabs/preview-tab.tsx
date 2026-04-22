@@ -86,7 +86,7 @@ export default function PreviewTab({ sharedData, readOnly }: TabComponentProps) 
                         />
                         {html ? (
                             <div
-                                className="markdown-preview min-h-[350px] overflow-y-auto rounded-lg border p-6 md:min-h-[400px] lg:min-h-[500px]"
+                                className="prose prose-sm dark:prose-invert min-h-[350px] max-w-none overflow-y-auto rounded-lg border p-6 md:min-h-[400px] lg:min-h-[500px]"
                                 dangerouslySetInnerHTML={{ __html: html }}
                             />
                         ) : (
