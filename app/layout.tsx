@@ -1,12 +1,28 @@
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter, JetBrains_Mono, Montserrat } from 'next/font/google';
 import { Providers } from '@/components/providers/providers';
 import { Navbar } from '@/components/navbar/navbar';
 import { Footer } from '@/components/layout/footer';
 import { generateRootMetadata } from '@/lib/seo/metadata';
 import './globals.css';
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
-const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
+const inter = Inter({
+    variable: '--font-sans',
+    subsets: ['latin'],
+    display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+    variable: '--font-mono',
+    subsets: ['latin'],
+    display: 'swap',
+});
+
+const montserrat = Montserrat({
+    variable: '--font-display',
+    subsets: ['latin'],
+    weight: ['600', '700'],
+    display: 'swap',
+});
 
 export const metadata = generateRootMetadata();
 
@@ -14,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" className="h-full antialiased" suppressHydrationWarning>
             <body
-                className={`${geistSans.variable} ${geistMono.variable} flex min-h-full flex-col font-sans`}
+                className={`${inter.variable} ${jetbrainsMono.variable} ${montserrat.variable} flex min-h-full flex-col font-sans`}
             >
                 <Providers>
                     <Navbar />
