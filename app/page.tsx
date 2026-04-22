@@ -9,6 +9,17 @@ import {
     Sparkles,
     Heart,
     Terminal,
+    Hash,
+    Link2,
+    Fingerprint,
+    FileText,
+    KeyRound,
+    Pipette,
+    ArrowLeftRight,
+    Globe,
+    Ruler,
+    GitBranch,
+    QrCode,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -30,6 +41,96 @@ const TOOLS = [
         label: 'Base64 Tools',
         description: 'Encode and decode Base64 for files and media',
         icon: Binary,
+    },
+    {
+        href: '/hash',
+        label: 'Hash Generator',
+        description: 'Generate hashes and HMAC signatures',
+        icon: Hash,
+    },
+    {
+        href: '/url-encode',
+        label: 'URL Encode / Decode',
+        description: 'Encode and decode percent-encoded URLs',
+        icon: Link2,
+    },
+    {
+        href: '/id',
+        label: 'ID Generator',
+        description: 'Generate UUIDs (v1/v4/v7) and ULIDs',
+        icon: Fingerprint,
+    },
+    {
+        href: '/markdown',
+        label: 'Markdown Preview',
+        description: 'Write Markdown with live preview',
+        icon: FileText,
+    },
+    {
+        href: '/regex',
+        label: 'Regex Tester',
+        description: 'Test regex with live matching and capture groups',
+        icon: FileText,
+    },
+    {
+        href: '/password',
+        label: 'Password Generator',
+        description: 'Generate secure passwords with strength meter',
+        icon: KeyRound,
+    },
+    {
+        href: '/color',
+        label: 'Color Picker',
+        description: 'Convert HEX, RGB, HSL, OKLCH and generate palettes',
+        icon: Pipette,
+    },
+    {
+        href: '/number-base',
+        label: 'Number Base Converter',
+        description: 'Binary, octal, decimal, hex, and custom radix',
+        icon: Binary,
+    },
+    {
+        href: '/unit',
+        label: 'Unit Converter',
+        description: 'Data sizes, time durations, and time zones',
+        icon: ArrowLeftRight,
+    },
+    {
+        href: '/http-status',
+        label: 'HTTP Status Codes',
+        description: 'Searchable reference with descriptions and specs',
+        icon: Globe,
+    },
+    {
+        href: '/mime-type',
+        label: 'MIME Type Reference',
+        description: 'File extension ↔ MIME type mapping',
+        icon: FileText,
+    },
+    {
+        href: '/css-unit',
+        label: 'CSS Unit Converter',
+        description: 'Convert between px, rem, em, vw, vh, pt, cm',
+        icon: Ruler,
+    },
+    {
+        href: '/qrcode',
+        label: 'QR Code Generator',
+        description: 'Generate customizable QR codes with colors and sizes',
+        icon: QrCode,
+    },
+    {
+        href: '/git-branch-generator',
+        label: 'Git Branch Generator',
+        description: 'Generate consistent git branch names from templates',
+        icon: GitBranch,
+    },
+    {
+        href: '/url-shortener',
+        label: 'URL Shortener',
+        description: 'Shorten long URLs into compact shareable links',
+        icon: Link2,
     },
 ];
 
@@ -74,9 +175,9 @@ export default function HomePage() {
                             </span>
                         </h1>
                         <p className="mx-auto mb-10 max-w-2xl text-base text-muted-foreground sm:text-lg md:text-xl">
-                            A comprehensive suite of developer tools for formatting, validating, and
-                            transforming data. All tools run locally in your browser for maximum
-                            privacy and speed.
+                            A comprehensive suite of 18+ developer tools for formatting, converting,
+                            generating, and referencing. All tools run locally in your browser for
+                            maximum privacy and speed.
                         </p>
                         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
                             <Button size="lg" asChild>
@@ -84,6 +185,12 @@ export default function HomePage() {
                                     <Braces className="mr-2 h-5 w-5" />
                                     Explore Tools
                                     <ArrowRight className="ml-2 h-5 w-5" />
+                                </Link>
+                            </Button>
+                            <Button size="lg" variant="outline" asChild>
+                                <Link href="/docs">
+                                    <Terminal className="mr-2 h-5 w-5" />
+                                    Documentation
                                 </Link>
                             </Button>
                         </div>
@@ -95,10 +202,10 @@ export default function HomePage() {
                 <div className="mx-auto max-w-6xl">
                     <div className="mb-12 text-center">
                         <h2 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
-                            Essential Developer Tools
+                            All Developer Tools
                         </h2>
                         <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg">
-                            Everything you need to work with JSON, text, and Base64 data.
+                            Everything you need to build, debug, and ship faster.
                         </p>
                     </div>
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
