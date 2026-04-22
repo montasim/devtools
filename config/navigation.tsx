@@ -9,6 +9,7 @@ import {
     QrCode,
     Hash,
     Link,
+    Fingerprint,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -53,6 +54,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Encode and decode percent-encoded URLs',
                 icon: <Link className="size-5 shrink-0" />,
                 url: '/url-encode',
+            },
+            {
+                title: 'ID Generator',
+                description: 'Generate UUIDs (v1/v4/v7) and ULIDs',
+                icon: <Fingerprint className="size-5 shrink-0" />,
+                url: '/id',
             },
             {
                 title: 'Git Branch Generator',

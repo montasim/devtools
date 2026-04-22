@@ -29,6 +29,11 @@ export const STORAGE_KEYS = {
     HASH_HMAC_KEY: 'hash-hmac-key',
     URL_ENCODE_INPUT: 'url-encode-input',
     URL_DECODE_INPUT: 'url-decode-input',
+    UUID_VERSION: 'uuid-version',
+    UUID_QUANTITY: 'uuid-quantity',
+    UUID_RESULTS: 'uuid-results',
+    ULID_QUANTITY: 'ulid-quantity',
+    ULID_RESULTS: 'ulid-results',
     THEME: 'theme',
 } as const;
 
@@ -40,6 +45,7 @@ export const PAGE_NAMES = {
     SHARE: 'share',
     HASH: 'hash',
     URL_ENCODE: 'url-encode',
+    ID: 'id',
 } as const;
 
 export const BASE64_TABS = {
@@ -81,6 +87,11 @@ export const URL_ENCODE_TABS = {
     DECODE: 'decode',
 } as const;
 
+export const ID_TABS = {
+    UUID: 'uuid',
+    ULID: 'ulid',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -89,4 +100,5 @@ export const TAB_NAMES = {
     ...QRCODE_TABS,
     ...HASH_TABS,
     ...URL_ENCODE_TABS,
+    ...ID_TABS,
 } as const;
