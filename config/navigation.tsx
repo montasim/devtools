@@ -13,6 +13,7 @@ import {
     Regex,
     KeyRound,
     Pipette,
+    Binary,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -87,6 +88,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Convert colors between HEX, RGB, HSL, OKLCH and generate palettes',
                 icon: <Pipette className="size-5 shrink-0" />,
                 url: '/color',
+            },
+            {
+                title: 'Number Base Converter',
+                description: 'Convert numbers between binary, octal, decimal, hex and custom radix',
+                icon: <Binary className="size-5 shrink-0" />,
+                url: '/number-base',
             },
             {
                 title: 'Git Branch Generator',

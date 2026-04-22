@@ -41,6 +41,7 @@ export const STORAGE_KEYS = {
     COLOR_PICKER_HEX: 'color-picker-hex',
     COLOR_PALETTE_BASE: 'color-palette-base',
     COLOR_PALETTE_MODE: 'color-palette-mode',
+    NUMBER_BASE_STATE: 'number-base-state',
     THEME: 'theme',
 } as const;
 
@@ -57,6 +58,7 @@ export const PAGE_NAMES = {
     REGEX: 'regex',
     PASSWORD: 'password',
     COLOR: 'color',
+    NUMBER_BASE: 'number-base',
 } as const;
 
 export const BASE64_TABS = {
@@ -120,6 +122,10 @@ export const COLOR_TABS = {
     PALETTE: 'palette',
 } as const;
 
+export const NUMBER_BASE_TABS = {
+    CONVERT: 'convert',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -133,4 +139,5 @@ export const TAB_NAMES = {
     ...REGEX_TABS,
     ...PASSWORD_TABS,
     ...COLOR_TABS,
+    ...NUMBER_BASE_TABS,
 } as const;
