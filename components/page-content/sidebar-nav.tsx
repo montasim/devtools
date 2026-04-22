@@ -27,7 +27,7 @@ export function SidebarNav({ sections, activeSection, onSectionClick }: SidebarN
                                 : 'hover:bg-primary/20 hover:text-primary'
                         }`}
                     >
-                        <span className="flex-shrink-0">{section.icon}</span>
+                        <span className="shrink-0">{section.icon}</span>
                         <span className="font-medium">{section.title}</span>
                         {section.count !== undefined && (
                             <span className="ml-auto text-sm opacity-70">{section.count}</span>
