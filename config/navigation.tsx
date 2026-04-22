@@ -14,6 +14,7 @@ import {
     KeyRound,
     Pipette,
     Binary,
+    ArrowLeftRight,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -94,6 +95,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Convert numbers between binary, octal, decimal, hex and custom radix',
                 icon: <Binary className="size-5 shrink-0" />,
                 url: '/number-base',
+            },
+            {
+                title: 'Unit Converter',
+                description: 'Convert data sizes, time durations, and time zones',
+                icon: <ArrowLeftRight className="size-5 shrink-0" />,
+                url: '/unit',
             },
             {
                 title: 'Git Branch Generator',

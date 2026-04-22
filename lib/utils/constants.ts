@@ -42,6 +42,9 @@ export const STORAGE_KEYS = {
     COLOR_PALETTE_BASE: 'color-palette-base',
     COLOR_PALETTE_MODE: 'color-palette-mode',
     NUMBER_BASE_STATE: 'number-base-state',
+    UNIT_DATA_STATE: 'unit-data-state',
+    UNIT_TIME_STATE: 'unit-time-state',
+    UNIT_TIMEZONE_STATE: 'unit-timezone-state',
     THEME: 'theme',
 } as const;
 
@@ -59,6 +62,7 @@ export const PAGE_NAMES = {
     PASSWORD: 'password',
     COLOR: 'color',
     NUMBER_BASE: 'number-base',
+    UNIT: 'unit',
 } as const;
 
 export const BASE64_TABS = {
@@ -126,6 +130,12 @@ export const NUMBER_BASE_TABS = {
     CONVERT: 'convert',
 } as const;
 
+export const UNIT_TABS = {
+    DATA: 'data',
+    TIME: 'time',
+    TIMEZONE: 'timezone',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -140,4 +150,5 @@ export const TAB_NAMES = {
     ...PASSWORD_TABS,
     ...COLOR_TABS,
     ...NUMBER_BASE_TABS,
+    ...UNIT_TABS,
 } as const;
