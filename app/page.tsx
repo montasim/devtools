@@ -22,6 +22,10 @@ import {
     QrCode,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { generatePageMetadata } from '@/lib/seo/metadata';
+import { buildWebSiteSchema, buildSoftwareAppSchema } from '@/lib/seo/structured-data';
+
+export const metadata = generatePageMetadata('home');
 
 const TOOLS = [
     {
@@ -160,6 +164,12 @@ const FEATURES = [
 export default function HomePage() {
     return (
         <div className="flex flex-col">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify([buildWebSiteSchema(), buildSoftwareAppSchema()]),
+                }}
+            />
             <section className="relative overflow-hidden border-b bg-gradient-to-b from-background to-muted/20 py-16 sm:py-24">
                 <div className="mx-auto max-w-5xl">
                     <div className="text-center">

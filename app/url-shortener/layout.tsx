@@ -1,9 +1,6 @@
-import type { Metadata } from 'next';
+import { generatePageMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-    title: 'URL Shortener - DevTools',
-    description: 'Shorten long URLs into compact, shareable links.',
-};
+export const metadata = generatePageMetadata('url-shortener');
 
 export default function UrlShortenerLayout({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
