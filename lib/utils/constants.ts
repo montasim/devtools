@@ -38,6 +38,9 @@ export const STORAGE_KEYS = {
     REGEX_TEST_INPUT: 'regex-test-input',
     PASSWORD_CONFIG: 'password-config',
     PASSWORD_RESULTS: 'password-results',
+    COLOR_PICKER_HEX: 'color-picker-hex',
+    COLOR_PALETTE_BASE: 'color-palette-base',
+    COLOR_PALETTE_MODE: 'color-palette-mode',
     THEME: 'theme',
 } as const;
 
@@ -53,6 +56,7 @@ export const PAGE_NAMES = {
     MARKDOWN: 'markdown',
     REGEX: 'regex',
     PASSWORD: 'password',
+    COLOR: 'color',
 } as const;
 
 export const BASE64_TABS = {
@@ -111,6 +115,11 @@ export const PASSWORD_TABS = {
     GENERATE: 'generate',
 } as const;
 
+export const COLOR_TABS = {
+    PICKER: 'picker',
+    PALETTE: 'palette',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -123,4 +132,5 @@ export const TAB_NAMES = {
     ...MARKDOWN_TABS,
     ...REGEX_TABS,
     ...PASSWORD_TABS,
+    ...COLOR_TABS,
 } as const;

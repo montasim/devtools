@@ -12,6 +12,7 @@ import {
     Fingerprint,
     Regex,
     KeyRound,
+    Pipette,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -80,6 +81,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Generate secure passwords with strength meter',
                 icon: <KeyRound className="size-5 shrink-0" />,
                 url: '/password',
+            },
+            {
+                title: 'Color Picker',
+                description: 'Convert colors between HEX, RGB, HSL, OKLCH and generate palettes',
+                icon: <Pipette className="size-5 shrink-0" />,
+                url: '/color',
             },
             {
                 title: 'Git Branch Generator',
