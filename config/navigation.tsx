@@ -8,6 +8,7 @@ import {
     Link2,
     QrCode,
     Hash,
+    Link,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -46,6 +47,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Generate hashes and HMAC signatures',
                 icon: <Hash className="size-5 shrink-0" />,
                 url: '/hash',
+            },
+            {
+                title: 'URL Encode / Decode',
+                description: 'Encode and decode percent-encoded URLs',
+                icon: <Link className="size-5 shrink-0" />,
+                url: '/url-encode',
             },
             {
                 title: 'Git Branch Generator',
