@@ -400,6 +400,24 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        websocket: {
+            title: 'WebSocket Tester - Connect, Send & Receive Messages in Real-Time',
+            description:
+                'Free online WebSocket tester. Connect to WebSocket endpoints, send and receive messages in real-time. Supports wss:// and ws:// protocols with live connection status and message history.',
+            keywords: [
+                'WebSocket tester',
+                'WebSocket client',
+                'WebSocket debug',
+                'test WebSocket',
+                'WebSocket online',
+                'ws tester',
+                'WebSocket inspector',
+            ],
+            path: '/websocket',
+            priority: 0.9,
+            changeFrequency: 'monthly',
+        },
+
         'git-branch-generator': {
             title: 'Git Branch Name Generator - Consistent Branch Naming',
             description:

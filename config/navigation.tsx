@@ -20,6 +20,7 @@ import {
     Monitor,
     Zap,
     Code2,
+    Plug,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -160,6 +161,13 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Convert cURL commands to fetch, Axios, Python and HTTPie',
                 icon: <Code2 className="size-5 shrink-0" />,
                 url: '/curl',
+            },
+            {
+                title: 'WebSocket Tester',
+                description:
+                    'Connect to WebSocket endpoints, send and receive messages in real-time',
+                icon: <Plug className="size-5 shrink-0" />,
+                url: '/websocket',
             },
         ],
     },

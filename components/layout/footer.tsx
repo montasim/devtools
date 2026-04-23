@@ -13,6 +13,7 @@ const footerSections = [
             { label: 'URL Shortener', href: '/url-shortener' },
             { label: 'API Request Builder', href: '/api-builder' },
             { label: 'cURL Converter', href: '/curl' },
+            { label: 'WebSocket Tester', href: '/websocket' },
             { label: 'QR Code Generator', href: '/qrcode' },
         ],
     },

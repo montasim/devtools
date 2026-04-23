@@ -21,6 +21,7 @@ import {
     GitBranch,
     QrCode,
     Code2,
+    Plug,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { generatePageMetadata } from '@/lib/seo/metadata';
@@ -136,6 +137,12 @@ const TOOLS = [
         label: 'cURL Converter',
         description: 'Convert cURL to fetch, Axios, Python, and HTTPie',
         icon: Code2,
+    },
+    {
+        href: '/websocket',
+        label: 'WebSocket Tester',
+        description: 'Connect to WS endpoints, send and receive messages',
+        icon: Plug,
     },
     {
         href: '/git-branch-generator',
