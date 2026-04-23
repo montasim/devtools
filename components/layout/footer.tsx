@@ -35,6 +35,7 @@ const footerSections = [
             { label: 'API Request Builder', href: '/api-builder' },
             { label: 'WebSocket Tester', href: '/websocket' },
             { label: 'CORS Checker', href: '/cors' },
+            { label: 'Certificate Decoder', href: '/cert-decoder' },
             { label: 'User Agent Analyzer', href: '/user-agent' },
         ],
     },

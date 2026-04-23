@@ -63,6 +63,7 @@ export const STORAGE_KEYS = {
     PASSWORD_HASH_INPUT: 'password-hash-input',
     PASSWORD_VERIFY_INPUT: 'password-verify-input',
     RSA_KEY_INPUT: 'rsa-key-input',
+    CERT_DECODER_INPUT: 'cert-decoder-input',
     THEME: 'theme',
 } as const;
 
@@ -93,6 +94,7 @@ export const PAGE_NAMES = {
     UNICODE: 'unicode',
     PASSWORD_HASH: 'password-hash',
     RSA_KEY: 'rsa-key',
+    CERT_DECODER: 'cert-decoder',
 } as const;
 
 export const BASE64_TABS = {
@@ -217,6 +219,10 @@ export const RSA_KEY_TABS = {
     GENERATE: 'generate',
 } as const;
 
+export const CERT_DECODER_TABS = {
+    DECODE: 'decode',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -244,4 +250,5 @@ export const TAB_NAMES = {
     ...UNICODE_TABS,
     ...PASSWORD_HASH_TABS,
     ...RSA_KEY_TABS,
+    ...CERT_DECODER_TABS,
 } as const;

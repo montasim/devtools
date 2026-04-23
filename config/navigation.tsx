@@ -183,6 +183,13 @@ export const navigationMenu: MenuItem[] = [
                 category: 'Network & API',
             },
             {
+                title: 'Certificate Decoder',
+                description: 'Decode and inspect SSL/TLS X.509 certificate fields',
+                icon: <Fingerprint className="size-5 shrink-0" />,
+                url: '/cert-decoder',
+                category: 'Network & API',
+            },
+            {
                 title: 'User Agent Analyzer',
                 description: 'Parse and decode User-Agent strings',
                 icon: <Monitor className="size-5 shrink-0" />,

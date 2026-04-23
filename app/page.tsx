@@ -179,6 +179,12 @@ const TOOLS = [
         icon: ShieldCheck,
     },
     {
+        href: '/cert-decoder',
+        label: 'Certificate Decoder',
+        description: 'Decode and inspect SSL/TLS certificate fields',
+        icon: Fingerprint,
+    },
+    {
         href: '/git-branch-generator',
         label: 'Git Branch Generator',
         description: 'Generate consistent git branch names from templates',

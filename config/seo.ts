@@ -520,6 +520,25 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        'cert-decoder': {
+            title: 'SSL/TLS Certificate Decoder - Inspect X.509 Certificate Fields',
+            description:
+                'Free online SSL/TLS certificate decoder. Paste a PEM-encoded X.509 certificate to inspect subject, issuer, validity, extensions, SAN, fingerprints (SHA-256/SHA-1), and public key details. All parsing runs locally in your browser.',
+            keywords: [
+                'certificate decoder',
+                'SSL certificate decoder',
+                'X.509 decoder',
+                'TLS certificate inspector',
+                'PEM certificate parser',
+                'certificate viewer',
+                'SSL checker',
+                'decode certificate online',
+            ],
+            path: '/cert-decoder',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
         'git-branch-generator': {
             title: 'Git Branch Name Generator - Consistent Branch Naming',
             description:
