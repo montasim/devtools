@@ -109,7 +109,7 @@ export default function NanoidTab({ readOnly }: TabComponentProps) {
                     <div className="flex items-center gap-1.5">
                         <Label className="text-xs whitespace-nowrap">Alphabet</Label>
                         <Select value={alphabetPreset} onValueChange={setAlphabetPreset}>
-                            <SelectTrigger className="h-7 w-auto text-xs" size="sm">
+                            <SelectTrigger className="h-7 w-auto max-w-[160px] text-xs" size="sm">
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
