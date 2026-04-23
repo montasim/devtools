@@ -151,18 +151,21 @@ export const seoConfig: SEOConfig = {
         },
 
         id: {
-            title: 'ID Generator - UUID (v1-v8) & ULID Generator with Validation',
+            title: 'ID Generator - UUID (v1-v8), ULID & NanoID Generator with Validation',
             description:
-                'Free online UUID and ULID generator. Generate UUIDs in versions v1, v3, v4, v5, v6, v7, v8 and ULIDs. Includes UUID and ULID validators. Batch generation up to 100 IDs.',
+                'Free online UUID, ULID, and NanoID generator. Generate UUIDs in versions v1, v3, v4, v5, v6, v7, v8, ULIDs, and customizable NanoIDs. Includes validators for each ID type. Batch generation up to 100 IDs.',
             keywords: [
                 'UUID generator',
                 'ULID generator',
+                'NanoID generator',
                 'UUID v4',
                 'UUID v7',
                 'UUID validator',
                 'ULID validator',
+                'NanoID validator',
                 'unique ID generator',
                 'online UUID',
+                'nanoid online',
             ],
             path: '/id',
             priority: 0.7,

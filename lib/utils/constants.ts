@@ -34,6 +34,10 @@ export const STORAGE_KEYS = {
     UUID_RESULTS: 'uuid-results',
     ULID_QUANTITY: 'ulid-quantity',
     ULID_RESULTS: 'ulid-results',
+    NANOID_SIZE: 'nanoid-size',
+    NANOID_ALPHABET: 'nanoid-alphabet',
+    NANOID_QUANTITY: 'nanoid-quantity',
+    NANOID_RESULTS: 'nanoid-results',
     MARKDOWN_PREVIEW_INPUT: 'markdown-preview-input',
     REGEX_TEST_INPUT: 'regex-test-input',
     PASSWORD_CONFIG: 'password-config',
@@ -123,6 +127,7 @@ export const URL_ENCODE_TABS = {
 export const ID_TABS = {
     UUID: 'uuid',
     ULID: 'ulid',
+    NANOID: 'nanoid',
 } as const;
 
 export const MARKDOWN_TABS = {

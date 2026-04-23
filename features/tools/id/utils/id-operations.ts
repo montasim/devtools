@@ -202,3 +202,76 @@ export function validateUlid(ulid: string): boolean {
     if (trimmed.length !== 26) return false;
     return /^[0-9A-HJKMNP-TV-Z]{26}$/.test(trimmed);
 }
+
+const NANO_DEFAULT_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const NANO_DEFAULT_SIZE = 21;
+
+export interface NanoidConfig {
+    size: number;
+    alphabet: string;
+}
+
+export const NANO_SIZE_OPTIONS = [8, 10, 16, 21, 32, 48] as const;
+export type NanoidSize = (typeof NANO_SIZE_OPTIONS)[number];
+
+export const NANO_ALPHABET_PRESETS: { value: string; label: string; alphabet: string }[] = [
+    { value: 'default', label: 'Alphanumeric (default)', alphabet: NANO_DEFAULT_ALPHABET },
+    {
+        value: 'lowercase',
+        label: 'Lowercase + Digits',
+        alphabet: '0123456789abcdefghijklmnopqrstuvwxyz',
+    },
+    {
+        value: 'uppercase',
+        label: 'Uppercase + Digits',
+        alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    },
+    { value: 'numbers', label: 'Numbers Only', alphabet: '0123456789' },
+    {
+        value: 'nolookalikes',
+        label: 'No Look-alikes',
+        alphabet: '0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz',
+    },
+    { value: 'hex', label: 'Hexadecimal', alphabet: '0123456789abcdef' },
+];
+
+export function generateNanoid(
+    size: number = NANO_DEFAULT_SIZE,
+    alphabet: string = NANO_DEFAULT_ALPHABET,
+): string {
+    const mask = (2 << (Math.log(alphabet.length - 1) / Math.LN2)) - 1;
+    const step = Math.ceil((1.6 * mask * size) / alphabet.length);
+    let id = '';
+    while (id.length < size) {
+        const bytes = new Uint8Array(step);
+        crypto.getRandomValues(bytes);
+        for (const byte of bytes) {
+            const idx = byte & mask;
+            if (idx < alphabet.length) {
+                id += alphabet[idx];
+                if (id.length >= size) break;
+            }
+        }
+    }
+    return id;
+}
+
+export function generateNanoids(size: number, alphabet: string, count: number): string[] {
+    return Array.from({ length: count }, () => generateNanoid(size, alphabet));
+}
+
+export function validateNanoid(
+    id: string,
+    alphabet: string = NANO_DEFAULT_ALPHABET,
+    size: number = NANO_DEFAULT_SIZE,
+): { valid: boolean; reason?: string } {
+    const trimmed = id.trim();
+    if (trimmed.length === 0) return { valid: false, reason: 'Empty input' };
+    if (trimmed.length !== size)
+        return { valid: false, reason: `Expected length ${size}, got ${trimmed.length}` };
+    for (const ch of trimmed) {
+        if (!alphabet.includes(ch))
+            return { valid: false, reason: `Character "${ch}" not in allowed alphabet` };
+    }
+    return { valid: true };
+}

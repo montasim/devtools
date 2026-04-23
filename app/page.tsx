@@ -64,7 +64,7 @@ const TOOLS = [
     {
         href: '/id',
         label: 'ID Generator',
-        description: 'Generate UUIDs (v1/v4/v7) and ULIDs',
+        description: 'Generate UUIDs (v1/v4/v7), ULIDs, and NanoIDs',
         icon: Fingerprint,
     },
     {

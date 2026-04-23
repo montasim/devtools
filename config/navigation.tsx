@@ -69,7 +69,7 @@ export const navigationMenu: MenuItem[] = [
             },
             {
                 title: 'ID Generator',
-                description: 'Generate UUIDs (v1/v4/v7) and ULIDs',
+                description: 'Generate UUIDs (v1/v4/v7), ULIDs, and NanoIDs',
                 icon: <Fingerprint className="size-5 shrink-0" />,
                 url: '/id',
             },
