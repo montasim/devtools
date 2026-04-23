@@ -25,6 +25,7 @@ import {
     ShieldCheck,
     FileCode,
     Languages,
+    Lock,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { generatePageMetadata } from '@/lib/seo/metadata';
@@ -56,6 +57,12 @@ const TOOLS = [
         label: 'Hash Generator',
         description: 'Generate hashes and HMAC signatures',
         icon: Hash,
+    },
+    {
+        href: '/password-hash',
+        label: 'Bcrypt / Argon2 Hasher',
+        description: 'Hash and verify passwords with bcrypt and Argon2',
+        icon: Lock,
     },
     {
         href: '/url-encode',

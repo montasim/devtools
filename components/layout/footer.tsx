@@ -22,6 +22,7 @@ const footerSections = [
         links: [
             { label: 'ID Generator', href: '/id' },
             { label: 'Hash Generator', href: '/hash' },
+            { label: 'Bcrypt / Argon2 Hasher', href: '/password-hash' },
             { label: 'Password Generator', href: '/password' },
             { label: 'QR Code Generator', href: '/qrcode' },
             { label: 'Git Branch Generator', href: '/git-branch-generator' },

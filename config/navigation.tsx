@@ -25,6 +25,7 @@ import {
     Network,
     Wrench,
     Languages,
+    Lock,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -123,6 +124,13 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Generate hashes and HMAC signatures',
                 icon: <Hash className="size-5 shrink-0" />,
                 url: '/hash',
+                category: 'Generators',
+            },
+            {
+                title: 'Bcrypt / Argon2 Hasher',
+                description: 'Hash and verify passwords with bcrypt and Argon2',
+                icon: <Lock className="size-5 shrink-0" />,
+                url: '/password-hash',
                 category: 'Generators',
             },
             {

@@ -479,6 +479,27 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        'password-hash': {
+            title: 'Bcrypt & Argon2 Password Hasher - Hash and Verify Passwords Online',
+            description:
+                'Free online password hasher. Hash passwords with bcrypt (configurable rounds) and Argon2 (id/i/d with custom memory and iterations). Verify existing hashes. All processing runs locally in your browser.',
+            keywords: [
+                'bcrypt hash',
+                'argon2 hash',
+                'password hasher',
+                'password hash online',
+                'bcrypt generator',
+                'argon2 generator',
+                'password verify',
+                'bcrypt verify',
+                'argon2 verify',
+                'password hashing tool',
+            ],
+            path: '/password-hash',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
         'git-branch-generator': {
             title: 'Git Branch Name Generator - Consistent Branch Naming',
             description:
