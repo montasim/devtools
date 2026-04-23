@@ -24,6 +24,7 @@ import {
     Braces,
     Network,
     Wrench,
+    Languages,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -192,6 +193,14 @@ export const navigationMenu: MenuItem[] = [
                 description: 'File extension ↔ MIME type mapping',
                 icon: <FileText className="size-5 shrink-0" />,
                 url: '/mime-type',
+                category: 'Reference',
+            },
+            {
+                title: 'Unicode Lookup',
+                description:
+                    'Search Unicode characters by name, codepoint, and copy in various formats',
+                icon: <Languages className="size-5 shrink-0" />,
+                url: '/unicode',
                 category: 'Reference',
             },
             {

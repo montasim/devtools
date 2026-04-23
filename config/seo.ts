@@ -460,6 +460,25 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        unicode: {
+            title: 'Unicode Character Lookup - Search Unicode by Name, Codepoint & Character',
+            description:
+                'Free online Unicode character lookup. Search by name, codepoint (U+0041), character, or block. Copy in HTML decimal, hex, CSS, JavaScript, and UTF-8 formats. Browse 150+ common characters with category filters.',
+            keywords: [
+                'Unicode lookup',
+                'Unicode search',
+                'Unicode character',
+                'codepoint lookup',
+                'Unicode table',
+                'character search',
+                'Unicode reference',
+                'U+ codepoint',
+            ],
+            path: '/unicode',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
         'git-branch-generator': {
             title: 'Git Branch Name Generator - Consistent Branch Naming',
             description:

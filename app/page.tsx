@@ -24,6 +24,7 @@ import {
     Plug,
     ShieldCheck,
     FileCode,
+    Languages,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { generatePageMetadata } from '@/lib/seo/metadata';
@@ -85,6 +86,12 @@ const TOOLS = [
         label: 'Regex Tester',
         description: 'Test regex with live matching and capture groups',
         icon: FileText,
+    },
+    {
+        href: '/unicode',
+        label: 'Unicode Lookup',
+        description: 'Search Unicode characters by name and codepoint',
+        icon: Languages,
     },
     {
         href: '/password',

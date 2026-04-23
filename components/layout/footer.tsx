@@ -42,6 +42,7 @@ const footerSections = [
             { label: 'Regex Tester', href: '/regex' },
             { label: 'HTTP Status Codes', href: '/http-status' },
             { label: 'MIME Type Reference', href: '/mime-type' },
+            { label: 'Unicode Lookup', href: '/unicode' },
             { label: 'Unit Converter', href: '/unit' },
             { label: 'URL Shortener', href: '/url-shortener' },
             { label: 'Share Text', href: '/share/text' },

@@ -59,6 +59,7 @@ export const STORAGE_KEYS = {
     CORS_CHECKER_URL: 'cors-checker-url',
     HTML_ENTITY_ENCODE_INPUT: 'html-entity-encode-input',
     HTML_ENTITY_DECODE_INPUT: 'html-entity-decode-input',
+    UNICODE_SEARCH: 'unicode-search',
     THEME: 'theme',
 } as const;
 
@@ -86,6 +87,7 @@ export const PAGE_NAMES = {
     WEBSOCKET: 'websocket',
     CORS: 'cors',
     HTML_ENTITY: 'html-entity',
+    UNICODE: 'unicode',
 } as const;
 
 export const BASE64_TABS = {
@@ -197,6 +199,10 @@ export const HTML_ENTITY_TABS = {
     DECODE: 'decode',
 } as const;
 
+export const UNICODE_TABS = {
+    LOOKUP: 'lookup',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -221,4 +227,5 @@ export const TAB_NAMES = {
     ...WEBSOCKET_TABS,
     ...CORS_TABS,
     ...HTML_ENTITY_TABS,
+    ...UNICODE_TABS,
 } as const;
