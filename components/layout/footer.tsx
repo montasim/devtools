@@ -3,24 +3,49 @@ import { Logo } from './logo';
 
 const footerSections = [
     {
-        title: 'Product',
+        title: 'Formatters & Converters',
         links: [
             { label: 'JSON Tools', href: '/json' },
             { label: 'Text Tools', href: '/text' },
             { label: 'Base64 Tools', href: '/base64' },
-            { label: 'Share Text', href: '/share/text' },
-            { label: 'Git Branch Generator', href: '/git-branch-generator' },
-            { label: 'URL Shortener', href: '/url-shortener' },
-            { label: 'API Request Builder', href: '/api-builder' },
+            { label: 'URL Encode / Decode', href: '/url-encode' },
             { label: 'cURL Converter', href: '/curl' },
-            { label: 'WebSocket Tester', href: '/websocket' },
-            { label: 'CORS Checker', href: '/cors' },
-            { label: 'QR Code Generator', href: '/qrcode' },
+            { label: 'Number Base', href: '/number-base' },
+            { label: 'CSS Unit Converter', href: '/css-unit' },
+            { label: 'Color Picker', href: '/color' },
+            { label: 'Markdown Preview', href: '/markdown' },
         ],
     },
     {
-        title: 'Resources',
-        links: [{ label: 'Documentation', href: '/docs' }],
+        title: 'Generators',
+        links: [
+            { label: 'ID Generator', href: '/id' },
+            { label: 'Hash Generator', href: '/hash' },
+            { label: 'Password Generator', href: '/password' },
+            { label: 'QR Code Generator', href: '/qrcode' },
+            { label: 'Git Branch Generator', href: '/git-branch-generator' },
+        ],
+    },
+    {
+        title: 'Network & API',
+        links: [
+            { label: 'API Request Builder', href: '/api-builder' },
+            { label: 'WebSocket Tester', href: '/websocket' },
+            { label: 'CORS Checker', href: '/cors' },
+            { label: 'User Agent Analyzer', href: '/user-agent' },
+        ],
+    },
+    {
+        title: 'Reference & Utilities',
+        links: [
+            { label: 'Regex Tester', href: '/regex' },
+            { label: 'HTTP Status Codes', href: '/http-status' },
+            { label: 'MIME Type Reference', href: '/mime-type' },
+            { label: 'Unit Converter', href: '/unit' },
+            { label: 'URL Shortener', href: '/url-shortener' },
+            { label: 'Share Text', href: '/share/text' },
+            { label: 'Documentation', href: '/docs' },
+        ],
     },
     {
         title: 'Legal',
@@ -39,11 +64,12 @@ export function Footer() {
     return (
         <footer className="border-t bg-background mt-10">
             <div className="mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-2 gap-8 py-12 md:grid-cols-4 lg:grid-cols-5">
-                    <div className="col-span-2 lg:col-span-1">
+                <div className="grid grid-cols-2 gap-8 py-12 sm:grid-cols-3 lg:grid-cols-6">
+                    <div className="col-span-2 sm:col-span-3 lg:col-span-1">
                         <Logo />
                         <p className="mt-4 text-sm text-muted-foreground">
-                            Powerful developer tools for JSON, text, and Base64 data processing.
+                            20+ free developer tools for formatting, converting, generating, and
+                            debugging. All client-side.
                         </p>
                     </div>
 

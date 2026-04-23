@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Menu, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
     Accordion,
@@ -15,7 +14,7 @@ import {
 import { Logo } from '../layout/logo';
 import { ThemeToggle } from '../theme/theme-toggle';
 import { UserMenu } from '@/features/auth/components/user-menu';
-import { navigationMenu } from '@/config/navigation';
+import { navigationMenu, CATEGORY_ICONS } from '@/config/navigation';
 import type { MenuItem } from '@/config/navigation';
 
 function DropdownLink({ item }: { item: MenuItem }) {
@@ -35,9 +34,35 @@ function DropdownLink({ item }: { item: MenuItem }) {
     );
 }
 
+function groupByCategory(items: MenuItem[]) {
+    const groups: { category: string; items: MenuItem[] }[] = [];
+    let currentCategory = '';
+    let currentItems: MenuItem[] = [];
+
+    for (const item of items) {
+        const cat = item.category ?? '';
+        if (cat !== currentCategory) {
+            if (currentItems.length > 0) {
+                groups.push({ category: currentCategory, items: currentItems });
+            }
+            currentCategory = cat;
+            currentItems = [];
+        }
+        currentItems.push(item);
+    }
+    if (currentItems.length > 0) {
+        groups.push({ category: currentCategory, items: currentItems });
+    }
+
+    return groups;
+}
+
 function HoverDropdown({ item }: { item: MenuItem }) {
-    const items = item.items ?? [];
+    const items = useMemo(() => item.items ?? [], [item.items]);
+    const groups = useMemo(() => groupByCategory(items), [items]);
+    const hasCategories = items.some((i) => i.category);
     const cols = items.length > 6 ? 3 : items.length > 3 ? 2 : 1;
+
     return (
         <div className="group relative">
             <Button variant="ghost" size="sm" className="gap-1">
@@ -45,16 +70,40 @@ function HoverDropdown({ item }: { item: MenuItem }) {
                 <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
             </Button>
             <div
-                className={`${items.length > 4 ? 'h-92' : ''} overflow-y-auto overflow-x-hidden invisible absolute left-0 z-50 rounded-lg border bg-popover p-2 opacity-0 shadow-md transition-all group-hover:visible group-hover:opacity-100`}
+                className={`${items.length > 8 ? 'max-h-[80vh]' : items.length > 4 ? 'max-h-[70vh]' : ''} overflow-y-auto overflow-x-hidden invisible absolute left-0 z-50 rounded-lg border bg-popover p-2 opacity-0 shadow-md transition-all group-hover:visible group-hover:opacity-100`}
             >
-                <div
-                    className="grid gap-1"
-                    style={{ gridTemplateColumns: `repeat(${cols}, minmax(220px, 1fr))` }}
-                >
-                    {items.map((subItem) => (
-                        <DropdownLink key={subItem.title} item={subItem} />
-                    ))}
-                </div>
+                {hasCategories ? (
+                    <div
+                        className="grid gap-1"
+                        style={{ gridTemplateColumns: `repeat(${cols}, minmax(220px, 1fr))` }}
+                    >
+                        {groups.map((group, gi) => (
+                            <div key={group.category} className="contents">
+                                <div className="col-span-full flex items-center gap-1.5 px-3 pt-2 pb-1">
+                                    {CATEGORY_ICONS[group.category]}
+                                    <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                                        {group.category}
+                                    </span>
+                                </div>
+                                {group.items.map((subItem) => (
+                                    <DropdownLink key={subItem.title} item={subItem} />
+                                ))}
+                                {gi < groups.length - 1 && (
+                                    <div className="col-span-full my-1.5 border-t" />
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div
+                        className="grid gap-1"
+                        style={{ gridTemplateColumns: `repeat(${cols}, minmax(220px, 1fr))` }}
+                    >
+                        {items.map((subItem) => (
+                            <DropdownLink key={subItem.title} item={subItem} />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -118,8 +167,26 @@ function MobileMenu() {
                                             {item.title}
                                         </AccordionTrigger>
                                         <AccordionContent className="mt-2">
-                                            {item.items.map((subItem) => (
-                                                <DropdownLink key={subItem.title} item={subItem} />
+                                            {groupByCategory(item.items).map((group, gi, arr) => (
+                                                <div key={group.category}>
+                                                    {group.category && (
+                                                        <div className="flex items-center gap-1.5 px-3 py-1.5">
+                                                            {CATEGORY_ICONS[group.category]}
+                                                            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                                                                {group.category}
+                                                            </span>
+                                                        </div>
+                                                    )}
+                                                    {group.items.map((subItem) => (
+                                                        <DropdownLink
+                                                            key={subItem.title}
+                                                            item={subItem}
+                                                        />
+                                                    ))}
+                                                    {gi < arr.length - 1 && (
+                                                        <div className="my-1.5 mx-3 border-t" />
+                                                    )}
+                                                </div>
                                             ))}
                                         </AccordionContent>
                                     </AccordionItem>
