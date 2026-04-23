@@ -57,6 +57,8 @@ export const STORAGE_KEYS = {
     CURL_CONVERT_INPUT: 'curl-convert-input',
     WEBSOCKET_TESTER_URL: 'websocket-tester-url',
     CORS_CHECKER_URL: 'cors-checker-url',
+    HTML_ENTITY_ENCODE_INPUT: 'html-entity-encode-input',
+    HTML_ENTITY_DECODE_INPUT: 'html-entity-decode-input',
     THEME: 'theme',
 } as const;
 
@@ -83,6 +85,7 @@ export const PAGE_NAMES = {
     CURL: 'curl',
     WEBSOCKET: 'websocket',
     CORS: 'cors',
+    HTML_ENTITY: 'html-entity',
 } as const;
 
 export const BASE64_TABS = {
@@ -189,6 +192,11 @@ export const CORS_TABS = {
     CHECKER: 'checker',
 } as const;
 
+export const HTML_ENTITY_TABS = {
+    ENCODE: 'encode',
+    DECODE: 'decode',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -212,4 +220,5 @@ export const TAB_NAMES = {
     ...CURL_TABS,
     ...WEBSOCKET_TABS,
     ...CORS_TABS,
+    ...HTML_ENTITY_TABS,
 } as const;

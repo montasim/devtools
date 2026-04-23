@@ -440,6 +440,26 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        'html-entity': {
+            title: 'HTML Entity Encoder / Decoder - Encode & Decode HTML Entities',
+            description:
+                'Free online HTML entity encoder and decoder. Convert special characters to named entities (&amp;, &lt;, &quot;), decimal (&#60;), or hexadecimal (&#x3C;) references. Decode HTML entities back to readable text.',
+            keywords: [
+                'HTML entity encoder',
+                'HTML entity decoder',
+                'HTML entities',
+                'encode HTML',
+                'decode HTML entities',
+                'HTML special characters',
+                'ampersand encode',
+                'HTML escape',
+                'HTML unescape',
+            ],
+            path: '/html-entity',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
         'git-branch-generator': {
             title: 'Git Branch Name Generator - Consistent Branch Naming',
             description:

@@ -23,6 +23,7 @@ import {
     Code2,
     Plug,
     ShieldCheck,
+    FileCode,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { generatePageMetadata } from '@/lib/seo/metadata';
@@ -60,6 +61,12 @@ const TOOLS = [
         label: 'URL Encode / Decode',
         description: 'Encode and decode percent-encoded URLs',
         icon: Link2,
+    },
+    {
+        href: '/html-entity',
+        label: 'HTML Entity Encode / Decode',
+        description: 'Encode and decode HTML entities (&amp;, &lt;, &#x27;)',
+        icon: FileCode,
     },
     {
         href: '/id',

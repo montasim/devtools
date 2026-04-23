@@ -69,6 +69,13 @@ export const navigationMenu: MenuItem[] = [
                 category: 'Formatters & Converters',
             },
             {
+                title: 'HTML Entity Encode / Decode',
+                description: 'Encode and decode HTML entities (&amp;, &lt;, &#x27;, etc.)',
+                icon: <FileCode className="size-5 shrink-0" />,
+                url: '/html-entity',
+                category: 'Formatters & Converters',
+            },
+            {
                 title: 'cURL Converter',
                 description: 'Convert cURL to fetch, Axios, Python, and HTTPie',
                 icon: <Code2 className="size-5 shrink-0" />,

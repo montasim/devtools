@@ -9,6 +9,7 @@ const footerSections = [
             { label: 'Text Tools', href: '/text' },
             { label: 'Base64 Tools', href: '/base64' },
             { label: 'URL Encode / Decode', href: '/url-encode' },
+            { label: 'HTML Entity Encode / Decode', href: '/html-entity' },
             { label: 'cURL Converter', href: '/curl' },
             { label: 'Number Base', href: '/number-base' },
             { label: 'CSS Unit Converter', href: '/css-unit' },
