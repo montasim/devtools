@@ -17,6 +17,7 @@ import {
     ArrowLeftRight,
     Globe,
     Ruler,
+    Monitor,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -139,6 +140,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Generate customizable QR codes',
                 icon: <QrCode className="size-5 shrink-0" />,
                 url: '/qrcode',
+            },
+            {
+                title: 'User Agent Analyzer',
+                description: 'Parse and decode User-Agent strings',
+                icon: <Monitor className="size-5 shrink-0" />,
+                url: '/user-agent',
             },
         ],
     },

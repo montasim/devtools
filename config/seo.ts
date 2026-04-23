@@ -6,7 +6,7 @@ export const seoConfig: SEOConfig = {
         siteUrl: 'https://devtools.dev',
         titleDefault: 'DevTools - Developer Utilities',
         description:
-            'A comprehensive suite of 18+ free developer tools — JSON, Text, Base64, Hash, Regex, Markdown, Color Picker, QR Code, Unit Converter, and more. All tools run locally in your browser.',
+            'A comprehensive suite of 20+ free developer tools — JSON, Text, Base64, Hash, Regex, Markdown, Color Picker, QR Code, Unit Converter, User Agent Analyzer, and more. All tools run locally in your browser.',
         locale: 'en_US',
         twitterHandle: '@devtools',
         ogImage: '/og-default.png',
@@ -26,7 +26,7 @@ export const seoConfig: SEOConfig = {
         home: {
             title: 'DevTools - Free Online Developer Utilities',
             description:
-                '18+ free developer tools for JSON, Text, Base64, Hash, URL Encoding, ID Generation, Markdown, Regex, Password, Color, Unit Conversion, and more. All client-side, no data leaves your browser.',
+                '20+ free developer tools for JSON, Text, Base64, Hash, URL Encoding, ID Generation, Markdown, Regex, Password, Color, Unit Conversion, User Agent Analysis, and more. All client-side, no data leaves your browser.',
             keywords: [
                 'developer tools',
                 'online tools',
@@ -340,6 +340,25 @@ export const seoConfig: SEOConfig = {
                 'custom QR code',
             ],
             path: '/qrcode',
+            priority: 0.7,
+            changeFrequency: 'monthly',
+        },
+
+        'user-agent': {
+            title: 'User Agent Analyzer - Parse & Decode User-Agent Strings',
+            description:
+                'Free online User-Agent string analyzer. Parse and decode browser, OS, device, and engine information from any User-Agent string. Detect bots, mobile devices, and more.',
+            keywords: [
+                'user agent analyzer',
+                'user agent parser',
+                'UA parser',
+                'browser detection',
+                'device detection',
+                'bot detection',
+                'user agent decoder',
+                'UA string',
+            ],
+            path: '/user-agent',
             priority: 0.7,
             changeFrequency: 'monthly',
         },
