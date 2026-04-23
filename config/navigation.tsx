@@ -26,6 +26,7 @@ import {
     Wrench,
     Languages,
     Lock,
+    Table2,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -223,6 +224,14 @@ export const navigationMenu: MenuItem[] = [
                     'Search Unicode characters by name, codepoint, and copy in various formats',
                 icon: <Languages className="size-5 shrink-0" />,
                 url: '/unicode',
+                category: 'Reference',
+            },
+            {
+                title: 'ASCII Table',
+                description:
+                    'Interactive ASCII/Unicode reference table with search, filter, and copy',
+                icon: <Table2 className="size-5 shrink-0" />,
+                url: '/ascii-table',
                 category: 'Reference',
             },
             {

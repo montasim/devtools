@@ -60,6 +60,7 @@ export const STORAGE_KEYS = {
     HTML_ENTITY_ENCODE_INPUT: 'html-entity-encode-input',
     HTML_ENTITY_DECODE_INPUT: 'html-entity-decode-input',
     UNICODE_SEARCH: 'unicode-search',
+    ASCII_TABLE_SEARCH: 'ascii-table-search',
     PASSWORD_HASH_INPUT: 'password-hash-input',
     PASSWORD_VERIFY_INPUT: 'password-verify-input',
     RSA_KEY_INPUT: 'rsa-key-input',
@@ -92,6 +93,7 @@ export const PAGE_NAMES = {
     CORS: 'cors',
     HTML_ENTITY: 'html-entity',
     UNICODE: 'unicode',
+    ASCII_TABLE: 'ascii-table',
     PASSWORD_HASH: 'password-hash',
     RSA_KEY: 'rsa-key',
     CERT_DECODER: 'cert-decoder',
@@ -210,6 +212,10 @@ export const UNICODE_TABS = {
     LOOKUP: 'lookup',
 } as const;
 
+export const ASCII_TABLE_TABS = {
+    REFERENCE: 'reference',
+} as const;
+
 export const PASSWORD_HASH_TABS = {
     HASH: 'hash',
     VERIFY: 'verify',
@@ -248,6 +254,7 @@ export const TAB_NAMES = {
     ...CORS_TABS,
     ...HTML_ENTITY_TABS,
     ...UNICODE_TABS,
+    ...ASCII_TABLE_TABS,
     ...PASSWORD_HASH_TABS,
     ...RSA_KEY_TABS,
     ...CERT_DECODER_TABS,

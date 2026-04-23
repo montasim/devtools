@@ -479,6 +479,25 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        'ascii-table': {
+            title: 'ASCII Table - Interactive ASCII/Unicode Reference with Search & Copy',
+            description:
+                'Free interactive ASCII table reference. Search 256 ASCII characters by decimal, hex, binary, or name. Filter by control, printable, and extended. Copy decimal, hexadecimal, binary, HTML entity, escape sequence, and octal formats.',
+            keywords: [
+                'ASCII table',
+                'ASCII chart',
+                'ASCII codes',
+                'ASCII reference',
+                'ASCII character table',
+                'extended ASCII',
+                'ASCII lookup',
+                'ASCII search',
+            ],
+            path: '/ascii-table',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
         'password-hash': {
             title: 'Bcrypt & Argon2 Password Hasher - Hash and Verify Passwords Online',
             description:
