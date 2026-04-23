@@ -49,6 +49,7 @@ export const STORAGE_KEYS = {
     MIME_TYPE_SEARCH: 'mime-type-search',
     CSS_UNIT_STATE: 'css-unit-state',
     USER_AGENT_INPUT: 'user-agent-input',
+    API_BUILDER_STATE: 'api-builder-state',
     THEME: 'theme',
 } as const;
 
@@ -71,6 +72,7 @@ export const PAGE_NAMES = {
     MIME_TYPE: 'mime-type',
     CSS_UNIT: 'css-unit',
     USER_AGENT: 'user-agent',
+    API_BUILDER: 'api-builder',
 } as const;
 
 export const BASE64_TABS = {
@@ -160,6 +162,10 @@ export const USER_AGENT_TABS = {
     ANALYZER: 'analyzer',
 } as const;
 
+export const API_BUILDER_TABS = {
+    BUILDER: 'builder',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -179,4 +185,5 @@ export const TAB_NAMES = {
     ...MIME_TYPE_TABS,
     ...CSS_UNIT_TABS,
     ...USER_AGENT_TABS,
+    ...API_BUILDER_TABS,
 } as const;

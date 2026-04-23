@@ -18,6 +18,7 @@ import {
     Globe,
     Ruler,
     Monitor,
+    Zap,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -146,6 +147,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Parse and decode User-Agent strings',
                 icon: <Monitor className="size-5 shrink-0" />,
                 url: '/user-agent',
+            },
+            {
+                title: 'API Request Builder',
+                description: 'Build, test and debug HTTP requests with shareable configs',
+                icon: <Zap className="size-5 shrink-0" />,
+                url: '/api-builder',
             },
         ],
     },

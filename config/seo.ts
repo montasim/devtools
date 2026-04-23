@@ -6,7 +6,7 @@ export const seoConfig: SEOConfig = {
         siteUrl: 'https://devtools.dev',
         titleDefault: 'DevTools - Developer Utilities',
         description:
-            'A comprehensive suite of 20+ free developer tools — JSON, Text, Base64, Hash, Regex, Markdown, Color Picker, QR Code, Unit Converter, User Agent Analyzer, and more. All tools run locally in your browser.',
+            'A comprehensive suite of 20+ free developer tools — JSON, Text, Base64, Hash, Regex, Markdown, Color Picker, QR Code, Unit Converter, User Agent Analyzer, API Builder, and more. All tools run locally in your browser.',
         locale: 'en_US',
         twitterHandle: '@devtools',
         ogImage: '/og-default.png',
@@ -360,6 +360,25 @@ export const seoConfig: SEOConfig = {
             ],
             path: '/user-agent',
             priority: 0.7,
+            changeFrequency: 'monthly',
+        },
+
+        'api-builder': {
+            title: 'API Request Builder - Test & Debug HTTP Requests Online',
+            description:
+                'Free online API request builder. Build, test, and debug HTTP requests with support for all methods, headers, query params, request body, and auth. Shareable request configurations.',
+            keywords: [
+                'API request builder',
+                'HTTP client',
+                'Postman alternative',
+                'API tester',
+                'REST client',
+                'API debugging',
+                'HTTP request tester',
+                'online API tool',
+            ],
+            path: '/api-builder',
+            priority: 0.8,
             changeFrequency: 'monthly',
         },
 
