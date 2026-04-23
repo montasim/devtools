@@ -20,7 +20,6 @@ import {
     formatTime,
     getStatusColor,
     getResponseBodyType,
-    buildUrlWithParams,
     type ApiRequest,
     type ApiResponse,
     type HttpMethod,
