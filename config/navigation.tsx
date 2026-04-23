@@ -27,6 +27,7 @@ import {
     Languages,
     Lock,
     Table2,
+    Timer,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -233,6 +234,14 @@ export const navigationMenu: MenuItem[] = [
                 icon: <Table2 className="size-5 shrink-0" />,
                 url: '/ascii-table',
                 category: 'Reference',
+            },
+            {
+                title: 'CRON Builder',
+                description:
+                    'Visual cron expression builder with human-readable descriptions and next-run preview',
+                icon: <Timer className="size-5 shrink-0" />,
+                url: '/cron',
+                category: 'Utilities',
             },
             {
                 title: 'Unit Converter',

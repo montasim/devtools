@@ -65,6 +65,7 @@ export const STORAGE_KEYS = {
     PASSWORD_VERIFY_INPUT: 'password-verify-input',
     RSA_KEY_INPUT: 'rsa-key-input',
     CERT_DECODER_INPUT: 'cert-decoder-input',
+    CRON_BUILDER_CONFIG: 'cron-builder-config',
     THEME: 'theme',
 } as const;
 
@@ -97,6 +98,7 @@ export const PAGE_NAMES = {
     PASSWORD_HASH: 'password-hash',
     RSA_KEY: 'rsa-key',
     CERT_DECODER: 'cert-decoder',
+    CRON: 'cron',
 } as const;
 
 export const BASE64_TABS = {
@@ -229,6 +231,10 @@ export const CERT_DECODER_TABS = {
     DECODE: 'decode',
 } as const;
 
+export const CRON_TABS = {
+    BUILDER: 'builder',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -258,4 +264,5 @@ export const TAB_NAMES = {
     ...PASSWORD_HASH_TABS,
     ...RSA_KEY_TABS,
     ...CERT_DECODER_TABS,
+    ...CRON_TABS,
 } as const;

@@ -558,6 +558,25 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        cron: {
+            title: 'Cron Expression Builder - Visual CRON Generator with Next Run Preview',
+            description:
+                'Free visual cron expression builder. Build cron schedules with dropdowns, see human-readable descriptions, preview next execution times, and copy expressions. Includes presets, field configuration, and validation.',
+            keywords: [
+                'cron expression builder',
+                'cron generator',
+                'cron schedule',
+                'crontab generator',
+                'cron next run',
+                'cron expression validator',
+                'cron visual builder',
+                'schedule expression',
+            ],
+            path: '/cron',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
         'git-branch-generator': {
             title: 'Git Branch Name Generator - Consistent Branch Naming',
             description:
