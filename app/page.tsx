@@ -65,6 +65,12 @@ const TOOLS = [
         icon: Lock,
     },
     {
+        href: '/rsa-key',
+        label: 'RSA Key Generator',
+        description: 'Generate RSA key pairs, format as PEM or DER',
+        icon: KeyRound,
+    },
+    {
         href: '/url-encode',
         label: 'URL Encode / Decode',
         description: 'Encode and decode percent-encoded URLs',

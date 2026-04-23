@@ -134,6 +134,13 @@ export const navigationMenu: MenuItem[] = [
                 category: 'Generators',
             },
             {
+                title: 'RSA Key Generator',
+                description: 'Generate RSA key pairs, format as PEM or DER',
+                icon: <KeyRound className="size-5 shrink-0" />,
+                url: '/rsa-key',
+                category: 'Generators',
+            },
+            {
                 title: 'Password Generator',
                 description: 'Secure passwords with strength meter',
                 icon: <KeyRound className="size-5 shrink-0" />,

@@ -500,6 +500,26 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        'rsa-key': {
+            title: 'RSA Key Generator - Generate RSA Key Pairs Online (PEM / DER)',
+            description:
+                'Free online RSA key pair generator. Generate 2048, 3072, or 4096-bit RSA keys. Export as PEM or DER (Base64). Includes SHA-256 fingerprint. All key generation happens locally in your browser.',
+            keywords: [
+                'RSA key generator',
+                'RSA key pair',
+                'generate RSA key',
+                'PEM key',
+                'DER key',
+                'RSA 2048',
+                'RSA 4096',
+                'public key generator',
+                'private key generator',
+            ],
+            path: '/rsa-key',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
         'git-branch-generator': {
             title: 'Git Branch Name Generator - Consistent Branch Naming',
             description:
