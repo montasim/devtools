@@ -52,6 +52,7 @@ export const STORAGE_KEYS = {
     API_BUILDER_STATE: 'api-builder-state',
     CURL_CONVERT_INPUT: 'curl-convert-input',
     WEBSOCKET_TESTER_URL: 'websocket-tester-url',
+    CORS_CHECKER_URL: 'cors-checker-url',
     THEME: 'theme',
 } as const;
 
@@ -77,6 +78,7 @@ export const PAGE_NAMES = {
     API_BUILDER: 'api-builder',
     CURL: 'curl',
     WEBSOCKET: 'websocket',
+    CORS: 'cors',
 } as const;
 
 export const BASE64_TABS = {
@@ -178,6 +180,10 @@ export const WEBSOCKET_TABS = {
     TESTER: 'tester',
 } as const;
 
+export const CORS_TABS = {
+    CHECKER: 'checker',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -200,4 +206,5 @@ export const TAB_NAMES = {
     ...API_BUILDER_TABS,
     ...CURL_TABS,
     ...WEBSOCKET_TABS,
+    ...CORS_TABS,
 } as const;

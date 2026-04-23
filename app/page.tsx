@@ -22,6 +22,7 @@ import {
     QrCode,
     Code2,
     Plug,
+    ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { generatePageMetadata } from '@/lib/seo/metadata';
@@ -143,6 +144,12 @@ const TOOLS = [
         label: 'WebSocket Tester',
         description: 'Connect to WS endpoints, send and receive messages',
         icon: Plug,
+    },
+    {
+        href: '/cors',
+        label: 'CORS Checker',
+        description: 'Test cross-origin requests and inspect CORS headers',
+        icon: ShieldCheck,
     },
     {
         href: '/git-branch-generator',

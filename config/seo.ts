@@ -418,6 +418,25 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        cors: {
+            title: 'CORS Checker - Test Cross-Origin Resource Sharing Headers',
+            description:
+                'Free online CORS checker. Test if a URL allows cross-origin requests, inspect CORS headers (Access-Control-Allow-Origin, Methods, Headers, Credentials), and debug CORS issues instantly.',
+            keywords: [
+                'CORS checker',
+                'CORS tester',
+                'cross-origin test',
+                'CORS headers',
+                'Access-Control-Allow-Origin',
+                'CORS debug',
+                'CORS inspector',
+                'test CORS policy',
+            ],
+            path: '/cors',
+            priority: 0.9,
+            changeFrequency: 'monthly',
+        },
+
         'git-branch-generator': {
             title: 'Git Branch Name Generator - Consistent Branch Naming',
             description:

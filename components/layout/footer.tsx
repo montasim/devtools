@@ -14,6 +14,7 @@ const footerSections = [
             { label: 'API Request Builder', href: '/api-builder' },
             { label: 'cURL Converter', href: '/curl' },
             { label: 'WebSocket Tester', href: '/websocket' },
+            { label: 'CORS Checker', href: '/cors' },
             { label: 'QR Code Generator', href: '/qrcode' },
         ],
     },

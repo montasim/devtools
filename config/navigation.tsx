@@ -21,6 +21,7 @@ import {
     Zap,
     Code2,
     Plug,
+    ShieldCheck,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -79,10 +80,17 @@ export const navigationMenu: MenuItem[] = [
                 url: '/markdown',
             },
             {
-                title: 'Regex Tester',
-                description: 'Test regex with live matching and capture groups',
-                icon: <Regex className="size-5 shrink-0" />,
-                url: '/regex',
+                title: 'WebSocket Tester',
+                description:
+                    'Connect to WebSocket endpoints, send and receive messages in real-time',
+                icon: <Plug className="size-5 shrink-0" />,
+                url: '/websocket',
+            },
+            {
+                title: 'CORS Checker',
+                description: 'Test if a URL allows cross-origin requests and inspect CORS headers',
+                icon: <ShieldCheck className="size-5 shrink-0" />,
+                url: '/cors',
             },
             {
                 title: 'Password Generator',
