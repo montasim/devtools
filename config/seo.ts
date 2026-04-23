@@ -382,6 +382,24 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        curl: {
+            title: 'cURL Converter - Convert cURL Commands to fetch, Axios, Python & HTTPie',
+            description:
+                'Free online cURL converter. Paste cURL commands and instantly convert to JavaScript fetch, Axios, Python requests, and HTTPie. Supports headers, data, auth, and all HTTP methods.',
+            keywords: [
+                'cURL converter',
+                'cURL to fetch',
+                'cURL to axios',
+                'cURL to Python',
+                'cURL to HTTPie',
+                'convert cURL command',
+                'cURL code generator',
+            ],
+            path: '/curl',
+            priority: 0.9,
+            changeFrequency: 'monthly',
+        },
+
         'git-branch-generator': {
             title: 'Git Branch Name Generator - Consistent Branch Naming',
             description:

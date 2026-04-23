@@ -50,6 +50,7 @@ export const STORAGE_KEYS = {
     CSS_UNIT_STATE: 'css-unit-state',
     USER_AGENT_INPUT: 'user-agent-input',
     API_BUILDER_STATE: 'api-builder-state',
+    CURL_CONVERT_INPUT: 'curl-convert-input',
     THEME: 'theme',
 } as const;
 
@@ -73,6 +74,7 @@ export const PAGE_NAMES = {
     CSS_UNIT: 'css-unit',
     USER_AGENT: 'user-agent',
     API_BUILDER: 'api-builder',
+    CURL: 'curl',
 } as const;
 
 export const BASE64_TABS = {
@@ -166,6 +168,10 @@ export const API_BUILDER_TABS = {
     BUILDER: 'builder',
 } as const;
 
+export const CURL_TABS = {
+    CONVERT: 'convert',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -186,4 +192,5 @@ export const TAB_NAMES = {
     ...CSS_UNIT_TABS,
     ...USER_AGENT_TABS,
     ...API_BUILDER_TABS,
+    ...CURL_TABS,
 } as const;

@@ -19,6 +19,7 @@ import {
     Ruler,
     Monitor,
     Zap,
+    Code2,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -153,6 +154,12 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Build, test and debug HTTP requests with shareable configs',
                 icon: <Zap className="size-5 shrink-0" />,
                 url: '/api-builder',
+            },
+            {
+                title: 'cURL Converter',
+                description: 'Convert cURL commands to fetch, Axios, Python and HTTPie',
+                icon: <Code2 className="size-5 shrink-0" />,
+                url: '/curl',
             },
         ],
     },

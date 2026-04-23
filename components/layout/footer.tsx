@@ -11,6 +11,8 @@ const footerSections = [
             { label: 'Share Text', href: '/share/text' },
             { label: 'Git Branch Generator', href: '/git-branch-generator' },
             { label: 'URL Shortener', href: '/url-shortener' },
+            { label: 'API Request Builder', href: '/api-builder' },
+            { label: 'cURL Converter', href: '/curl' },
             { label: 'QR Code Generator', href: '/qrcode' },
         ],
     },

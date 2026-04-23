@@ -20,6 +20,7 @@ import {
     Ruler,
     GitBranch,
     QrCode,
+    Code2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { generatePageMetadata } from '@/lib/seo/metadata';
@@ -123,6 +124,18 @@ const TOOLS = [
         label: 'QR Code Generator',
         description: 'Generate customizable QR codes with colors and sizes',
         icon: QrCode,
+    },
+    {
+        href: '/api-builder',
+        label: 'API Request Builder',
+        description: 'Build, test, and debug HTTP requests online',
+        icon: Globe,
+    },
+    {
+        href: '/curl',
+        label: 'cURL Converter',
+        description: 'Convert cURL to fetch, Axios, Python, and HTTPie',
+        icon: Code2,
     },
     {
         href: '/git-branch-generator',
