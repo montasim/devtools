@@ -179,13 +179,13 @@ export default function BuilderTab({ readOnly }: TabComponentProps) {
                     <div className="flex items-center gap-2">
                         <h3 className="text-sm font-semibold">Expression</h3>
                         {validation.valid && (
-                            <Badge variant="secondary" className="text-[10px] gap-1 h-5">
-                                <Check className="h-2.5 w-2.5 text-green-500" />
+                            <Badge variant="outline" className="text-primary gap-1 h-5">
+                                <Check className="h-2.5 w-2.5" />
                                 Valid
                             </Badge>
                         )}
                         {!validation.valid && (
-                            <Badge variant="destructive" className="text-[10px] gap-1 h-5">
+                            <Badge variant="outline" className="text-destructive gap-1 h-5">
                                 <AlertCircle className="h-2.5 w-2.5" />
                                 Invalid
                             </Badge>
@@ -269,7 +269,7 @@ export default function BuilderTab({ readOnly }: TabComponentProps) {
                                         </div>
                                     </div>
                                     <Button
-                                        variant="ghost"
+                                        variant="outline"
                                         size="icon"
                                         className="h-8 w-8 shrink-0"
                                         onClick={() => handleCopy(expression, 'expr')}
@@ -283,7 +283,7 @@ export default function BuilderTab({ readOnly }: TabComponentProps) {
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        className="h-8 gap-1.5 text-xs shrink-0"
+                                        className="text-primary h-8 gap-1.5 text-xs shrink-0"
                                         onClick={() => {
                                             setManualExpression(expression);
                                             setIsManualMode(true);
