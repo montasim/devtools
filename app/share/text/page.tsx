@@ -18,8 +18,8 @@ const tabTriggerClass =
     'gap-2 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary data-[state=active]:text-primary data-[state=active]:font-semibold data-[state=active]:bg-primary/10';
 
 const SharedTab = createSharedTabPlugin({
-    pageName: 'share-text',
-    queryKey: 'share-text-shared',
+    pageName: 'text',
+    queryKey: 'text-shared',
     toolMapping: {
         share: {
             name: 'Share Text',
@@ -164,7 +164,7 @@ function ShareTextPageContent() {
                             open={shareOpen}
                             onOpenChange={setShareOpen}
                             config={{
-                                pageName: 'share-text',
+                                pageName: 'text',
                                 tabName: 'share',
                                 getState: () => ({ content }),
                             }}
