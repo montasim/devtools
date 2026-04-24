@@ -1,18 +1,43 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useToolActions } from '../../core/hooks/use-tool-actions';
 import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
 import { ShareSidebarModal } from '../../core/plugins/share-sidebar';
-import { detectMimeFromBase64 } from '../utils/mime-detection';
+import {
+    detectMimeFromBase64,
+    getMediaCategory,
+    type MediaCategory,
+} from '../utils/mime-detection';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Textarea } from '@/components/ui/textarea';
-import { Download, Copy, FileDown, ImageIcon } from 'lucide-react';
-import Image from 'next/image';
+import { Download, Copy, FileDown, ImageIcon, Video, Music, FileText, File } from 'lucide-react';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { EditorPaneHeader } from '../../core/components/editor-pane-header';
 import { EditorFooter } from '../../core/components/editor-footer';
 import type { TabComponentProps } from '../../core/types/tool';
+
+const CATEGORY_ICONS: Record<MediaCategory, React.ComponentType<{ className?: string }>> = {
+    image: ImageIcon,
+    video: Video,
+    audio: Music,
+    pdf: FileText,
+    other: File,
+};
+
+function base64ToBlob(base64: string, mime: string): Blob | null {
+    try {
+        const cleanBase64 = base64.replace(/^data:[^;]+;base64,/, '');
+        const binaryString = atob(cleanBase64);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return new Blob([bytes], { type: mime });
+    } catch {
+        return null;
+    }
+}
 
 export default function Base64ToMediaTab({ readOnly }: TabComponentProps) {
     const [input, setInput] = useState('');
@@ -20,24 +45,31 @@ export default function Base64ToMediaTab({ readOnly }: TabComponentProps) {
     const { copy } = useClipboard();
 
     const { mime, extension } = detectMimeFromBase64(input);
-    const previewUrl = input.startsWith('data:image/') ? input : null;
+    const category = input ? getMediaCategory(mime) : null;
 
-    const handleDownload = () => {
+    const blobUrl = useMemo(() => {
+        if (!input || input.trim() === '') return null;
+        const blob = base64ToBlob(input, mime);
+        return blob ? URL.createObjectURL(blob) : null;
+    }, [input, mime]);
+
+    useEffect(() => {
+        return () => {
+            if (blobUrl) URL.revokeObjectURL(blobUrl);
+        };
+    }, [blobUrl]);
+
+    const handleDownload = useCallback(() => {
         if (!input) return;
-        const cleanBase64 = input.replace(/^data:[^;]+;base64,/, '');
-        const binaryString = atob(cleanBase64);
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-            bytes[i] = binaryString.charCodeAt(i);
-        }
-        const blob = new Blob([bytes], { type: mime });
+        const blob = base64ToBlob(input, mime);
+        if (!blob) return;
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = `converted.${extension}`;
         a.click();
         URL.revokeObjectURL(url);
-    };
+    }, [input, mime, extension]);
 
     const { actions } = useToolActions({
         pageName: 'base64',
@@ -48,6 +80,78 @@ export default function Base64ToMediaTab({ readOnly }: TabComponentProps) {
         setShareDialogOpen: setShareOpen,
         readOnly,
     });
+
+    const renderPreview = () => {
+        if (!blobUrl || !category) {
+            return (
+                <EmptyEditorPrompt
+                    icon={ImageIcon}
+                    title="Decoded output"
+                    description="Preview and download the decoded file here"
+                    showActions={false}
+                    overlay
+                />
+            );
+        }
+
+        const Icon = CATEGORY_ICONS[category];
+
+        switch (category) {
+            case 'image':
+                return (
+                    <img
+                        src={blobUrl}
+                        alt="Preview"
+                        className="absolute inset-0 h-full w-full object-contain p-2"
+                    />
+                );
+            case 'video':
+                return (
+                    <video
+                        src={blobUrl}
+                        controls
+                        className="absolute inset-0 h-full w-full object-contain"
+                    />
+                );
+            case 'audio':
+                return (
+                    <div className="flex h-full items-center justify-center gap-4 p-8">
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+                                <Music className="h-10 w-10 text-muted-foreground" />
+                            </div>
+                            <span className="text-sm font-medium text-muted-foreground">
+                                {mime}
+                            </span>
+                            <audio src={blobUrl} controls className="w-80" />
+                        </div>
+                    </div>
+                );
+            case 'pdf':
+                return (
+                    <iframe src={blobUrl} className="h-full w-full border-0" title="PDF Preview" />
+                );
+            default:
+                return (
+                    <div className="flex h-full flex-col items-center justify-center gap-4 p-8">
+                        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+                            <Icon className="h-10 w-10 text-muted-foreground" />
+                        </div>
+                        <div className="text-center">
+                            <p className="font-medium">{mime}</p>
+                            <p className="text-sm text-muted-foreground">File type: .{extension}</p>
+                        </div>
+                        <button
+                            onClick={handleDownload}
+                            className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                        >
+                            <Download className="h-4 w-4" />
+                            Download File
+                        </button>
+                    </div>
+                );
+        }
+    };
 
     return (
         <ToolTabWrapper actions={actions}>
@@ -91,26 +195,9 @@ export default function Base64ToMediaTab({ readOnly }: TabComponentProps) {
                             hideInputActions
                             downloadFilename={`converted.${extension}`}
                         />
-                        {previewUrl ? (
-                            <div className="relative flex min-h-[250px] items-center justify-center rounded-lg border p-4 md:min-h-[400px] lg:min-h-[500px]">
-                                <Image
-                                    src={previewUrl}
-                                    alt="Preview"
-                                    fill
-                                    className="object-contain"
-                                />
-                            </div>
-                        ) : (
-                            <div className="relative min-h-[250px] rounded-lg border md:min-h-[400px] lg:min-h-[500px]">
-                                <EmptyEditorPrompt
-                                    icon={ImageIcon}
-                                    title="Decoded output"
-                                    description="Preview and download the decoded file here"
-                                    showActions={false}
-                                    overlay
-                                />
-                            </div>
-                        )}
+                        <div className="relative min-h-[250px] overflow-hidden rounded-lg border md:min-h-[400px] lg:min-h-[500px]">
+                            {renderPreview()}
+                        </div>
                     </div>
                 </div>
             </div>
