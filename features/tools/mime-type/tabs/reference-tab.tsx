@@ -25,7 +25,7 @@ const ALL_CATEGORIES: (MimeCategory | 'all')[] = [
     'video',
 ];
 
-export default function ReferenceTab({ readOnly }: TabComponentProps) {
+export default function ReferenceTab({}: TabComponentProps) {
     const [search, setSearch] = useState('');
     const [activeCategory, setActiveCategory] = useState<MimeCategory | 'all'>('all');
     const [copiedMime, setCopiedMime] = useState<string | null>(null);

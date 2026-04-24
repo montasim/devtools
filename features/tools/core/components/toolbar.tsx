@@ -1,6 +1,5 @@
 'use client';
 
-import type { FC } from 'react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import type { ActionItem } from '../types/tool';

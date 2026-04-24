@@ -75,11 +75,11 @@ export interface StrengthResult {
 }
 
 const STRENGTH_LEVELS: { min: number; label: string; color: string }[] = [
-    { min: 0, label: 'Very Weak', color: 'bg-red-500' },
-    { min: 1, label: 'Weak', color: 'bg-orange-500' },
-    { min: 2, label: 'Fair', color: 'bg-yellow-500' },
-    { min: 3, label: 'Strong', color: 'bg-lime-500' },
-    { min: 4, label: 'Very Strong', color: 'bg-green-500' },
+    { min: 0, label: 'Very Weak', color: 'bg-destructive' },
+    { min: 1, label: 'Weak', color: 'bg-destructive/80' },
+    { min: 2, label: 'Fair', color: 'bg-warning' },
+    { min: 3, label: 'Strong', color: 'bg-primary/80' },
+    { min: 4, label: 'Very Strong', color: 'bg-primary' },
 ];
 
 export function evaluateStrength(password: string): StrengthResult {

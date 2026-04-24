@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getTokenFromCookies, verifyToken } from '@/lib/auth/jwt';
-import { findUserById, updateUserName } from '@/lib/auth/repos/user.repo';
+import { updateUserName } from '@/lib/auth/repos/user.repo';
 
 export async function POST(request: Request) {
     try {

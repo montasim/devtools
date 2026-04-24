@@ -9,7 +9,6 @@ import { STORAGE_KEYS } from '@/lib/utils/constants';
 import { useJsonFormat } from '../hooks/use-json-format';
 import { JsonEditor } from '../components/json-editor';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
-import { Button } from '@/components/ui/button';
 import { Copy, Braces, FileCode } from 'lucide-react';
 import { EditorPaneHeader } from '../../core/components/editor-pane-header';
 import type { TabComponentProps } from '../../core/types/tool';

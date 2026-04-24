@@ -14,7 +14,7 @@ import {
     type AsciiCategory,
 } from '../utils/ascii-data';
 
-export default function ReferenceTab({ readOnly }: TabComponentProps) {
+export default function ReferenceTab({}: TabComponentProps) {
     const [search, setSearch] = useState('');
     const [activeCategory, setActiveCategory] = useState<AsciiCategory | 'all'>('all');
     const [copiedValue, setCopiedValue] = useState<string | null>(null);

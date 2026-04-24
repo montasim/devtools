@@ -10,7 +10,7 @@ import { TextEditor } from '../../text/components/text-editor';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Copy, Regex, Check, AlertCircle } from 'lucide-react';
+import { Copy, Regex, AlertCircle } from 'lucide-react';
 import { EditorPaneHeader } from '../../core/components/editor-pane-header';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { testRegex, highlightMatches, REGEX_FLAGS } from '../utils/regex-operations';
@@ -30,7 +30,6 @@ export default function TestTab({ sharedData, readOnly }: TabComponentProps) {
     const [pattern, setPattern] = useState('');
     const [flags, setFlags] = useState('g');
     const [shareOpen, setShareOpen] = useState(false);
-    const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
     const { copy } = useClipboard();
 
     const result = useMemo(
@@ -61,15 +60,6 @@ export default function TestTab({ sharedData, readOnly }: TabComponentProps) {
     const toggleFlag = useCallback((flag: string) => {
         setFlags((prev) => (prev.includes(flag) ? prev.replace(flag, '') : prev + flag));
     }, []);
-
-    const handleCopyMatch = useCallback(
-        async (text: string, idx: number) => {
-            await copy(text);
-            setCopiedIdx(idx);
-            setTimeout(() => setCopiedIdx(null), 1500);
-        },
-        [copy],
-    );
 
     if (!isReady) return null;
 

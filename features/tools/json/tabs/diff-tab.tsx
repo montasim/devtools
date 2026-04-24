@@ -9,7 +9,7 @@ import { ShareSidebarModal } from '../../core/plugins/share-sidebar';
 import { STORAGE_KEYS } from '@/lib/utils/constants';
 import { useJsonDiff } from '../hooks/use-json-diff';
 import { useLocalStorage } from '@/lib/hooks/use-local-storage';
-import type { TabComponentProps, SharedData } from '../../core/types/tool';
+import type { TabComponentProps } from '../../core/types/tool';
 
 export default function DiffTab({ sharedData, readOnly }: TabComponentProps) {
     const {

@@ -14,7 +14,7 @@ import {
     type UnicodeCategory,
 } from '../utils/unicode-data';
 
-export default function LookupTab({ readOnly }: TabComponentProps) {
+export default function LookupTab({}: TabComponentProps) {
     const [search, setSearch] = useState('');
     const [activeCategory, setActiveCategory] = useState<UnicodeCategory | 'all'>('all');
     const [copiedValue, setCopiedValue] = useState<string | null>(null);

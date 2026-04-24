@@ -4,7 +4,6 @@ import { useState, useCallback, useMemo } from 'react';
 import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Copy, Check, Search, Globe } from 'lucide-react';
 import type { TabComponentProps } from '../../core/types/tool';
@@ -17,7 +16,7 @@ import {
 
 const ALL_CATEGORIES: (StatusCodeCategory | 'all')[] = ['all', '1xx', '2xx', '3xx', '4xx', '5xx'];
 
-export default function ReferenceTab({ readOnly }: TabComponentProps) {
+export default function ReferenceTab({}: TabComponentProps) {
     const [search, setSearch] = useState('');
     const [activeCategory, setActiveCategory] = useState<StatusCodeCategory | 'all'>('all');
     const [copiedCode, setCopiedCode] = useState<number | null>(null);
@@ -69,7 +68,6 @@ export default function ReferenceTab({ readOnly }: TabComponentProps) {
                     <div className="flex gap-1 shrink-0 flex-wrap">
                         {ALL_CATEGORIES.map((cat) => {
                             const isActive = activeCategory === cat;
-                            const meta = cat !== 'all' ? CATEGORY_META[cat] : null;
                             return (
                                 <button
                                     key={cat}

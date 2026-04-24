@@ -22,9 +22,7 @@ function bufferToHex(buffer: ArrayBuffer): string {
 function computeMD5(text: string): string {
     const bytes = new TextEncoder().encode(text);
 
-    const BIT_0F = 0x0f;
     const BIT_80 = 0x80;
-    const BIT_FF = 0xff;
 
     let a0 = 0x67452301;
     let b0 = 0xefcdab89;

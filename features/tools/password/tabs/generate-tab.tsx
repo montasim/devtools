@@ -26,7 +26,7 @@ export default function GenerateTab({ readOnly }: TabComponentProps) {
         DEFAULT_CONFIG,
     );
     const [rawResults, setResults] = useLocalStorage<string[]>(STORAGE_KEYS.PASSWORD_RESULTS, []);
-    const results = Array.isArray(rawResults) ? rawResults : [];
+    const results = useMemo(() => (Array.isArray(rawResults) ? rawResults : []), [rawResults]);
     const [shareOpen, setShareOpen] = useState(false);
     const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
     const [copiedPrimary, setCopiedPrimary] = useState(false);

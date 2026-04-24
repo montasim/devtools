@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo } from 'react';
 import { useToolState } from '../../core/hooks/use-tool-state';
 import { useToolActions } from '../../core/hooks/use-tool-actions';
 import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';

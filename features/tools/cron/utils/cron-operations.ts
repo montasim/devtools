@@ -121,7 +121,7 @@ export function getDefaultConfig(): CronConfig {
     return Object.fromEntries(CRON_FIELDS.map((f) => [f.key, getDefaultFieldConfig(f)]));
 }
 
-export function fieldConfigToExpression(config: CronFieldConfig, _field: CronField): string {
+export function fieldConfigToExpression(config: CronFieldConfig): string {
     switch (config.mode) {
         case 'every':
             return '*';

@@ -9,13 +9,14 @@ import { fileToBase64 } from '../utils/mime-detection';
 import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Textarea } from '@/components/ui/textarea';
-import { Upload, Copy, FileCode, File, Image } from 'lucide-react';
+import { Upload, Copy, FileCode, File } from 'lucide-react';
+import Image from 'next/image';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { EditorPaneHeader } from '../../core/components/editor-pane-header';
 import { EditorFooter } from '../../core/components/editor-footer';
 import type { TabComponentProps } from '../../core/types/tool';
 
-export default function MediaToBase64Tab({ sharedData, readOnly }: TabComponentProps) {
+export default function MediaToBase64Tab({ readOnly }: TabComponentProps) {
     const [output, setOutput] = useLocalStorage(STORAGE_KEYS.BASE64_MEDIA_TO_BASE64_OUTPUT, '');
     const [shareOpen, setShareOpen] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
@@ -79,10 +80,11 @@ export default function MediaToBase64Tab({ sharedData, readOnly }: TabComponentP
                         />
                         {output && previewUrl ? (
                             <div className="relative flex min-h-[250px] items-center justify-center rounded-lg border p-4 md:min-h-[400px] lg:min-h-[500px]">
-                                <img
+                                <Image
                                     src={previewUrl}
                                     alt={fileName ?? 'Preview'}
-                                    className="max-h-[350px] max-w-full rounded-lg object-contain lg:max-h-[450px]"
+                                    fill
+                                    className="object-contain"
                                 />
                             </div>
                         ) : output && fileName ? (

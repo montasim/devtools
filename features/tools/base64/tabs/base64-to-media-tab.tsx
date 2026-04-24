@@ -1,21 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import { useToolState } from '../../core/hooks/use-tool-state';
 import { useToolActions } from '../../core/hooks/use-tool-actions';
 import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
 import { ShareSidebarModal } from '../../core/plugins/share-sidebar';
-import { STORAGE_KEYS } from '@/lib/utils/constants';
 import { detectMimeFromBase64 } from '../utils/mime-detection';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Textarea } from '@/components/ui/textarea';
-import { Download, Copy, FileDown, Image } from 'lucide-react';
+import { Download, Copy, FileDown, ImageIcon } from 'lucide-react';
+import Image from 'next/image';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { EditorPaneHeader } from '../../core/components/editor-pane-header';
 import { EditorFooter } from '../../core/components/editor-footer';
 import type { TabComponentProps } from '../../core/types/tool';
 
-export default function Base64ToMediaTab({ sharedData, readOnly }: TabComponentProps) {
+export default function Base64ToMediaTab({ readOnly }: TabComponentProps) {
     const [input, setInput] = useState('');
     const [shareOpen, setShareOpen] = useState(false);
     const { copy } = useClipboard();
@@ -93,17 +92,18 @@ export default function Base64ToMediaTab({ sharedData, readOnly }: TabComponentP
                             downloadFilename={`converted.${extension}`}
                         />
                         {previewUrl ? (
-                            <div className="flex min-h-[250px] items-center justify-center rounded-lg border p-4 md:min-h-[400px] lg:min-h-[500px]">
-                                <img
+                            <div className="relative flex min-h-[250px] items-center justify-center rounded-lg border p-4 md:min-h-[400px] lg:min-h-[500px]">
+                                <Image
                                     src={previewUrl}
                                     alt="Preview"
-                                    className="max-h-[450px] rounded-lg object-contain"
+                                    fill
+                                    className="object-contain"
                                 />
                             </div>
                         ) : (
                             <div className="relative min-h-[250px] rounded-lg border md:min-h-[400px] lg:min-h-[500px]">
                                 <EmptyEditorPrompt
-                                    icon={Image}
+                                    icon={ImageIcon}
                                     title="Decoded output"
                                     description="Preview and download the decoded file here"
                                     showActions={false}

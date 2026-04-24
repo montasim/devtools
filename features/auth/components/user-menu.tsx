@@ -8,7 +8,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { LogOut, Settings, User } from 'lucide-react';
+import { LogOut, User } from 'lucide-react';
 import { useAuth } from '../hooks/use-auth';
 import { useLogoutConfirmDialog } from '@/components/auth/logout-confirm-dialog';
 import { useRouter } from 'next/navigation';

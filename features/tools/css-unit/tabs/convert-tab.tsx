@@ -13,7 +13,6 @@ import { Label } from '@/components/ui/label';
 import { Copy, Check, Ruler } from 'lucide-react';
 import type { TabComponentProps } from '../../core/types/tool';
 import {
-    CSS_UNITS,
     GROUP_LABELS,
     DEFAULT_CONFIG,
     type ConverterConfig,

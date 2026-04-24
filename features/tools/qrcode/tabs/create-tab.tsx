@@ -72,7 +72,7 @@ function ColorPicker({
     );
 }
 
-export default function CreateTab({ sharedData, readOnly }: TabComponentProps) {
+export default function CreateTab({ readOnly }: TabComponentProps) {
     const [input, setInput] = useLocalStorage(STORAGE_KEYS.QR_CREATE_INPUT, '');
     const [settings, setSettings] = useLocalStorage<QRSettings>(
         STORAGE_KEYS.QR_CREATE_SETTINGS,
@@ -119,20 +119,6 @@ export default function CreateTab({ sharedData, readOnly }: TabComponentProps) {
         a.href = out.toDataURL('image/png');
         a.click();
     }, [settings.bgColor]);
-
-    const handleCopyImage = useCallback(async () => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        try {
-            const blob = await new Promise<Blob>((resolve) =>
-                canvas.toBlob((b) => resolve(b!), 'image/png'),
-            );
-            await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-        } catch {
-            const dataUrl = canvas.toDataURL('image/png');
-            await copy(dataUrl);
-        }
-    }, [copy]);
 
     return (
         <ToolTabWrapper

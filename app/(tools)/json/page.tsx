@@ -32,9 +32,9 @@ const SchemaTab = lazy(
     () => import('@/features/tools/json/tabs/schema-tab'),
 ) as unknown as ComponentType<TabComponentProps>;
 
-const JSON_TOOL = registerToolAndGet('json');
+const JSON_TOOL = registerToolAndGet();
 
-function registerToolAndGet(pageName: string) {
+function registerToolAndGet() {
     const definition = {
         pageName: 'json',
         label: 'JSON Tools',
