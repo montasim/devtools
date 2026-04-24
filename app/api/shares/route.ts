@@ -6,19 +6,13 @@ import bcrypt from 'bcrypt';
 export async function POST(request: Request) {
     try {
         const token = await getTokenFromCookies();
-        if (!token) {
-            return NextResponse.json(
-                { ok: false, error: { code: 'UNAUTHORIZED', message: 'Not authenticated' } },
-                { status: 401 },
-            );
-        }
+        let userId: string | null = null;
 
-        const payload = verifyToken(token);
-        if (!payload) {
-            return NextResponse.json(
-                { ok: false, error: { code: 'INVALID_TOKEN', message: 'Invalid token' } },
-                { status: 401 },
-            );
+        if (token) {
+            const payload = verifyToken(token);
+            if (payload) {
+                userId = payload.userId;
+            }
         }
 
         const { pageName, tabName, title, comment, expiresAt, password, state } =
@@ -34,7 +28,7 @@ export async function POST(request: Request) {
 
         const sharedLink = await prisma.sharedLink.create({
             data: {
-                userId: payload.userId,
+                userId,
                 pageName,
                 tabName,
                 title,
