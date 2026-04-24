@@ -260,7 +260,6 @@ export default function BuilderTab({ readOnly }: TabComponentProps) {
                                                             {fieldConfigToExpression(
                                                                 config[field.key] ??
                                                                     getDefaultFieldConfig(field),
-                                                                field,
                                                             )}
                                                         </TooltipContent>
                                                     </Tooltip>
@@ -369,7 +368,7 @@ export default function BuilderTab({ readOnly }: TabComponentProps) {
                         <div className="flex flex-col gap-2">
                             {CRON_FIELDS.map((field, fieldIdx) => {
                                 const cfg = config[field.key] ?? getDefaultFieldConfig(field);
-                                const fieldExpr = fieldConfigToExpression(cfg, field);
+                                const fieldExpr = fieldConfigToExpression(cfg);
                                 return (
                                     <div key={field.key} className="rounded-xl border bg-card">
                                         <div className="flex items-center gap-2 px-3 py-2.5 border-b bg-muted/20 rounded-t-xl">

@@ -141,7 +141,7 @@ export function fieldConfigToExpression(config: CronFieldConfig): string {
 
 export function configToExpression(config: CronConfig): string {
     return CRON_FIELDS.map((f) =>
-        fieldConfigToExpression(config[f.key] ?? getDefaultFieldConfig(f), f),
+        fieldConfigToExpression(config[f.key] ?? getDefaultFieldConfig(f)),
     ).join(' ');
 }
 
