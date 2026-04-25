@@ -1,8 +1,9 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { Toolbar } from './toolbar';
 import type { ActionItem } from '../types/tool';
+import { useToolActionsRegistrar } from '../context/tool-actions-context';
 
 interface ToolTabWrapperProps {
     actions?: ActionItem[];
@@ -11,6 +12,18 @@ interface ToolTabWrapperProps {
 }
 
 export function ToolTabWrapper({ actions, children, leadingContent }: ToolTabWrapperProps) {
+    const register = useToolActionsRegistrar();
+
+    useEffect(() => {
+        const saveAction = actions?.find((a) => a.id === 'save');
+        const shareAction = actions?.find((a) => a.id === 'share');
+        register({
+            save: saveAction && !saveAction.disabled ? saveAction.onClick : undefined,
+            share: shareAction && !shareAction.disabled ? shareAction.onClick : undefined,
+        });
+        return () => register({});
+    }, [actions, register]);
+
     return (
         <div className="flex flex-col">
             {(actions && actions.length > 0) || leadingContent ? (

@@ -6,6 +6,7 @@ import { AuthProvider } from '@/features/auth/hooks/use-auth';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { ToolActionsProvider } from '@/features/tools/core/context/tool-actions-context';
 import { useState } from 'react';
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -26,7 +27,7 @@ export function Providers({ children }: { children: ReactNode }) {
             <ThemeProvider>
                 <AuthProvider>
                     <TooltipProvider>
-                        {children}
+                        <ToolActionsProvider>{children}</ToolActionsProvider>
                         <Toaster />
                     </TooltipProvider>
                 </AuthProvider>

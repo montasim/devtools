@@ -3,6 +3,7 @@ import { Providers } from '@/components/providers/providers';
 import { Navbar } from '@/components/navbar/navbar';
 import { Footer } from '@/components/layout/footer';
 import { ConsoleBanner } from '@/components/layout/console-banner';
+import { AppContextMenu } from '@/components/layout/app-context-menu';
 import { generateRootMetadata } from '@/lib/seo/metadata';
 import './globals.css';
 
@@ -36,7 +37,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Providers>
                     <ConsoleBanner />
                     <Navbar />
-                    <main className="flex-1 overflow-visible px-4 sm:px-6 lg:px-8">{children}</main>
+                    <AppContextMenu>
+                        <main className="flex-1 overflow-visible px-4 sm:px-6 lg:px-8">
+                            {children}
+                        </main>
+                    </AppContextMenu>
                     <Footer />
                 </Providers>
             </body>
