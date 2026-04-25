@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useCallback, useState, type ReactNode } from 'react';
 
 interface ToolActionsContextValue {
     save: (() => void) | null;
@@ -30,9 +30,9 @@ export function useToolActionsRegistrar() {
 export function ToolActionsProvider({ children }: { children: ReactNode }) {
     const [registration, setRegistration] = useState<Registration>({});
 
-    const register = (actions: Registration) => {
+    const register = useCallback((actions: Registration) => {
         setRegistration(actions);
-    };
+    }, []);
 
     const value: ToolActionsContextValue = {
         save: registration.save ?? null,
