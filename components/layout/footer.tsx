@@ -37,6 +37,7 @@ const footerSections = [
             { label: 'CORS Checker', href: '/cors' },
             { label: 'Certificate Decoder', href: '/cert-decoder' },
             { label: 'User Agent Analyzer', href: '/user-agent' },
+            { label: 'DNS Lookup', href: '/nslookup' },
         ],
     },
     {

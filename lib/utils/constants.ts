@@ -66,6 +66,8 @@ export const STORAGE_KEYS = {
     RSA_KEY_INPUT: 'rsa-key-input',
     CERT_DECODER_INPUT: 'cert-decoder-input',
     CRON_BUILDER_CONFIG: 'cron-builder-config',
+    NSLOOKUP_DOMAIN: 'nslookup-domain',
+    NSLOOKUP_TYPE: 'nslookup-type',
     THEME: 'theme',
 } as const;
 
@@ -99,6 +101,7 @@ export const PAGE_NAMES = {
     RSA_KEY: 'rsa-key',
     CERT_DECODER: 'cert-decoder',
     CRON: 'cron',
+    NSLOOKUP: 'nslookup',
 } as const;
 
 export const BASE64_TABS = {
@@ -235,6 +238,10 @@ export const CRON_TABS = {
     BUILDER: 'builder',
 } as const;
 
+export const NSLOOKUP_TABS = {
+    LOOKUP: 'lookup',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -265,4 +272,5 @@ export const TAB_NAMES = {
     ...RSA_KEY_TABS,
     ...CERT_DECODER_TABS,
     ...CRON_TABS,
+    ...NSLOOKUP_TABS,
 } as const;

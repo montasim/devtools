@@ -577,6 +577,27 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        nslookup: {
+            title: 'DNS Lookup - NS, A, AAAA, MX, TXT, CNAME, SOA Record Query',
+            description:
+                'Free online DNS lookup tool. Query NS, A, AAAA, MX, TXT, CNAME, SOA, and PTR records for any domain. Uses Google and Cloudflare DNS resolvers with query timing.',
+            keywords: [
+                'DNS lookup',
+                'NS lookup',
+                'DNS records',
+                'nameserver lookup',
+                'DNS query',
+                'DNS checker',
+                'A record lookup',
+                'MX record lookup',
+                'TXT record lookup',
+                'online DNS tool',
+            ],
+            path: '/nslookup',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
         'git-branch-generator': {
             title: 'Git Branch Name Generator - Consistent Branch Naming',
             description:

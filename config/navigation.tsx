@@ -199,6 +199,13 @@ export const navigationMenu: MenuItem[] = [
                 category: 'Network & API',
             },
             {
+                title: 'DNS Lookup',
+                description: 'Query NS, A, AAAA, MX, TXT, CNAME, SOA, PTR records',
+                icon: <Globe className="size-5 shrink-0" />,
+                url: '/nslookup',
+                category: 'Network & API',
+            },
+            {
                 title: 'Regex Tester',
                 description: 'Test regex with live matching and capture groups',
                 icon: <Regex className="size-5 shrink-0" />,
