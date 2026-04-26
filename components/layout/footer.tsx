@@ -1,119 +1,67 @@
 import Link from 'next/link';
 import { Logo } from './logo';
 import { siteLinks } from '@/config/seo';
+import { navigationMenu } from '@/config/navigation';
+import { Braces, Hash, Network, Book, Wrench, BookOpen, Scale } from 'lucide-react';
 
-const footerSections = [
-    {
-        title: 'Formatters & Converters',
-        links: [
-            { label: 'JSON Tools', href: '/json' },
-            { label: 'Text Tools', href: '/text' },
-            { label: 'Base64 Tools', href: '/base64' },
-            { label: 'URL Encode / Decode', href: '/url-encode' },
-            { label: 'HTML Entity Encode / Decode', href: '/html-entity' },
-            { label: 'cURL Converter', href: '/curl' },
-            { label: 'Number Base', href: '/number-base' },
-            { label: 'CSS Unit Converter', href: '/css-unit' },
-            { label: 'Color Picker', href: '/color' },
-            { label: 'Markdown Preview', href: '/markdown' },
-        ],
-    },
-    {
-        title: 'Generators',
-        links: [
-            { label: 'ID Generator', href: '/id' },
-            { label: 'Hash Generator', href: '/hash' },
-            { label: 'Bcrypt / Argon2 Hasher', href: '/password-hash' },
-            { label: 'RSA Key Generator', href: '/rsa-key' },
-            { label: 'Password Generator', href: '/password' },
-            { label: 'QR Code Generator', href: '/qrcode' },
-            { label: 'Git Branch Generator', href: '/git-branch-generator' },
-        ],
-    },
-    {
-        title: 'Network & API',
-        links: [
-            { label: 'API Request Builder', href: '/api-builder' },
-            { label: 'WebSocket Tester', href: '/websocket' },
-            { label: 'CORS Checker', href: '/cors' },
-            { label: 'Certificate Decoder', href: '/cert-decoder' },
-            { label: 'User Agent Analyzer', href: '/user-agent' },
-            { label: 'DNS Lookup', href: '/nslookup' },
-        ],
-    },
-    {
-        title: 'Reference & Utilities',
-        links: [
-            { label: 'Regex Tester', href: '/regex' },
-            { label: 'HTTP Status Codes', href: '/http-status' },
-            { label: 'MIME Type Reference', href: '/mime-type' },
-            { label: 'Unicode Lookup', href: '/unicode' },
-            { label: 'Unit Converter', href: '/unit' },
-            { label: 'URL Shortener', href: '/url-shortener' },
-            { label: 'Share Text', href: '/share/text' },
-            { label: 'Documentation', href: '/docs' },
-        ],
-    },
-    {
-        title: 'Legal',
-        links: [
-            { label: 'Privacy Policy', href: '/privacy' },
-            { label: 'Terms of Service', href: '/terms' },
-            { label: 'Cookie Policy', href: '/cookies' },
-            { label: 'Disclaimer', href: '/disclaimer' },
-        ],
-    },
+const toolsItem = navigationMenu.find((item) => item.title === 'Tools');
+const toolsEntries = toolsItem?.items ?? [];
+
+const categoryMeta: { title: string; icon: React.ElementType }[] = [
+    { title: 'Formatters & Converters', icon: Braces },
+    { title: 'Generators', icon: Hash },
+    { title: 'Network & API', icon: Network },
+    { title: 'Reference', icon: Book },
+    { title: 'Utilities', icon: Wrench },
+];
+
+const grouped = categoryMeta.map(({ title, icon }) => ({
+    title,
+    icon,
+    links: toolsEntries
+        .filter((item) => item.category === title)
+        .map((item) => ({ label: item.title, href: item.url })),
+}));
+
+const resourceLinks =
+    navigationMenu
+        .find((item) => item.title === 'Resources')
+        ?.items?.map((item) => ({ label: item.title, href: item.url })) ?? [];
+
+const miscLinks = navigationMenu
+    .filter((item) => item.title !== 'Tools' && !item.items)
+    .map((item) => ({ label: item.title, href: item.url }));
+
+const legalLinks = [
+    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Terms of Service', href: '/terms' },
+    { label: 'Cookie Policy', href: '/cookies' },
+    { label: 'Disclaimer', href: '/disclaimer' },
 ];
 
 export function Footer() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="border-t bg-background mt-10">
+        <footer className="relative mt-16 border-t">
             <div className="mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-2 gap-8 py-12 sm:grid-cols-3 lg:grid-cols-6">
-                    <div className="col-span-2 sm:col-span-3 lg:col-span-1">
+                <div className="grid gap-10 py-14 lg:grid-cols-12">
+                    <div className="lg:col-span-4">
                         <Logo />
-                        <p className="mt-4 text-sm text-muted-foreground">
-                            20+ free developer tools for formatting, converting, generating, and
-                            debugging. All client-side.
+                        <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
+                            30+ free developer tools that run entirely in your browser. No installs,
+                            no sign-ups, no data leaves your machine.
                         </p>
-                    </div>
-
-                    {footerSections.map((section) => (
-                        <div key={section.title}>
-                            <h3 className="mb-4 text-sm font-semibold">{section.title}</h3>
-                            <ul className="space-y-3">
-                                {section.links.map((link) => (
-                                    <li key={link.label}>
-                                        <Link
-                                            href={link.href}
-                                            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                                        >
-                                            {link.label}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-
-                <div className="border-t py-8">
-                    <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                        <p className="text-sm text-muted-foreground">
-                            &copy; {currentYear} {siteLinks.name}. All rights reserved.
-                        </p>
-                        <div className="flex items-center gap-6">
+                        <div className="mt-6 flex items-center gap-4">
                             <Link
                                 href={siteLinks.openSource}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-muted-foreground transition-colors hover:text-foreground"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg border text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
                             >
                                 <span className="sr-only">GitHub</span>
                                 <svg
-                                    className="h-5 w-5"
+                                    className="h-4 w-4"
                                     fill="currentColor"
                                     viewBox="0 0 24 24"
                                     aria-hidden="true"
@@ -125,6 +73,87 @@ export function Footer() {
                                     />
                                 </svg>
                             </Link>
+                            <Link
+                                href={`mailto:${siteLinks.feedback}`}
+                                className="flex h-9 w-9 items-center justify-center rounded-lg border text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
+                            >
+                                <span className="sr-only">Email</span>
+                                <svg
+                                    className="h-4 w-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                                    />
+                                </svg>
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:col-span-8">
+                        {grouped.map(({ title, icon: Icon, links }) => (
+                            <div key={title}>
+                                <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold">
+                                    <Icon className="h-4 w-4 text-primary" />
+                                    {title}
+                                </h3>
+                                <ul className="space-y-2.5">
+                                    {links.map((link) => (
+                                        <li key={link.label}>
+                                            <Link
+                                                href={link.href}
+                                                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                                            >
+                                                {link.label}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+
+                        <div>
+                            <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold">
+                                <BookOpen className="h-4 w-4 text-primary" />
+                                Resources
+                            </h3>
+                            <ul className="space-y-2.5">
+                                {[...resourceLinks, ...miscLinks].map((link) => (
+                                    <li key={link.label}>
+                                        <Link
+                                            href={link.href}
+                                            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="border-t py-6">
+                    <div className="flex flex-col items-center justify-between gap-3 text-sm text-muted-foreground sm:flex-row">
+                        <p>
+                            &copy; {currentYear} {siteLinks.name}. All rights reserved.
+                        </p>
+                        <div className="flex items-center gap-4">
+                            {legalLinks.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className="transition-colors hover:text-foreground"
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
                         </div>
                     </div>
                 </div>
