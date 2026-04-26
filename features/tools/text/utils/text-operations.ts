@@ -85,6 +85,35 @@ export function cleanText(text: string, operations: string[]): string {
     return result;
 }
 
+export function computeTextDiff(
+    left: string,
+    right: string,
+): { added: number; removed: number; changed: number } {
+    const leftLines = left.split('\n');
+    const rightLines = right.split('\n');
+
+    let added = 0;
+    let removed = 0;
+    let changed = 0;
+
+    const maxLen = Math.max(leftLines.length, rightLines.length);
+
+    for (let i = 0; i < maxLen; i++) {
+        const l = i < leftLines.length ? leftLines[i] : undefined;
+        const r = i < rightLines.length ? rightLines[i] : undefined;
+
+        if (l === undefined && r !== undefined) {
+            added++;
+        } else if (l !== undefined && r === undefined) {
+            removed++;
+        } else if (l !== r) {
+            changed++;
+        }
+    }
+
+    return { added, removed, changed };
+}
+
 export function getTextStats(text: string) {
     const chars = text.length;
     const charsNoSpaces = text.replace(/\s/g, '').length;

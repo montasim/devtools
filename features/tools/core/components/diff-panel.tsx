@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from 'react';
 import ReactDiffViewer from 'react-diff-viewer-continued';
-import { GitCompare } from 'lucide-react';
+import { GitCompare, Plus, Minus, RefreshCw, Percent } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { EditorFooter } from './editor-footer';
@@ -132,11 +132,33 @@ export function DiffPanel({
                         <span className="text-sm font-medium text-muted-foreground">Diff</span>
                         {diffStats && (
                             <div className="flex items-center gap-4 text-sm">
-                                <span className="text-primary">+{diffStats.added} added</span>
-                                <span className="text-destructive">
-                                    -{diffStats.removed} removed
+                                <span className="flex items-center gap-1 text-primary">
+                                    <Plus className="h-3.5 w-3.5" />
+                                    {diffStats.added} added
                                 </span>
-                                <span className="text-warning">~{diffStats.changed} changed</span>
+                                <span className="flex items-center gap-1 text-destructive">
+                                    <Minus className="h-3.5 w-3.5" />
+                                    {diffStats.removed} removed
+                                </span>
+                                <span className="flex items-center gap-1 text-warning">
+                                    <RefreshCw className="h-3.5 w-3.5" />
+                                    {diffStats.changed} changed
+                                </span>
+                                {(() => {
+                                    const total =
+                                        diffStats.added + diffStats.removed + diffStats.changed;
+                                    const baseLines = safeLeft ? safeLeft.split('\n').length : 0;
+                                    const pct =
+                                        baseLines > 0
+                                            ? Math.min(100, Math.round((total / baseLines) * 100))
+                                            : 0;
+                                    return (
+                                        <span className="flex items-center gap-1 font-medium text-muted-foreground">
+                                            <Percent className="h-3.5 w-3.5" />
+                                            {pct}% changed
+                                        </span>
+                                    );
+                                })()}
                             </div>
                         )}
                     </div>

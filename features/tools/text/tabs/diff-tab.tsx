@@ -8,6 +8,7 @@ import { DiffPanel } from '../../core/components/diff-panel';
 import { ShareSidebarModal } from '../../core/plugins/share-sidebar';
 import { STORAGE_KEYS } from '@/lib/utils/constants';
 import { useLocalStorage } from '@/lib/hooks/use-local-storage';
+import { useTextDiff } from '../hooks/use-text-diff';
 import type { TabComponentProps } from '../../core/types/tool';
 
 export default function TextDiffTab({ sharedData, readOnly }: TabComponentProps) {
@@ -26,6 +27,7 @@ export default function TextDiffTab({ sharedData, readOnly }: TabComponentProps)
         '',
     );
     const [shareOpen, setShareOpen] = useState(false);
+    const { stats } = useTextDiff(leftContent, rightContent);
 
     const { actions } = useToolActions({
         pageName: 'text',
@@ -51,6 +53,7 @@ export default function TextDiffTab({ sharedData, readOnly }: TabComponentProps)
                 rightLabel="Modified Text"
                 onLeftChange={setLeftContent}
                 onRightChange={setRightContent}
+                diffStats={stats}
                 readOnly={readOnly}
             />
             <ShareSidebarModal
