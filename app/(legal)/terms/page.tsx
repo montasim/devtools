@@ -40,7 +40,7 @@ export default function TermsOfServicePage() {
             <PageHeader
                 icon={<FileText className="h-6 w-6 text-white" />}
                 title="Terms of Service"
-                description="Terms and conditions governing your use of DevTools services"
+                description="The straightforward rules for using our free tools — written for humans, not lawyers"
             />
             <PageContent
                 sidebar={
@@ -61,89 +61,118 @@ export default function TermsOfServicePage() {
                 <PageSection
                     id="agreement"
                     title="Agreement to Terms"
-                    description="By using DevTools, you agree to these terms."
+                    description="Using our tools means you're okay with these straightforward rules."
                 >
-                    <p className="text-muted-foreground">
-                        By accessing or using DevTools, you agree to be bound by these Terms of
-                        Service and all applicable laws and regulations. If you do not agree with
-                        any of these terms, you are prohibited from using our services.
-                    </p>
+                    <div className="space-y-4 text-muted-foreground">
+                        <p>
+                            By using DevTools, you&apos;re agreeing to a simple deal: we provide
+                            free tools that respect your privacy, and you use them responsibly.
+                            That&apos;s it.
+                        </p>
+                        <p>
+                            These terms exist to protect both of us. If any part doesn&apos;t work
+                            for you, you&apos;re free to stop using the service at any time.
+                        </p>
+                    </div>
                 </PageSection>
 
                 <PageSection
                     id="service"
-                    title="Description of Service"
-                    description="Free online developer tools for your productivity."
+                    title="What We Provide"
+                    description="Free, browser-based developer tools — no installs, no accounts, no catch."
                 >
                     <div className="space-y-4 text-muted-foreground">
-                        <p>DevTools provides free online developer tools, including:</p>
+                        <p>
+                            DevTools is a free suite of 30+ browser-based utilities for developers.
+                            Everything runs locally in your browser:
+                        </p>
                         <ul className="ml-4 list-inside list-disc space-y-1">
-                            <li>JSON formatting, validation, and manipulation</li>
-                            <li>Text comparison and processing</li>
-                            <li>Base64 encoding and decoding</li>
+                            <li>JSON formatting, validation, diffing, and transformation</li>
+                            <li>Text comparison, cleaning, and case conversion</li>
+                            <li>Base64, URL, and HTML entity encoding/decoding</li>
+                            <li>Hashing, password generation, and cryptography</li>
+                            <li>Network tools, reference tables, and more</li>
                         </ul>
                         <p className="text-sm">
-                            We strive to provide uninterrupted service but do not guarantee 100%
-                            availability. We reserve the right to modify, suspend, or discontinue
-                            any part of our service at any time without prior notice.
+                            We do our best to keep things running smoothly, but like any free
+                            service, we can&apos;t promise 100% uptime. We may occasionally update,
+                            pause, or change features as we improve things.
                         </p>
                     </div>
                 </PageSection>
 
                 <PageSection
                     id="responsibilities"
-                    title="User Responsibilities"
-                    description="As a user, you agree to use our services responsibly."
+                    title="Your Responsibilities"
+                    description="A short, reasonable list — mostly common sense."
                 >
                     <div className="space-y-4 text-muted-foreground">
-                        <p>You agree to:</p>
+                        <p>
+                            We keep the rules simple because we trust you to use good judgment.
+                            Just:
+                        </p>
                         <ul className="ml-4 list-inside list-disc space-y-2">
-                            <li>Use tools only for lawful purposes</li>
-                            <li>Not attempt to gain unauthorized access</li>
-                            <li>Not interfere with or disrupt services</li>
-                            <li>Not introduce viruses or harmful code</li>
-                            <li>Respect the rights of other users</li>
+                            <li>
+                                <strong>Use the tools lawfully</strong> &mdash; don&apos;t do
+                                anything illegal with them
+                            </li>
+                            <li>
+                                <strong>Play fair</strong> &mdash; don&apos;t try to break,
+                                overload, or hack the service
+                            </li>
+                            <li>
+                                <strong>Be respectful</strong> &mdash; these tools are shared by
+                                everyone
+                            </li>
                         </ul>
+                        <p className="text-sm">
+                            In short: use DevTools the way you&apos;d want others to use a service
+                            you built.
+                        </p>
                     </div>
                 </PageSection>
 
                 <PageSection
                     id="intellectual-property"
-                    title="Intellectual Property Rights"
-                    description="Ownership and usage rights of content and data."
+                    title="Intellectual Property"
+                    description="Your data is yours. Our code is ours. Simple."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            All content, features, and functionality of DevTools are owned by
-                            DevTools and are protected by international copyright, trademark, and
-                            other intellectual property laws.
+                            The DevTools platform, its design, and its source code belong to
+                            DevTools and are protected by copyright and intellectual property laws.
                         </p>
-                        <p>
-                            You retain ownership of any data you input into our tools. By using our
-                            services, you grant us a license to process your data solely to provide
-                            the requested functionality.
-                        </p>
+                        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950/30">
+                            <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                                What you put in, stays yours. Any text, JSON, files, or other data
+                                you input into our tools remains 100% your property. We process it
+                                only to give you the result you asked for &mdash; nothing more.
+                            </p>
+                        </div>
                     </div>
                 </PageSection>
 
                 <PageSection
                     id="disclaimer"
                     title="Disclaimer of Warranties"
-                    description='Services provided "as is" without warranties.'
+                    description="We built these tools carefully, but use professional judgment for critical work."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            DevTools is provided &quot;AS IS&quot; and &quot;AS AVAILABLE&quot;
-                            without warranties of any kind.
+                            We build these tools with care and test them thoroughly, but
+                            they&apos;re provided &quot;as is&quot; and &quot;as available&quot;
+                            &mdash; without formal warranties. Specifically:
                         </p>
                         <ul className="ml-4 list-inside list-disc space-y-1">
-                            <li>No warranty of merchantability</li>
-                            <li>No warranty of fitness for a particular purpose</li>
-                            <li>No warranty of accuracy or reliability of results</li>
+                            <li>Results are not guaranteed to be error-free</li>
+                            <li>Tools may not fit every specific use case</li>
+                            <li>Service may occasionally be unavailable</li>
                         </ul>
                         <p className="text-sm">
-                            We do not guarantee that our tools will meet your requirements, be
-                            uninterrupted, timely, secure, or error-free.
+                            <strong>Practical advice:</strong> For production code,
+                            security-sensitive operations, or legal/compliance work, always
+                            double-check results with your own verification. These tools are a fast
+                            starting point, not a substitute for professional review.
                         </p>
                     </div>
                 </PageSection>
@@ -151,16 +180,18 @@ export default function TermsOfServicePage() {
                 <PageSection
                     id="liability"
                     title="Limitation of Liability"
-                    description="Our liability is limited to the maximum extent permitted by law."
+                    description="Free tools come with reasonable limits on our liability."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            DevTools shall not be liable for any indirect, incidental, special,
-                            consequential, or punitive damages.
+                            Since DevTools is free and all processing happens in your browser, our
+                            liability is limited to the maximum extent permitted by law. We&apos;re
+                            not liable for indirect, incidental, or consequential damages.
                         </p>
                         <p className="text-sm">
-                            Since our services are free, our liability is limited to the maximum
-                            extent permitted by applicable law.
+                            In plain terms: we give you free tools that run on your machine. If
+                            something goes wrong, we&apos;ll do our best to help &mdash; but we
+                            can&apos;t be held responsible for losses beyond our control.
                         </p>
                     </div>
                 </PageSection>
@@ -168,15 +199,16 @@ export default function TermsOfServicePage() {
                 <PageSection
                     id="termination"
                     title="Termination"
-                    description="We reserve the right to terminate access for violations."
+                    description="You can stop anytime. We can too, if the rules are broken."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            We may terminate or suspend your access immediately for breach of terms,
-                            violation of laws, or abusive behavior.
+                            You can stop using DevTools at any time &mdash; no notice needed, no
+                            strings attached.
                         </p>
-                        <p className="text-sm">
-                            Upon termination, your right to use our services will immediately cease.
+                        <p>
+                            On our end, we may restrict access if these terms are violated, but
+                            that&apos;s a last resort we&apos;ve never needed to use.
                         </p>
                     </div>
                 </PageSection>
@@ -184,11 +216,12 @@ export default function TermsOfServicePage() {
                 <PageSection
                     id="contact"
                     title="Contact Us"
-                    description="Have questions? Get in touch."
+                    description="Questions about these terms? We're happy to clarify."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            If you have questions about these Terms of Service, please contact us:
+                            If anything in these terms is unclear or you want to discuss them, reach
+                            out:
                         </p>
                         <div className="rounded-lg border bg-muted p-4">
                             <p className="font-medium">Email: legal@devtools.com</p>

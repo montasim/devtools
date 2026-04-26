@@ -32,7 +32,7 @@ export default function DisclaimerPage() {
             <PageHeader
                 icon={<Scale className="h-6 w-6 text-white" />}
                 title="Disclaimer"
-                description="Important legal information about the use of DevTools"
+                description="What you should know before relying on these tools for important work"
             />
             <PageContent
                 sidebar={
@@ -53,19 +53,20 @@ export default function DisclaimerPage() {
                 <PageSection
                     id="general"
                     title="General Disclaimer"
-                    description="Important information about the nature of DevTools services."
+                    description="Free tools built to help — but not to replace your professional judgment."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            DevTools provides free, web-based developer utilities for JSON, text,
-                            and Base64 processing. The tools are designed to assist developers in
-                            their day-to-day workflows.
+                            DevTools is a free suite of browser-based utilities designed to speed up
+                            common developer tasks &mdash; formatting JSON, hashing passwords,
+                            testing regex, converting units, and more. Think of us as a fast first
+                            step, not the final word.
                         </p>
                         <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950/30">
                             <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
-                                Please read this disclaimer carefully before using our services. By
-                                using DevTools, you acknowledge and agree to the terms outlined
-                                below.
+                                These tools are built with care and tested thoroughly, but
+                                they&apos;re not a substitute for professional review. Always verify
+                                results before using them in production.
                             </p>
                         </div>
                     </div>
@@ -74,44 +75,42 @@ export default function DisclaimerPage() {
                 <PageSection
                     id="no-warranty"
                     title="No Warranty"
-                    description='DevTools is provided "as is" without any warranties.'
+                    description="We stand behind our work, but the law requires us to say this."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            DevTools and all its tools are provided on an &quot;AS IS&quot; and
-                            &quot;AS AVAILABLE&quot; basis without any representations or warranties
-                            of any kind, either express or implied.
+                            DevTools is provided &quot;as is&quot; and &quot;as available.&quot;
+                            While we work hard to make every tool reliable, we can&apos;t guarantee:
                         </p>
-                        <p>We do not warrant that:</p>
                         <ul className="ml-4 list-inside list-disc space-y-1">
-                            <li>The services will be uninterrupted or error-free</li>
-                            <li>
-                                The results obtained from using the tools will be accurate or
-                                reliable
-                            </li>
-                            <li>Any defects in the services will be corrected</li>
-                            <li>The services will meet your specific requirements</li>
+                            <li>The service will never have bugs or downtime</li>
+                            <li>Results will be perfect in every edge case</li>
+                            <li>The tools will fit every specific requirement you have</li>
                         </ul>
+                        <p className="text-sm">
+                            What we <em>can</em> promise: when something breaks, we fix it fast. And
+                            since everything runs in your browser, your data is never at risk from a
+                            server-side bug.
+                        </p>
                     </div>
                 </PageSection>
 
                 <PageSection
                     id="accuracy"
                     title="Accuracy of Results"
-                    description="Verification of tool outputs is your responsibility."
+                    description="Double-check before you ship — your future self will thank you."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            While we strive to ensure the accuracy and reliability of all our tools,
-                            the results produced may not always be perfect. Factors such as input
-                            complexity, edge cases, and browser limitations can affect output
-                            quality.
+                            We test every tool against known inputs and outputs. But real-world data
+                            can be unpredictable &mdash; unusual characters, massive files, or edge
+                            cases we haven&apos;t encountered yet can produce unexpected results.
                         </p>
                         <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800 dark:bg-yellow-950/30">
                             <p className="text-sm font-medium text-yellow-900 dark:text-yellow-100">
-                                Always verify: You are responsible for verifying the accuracy of any
-                                results produced by our tools before using them in production
-                                environments.
+                                Golden rule: Verify before you trust. A 5-second sanity check on the
+                                output can save you hours of debugging later. This is good practice
+                                with <em>any</em> tool, not just ours.
                             </p>
                         </div>
                     </div>
@@ -120,18 +119,19 @@ export default function DisclaimerPage() {
                 <PageSection
                     id="use-at-risk"
                     title="Use at Your Own Risk"
-                    description="You assume all risks associated with using DevTools."
+                    description="Great for everyday tasks. Use extra caution with sensitive data."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            Your use of DevTools and its tools is at your sole risk. You are
-                            responsible for ensuring that any data you process through our tools is
-                            appropriate for the intended purpose.
+                            DevTools is perfect for everyday developer tasks &mdash; formatting,
+                            converting, generating, and debugging. But use your judgment when the
+                            stakes are high.
                         </p>
                         <p>
-                            We recommend against using DevTools for processing highly sensitive or
-                            classified information. Although all processing happens locally in your
-                            browser, you should exercise caution with confidential data.
+                            Although all processing happens <strong>locally in your browser</strong>{' '}
+                            and nothing is sent to our servers, we still recommend caution with
+                            highly sensitive or classified information. Your browser, your device
+                            security, and your environment are factors only you can assess.
                         </p>
                     </div>
                 </PageSection>
@@ -139,18 +139,17 @@ export default function DisclaimerPage() {
                 <PageSection
                     id="third-party-links"
                     title="Third-Party Links and Services"
-                    description="We are not responsible for external content."
+                    description="We link to helpful things — but we don't control what's on the other side."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            DevTools may contain links to third-party websites or services. We are
-                            not responsible for the content, privacy policies, or practices of any
-                            third-party websites.
+                            From time to time, DevTools may link to external websites or services.
+                            We&apos;re not responsible for what happens on those sites &mdash; their
+                            content, privacy practices, or uptime is outside our control.
                         </p>
                         <p className="text-sm">
-                            The inclusion of any link does not imply endorsement. We strongly advise
-                            you to review the terms and privacy policies of any third-party sites
-                            you visit.
+                            A link doesn&apos;t mean we endorse everything on that site. Apply the
+                            same scrutiny you&apos;d use anywhere else on the internet.
                         </p>
                     </div>
                 </PageSection>
@@ -158,22 +157,22 @@ export default function DisclaimerPage() {
                 <PageSection
                     id="availability"
                     title="Service Availability"
-                    description="We do not guarantee uninterrupted access."
+                    description="We aim for always-on, but real life happens."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            We strive to keep DevTools available 24/7, but we do not guarantee
-                            uninterrupted access. Services may be temporarily unavailable due to:
+                            We keep DevTools running around the clock, but occasional downtime is
+                            unavoidable. The site may be briefly unavailable for:
                         </p>
                         <ul className="ml-4 list-inside list-disc space-y-1">
-                            <li>Scheduled maintenance and updates</li>
-                            <li>Unforeseen technical issues</li>
-                            <li>Third-party service outages</li>
-                            <li>Force majeure events</li>
+                            <li>Updates that make the tools better</li>
+                            <li>Unexpected technical issues (we fix these fast)</li>
+                            <li>External dependencies outside our control</li>
                         </ul>
                         <p className="text-sm">
-                            We will make reasonable efforts to notify users of planned downtime when
-                            possible.
+                            Here&apos;s the good news: since everything runs in your browser, an
+                            outage mainly affects loading the page. If you already have a tool open,
+                            it keeps working even if the server goes down.
                         </p>
                     </div>
                 </PageSection>
@@ -181,37 +180,45 @@ export default function DisclaimerPage() {
                 <PageSection
                     id="limitation"
                     title="Limitation of Liability"
-                    description="Our liability is limited as described below."
+                    description="Free tools mean reasonable limits on what we're liable for."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            In no event shall DevTools, its developers, or its affiliates be liable
-                            for any direct, indirect, incidental, special, consequential, or
-                            punitive damages arising from:
+                            DevTools is a free service. Because we don&apos;t charge you anything,
+                            our liability is limited to the maximum extent allowed by law.
+                            We&apos;re not liable for:
                         </p>
                         <ul className="ml-4 list-inside list-disc space-y-1">
-                            <li>Your use of or inability to use the services</li>
-                            <li>Any errors or inaccuracies in tool outputs</li>
-                            <li>Unauthorized access to or alteration of your data</li>
-                            <li>Any other matter relating to the services</li>
+                            <li>Losses from using (or not being able to use) the tools</li>
+                            <li>
+                                Errors in tool outputs &mdash; which is why we keep reminding you to
+                                verify
+                            </li>
+                            <li>Issues caused by your browser, device, or network</li>
                         </ul>
+                        <p className="text-sm">
+                            In plain terms: we give you free, carefully built tools that run on your
+                            machine. If something goes sideways, we&apos;ll help however we can
+                            &mdash; but we can&apos;t take on risk that exceeds the price you paid
+                            (which is zero).
+                        </p>
                     </div>
                 </PageSection>
 
                 <PageSection
                     id="contact"
                     title="Contact Us"
-                    description="Questions about this disclaimer?"
+                    description="Found an issue? Have a question? We're here."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            If you have any questions or concerns about this Disclaimer, please
-                            contact us:
+                            If you spot an inaccuracy, run into an edge case, or just want to ask
+                            about something in this disclaimer:
                         </p>
                         <div className="rounded-lg border bg-muted p-4">
                             <p className="font-medium">Email: legal@devtools.com</p>
                             <p className="mt-1 text-sm">
-                                We&apos;ll respond to your inquiry within 30 days.
+                                We respond to every inquiry within 30 days.
                             </p>
                         </div>
                         <p className="text-xs">Last updated: January 1, 2025</p>

@@ -32,7 +32,7 @@ export default function CookiesPage() {
             <PageHeader
                 icon={<Cookie className="h-6 w-6 text-white" />}
                 title="Cookie Policy"
-                description="Learn how DevTools uses cookies and similar technologies"
+                description="A no-surprises look at the few cookies we use and why"
             />
             <PageContent
                 sidebar={
@@ -53,19 +53,18 @@ export default function CookiesPage() {
                 <PageSection
                     id="introduction"
                     title="Introduction"
-                    description="This Cookie Policy explains how DevTools uses cookies and similar tracking technologies."
+                    description="Most sites bury this page. We wrote it to be actually useful."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            When you visit and use DevTools, certain cookies and tracking
-                            technologies may be stored on your device. This policy explains what
-                            they are, why we use them, and how you can manage your preferences.
+                            We use a small number of cookies to keep DevTools working smoothly and
+                            remember your preferences between visits. No more, no less.
                         </p>
                         <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950/30">
                             <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
-                                Your data matters: We use cookies minimally and only to enhance your
-                                experience. No cookies are used for advertising or tracking across
-                                sites.
+                                Zero advertising cookies. Zero cross-site tracking. We only use
+                                cookies to make your experience better &mdash; not to follow you
+                                around the internet.
                             </p>
                         </div>
                     </div>
@@ -74,18 +73,20 @@ export default function CookiesPage() {
                 <PageSection
                     id="what-are-cookies"
                     title="What Are Cookies"
-                    description="Understanding cookies and similar technologies."
+                    description="A quick explainer — skip this if you already know."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            Cookies are small text files that are stored on your device when you
-                            visit a website. They are widely used to make websites work more
-                            efficiently and to provide information to the owners of the site.
+                            Cookies are tiny text files your browser saves when you visit a website.
+                            Think of them like a sticky note your browser leaves for itself &mdash;
+                            &ldquo;this user prefers dark mode&rdquo; or &ldquo;this session is
+                            still active.&rdquo;
                         </p>
                         <p>
-                            We also use similar technologies such as local storage and session
-                            storage, which function similarly to cookies but offer more storage
-                            capacity and flexibility.
+                            We also use <strong>local storage</strong> and{' '}
+                            <strong>session storage</strong>, which work like cookies but can
+                            remember more. That&apos;s how your tool inputs and history survive a
+                            page refresh.
                         </p>
                     </div>
                 </PageSection>
@@ -93,24 +94,24 @@ export default function CookiesPage() {
                 <PageSection
                     id="how-we-use"
                     title="How We Use Cookies"
-                    description="The purposes for which we use cookies."
+                    description="Every cookie we set has a specific job — nothing sneaky."
                 >
                     <ul className="ml-4 list-inside list-disc space-y-2 text-muted-foreground">
                         <li>
-                            <strong>Essential functionality:</strong> To keep you logged in and
-                            remember your preferences
+                            <strong>Keep you logged in</strong> &mdash; so you don&apos;t have to
+                            sign in on every page
                         </li>
                         <li>
-                            <strong>Performance:</strong> To understand how visitors interact with
-                            our tools so we can improve them
+                            <strong>Remember your preferences</strong> &mdash; theme, layout, and
+                            tool settings stay the way you left them
                         </li>
                         <li>
-                            <strong>User experience:</strong> To remember your theme preference
-                            (light/dark mode) and other settings
+                            <strong>Save your work</strong> &mdash; tool inputs and history are
+                            stored locally so nothing&apos;s lost if you accidentally close the tab
                         </li>
                         <li>
-                            <strong>Data persistence:</strong> To save your tool inputs and history
-                            locally for convenience
+                            <strong>Make things faster</strong> &mdash; analytics (anonymized) help
+                            us find bottlenecks and fix them
                         </li>
                     </ul>
                 </PageSection>
@@ -118,7 +119,7 @@ export default function CookiesPage() {
                 <PageSection
                     id="types-of-cookies"
                     title="Types of Cookies We Use"
-                    description="Categories of cookies used on DevTools."
+                    description="Just three categories — and not a single ad tracker among them."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -128,12 +129,17 @@ export default function CookiesPage() {
                                         E
                                     </span>
                                 </div>
-                                <h3 className="font-semibold">Essential Cookies</h3>
+                                <h3 className="font-semibold">
+                                    Essential Cookies{' '}
+                                    <span className="text-sm font-normal text-muted-foreground">
+                                        (can&apos;t turn these off)
+                                    </span>
+                                </h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Required for the website to function properly. These cannot be
-                                disabled. They include session tokens, authentication state, and
-                                security features.
+                                These keep the site working &mdash; session tokens, login state, and
+                                security features. Without them, DevTools can&apos;t remember
+                                you&apos;re logged in from one page to the next.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -143,12 +149,17 @@ export default function CookiesPage() {
                                         F
                                     </span>
                                 </div>
-                                <h3 className="font-semibold">Functional Cookies</h3>
+                                <h3 className="font-semibold">
+                                    Functional Cookies{' '}
+                                    <span className="text-sm font-normal text-muted-foreground">
+                                        (nice to have)
+                                    </span>
+                                </h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Enable personalized features such as theme preference, layout
-                                settings, and tool configurations. These enhance your experience but
-                                are not essential.
+                                Your theme preference, layout choices, and tool configurations. The
+                                site works without them, but you&apos;d have to re-set everything
+                                every visit.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -158,12 +169,17 @@ export default function CookiesPage() {
                                         A
                                     </span>
                                 </div>
-                                <h3 className="font-semibold">Analytics Cookies</h3>
+                                <h3 className="font-semibold">
+                                    Analytics Cookies{' '}
+                                    <span className="text-sm font-normal text-muted-foreground">
+                                        (fully anonymized)
+                                    </span>
+                                </h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Help us understand how visitors interact with our tools by
-                                collecting anonymized data. This information is used solely to
-                                improve our services.
+                                Anonymized data about which tools get used most and where things are
+                                slow. We use this to decide what to improve &mdash; not to build a
+                                profile on you.
                             </p>
                         </div>
                     </div>
@@ -172,31 +188,32 @@ export default function CookiesPage() {
                 <PageSection
                     id="managing-cookies"
                     title="Managing Your Cookie Preferences"
-                    description="You have control over how cookies are used."
+                    description="It's your browser — you're in charge."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            You can control and manage cookies in various ways. Keep in mind that
-                            removing or blocking cookies may impact your user experience.
+                            You can block, delete, or limit cookies anytime through your browser
+                            settings. Here&apos;s how:
                         </p>
                         <ul className="ml-4 list-inside list-disc space-y-2">
                             <li>
-                                <strong>Browser settings:</strong> Most browsers allow you to block
-                                or delete cookies through their settings
+                                <strong>Browser settings:</strong> Every major browser lets you
+                                block or delete cookies in its preferences
                             </li>
                             <li>
-                                <strong>Opt-out tools:</strong> Use analytics opt-out browser
-                                extensions if available
+                                <strong>Analytics opt-out:</strong> Use browser extensions to opt
+                                out of analytics tracking if you prefer
                             </li>
                             <li>
-                                <strong>Clear local storage:</strong> Clear your browser data to
-                                remove all locally stored information
+                                <strong>Nuclear option:</strong> Clear all browser data to wipe
+                                everything &mdash; cookies, local storage, the lot
                             </li>
                         </ul>
                         <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800 dark:bg-yellow-950/30">
                             <p className="text-sm font-medium text-yellow-900 dark:text-yellow-100">
-                                Note: Disabling essential cookies may prevent certain features of
-                                DevTools from functioning properly.
+                                Heads up: blocking essential cookies means DevTools won&apos;t be
+                                able to keep you logged in or save your preferences. The tools will
+                                still work, but you&apos;ll start fresh each visit.
                             </p>
                         </div>
                     </div>
@@ -205,20 +222,26 @@ export default function CookiesPage() {
                 <PageSection
                     id="third-party"
                     title="Third-Party Cookies"
-                    description="Cookies set by external services."
+                    description="The short list of external cookies — and nothing from ad companies."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            We do not allow third-party advertising cookies on DevTools. Any
-                            third-party services we use are limited to:
+                            We don&apos;t allow third-party advertising cookies. Period. The only
+                            external cookies that may appear come from:
                         </p>
                         <ul className="ml-4 list-inside list-disc space-y-1">
-                            <li>Analytics providers (anonymized data only)</li>
-                            <li>Content delivery networks for fast loading</li>
+                            <li>
+                                <strong>Analytics</strong> &mdash; anonymized traffic data so we
+                                know which tools to improve
+                            </li>
+                            <li>
+                                <strong>CDN</strong> &mdash; delivers the site fast no matter where
+                                you are
+                            </li>
                         </ul>
                         <p className="text-sm">
-                            These services may set their own cookies to function properly, but they
-                            do not track you across other websites.
+                            These services may set their own cookies to function, but they
+                            don&apos;t track you across other websites.
                         </p>
                     </div>
                 </PageSection>
@@ -226,17 +249,17 @@ export default function CookiesPage() {
                 <PageSection
                     id="updates"
                     title="Policy Updates"
-                    description="We may update this policy from time to time."
+                    description="If we change something, you'll see it here."
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            We may update this Cookie Policy periodically to reflect changes in
-                            technology, legislation, or our data practices. Any changes will be
-                            posted on this page with an updated revision date.
+                            We may update this policy when our practices change. When we do,
+                            we&apos;ll update the date at the bottom of this page so you can tell
+                            what&apos;s new.
                         </p>
                         <p className="text-sm">
-                            We encourage you to review this policy regularly to stay informed about
-                            how we use cookies.
+                            We won&apos;t silently add advertising cookies or cross-site trackers.
+                            If we ever change the type of cookies we use, you&apos;ll know.
                         </p>
                     </div>
                 </PageSection>
@@ -244,16 +267,14 @@ export default function CookiesPage() {
                 <PageSection
                     id="contact"
                     title="Contact Us"
-                    description="Have questions about our use of cookies?"
+                    description="Still have questions? We're happy to explain."
                 >
                     <div className="space-y-4 text-muted-foreground">
-                        <p>
-                            If you have any questions about this Cookie Policy, please contact us:
-                        </p>
+                        <p>If anything about our cookie use is unclear, just ask:</p>
                         <div className="rounded-lg border bg-muted p-4">
                             <p className="font-medium">Email: legal@devtools.com</p>
                             <p className="mt-1 text-sm">
-                                We&apos;ll respond to your inquiry within 30 days.
+                                We respond to every inquiry within 30 days.
                             </p>
                         </div>
                         <p className="text-xs">Last updated: January 1, 2025</p>
