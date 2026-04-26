@@ -26,6 +26,9 @@ import {
     FileCode,
     Languages,
     Lock,
+    Monitor,
+    Table2,
+    Timer,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { generatePageMetadata } from '@/lib/seo/metadata';
@@ -185,6 +188,30 @@ const TOOLS = [
         icon: Fingerprint,
     },
     {
+        href: '/user-agent',
+        label: 'User Agent Analyzer',
+        description: 'Parse and decode User-Agent strings',
+        icon: Monitor,
+    },
+    {
+        href: '/nslookup',
+        label: 'DNS Lookup',
+        description: 'Query NS, A, AAAA, MX, TXT, CNAME, SOA, PTR records',
+        icon: Globe,
+    },
+    {
+        href: '/ascii-table',
+        label: 'ASCII Table',
+        description: 'Interactive ASCII reference table with search and copy',
+        icon: Table2,
+    },
+    {
+        href: '/cron',
+        label: 'CRON Builder',
+        description: 'Visual cron expression builder with next-run preview',
+        icon: Timer,
+    },
+    {
         href: '/git-branch-generator',
         label: 'Git Branch Generator',
         description: 'Generate consistent git branch names from templates',
@@ -245,7 +272,7 @@ export default function HomePage() {
                             </span>
                         </h1>
                         <p className="mx-auto mb-10 max-w-2xl text-base text-muted-foreground sm:text-lg md:text-xl">
-                            A comprehensive suite of 18+ developer tools for formatting, converting,
+                            A comprehensive suite of 30+ developer tools for formatting, converting,
                             generating, and referencing. All tools run locally in your browser for
                             maximum privacy and speed.
                         </p>
