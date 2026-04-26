@@ -11,6 +11,7 @@ import {
     MobileNav,
 } from '@/components/page-content';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
+import { siteLinks } from '@/config/seo';
 
 const privacySections = [
     { id: 'introduction', title: 'Introduction', icon: <Shield className="h-5 w-5" /> },
@@ -317,7 +318,7 @@ export default function PrivacyPolicyPage() {
                             rights, don&apos;t hesitate to reach out:
                         </p>
                         <div className="rounded-lg border bg-muted p-4">
-                            <p className="font-medium">Email: legal@devtools.com</p>
+                            <p className="font-medium">Email: {siteLinks.feedback}</p>
                             <p className="mt-1 text-sm">
                                 We respond to every inquiry within 30 days.
                             </p>

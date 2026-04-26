@@ -1,9 +1,16 @@
 import type { SEOConfig } from '@/lib/seo/types';
 
+export const siteLinks = {
+    name: 'DevTools',
+    openSource: 'https://github.com/montasim/devtools',
+    website: 'https://devtoolsn.vercel.app',
+    feedback: 'montasimmamun@gmail.com',
+} as const;
+
 export const seoConfig: SEOConfig = {
     site: {
-        siteName: 'DevTools',
-        siteUrl: 'https://devtools.dev',
+        siteName: siteLinks.name,
+        siteUrl: siteLinks.website,
         titleDefault: 'DevTools - Free Developer Tools That Run in Your Browser',
         description:
             '30+ free developer tools that run instantly in your browser — no installs, no sign-ups, no data leaves your machine. JSON, regex, hashing, API testing, DNS lookup, and more.',

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { siteLinks } from '@/config/seo';
 
 export function Logo() {
     return (
@@ -26,7 +27,7 @@ export function Logo() {
                 />
             </svg>
             <span className="bg-linear-to-r from-primary via-primary/70 to-primary bg-size-[200%_auto] bg-clip-text font-medium text-transparent animate-[shimmer_3s_ease-in-out_infinite]">
-                DevTools
+                {siteLinks.name}
             </span>
         </Link>
     );

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { siteLinks } from '@/config/seo';
 
 export function ConsoleBanner() {
     useEffect(() => {
@@ -27,9 +28,9 @@ export function ConsoleBanner() {
 
         const linkStyle = 'color: #6366f1; font-size: 13px;';
 
-        console.log('%c- Open Source  https://github.com/montasim/devtools', linkStyle);
-        console.log('%c- Website      https://devtoolsn.vercel.app', linkStyle);
-        console.log('%c- Feedback     montasimmamun@gmail.com', linkStyle);
+        console.log(`%c- Open Source  ${siteLinks.openSource}`, linkStyle);
+        console.log(`%c- Website      ${siteLinks.website}`, linkStyle);
+        console.log(`%c- Feedback     ${siteLinks.feedback}`, linkStyle);
     }, []);
 
     return null;

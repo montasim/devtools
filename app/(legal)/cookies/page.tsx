@@ -11,6 +11,7 @@ import {
     MobileNav,
 } from '@/components/page-content';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
+import { siteLinks } from '@/config/seo';
 
 const cookieSections = [
     { id: 'introduction', title: 'Introduction', icon: <Cookie className="h-5 w-5" /> },
@@ -272,7 +273,7 @@ export default function CookiesPage() {
                     <div className="space-y-4 text-muted-foreground">
                         <p>If anything about our cookie use is unclear, just ask:</p>
                         <div className="rounded-lg border bg-muted p-4">
-                            <p className="font-medium">Email: legal@devtools.com</p>
+                            <p className="font-medium">Email: {siteLinks.feedback}</p>
                             <p className="mt-1 text-sm">
                                 We respond to every inquiry within 30 days.
                             </p>

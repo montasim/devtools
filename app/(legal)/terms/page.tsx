@@ -11,6 +11,7 @@ import {
     MobileNav,
 } from '@/components/page-content';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
+import { siteLinks } from '@/config/seo';
 
 const termsSections = [
     { id: 'agreement', title: 'Agreement', icon: <FileText className="h-5 w-5" /> },
@@ -224,7 +225,10 @@ export default function TermsOfServicePage() {
                             out:
                         </p>
                         <div className="rounded-lg border bg-muted p-4">
-                            <p className="font-medium">Email: legal@devtools.com</p>
+                            <p className="font-medium">Email: {siteLinks.feedback}</p>
+                            <p className="mt-1 text-sm">
+                                We respond to every inquiry within 30 days.
+                            </p>
                         </div>
                         <p className="text-xs">Last updated: January 1, 2025</p>
                     </div>
