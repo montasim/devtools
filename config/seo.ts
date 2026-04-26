@@ -4,9 +4,9 @@ export const seoConfig: SEOConfig = {
     site: {
         siteName: 'DevTools',
         siteUrl: 'https://devtools.dev',
-        titleDefault: 'DevTools - Developer Utilities',
+        titleDefault: 'DevTools - Free Developer Tools That Run in Your Browser',
         description:
-            'A comprehensive suite of 20+ free developer tools — JSON, Text, Base64, Hash, Regex, Markdown, Color Picker, QR Code, Unit Converter, User Agent Analyzer, API Builder, and more. All tools run locally in your browser.',
+            '30+ free developer tools that run instantly in your browser — no installs, no sign-ups, no data leaves your machine. JSON, regex, hashing, API testing, DNS lookup, and more.',
         locale: 'en_US',
         twitterHandle: '@devtools',
         ogImage: '/og-default.png',
@@ -24,9 +24,9 @@ export const seoConfig: SEOConfig = {
 
     pages: {
         home: {
-            title: 'DevTools - Free Online Developer Utilities',
+            title: 'DevTools - 30+ Free Developer Tools | No Install Required',
             description:
-                '20+ free developer tools for JSON, Text, Base64, Hash, URL Encoding, ID Generation, Markdown, Regex, Password, Color, Unit Conversion, User Agent Analysis, and more. All client-side, no data leaves your browser.',
+                'Stop switching tabs. 30+ free tools for JSON, regex, hashing, API testing, encoding, and more — all running in your browser. No installs, no accounts, no data sent anywhere.',
             keywords: [
                 'developer tools',
                 'online tools',
@@ -41,9 +41,9 @@ export const seoConfig: SEOConfig = {
         },
 
         docs: {
-            title: 'Documentation - DevTools',
+            title: 'Documentation - Master Every Tool in Under 2 Minutes | DevTools',
             description:
-                'Complete documentation for all DevTools utilities. Learn how to use JSON Tools, Text Tools, Base64 Tools, Hash Generator, Regex Tester, and 13+ more developer tools.',
+                'Learn how to use all 30+ DevTools in seconds. Step-by-step guides for JSON tools, regex tester, API builder, password hasher, DNS lookup, and more.',
             keywords: [
                 'devtools documentation',
                 'developer tools guide',
@@ -56,9 +56,9 @@ export const seoConfig: SEOConfig = {
         },
 
         json: {
-            title: 'JSON Tools - Format, Minify, Diff, Validate & Export',
+            title: 'JSON Tools - Format, Minify, Diff & Validate JSON Instantly',
             description:
-                'Free online JSON tools: format, minify, diff comparison, tree viewer, parser, schema validation, and export to CSV, XML, YAML. All processing runs locally in your browser.',
+                'Stop wrestling with broken JSON. Format, minify, diff, validate, and export — all in one place. Paste messy JSON and get clean results in seconds. Runs locally in your browser.',
             keywords: [
                 'JSON formatter',
                 'JSON minifier',
@@ -77,9 +77,9 @@ export const seoConfig: SEOConfig = {
         },
 
         text: {
-            title: 'Text Tools - Diff, Case Convert & Clean Text Online',
+            title: 'Text Tools - Diff, Case Convert & Clean Text in Seconds',
             description:
-                'Free online text tools: compare text differences, convert case (camelCase, snake_case, kebab-case), and clean text (trim, remove duplicates, sort lines).',
+                'Compare text side-by-side, convert between camelCase/snake_case/kebab-case, and clean messy copy-pasted text — all without leaving your browser.',
             keywords: [
                 'text diff',
                 'text compare',
@@ -96,9 +96,9 @@ export const seoConfig: SEOConfig = {
         },
 
         base64: {
-            title: 'Base64 Encoder & Decoder - Encode/Decode Files Online',
+            title: 'Base64 Encoder & Decoder - Convert Files Instantly',
             description:
-                'Free online Base64 encoder and decoder. Convert images, audio, video, and files to Base64 strings and back. Supports drag-and-drop with automatic MIME type detection.',
+                'Drag and drop any file — images, audio, video, PDFs — and get a Base64 string instantly. Or paste Base64 and download the original file. No upload needed.',
             keywords: [
                 'base64 encoder',
                 'base64 decoder',
@@ -114,9 +114,9 @@ export const seoConfig: SEOConfig = {
         },
 
         hash: {
-            title: 'Hash Generator - MD5, SHA-1, SHA-256, SHA-512 & HMAC',
+            title: 'Hash Generator - Get MD5, SHA-256, SHA-512 All at Once',
             description:
-                'Free online hash generator. Compute MD5, SHA-1, SHA-256, SHA-512 hashes and HMAC-SHA256, HMAC-SHA1, HMAC-SHA512 signatures instantly. All processing runs in your browser.',
+                'Paste any text and instantly get MD5, SHA-1, SHA-256, and SHA-512 hashes — plus HMAC signatures. No terminal needed. Everything runs in your browser.',
             keywords: [
                 'hash generator',
                 'MD5 hash',
@@ -133,9 +133,9 @@ export const seoConfig: SEOConfig = {
         },
 
         'url-encode': {
-            title: 'URL Encoder & Decoder - Encode/Decode Percent-Encoding',
+            title: 'URL Encoder & Decoder - Fix Mangled URLs in One Click',
             description:
-                'Free online URL encoder and decoder. Encode URLs with encodeURIComponent or encodeURI modes. Decode percent-encoded strings back to plain text.',
+                'Encode or decode URLs instantly. Choose encodeURIComponent to encode everything or encodeURI to keep URL structure intact. Paste and go.',
             keywords: [
                 'URL encoder',
                 'URL decoder',
@@ -153,7 +153,7 @@ export const seoConfig: SEOConfig = {
         id: {
             title: 'ID Generator - UUID (v1-v8), ULID & NanoID Generator with Validation',
             description:
-                'Free online UUID, ULID, and NanoID generator. Generate UUIDs in versions v1, v3, v4, v5, v6, v7, v8, ULIDs, and customizable NanoIDs. Includes validators for each ID type. Batch generation up to 100 IDs.',
+                'Generate UUIDs (v1 through v8), ULIDs, and NanoIDs with validation. Batch generate up to 100 IDs at once. No server calls — everything runs in your browser.',
             keywords: [
                 'UUID generator',
                 'ULID generator',
@@ -175,7 +175,7 @@ export const seoConfig: SEOConfig = {
         markdown: {
             title: 'Markdown Preview - Live Markdown Editor & Renderer',
             description:
-                'Free online Markdown editor with live HTML preview. Write Markdown and see rendered output in real-time. Shows word count, line count, and supports HTML export.',
+                'Write Markdown and see rendered HTML in real-time. Word count, line count, and one-click HTML copy. No save needed — everything auto-saves locally.',
             keywords: [
                 'markdown preview',
                 'markdown editor',
@@ -190,9 +190,9 @@ export const seoConfig: SEOConfig = {
         },
 
         regex: {
-            title: 'Regex Tester - Test Regular Expressions with Live Matching',
+            title: 'Regex Tester - Test Regex Live with Match Highlighting',
             description:
-                'Free online regex tester. Test regular expressions with live match highlighting, capture groups, and flag configuration (g, i, m, s, u). Shows all matches with numbered and named groups.',
+                'Stop guessing if your regex works. Test patterns with live match highlighting, numbered and named capture groups, and toggleable flags. See matches as you type.',
             keywords: [
                 'regex tester',
                 'regular expression tester',
@@ -210,7 +210,7 @@ export const seoConfig: SEOConfig = {
         password: {
             title: 'Password Generator - Secure Random Passwords with Strength Meter',
             description:
-                'Free online password generator. Create secure random passwords with configurable length (4-128), character sets, and real-time strength analysis with entropy display.',
+                'Create strong passwords with real-time strength analysis and entropy scoring. Pick from 5 alternatives, customize length and character sets. No data sent anywhere.',
             keywords: [
                 'password generator',
                 'secure password',
@@ -227,7 +227,7 @@ export const seoConfig: SEOConfig = {
         color: {
             title: 'Color Picker - HEX, RGB, HSL, OKLCH Converter & Palette Generator',
             description:
-                'Free online color picker and converter. Pick colors in HEX, RGB, HSL, OKLCH formats. Generate harmonious color palettes: analogous, complementary, triadic, split-complementary, tetradic.',
+                'Pick colors and convert between HEX, RGB, HSL, and OKLCH. Generate professional palettes — complementary, analogous, triadic, and more. One-click copy for every format.',
             keywords: [
                 'color picker',
                 'HEX to RGB',
@@ -245,7 +245,7 @@ export const seoConfig: SEOConfig = {
         'number-base': {
             title: 'Number Base Converter - Binary, Octal, Decimal, Hex & Custom Radix',
             description:
-                'Free online number base converter. Convert between binary, octal, decimal, hexadecimal, and custom radix (2-36). Supports 8/16/32/64-bit width with signed/unsigned modes.',
+                'Convert between binary, octal, decimal, hex, and any base 2-36 — all shown at once. Configurable 8/16/32/64-bit width with signed/unsigned modes.',
             keywords: [
                 'number base converter',
                 'binary converter',
@@ -263,7 +263,7 @@ export const seoConfig: SEOConfig = {
         unit: {
             title: 'Unit Converter - Data Size, Time Duration & Timezone Converter',
             description:
-                'Free online unit converter. Convert data sizes (B to EB), time durations (ns to years) with human-readable output, and timezone conversions with world clock.',
+                'Convert data sizes (bytes to petabytes), time durations (nanoseconds to years), and timezones with a world clock. All conversions shown at once.',
             keywords: [
                 'unit converter',
                 'data size converter',
@@ -281,7 +281,7 @@ export const seoConfig: SEOConfig = {
         'http-status': {
             title: 'HTTP Status Codes Reference - Searchable List with Descriptions',
             description:
-                'Complete searchable HTTP status codes reference. Filter by category (1xx-5xx), search by code or phrase, with spec references and detailed descriptions.',
+                'Every HTTP status code explained in plain English. Search by code or phrase, filter by 1xx-5xx categories, with RFC spec references and real-world explanations.',
             keywords: [
                 'HTTP status codes',
                 'HTTP 404',
@@ -298,7 +298,7 @@ export const seoConfig: SEOConfig = {
         'mime-type': {
             title: 'MIME Type Reference - File Extension & MIME Type Mapping',
             description:
-                'Searchable MIME type reference table. Map file extensions to MIME types and vice versa. Filter by category: application, audio, font, image, text, video.',
+                'Stop Googling MIME types. Search by file extension or type, filter by category (application, audio, font, image, text, video), and copy in one click.',
             keywords: [
                 'MIME type',
                 'MIME type reference',
@@ -315,7 +315,7 @@ export const seoConfig: SEOConfig = {
         'css-unit': {
             title: 'CSS Unit Converter - px, rem, em, vw, vh & More',
             description:
-                'Free online CSS unit converter. Convert between px, rem, em, vw, vh, vmin, vmax, pt, pc, cm, mm, in, and %. Configurable root font size and viewport dimensions.',
+                'Stop guessing rem-to-px conversions. Convert between px, rem, em, vw, vh, pt, cm and more — with your actual root font size and viewport dimensions.',
             keywords: [
                 'CSS unit converter',
                 'px to rem',
@@ -333,7 +333,7 @@ export const seoConfig: SEOConfig = {
         qrcode: {
             title: 'QR Code Generator - Create Custom QR Codes Online',
             description:
-                'Free online QR code generator. Create customizable QR codes with configurable size, error correction, foreground and background colors. Download as PNG or copy to clipboard.',
+                'Create custom QR codes with your colors, size, and error correction level. Download as PNG or copy to clipboard. Your QR code, your style.',
             keywords: [
                 'QR code generator',
                 'create QR code',
@@ -350,7 +350,7 @@ export const seoConfig: SEOConfig = {
         'user-agent': {
             title: 'User Agent Analyzer - Parse & Decode User-Agent Strings',
             description:
-                'Free online User-Agent string analyzer. Parse and decode browser, OS, device, and engine information from any User-Agent string. Detect bots, mobile devices, and more.',
+                'Paste any User-Agent string and get browser, OS, device type, and bot detection instantly. Debug responsive layouts and analytics with clear breakdowns.',
             keywords: [
                 'user agent analyzer',
                 'user agent parser',
@@ -367,9 +367,9 @@ export const seoConfig: SEOConfig = {
         },
 
         'api-builder': {
-            title: 'API Request Builder - Test & Debug HTTP Requests Online',
+            title: 'API Request Builder - Test APIs Without Installing Postman',
             description:
-                'Free online API request builder. Build, test, and debug HTTP requests with support for all methods, headers, query params, request body, and auth. Shareable request configurations.',
+                'Build, test, and debug HTTP requests right in your browser. Set method, headers, body, and auth — then see the response with status, timing, and size.',
             keywords: [
                 'API request builder',
                 'HTTP client',
@@ -386,9 +386,9 @@ export const seoConfig: SEOConfig = {
         },
 
         curl: {
-            title: 'cURL Converter - Convert cURL Commands to fetch, Axios, Python & HTTPie',
+            title: 'cURL Converter - Paste cURL, Get Fetch/Axios/Python Code',
             description:
-                'Free online cURL converter. Paste cURL commands and instantly convert to JavaScript fetch, Axios, Python requests, and HTTPie. Supports headers, data, auth, and all HTTP methods.',
+                'Copy a cURL command from your terminal and get ready-to-use code for fetch, Axios, Python requests, and HTTPie — headers, body, and auth included.',
             keywords: [
                 'cURL converter',
                 'cURL to fetch',
@@ -406,7 +406,7 @@ export const seoConfig: SEOConfig = {
         websocket: {
             title: 'WebSocket Tester - Connect, Send & Receive Messages in Real-Time',
             description:
-                'Free online WebSocket tester. Connect to WebSocket endpoints, send and receive messages in real-time. Supports wss:// and ws:// protocols with live connection status and message history.',
+                'Debug WebSocket connections without writing client code. Connect to any ws:// or wss:// endpoint, send messages, and see responses flow in real-time.',
             keywords: [
                 'WebSocket tester',
                 'WebSocket client',
@@ -422,9 +422,9 @@ export const seoConfig: SEOConfig = {
         },
 
         cors: {
-            title: 'CORS Checker - Test Cross-Origin Resource Sharing Headers',
+            title: 'CORS Checker - Fix CORS Errors in Minutes, Not Hours',
             description:
-                'Free online CORS checker. Test if a URL allows cross-origin requests, inspect CORS headers (Access-Control-Allow-Origin, Methods, Headers, Credentials), and debug CORS issues instantly.',
+                'See exactly which CORS headers are present or missing. Get a clear Enabled/Failed status, response time, and a copyable report for your backend team.',
             keywords: [
                 'CORS checker',
                 'CORS tester',
@@ -443,7 +443,7 @@ export const seoConfig: SEOConfig = {
         'html-entity': {
             title: 'HTML Entity Encoder / Decoder - Encode & Decode HTML Entities',
             description:
-                'Free online HTML entity encoder and decoder. Convert special characters to named entities (&amp;, &lt;, &quot;), decimal (&#60;), or hexadecimal (&#x3C;) references. Decode HTML entities back to readable text.',
+                'Make special characters HTML-safe or turn entities back into readable text. Supports named, decimal, and hex entities. Paste and get results instantly.',
             keywords: [
                 'HTML entity encoder',
                 'HTML entity decoder',
@@ -463,7 +463,7 @@ export const seoConfig: SEOConfig = {
         unicode: {
             title: 'Unicode Character Lookup - Search Unicode by Name, Codepoint & Character',
             description:
-                'Free online Unicode character lookup. Search by name, codepoint (U+0041), character, or block. Copy in HTML decimal, hex, CSS, JavaScript, and UTF-8 formats. Browse 150+ common characters with category filters.',
+                'Find any Unicode character by name, codepoint, or block. Copy in HTML, CSS, JavaScript, and UTF-8 formats with one click. Browse 150+ common characters by category.',
             keywords: [
                 'Unicode lookup',
                 'Unicode search',
@@ -482,7 +482,7 @@ export const seoConfig: SEOConfig = {
         'ascii-table': {
             title: 'ASCII Table - Interactive ASCII/Unicode Reference with Search & Copy',
             description:
-                'Free interactive ASCII table reference. Search 256 ASCII characters by decimal, hex, binary, or name. Filter by control, printable, and extended. Copy decimal, hexadecimal, binary, HTML entity, escape sequence, and octal formats.',
+                'The ASCII reference you keep coming back to. Search 256 characters by decimal, hex, binary, or name. Copy any format — decimal, hex, binary, HTML entity, escape sequence, or octal.',
             keywords: [
                 'ASCII table',
                 'ASCII chart',
@@ -501,7 +501,7 @@ export const seoConfig: SEOConfig = {
         'password-hash': {
             title: 'Bcrypt & Argon2 Password Hasher - Hash and Verify Passwords Online',
             description:
-                'Free online password hasher. Hash passwords with bcrypt (configurable rounds) and Argon2 (id/i/d with custom memory and iterations). Verify existing hashes. All processing runs locally in your browser.',
+                'Hash passwords with bcrypt or Argon2 — the same algorithms trusted by production auth systems. Verify existing hashes to debug login flows. All processing stays in your browser.',
             keywords: [
                 'bcrypt hash',
                 'argon2 hash',
@@ -520,9 +520,9 @@ export const seoConfig: SEOConfig = {
         },
 
         'rsa-key': {
-            title: 'RSA Key Generator - Generate RSA Key Pairs Online (PEM / DER)',
+            title: 'RSA Key Generator - Generate Keys Without OpenSSL Commands',
             description:
-                'Free online RSA key pair generator. Generate 2048, 3072, or 4096-bit RSA keys. Export as PEM or DER (Base64). Includes SHA-256 fingerprint. All key generation happens locally in your browser.',
+                'Generate 2048 or 4096-bit RSA key pairs with PEM or DER output. Get SHA-256 fingerprint and one-click copy — no terminal required. All generation happens locally.',
             keywords: [
                 'RSA key generator',
                 'RSA key pair',
@@ -542,7 +542,7 @@ export const seoConfig: SEOConfig = {
         'cert-decoder': {
             title: 'SSL/TLS Certificate Decoder - Inspect X.509 Certificate Fields',
             description:
-                'Free online SSL/TLS certificate decoder. Paste a PEM-encoded X.509 certificate to inspect subject, issuer, validity, extensions, SAN, fingerprints (SHA-256/SHA-1), and public key details. All parsing runs locally in your browser.',
+                'Paste a PEM certificate and decode it — no OpenSSL needed. See validity, subject, issuer, extensions, and fingerprints at a glance. Every field is copyable.',
             keywords: [
                 'certificate decoder',
                 'SSL certificate decoder',
@@ -559,9 +559,9 @@ export const seoConfig: SEOConfig = {
         },
 
         cron: {
-            title: 'Cron Expression Builder - Visual CRON Generator with Next Run Preview',
+            title: 'CRON Builder - Build Cron Expressions Without Memorizing Syntax',
             description:
-                'Free visual cron expression builder. Build cron schedules with dropdowns, see human-readable descriptions, preview next execution times, and copy expressions. Includes presets, field configuration, and validation.',
+                'Build cron schedules visually and see a plain-English description in real-time. Preview the next 6 execution times before you deploy. Includes common presets.',
             keywords: [
                 'cron expression builder',
                 'cron generator',
@@ -578,9 +578,9 @@ export const seoConfig: SEOConfig = {
         },
 
         nslookup: {
-            title: 'DNS Lookup - NS, A, AAAA, MX, TXT, CNAME, SOA Record Query',
+            title: 'DNS Lookup - Check DNS Records Without Opening a Terminal',
             description:
-                'Free online DNS lookup tool. Query NS, A, AAAA, MX, TXT, CNAME, SOA, and PTR records for any domain. Uses Google and Cloudflare DNS resolvers with query timing.',
+                'Query A, AAAA, MX, TXT, CNAME, NS, SOA, and PTR records for any domain. Results appear instantly with copy-per-row and JSON export.',
             keywords: [
                 'DNS lookup',
                 'NS lookup',
@@ -601,7 +601,7 @@ export const seoConfig: SEOConfig = {
         'git-branch-generator': {
             title: 'Git Branch Name Generator - Consistent Branch Naming',
             description:
-                'Generate consistent, well-formatted git branch names instantly. Select issue type, add issue ID, and description. Supports feature, bugfix, hotfix, refactor and more.',
+                'Never waste time deciding on a branch name again. Pick issue type, add ID and description — get a clean type/issue-id/description branch name instantly.',
             keywords: [
                 'git branch generator',
                 'git branch naming',
@@ -617,7 +617,7 @@ export const seoConfig: SEOConfig = {
         'url-shortener': {
             title: 'URL Shortener - Shorten Long URLs into Compact Links',
             description:
-                'Free URL shortener. Shorten long URLs into compact, shareable links with click tracking. View history of shortened URLs with analytics.',
+                'Turn long, ugly URLs into short links you can actually share. Click tracking, full history, and one-click copy. Sign up to save your shortened URLs.',
             keywords: [
                 'URL shortener',
                 'shorten URL',
@@ -632,7 +632,8 @@ export const seoConfig: SEOConfig = {
 
         privacy: {
             title: 'Privacy Policy - DevTools',
-            description: 'Privacy policy for DevTools — free online developer utilities.',
+            description:
+                "We don't just respect your privacy — we designed DevTools so your data never leaves your browser. Read our full privacy policy.",
             keywords: ['privacy policy', 'devtools privacy'],
             path: '/privacy',
             priority: 0.3,
@@ -641,7 +642,8 @@ export const seoConfig: SEOConfig = {
 
         terms: {
             title: 'Terms of Service - DevTools',
-            description: 'Terms of service for DevTools — free online developer utilities.',
+            description:
+                'Straightforward rules for using our free tools — written for humans, not lawyers.',
             keywords: ['terms of service', 'devtools terms'],
             path: '/terms',
             priority: 0.3,
@@ -650,7 +652,8 @@ export const seoConfig: SEOConfig = {
 
         cookies: {
             title: 'Cookie Policy - DevTools',
-            description: 'Cookie policy for DevTools — free online developer utilities.',
+            description:
+                'A no-surprises look at the few cookies we use and why. Zero advertising cookies, zero cross-site tracking.',
             keywords: ['cookie policy', 'devtools cookies'],
             path: '/cookies',
             priority: 0.3,
@@ -659,7 +662,8 @@ export const seoConfig: SEOConfig = {
 
         disclaimer: {
             title: 'Disclaimer - DevTools',
-            description: 'Disclaimer for DevTools — free online developer utilities.',
+            description:
+                'What you should know before relying on these free tools for important work. Built with care — but always verify before you ship.',
             keywords: ['disclaimer', 'devtools disclaimer'],
             path: '/disclaimer',
             priority: 0.3,
