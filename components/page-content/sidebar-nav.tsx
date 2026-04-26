@@ -15,8 +15,8 @@ interface SidebarNavProps {
 
 export function SidebarNav({ sections, activeSection, onSectionClick }: SidebarNavProps) {
     return (
-        <aside className="w-96 shrink-0">
-            <nav className="fixed top-40 space-y-1 h-[80vh] overflow-y-auto">
+        <aside className="hidden w-96 shrink-0 md:block">
+            <nav className="sticky top-40 max-h-[calc(100vh-11rem)] space-y-1 overflow-y-auto">
                 {sections.map((section) => (
                     <button
                         key={section.id}
