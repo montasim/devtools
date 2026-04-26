@@ -125,7 +125,7 @@ export default function DocsPage() {
             <PageHeader
                 icon={<FileText className="h-6 w-6 text-white" />}
                 title="DevTools Documentation"
-                description="Complete guide to all development tools"
+                description="Master every tool in under 2 minutes"
             />
             <PageContent
                 sidebar={
@@ -146,7 +146,7 @@ export default function DocsPage() {
                 <PageSection
                     id="overview"
                     title="Overview"
-                    description="A comprehensive suite of 30+ developer tools for JSON, text, encoding, hashing, generation, networking, and reference lookups. Boost your productivity with powerful utilities designed for modern development."
+                    description="30+ tools you'll actually use — not just bookmark. No installs, no accounts, no data leaving your browser. Open any tool and get results in seconds."
                 >
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                         <div className="rounded-xl border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-5 dark:border-blue-800 dark:from-blue-950/30 dark:to-indigo-950/30">
@@ -154,10 +154,11 @@ export default function DocsPage() {
                                 <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                             </div>
                             <h3 className="mb-1 font-semibold text-blue-900 dark:text-blue-100">
-                                Powerful
+                                Works Instantly
                             </h3>
                             <p className="text-sm text-blue-700/70 dark:text-blue-300/70">
-                                Advanced tools for complex tasks
+                                No loading screens, no waiting &mdash; results before your coffee
+                                cools
                             </p>
                         </div>
                         <div className="rounded-xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-5 dark:border-emerald-800 dark:from-emerald-950/30 dark:to-teal-950/30">
@@ -165,10 +166,10 @@ export default function DocsPage() {
                                 <Zap className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                             </div>
                             <h3 className="mb-1 font-semibold text-emerald-900 dark:text-emerald-100">
-                                Fast
+                                Zero Friction
                             </h3>
                             <p className="text-sm text-emerald-700/70 dark:text-emerald-300/70">
-                                Optimized for quick workflows
+                                No installs, no sign-ups, no accounts &mdash; just open and use
                             </p>
                         </div>
                         <div className="rounded-xl border border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50 p-5 dark:border-purple-800 dark:from-purple-950/30 dark:to-pink-950/30">
@@ -176,10 +177,10 @@ export default function DocsPage() {
                                 <Shield className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                             </div>
                             <h3 className="mb-1 font-semibold text-purple-900 dark:text-purple-100">
-                                Secure
+                                Your Data Stays Yours
                             </h3>
                             <p className="text-sm text-purple-700/70 dark:text-purple-300/70">
-                                All data stays in your browser
+                                Everything runs locally. Nothing ever leaves your machine.
                             </p>
                         </div>
                     </div>
@@ -188,7 +189,7 @@ export default function DocsPage() {
                 <PageSection
                     id="json-tools"
                     title="JSON Tools"
-                    description="Complete JSON toolkit for validation, formatting, comparison, and transformation."
+                    description="Stop wrestling with malformed JSON. Format, compare, and validate in one place."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -197,8 +198,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">JSON Diff</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Compare two JSON files with split and unified view modes. See added,
-                                removed, and changed lines with detailed stats.
+                                Spot every difference between two JSON files instantly. Split and
+                                unified views show exactly what was added, removed, or changed
+                                &mdash; no more manual comparison.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -207,8 +209,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">JSON Format &amp; Minify</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Beautify or minify JSON with real-time validation and syntax
-                                highlighting.
+                                Paste messy JSON and get perfectly formatted output instantly
+                                &mdash; or minify it for production. Catches syntax errors before
+                                they hit your code.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -217,8 +220,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">JSON Parser &amp; Viewer</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Parse and validate JSON with detailed error messages. View JSON in
-                                an expandable tree structure with syntax highlighting.
+                                Navigate complex JSON with an expandable tree view. Pinpoint exactly
+                                where errors are with detailed messages instead of guessing.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -227,7 +230,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">JSON Schema &amp; Export</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Validate JSON against schemas and export data in multiple formats.
+                                Validate data against schemas and export to any format you need.
+                                Stop writing conversion scripts by hand.
                             </p>
                         </div>
                     </div>
@@ -236,7 +240,7 @@ export default function DocsPage() {
                 <PageSection
                     id="text-tools"
                     title="Text Tools"
-                    description="Process and manipulate text with powerful transformation and analysis tools."
+                    description="Transform, clean, and compare any text without leaving your browser."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -245,7 +249,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Text Diff</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Compare two text blocks side-by-side with line-by-line highlighting.
+                                Never miss a change again. Side-by-side comparison highlights every
+                                added, removed, or modified line.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -254,8 +259,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Text Convert</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Transform text with case conversion, encoding/decoding, and format
-                                conversions.
+                                Switch between camelCase, snake_case, Title Case, and more in one
+                                click. Stop doing case conversions by hand.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -264,8 +269,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Text Clean</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Remove extra spaces, trim lines, eliminate special characters, and
-                                normalize whitespace.
+                                Strip extra whitespace, remove special characters, and normalize
+                                line breaks &mdash; fix messy copy-pasted text in seconds.
                             </p>
                         </div>
                     </div>
@@ -274,7 +279,7 @@ export default function DocsPage() {
                 <PageSection
                     id="base64-tools"
                     title="Base64 Tools"
-                    description="Encode and decode Base64 data with support for media files and automatic MIME type detection."
+                    description="Convert files to Base64 and back — perfect for embedding assets inline."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -283,9 +288,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Media to Base64</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Upload files (images, audio, video, PDF, ZIP) via drag-and-drop or
-                                file picker. Converts to Base64 with image preview and file size
-                                statistics.
+                                Drag and drop any file &mdash; images, audio, video, PDFs, ZIPs
+                                &mdash; and get a Base64 string instantly with preview and size
+                                stats.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -294,8 +299,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Base64 to Media</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Decode Base64 strings back to media files with automatic MIME type
-                                detection. Preview decoded images and download converted files.
+                                Paste a Base64 string and get the original file back with
+                                auto-detected MIME type. Preview images and download the result.
                             </p>
                         </div>
                     </div>
@@ -304,7 +309,7 @@ export default function DocsPage() {
                 <PageSection
                     id="url-encode-decode"
                     title="URL Encode / Decode"
-                    description="Encode and decode percent-encoded URLs with support for component and URI-level encoding."
+                    description="Fix mangled URLs instantly — encode special characters or decode percent-encoded strings."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -313,14 +318,14 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">URL Encode</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                URL-encode plain text with two modes:{' '}
+                                Need to safely pass text in a URL? Choose{' '}
                                 <code className="rounded bg-muted px-1 text-xs">
                                     encodeURIComponent
                                 </code>{' '}
-                                (encodes all special characters) and{' '}
-                                <code className="rounded bg-muted px-1 text-xs">encodeURI</code>{' '}
-                                (preserves URL structure characters like <code>:</code>,{' '}
-                                <code>/</code>, <code>?</code>, <code>#</code>).
+                                to encode everything, or{' '}
+                                <code className="rounded bg-muted px-1 text-xs">encodeURI</code> to
+                                keep URL structure intact (<code>:</code>, <code>/</code>,{' '}
+                                <code>?</code>, <code>#</code>).
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -329,8 +334,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">URL Decode</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Decode percent-encoded strings back to plain text with validation
-                                and error messages for invalid input.
+                                Turn <code>%20</code> back into spaces and <code>%3F</code> back
+                                into <code>?</code>. Paste any encoded URL and get the readable
+                                version instantly.
                             </p>
                         </div>
                     </div>
@@ -339,7 +345,7 @@ export default function DocsPage() {
                 <PageSection
                     id="html-entity"
                     title="HTML Entity Encode / Decode"
-                    description="Encode and decode HTML entities like &amp;amp;, &amp;lt;, &amp;#x27; with multiple encoding modes."
+                    description="Make special characters HTML-safe, or turn entities back into readable text."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -348,9 +354,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">HTML Entity Encode</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Split-pane editor with live encoding. Convert plain text to HTML
-                                entities using multiple encoding modes (named entities, decimal,
-                                hex). Copy or download the encoded result.
+                                Stop manually typing <code>&amp;amp;</code> and{' '}
+                                <code>&amp;lt;</code>. Paste your text and get properly encoded HTML
+                                entities instantly &mdash; named, decimal, or hex formats.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -359,8 +365,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">HTML Entity Decode</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Decode HTML entities back to plain text with error handling for
-                                invalid entities. Copy or download the decoded result.
+                                Paste a wall of HTML entities and get readable text back. Handles
+                                invalid entities gracefully.
                             </p>
                         </div>
                     </div>
@@ -369,7 +375,7 @@ export default function DocsPage() {
                 <PageSection
                     id="curl-converter"
                     title="cURL Converter"
-                    description="Convert cURL commands to fetch, Axios, Python, and HTTPie code snippets."
+                    description="Stop writing HTTP requests from scratch. Paste a cURL command, pick your language, done."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -378,11 +384,10 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">cURL Convert</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Paste a raw cURL command and instantly generate equivalent code in
-                                JavaScript <strong>fetch</strong>, <strong>Axios</strong>,{' '}
-                                <strong>Python</strong> (requests), and <strong>HTTPie</strong>.
-                                Parses URL, headers, method, and body from the cURL string with
-                                error display for unparseable commands.
+                                Copy a cURL command from your terminal and get ready-to-use code for{' '}
+                                <strong>fetch</strong>, <strong>Axios</strong>,{' '}
+                                <strong>Python</strong>, or <strong>HTTPie</strong> &mdash; headers,
+                                body, and auth included.
                             </p>
                         </div>
                     </div>
@@ -391,7 +396,7 @@ export default function DocsPage() {
                 <PageSection
                     id="number-base"
                     title="Number Base Converter"
-                    description="Convert numbers between binary, octal, decimal, hex, and custom radix with bit-level controls."
+                    description="No more reaching for a calculator. Convert between any number base instantly."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -400,10 +405,10 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Base Convert</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Convert between Binary (base 2), Octal (base 8), Decimal (base 10),
-                                Hexadecimal (base 16), and Custom Radix (2&ndash;36). Supports
-                                configurable bit width (8, 16, 32, 64-bit) with signed/unsigned
-                                toggle. Shows bit-level representation and ASCII equivalent.
+                                Binary, octal, decimal, hex, or any base 2&ndash;36 &mdash; all
+                                conversions shown at once with configurable bit width and
+                                signedness. See the bit-level representation and ASCII equivalent
+                                side by side.
                             </p>
                         </div>
                     </div>
@@ -412,7 +417,7 @@ export default function DocsPage() {
                 <PageSection
                     id="css-unit"
                     title="CSS Unit Converter"
-                    description="Convert between all CSS units with configurable viewport and font-size contexts."
+                    description="Stop guessing rem-to-px conversions. Get precise results with your actual viewport and font-size."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -421,9 +426,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">CSS Unit Convert</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Convert between px, rem, em, vw, vh, vmin, vmax, pt, pc, cm, mm, in,
-                                and %. Configurable root font size, viewport width, and viewport
-                                height. Includes common pixel presets and CSS snippet examples.
+                                Convert between px, rem, em, vw, vh, pt, cm, and more &mdash; with
+                                your actual root font size and viewport dimensions. Includes common
+                                pixel presets and ready-to-copy CSS snippets.
                             </p>
                         </div>
                     </div>
@@ -432,7 +437,7 @@ export default function DocsPage() {
                 <PageSection
                     id="color-picker"
                     title="Color Picker"
-                    description="Pick and convert colors between HEX, RGB, HSL, OKLCH and generate harmonious palettes."
+                    description="Pick the perfect color and build harmonious palettes without switching tools."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -441,10 +446,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Color Picker</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Interactive color picker with native input and optional EyeDropper
-                                API support. Edit in HEX, RGB, HSL, and OKLCH formats with sliders
-                                for RGB, HSL, and alpha channels. Quick-copy buttons for all
-                                formats.
+                                Pick any color with the native picker or EyeDropper API, then edit
+                                in HEX, RGB, HSL, or OKLCH with live sliders. One-click copy for
+                                every format.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -453,9 +457,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Palette Generator</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Generate color palettes in 6 modes: Shades, Analogous,
-                                Complementary, Triadic, Split Complementary, and Tetradic. Each
-                                color shows HEX, RGB, HSL, and OKLCH values.
+                                Generate professional color palettes in 6 modes &mdash; Shades,
+                                Analogous, Complementary, Triadic, Split Complementary, and
+                                Tetradic. Every color shows all format values ready to copy.
                             </p>
                         </div>
                     </div>
@@ -464,7 +468,7 @@ export default function DocsPage() {
                 <PageSection
                     id="markdown-preview"
                     title="Markdown Preview"
-                    description="Write Markdown with a live HTML preview and export rendered output."
+                    description="Write Markdown and see the rendered output side by side — no save needed."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -473,9 +477,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Live Preview</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Split-pane editor with live Markdown-to-HTML rendering. Shows
-                                character, word, and line counts. Copy rendered HTML output
-                                directly.
+                                Split-pane editor that renders Markdown as you type. See character,
+                                word, and line counts at a glance. Copy the rendered HTML with one
+                                click.
                             </p>
                         </div>
                     </div>
@@ -484,7 +488,7 @@ export default function DocsPage() {
                 <PageSection
                     id="id-generator"
                     title="ID Generator"
-                    description="Generate unique identifiers including UUIDs (v1–v8) and ULIDs with validation."
+                    description="Generate production-ready UUIDs and ULIDs in every version you'll ever need."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -493,9 +497,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">UUID Generator</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Generate UUIDs in versions v1, v3, v4, v5, v6, v7, and v8 with
-                                configurable quantity (1&ndash;100). Includes a UUID validator that
-                                checks format, version, and variant.
+                                Need a quick UUID? Generate v1 through v8 in batches up to 100 at
+                                once. Includes a validator to verify format, version, and variant of
+                                existing UUIDs.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -504,10 +508,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">ULID Generator</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Generate ULIDs (Universally Unique Lexicographically Sortable
-                                Identifiers) &mdash; 128-bit, sort-friendly identifiers using
-                                Crockford&apos;s Base32 with embedded timestamps. Includes ULID
-                                validation.
+                                Generate sort-friendly ULIDs with embedded timestamps &mdash;
+                                perfect for databases where ordering matters. Includes validation.
                             </p>
                         </div>
                     </div>
@@ -516,7 +518,7 @@ export default function DocsPage() {
                 <PageSection
                     id="hash-generator"
                     title="Hash Generator"
-                    description="Generate cryptographic hashes and HMAC signatures for text input."
+                    description="Get MD5, SHA-1, SHA-256, and SHA-512 hashes at once — no terminal needed."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -525,8 +527,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Hash Generate</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Instantly compute hashes for MD5, SHA-1, SHA-256, and SHA-512
-                                simultaneously. Each hash can be individually copied to clipboard.
+                                Paste any text and get MD5, SHA-1, SHA-256, and SHA-512 hashes
+                                simultaneously &mdash; each ready to copy with one click.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -535,8 +537,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">HMAC Signatures</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Generate HMAC signatures with a message and secret key. Supports
-                                HMAC-SHA256, HMAC-SHA1, and HMAC-SHA512 algorithms.
+                                Sign messages with a secret key using HMAC-SHA256, SHA1, or SHA512
+                                &mdash; essential for API authentication and webhook verification.
                             </p>
                         </div>
                     </div>
@@ -545,7 +547,7 @@ export default function DocsPage() {
                 <PageSection
                     id="password-hash"
                     title="Bcrypt / Argon2 Hasher"
-                    description="Hash and verify passwords with industry-standard bcrypt and Argon2 algorithms."
+                    description="Hash and verify passwords using the same algorithms production apps rely on."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -554,12 +556,10 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Password Hash</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Hash passwords with configurable algorithm selection:{' '}
-                                <strong>bcrypt</strong> (with adjustable rounds),{' '}
-                                <strong>argon2id</strong>, <strong>argon2i</strong>, and{' '}
-                                <strong>argon2d</strong> (with configurable iterations and memory).
-                                Displays the resulting hash with algorithm badge and generation
-                                time.
+                                Hash passwords with <strong>bcrypt</strong> (adjustable rounds) or{' '}
+                                <strong>Argon2</strong> (id/i/d with configurable memory and
+                                iterations) &mdash; the same algorithms trusted by production auth
+                                systems.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -568,9 +568,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Password Verify</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Verify a password against an existing hash. Auto-detects hash type
-                                (bcrypt or Argon2) and displays match/mismatch result with visual
-                                styling and verification time.
+                                Check if a password matches a hash. Auto-detects bcrypt or Argon2
+                                and shows the result instantly &mdash; handy for debugging auth
+                                flows.
                             </p>
                         </div>
                     </div>
@@ -579,7 +579,7 @@ export default function DocsPage() {
                 <PageSection
                     id="rsa-key"
                     title="RSA Key Generator"
-                    description="Generate RSA key pairs in-browser with PEM or DER output formats."
+                    description="Generate RSA key pairs in your browser — no OpenSSL commands to remember."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -588,11 +588,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">RSA Key Generate</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Generate RSA key pairs with configurable key size (2048, 4096 bit)
-                                and output format (PEM or DER Base64). Displays SHA-256 fingerprint,
-                                public key (SPKI), private key (PKCS#8), key size badge, and
-                                generation time. Individual copy buttons per key plus &ldquo;Copy
-                                Both Keys&rdquo;.
+                                Generate 2048 or 4096-bit RSA key pairs with PEM or DER output. Get
+                                the public key, private key, SHA-256 fingerprint, and copy-each
+                                buttons &mdash; all generated locally, nothing sent anywhere.
                             </p>
                         </div>
                     </div>
@@ -601,7 +599,7 @@ export default function DocsPage() {
                 <PageSection
                     id="password-generator"
                     title="Password Generator"
-                    description="Generate secure random passwords with strength analysis and configurable options."
+                    description="Create strong passwords you can actually trust — with entropy scoring built in."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -610,10 +608,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Password Generate</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Generate passwords with configurable length (4&ndash;128),
-                                toggleable character sets (uppercase, lowercase, numbers, symbols).
-                                Shows 5 alternatives with strength rating (Very Weak to Very
-                                Strong), visual meter, and entropy bit count.
+                                Set the length and character sets, then pick from 5 generated
+                                alternatives. Each password comes with a strength rating and entropy
+                                score so you know exactly how strong it is.
                             </p>
                         </div>
                     </div>
@@ -622,7 +619,7 @@ export default function DocsPage() {
                 <PageSection
                     id="qrcode-generator"
                     title="QR Code Generator"
-                    description="Generate customizable QR codes from text or URLs with download support."
+                    description="Turn any URL or text into a QR code you can customize and download instantly."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -631,9 +628,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">QR Code Create</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Generate QR codes with configurable size (64&ndash;1024px), error
-                                correction level (Low to High), foreground and background colors,
-                                and margin. Download as PNG or copy as image to clipboard.
+                                Customize size, error correction level, colors, and margin &mdash;
+                                then download as PNG or copy to clipboard. Your QR code, your style.
                             </p>
                         </div>
                     </div>
@@ -642,7 +638,7 @@ export default function DocsPage() {
                 <PageSection
                     id="git-branch"
                     title="Git Branch Generator"
-                    description="Generate consistent, well-formatted git branch names from templates."
+                    description="Never waste time deciding on a branch name again."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -651,14 +647,13 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Branch Name Generator</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Select an issue type (Feature, Bug Fix, Hotfix, Refactor, etc.),
-                                optionally add an issue ID, and provide a description. Generates
-                                branch names in{' '}
+                                Pick an issue type, add an optional ID, and describe the task. Get a
+                                clean{' '}
                                 <code className="rounded bg-muted px-1 text-xs">
                                     type/issue-id/description
                                 </code>{' '}
-                                format with automatic cleaning &mdash; lowercase, hyphens for
-                                spaces, max 50 characters.
+                                branch name automatically &mdash; lowercase, hyphenated, max 50
+                                chars. Your team will thank you.
                             </p>
                         </div>
                     </div>
@@ -667,7 +662,7 @@ export default function DocsPage() {
                 <PageSection
                     id="api-builder"
                     title="API Request Builder"
-                    description="Build, test, and debug HTTP requests with a full-featured client UI."
+                    description="Your browser-based Postman — build and debug HTTP requests without installing anything."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -676,11 +671,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">HTTP Client</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Full HTTP client with method selector (GET, POST, PUT, DELETE,
-                                etc.), URL input, and configurable tabs for query params, headers,
-                                request body (JSON, text, form-urlencoded), and auth (Bearer token,
-                                Basic auth). Response panel shows status code, response time, size,
-                                content-type, and formatted body.
+                                Full HTTP client: set the method, URL, query params, headers, body
+                                (JSON/text/form), and auth (Bearer/Basic) &mdash; then see the
+                                response with status, timing, and size at a glance.
                             </p>
                         </div>
                     </div>
@@ -689,7 +682,7 @@ export default function DocsPage() {
                 <PageSection
                     id="websocket-tester"
                     title="WebSocket Tester"
-                    description="Connect to WebSocket endpoints, send and receive messages in real-time."
+                    description="Debug WebSocket connections in real-time without writing a single line of client code."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -698,11 +691,10 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">WebSocket Client</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Connect to <code>wss://</code> or <code>ws://</code> endpoints with
-                                live connection status indicators (connected, connecting, error,
-                                disconnected). Message log shows sent/received messages with
-                                timestamps, size, and direction arrows. Send messages via textarea
-                                or Enter key. Copy all messages or clear log actions.
+                                Connect to any <code>ws://</code> or <code>wss://</code> endpoint
+                                and see messages flow in real-time with timestamps and direction
+                                arrows. Send messages, copy the full log, or clear it &mdash; all
+                                with live connection status.
                             </p>
                         </div>
                     </div>
@@ -711,7 +703,7 @@ export default function DocsPage() {
                 <PageSection
                     id="cors-checker"
                     title="CORS Checker"
-                    description="Test cross-origin requests and inspect CORS headers for any URL."
+                    description="Fix CORS errors in minutes, not hours — see exactly which headers are missing."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -720,13 +712,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">CORS Check</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Send a CORS preflight request with configurable HTTP method. Results
-                                show CORS status (Enabled / Not Enabled / Failed), allowed origin,
-                                HTTP status badge, and response time. Lists all CORS headers (
-                                <code>Access-Control-Allow-Origin</code>, <code>-Methods</code>,{' '}
-                                <code>-Headers</code>, <code>-Credentials</code>,{' '}
-                                <code>-Max-Age</code>, <code>-Expose-Headers</code>) with highlight
-                                for present ones. Includes &ldquo;Copy Report&rdquo; export.
+                                Enter a URL and instantly see which CORS headers are present or
+                                missing. Get a clear Enabled/Failed status, response time, and a
+                                copyable report you can send to your backend team.
                             </p>
                         </div>
                     </div>
@@ -735,7 +723,7 @@ export default function DocsPage() {
                 <PageSection
                     id="cert-decoder"
                     title="Certificate Decoder"
-                    description="Decode and inspect SSL/TLS X.509 certificate fields from PEM input."
+                    description="Paste a PEM certificate and see every field decoded — no OpenSSL required."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -744,11 +732,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Certificate Decode</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Paste a PEM certificate and decode it locally. Shows validity status
-                                (Valid/Expired), validity period, version, and signature algorithm.
-                                Displays Subject, Issuer, Public Key (algorithm + key size), Serial
-                                Number, Extensions (with critical badges), and Fingerprints
-                                (SHA-256, SHA-1). Each field is individually copyable.
+                                Decode any PEM certificate locally &mdash; see validity, subject,
+                                issuer, public key, extensions, and fingerprints (SHA-256/SHA-1) at
+                                a glance. Every field is copyable.
                             </p>
                         </div>
                     </div>
@@ -757,7 +743,7 @@ export default function DocsPage() {
                 <PageSection
                     id="user-agent"
                     title="User Agent Analyzer"
-                    description="Parse and decode User-Agent strings into structured browser, OS, and device info."
+                    description="Find out exactly what a User-Agent string means — browser, OS, device, and bot detection."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -766,11 +752,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">UA Analyze</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Parse any User-Agent string or select from preset common user
-                                agents. Displays results in a structured grid: Browser (name,
-                                version, engine), Operating System (name, version, architecture),
-                                Device (type, brand, model), and Properties (isBot, isMobile,
-                                isTablet, isDesktop). Top badge indicates device type.
+                                Paste any User-Agent or pick from presets. Get a clear breakdown of
+                                browser, OS, device type, and bot detection &mdash; perfect for
+                                debugging responsive layouts or analytics.
                             </p>
                         </div>
                     </div>
@@ -779,7 +763,7 @@ export default function DocsPage() {
                 <PageSection
                     id="dns-lookup"
                     title="DNS Lookup"
-                    description="Query DNS records for any domain including NS, A, AAAA, MX, TXT, CNAME, SOA, and PTR."
+                    description="Check any domain's DNS records without opening a terminal."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -788,12 +772,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">DNS Query</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Enter a domain and select a record type (NS, A, AAAA, MX, TXT,
-                                CNAME, SOA, PTR) to query. Results table shows record values with
-                                copy per-row. MX records include priority, SOA records show detailed
-                                key-value pairs. Metadata bar displays domain, record type badge,
-                                DNS server, query time, and record count. &ldquo;Copy All&rdquo; and
-                                &ldquo;Export JSON&rdquo; actions.
+                                Enter a domain, pick a record type (A, AAAA, MX, TXT, CNAME, NS,
+                                SOA, PTR), and get results instantly with copy-per-row. Export
+                                everything as JSON when you need to share.
                             </p>
                         </div>
                     </div>
@@ -802,7 +783,7 @@ export default function DocsPage() {
                 <PageSection
                     id="regex-tester"
                     title="Regex Tester"
-                    description="Test regular expressions with live matching, capture groups, and flag configuration."
+                    description="Stop guessing if your regex works. Test it live with highlighted matches and capture groups."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -811,12 +792,10 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Regex Test</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Test regex patterns against input text with toggleable flags:{' '}
-                                <strong>g</strong> (global), <strong>i</strong> (case-insensitive),{' '}
-                                <strong>m</strong> (multiline), <strong>s</strong> (dotAll),{' '}
-                                <strong>u</strong> (unicode). Shows highlighted matches, capture
-                                groups (numbered and named), match count, and copy-all-matches
-                                action.
+                                Write a pattern, paste your test string, and see matches highlighted
+                                in real-time. Toggle flags (<strong>g</strong>, <strong>i</strong>,{' '}
+                                <strong>m</strong>, <strong>s</strong>, <strong>u</strong>), inspect
+                                numbered and named capture groups, and copy all matches at once.
                             </p>
                         </div>
                     </div>
@@ -825,7 +804,7 @@ export default function DocsPage() {
                 <PageSection
                     id="http-status"
                     title="HTTP Status Codes"
-                    description="Searchable reference for all HTTP status codes with descriptions and spec references."
+                    description="Look up any status code in seconds — with spec references and plain-English explanations."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -834,10 +813,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Status Code Reference</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Searchable and filterable table of HTTP status codes organized by
-                                category: 1xx (Informational), 2xx (Success), 3xx (Redirection), 4xx
-                                (Client Error), 5xx (Server Error). Shows code, phrase, spec
-                                reference, and expandable descriptions.
+                                Search and filter by category &mdash; 1xx through 5xx. Every code
+                                includes the reason phrase, RFC spec link, and a plain-English
+                                explanation you can actually understand.
                             </p>
                         </div>
                     </div>
@@ -846,7 +824,7 @@ export default function DocsPage() {
                 <PageSection
                     id="mime-type"
                     title="MIME Type Reference"
-                    description="Searchable file extension and MIME type mapping reference."
+                    description="Stop Googling file MIME types. Look them up here in seconds."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -855,9 +833,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">MIME Type Reference</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Searchable table filterable by category: application, audio, font,
-                                image, model, text, video. Shows MIME type, file extensions, and
-                                expandable details. Each entry can be individually copied.
+                                Search by type or filter by category (application, audio, font,
+                                image, text, video, model). Every entry shows the MIME type and file
+                                extensions &mdash; ready to copy.
                             </p>
                         </div>
                     </div>
@@ -866,7 +844,7 @@ export default function DocsPage() {
                 <PageSection
                     id="unicode-lookup"
                     title="Unicode Lookup"
-                    description="Search Unicode characters by name, codepoint, or block with multi-format copy."
+                    description="Find any Unicode character by name, codepoint, or block — and copy it in every format."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -875,11 +853,10 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Unicode Search</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Search by name, codepoint (e.g. <code>U+0041</code>), character, or
-                                block. Category filter buttons with character counts. Results show
-                                Character, Codepoint, Name, Block, and Copy button. Expandable rows
-                                reveal detailed formats: HTML Decimal, HTML Hex, CSS, JavaScript,
-                                UTF-8 Bytes, and Codepoint &mdash; each individually copyable.
+                                Search by name, codepoint (e.g. <code>U+0041</code>), or the
+                                character itself. Expand any result to get HTML Decimal, HTML Hex,
+                                CSS, JavaScript, and UTF-8 byte representations &mdash; each
+                                one-click copyable.
                             </p>
                         </div>
                     </div>
@@ -888,7 +865,7 @@ export default function DocsPage() {
                 <PageSection
                     id="ascii-table"
                     title="ASCII Table"
-                    description="Interactive ASCII/Unicode reference table with search, filter, and copy."
+                    description="The ASCII reference you'll keep coming back to — searchable, filterable, and copyable."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -897,12 +874,10 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">ASCII Reference</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Search by name, decimal, hex, binary, or character. Category filter
-                                buttons with counts. Results show Decimal, Hex, Character, Name, and
-                                Category badge. Expandable rows display Decimal, Hexadecimal,
-                                Binary, HTML Entity, Escape Sequence, and Octal &mdash; each
-                                individually copyable. Control characters handled with caret
-                                notation.
+                                Search by name, decimal, hex, binary, or the character itself.
+                                Expand any entry to get Decimal, Hex, Binary, HTML Entity, Escape
+                                Sequence, and Octal &mdash; all ready to copy. Control characters
+                                included.
                             </p>
                         </div>
                     </div>
@@ -911,7 +886,7 @@ export default function DocsPage() {
                 <PageSection
                     id="cron-builder"
                     title="CRON Builder"
-                    description="Visual cron expression builder with human-readable descriptions and next-run preview."
+                    description="Build cron expressions without memorizing the syntax — see the next 6 run times before you commit."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -920,12 +895,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Cron Expression Builder</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Build cron expressions visually with color-coded field display and
-                                human-readable description. Per-field configuration cards (minute,
-                                hour, day of month, month, day of week) with mode selectors: Every,
-                                Specific, Range, Step, and Custom. Preset buttons for common
-                                schedules. Next Executions panel shows upcoming 6 run dates with
-                                relative countdown. Quick reference card for syntax and field order.
+                                Configure each field visually (Every, Specific, Range, Step, Custom)
+                                and see the expression built in real-time with a plain-English
+                                description. Preview the next 6 execution times before you deploy.
                             </p>
                         </div>
                     </div>
@@ -934,7 +906,7 @@ export default function DocsPage() {
                 <PageSection
                     id="unit-converter"
                     title="Unit Converter"
-                    description="Convert data sizes, time durations, and time zones with comprehensive unit support."
+                    description="Convert data sizes, time durations, and time zones without reaching for a calculator."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -943,9 +915,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Data Size</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Convert between B, KB, MB, GB, TB, PB, EB. Supports both Decimal
-                                (KB, MB) and Binary (KiB, MiB) unit systems with all conversions
-                                shown simultaneously.
+                                Bytes to petabytes, Decimal or Binary units &mdash; see every
+                                conversion at once so you pick the right one.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -954,8 +925,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Time Duration</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Convert between nanoseconds through years with human-readable
-                                duration breakdowns (e.g., &ldquo;1 d, 3 h, 24 min&rdquo;).
+                                Nanoseconds to years with human-readable breakdowns (e.g., &ldquo;1
+                                d, 3 h, 24 min&rdquo;).
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -964,9 +935,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Timezone</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Convert date/time between timezones with searchable comboboxes.
-                                Includes a World Clock panel showing current time across popular
-                                timezones.
+                                Convert times between any timezone with a World Clock showing
+                                current times across popular cities.
                             </p>
                         </div>
                     </div>
@@ -975,7 +945,7 @@ export default function DocsPage() {
                 <PageSection
                     id="url-shortener"
                     title="URL Shortener"
-                    description="Shorten long URLs into compact, shareable links with click tracking."
+                    description="Turn long, ugly URLs into short links you can actually share."
                 >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
@@ -984,8 +954,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Create Short URL</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Enter a long URL and get a shortened version instantly. Copy or open
-                                shortened links in a new tab.
+                                Paste any URL and get a shortened version instantly. Copy it or open
+                                it in a new tab &mdash; one click, done.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -994,9 +964,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">URL History</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                View all previously shortened URLs with click tracking stats,
-                                creation dates, copy and delete actions. Requires authentication.
-                                Includes &ldquo;Clear All&rdquo; with confirmation dialog.
+                                See all your shortened URLs with click counts and creation dates.
+                                Copy, delete, or clear all with one action. Requires authentication.
                             </p>
                         </div>
                     </div>
@@ -1010,8 +979,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Auto-Save</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                All your content is automatically saved to localStorage as you work.
-                                Never lose your data due to accidental page refreshes.
+                                Your work is saved automatically as you type. Close the tab by
+                                accident? Your data is still here when you come back.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -1020,8 +989,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">History Management</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Access your tool usage history across all pages. View, restore,
-                                copy, or clear individual history items.
+                                Every tool remembers what you did. Restore, copy, or clear past
+                                inputs and outputs across all pages.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -1030,8 +999,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Keyboard Shortcuts</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Power user keyboard shortcuts for quick filtering, exporting, and
-                                panel toggling.
+                                Work faster with shortcuts for filtering, exporting, and toggling
+                                panels &mdash; keep your hands on the keyboard.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -1040,8 +1009,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Privacy First</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                All data processing happens locally in your browser. Your data stays
-                                yours.
+                                Everything runs in your browser. No servers, no tracking, no data
+                                collection &mdash; your data never leaves your machine.
                             </p>
                         </div>
                     </div>
@@ -1052,23 +1021,23 @@ export default function DocsPage() {
                         {[
                             {
                                 step: 1,
-                                title: 'Choose Your Tool',
-                                desc: 'Select from 30+ tools covering JSON, text, encoding, hashing, ID generation, cryptography, networking, API testing, and reference lookups.',
+                                title: 'Pick a tool',
+                                desc: 'Browse 30+ tools by category or search for what you need. Every tool is one click away.',
                             },
                             {
                                 step: 2,
-                                title: 'Input Your Data',
-                                desc: 'Paste, type, or upload files into the editor panels. The tools support syntax highlighting and real-time validation.',
+                                title: 'Paste your data',
+                                desc: 'Drop in your text, JSON, file, or URL. Syntax highlighting and validation happen as you type.',
                             },
                             {
                                 step: 3,
-                                title: 'Configure & Process',
-                                desc: 'Adjust options to customize the output. Click the action button to process your data and view results instantly.',
+                                title: 'Get instant results',
+                                desc: 'Adjust options if needed, then copy, download, or share the output. No waiting, no server round-trips.',
                             },
                             {
                                 step: 4,
-                                title: 'Export & Share',
-                                desc: 'Copy results to clipboard, download files, or generate shareable links. Your work is automatically saved for later access.',
+                                title: 'Come back anytime',
+                                desc: 'Your inputs are auto-saved per tool. Reopen the page and everything is right where you left it.',
                             },
                         ].map((item) => (
                             <div
