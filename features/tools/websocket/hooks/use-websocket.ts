@@ -6,7 +6,7 @@ export type WsStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
 
 export interface WsMessage {
     id: string;
-    direction: 'sent' | 'received';
+    direction: 'sent' | 'received' | 'system';
     data: string;
     timestamp: number;
     size: number;
@@ -14,7 +14,7 @@ export interface WsMessage {
 
 let messageCounter = 0;
 
-function createMessage(direction: 'sent' | 'received', data: string): WsMessage {
+function createMessage(direction: WsMessage['direction'], data: string): WsMessage {
     messageCounter++;
     return {
         id: `${Date.now()}-${messageCounter}`,
@@ -25,32 +25,71 @@ function createMessage(direction: 'sent' | 'received', data: string): WsMessage 
     };
 }
 
+export interface WsConnectOptions {
+    url: string;
+    protocols?: string[];
+    authMessage?: string;
+}
+
 export function useWebSocket() {
     const wsRef = useRef<WebSocket | null>(null);
     const [status, setStatus] = useState<WsStatus>('disconnected');
     const [messages, setMessages] = useState<WsMessage[]>([]);
     const [url, setUrl] = useState('');
     const reconnectUrlRef = useRef<string>('');
+    const authMessageRef = useRef<string>('');
 
     const clearMessages = useCallback(() => {
         setMessages([]);
     }, []);
 
-    const connect = useCallback((wsUrl: string) => {
+    const connect = useCallback((options: WsConnectOptions | string) => {
         if (wsRef.current) {
             wsRef.current.close();
         }
 
+        const opts = typeof options === 'string' ? { url: options } : options;
+        const { url: wsUrl, protocols, authMessage } = opts;
+
         setUrl(wsUrl);
         reconnectUrlRef.current = wsUrl;
+        authMessageRef.current = authMessage || '';
         setStatus('connecting');
 
         try {
-            const ws = new WebSocket(wsUrl);
+            const ws =
+                protocols && protocols.length > 0
+                    ? new WebSocket(wsUrl, protocols)
+                    : new WebSocket(wsUrl);
             wsRef.current = ws;
 
             ws.onopen = () => {
                 setStatus('connected');
+
+                if (authMessageRef.current) {
+                    try {
+                        ws.send(authMessageRef.current);
+                        setMessages((prev) => [
+                            ...prev,
+                            createMessage(
+                                'system',
+                                `Auth message sent (${new TextEncoder().encode(authMessageRef.current).length} bytes)`,
+                            ),
+                        ]);
+                    } catch {
+                        setMessages((prev) => [
+                            ...prev,
+                            createMessage('system', 'Failed to send auth message'),
+                        ]);
+                    }
+                }
+
+                if (protocols && protocols.length > 0) {
+                    setMessages((prev) => [
+                        ...prev,
+                        createMessage('system', `Negotiated protocol: ${ws.protocol || 'none'}`),
+                    ]);
+                }
             };
 
             ws.onmessage = (event) => {
@@ -65,6 +104,10 @@ export function useWebSocket() {
 
             ws.onclose = (event) => {
                 wsRef.current = null;
+                const closeMsg = event.reason
+                    ? `Connection closed (${event.code}: ${event.reason})`
+                    : `Connection closed (code: ${event.code})`;
+                setMessages((prev) => [...prev, createMessage('system', closeMsg)]);
                 if (event.code !== 1000) {
                     setStatus('error');
                 } else {

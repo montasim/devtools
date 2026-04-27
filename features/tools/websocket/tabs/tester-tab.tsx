@@ -24,6 +24,9 @@ import {
     Loader2,
     AlertCircle,
     Zap,
+    ChevronDown,
+    ChevronUp,
+    KeyRound,
 } from 'lucide-react';
 
 function formatTime(ts: number): string {
@@ -82,12 +85,26 @@ function getStatusDotClass(status: WsStatus): string {
 function MessageBubble({ message }: { message: WsMessage }) {
     const { copy } = useClipboard();
     const isSent = message.direction === 'sent';
+    const isSystem = message.direction === 'system';
 
     let displayData = message.data;
     try {
         const parsed = JSON.parse(message.data);
         displayData = JSON.stringify(parsed, null, 2);
     } catch {}
+
+    if (isSystem) {
+        return (
+            <div className="flex justify-center">
+                <div className="rounded-md border border-dashed bg-muted/30 px-3 py-1.5 text-center">
+                    <p className="font-mono text-[11px] text-muted-foreground">{message.data}</p>
+                    <span className="text-[10px] text-muted-foreground/60">
+                        {formatTime(message.timestamp)}
+                    </span>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={`flex gap-2 ${isSent ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -143,11 +160,15 @@ export default function TesterTab({ sharedData, readOnly }: TabComponentProps) {
     const { status, messages, connect, disconnect, send, clearMessages } = useWebSocket();
     const [inputMessage, setInputMessage] = useState('');
     const [shareOpen, setShareOpen] = useState(false);
+    const [authExpanded, setAuthExpanded] = useState(false);
+    const [protocols, setProtocols] = useState('');
+    const [authMessage, setAuthMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const { copy } = useClipboard();
 
     const isConnected = status === 'connected';
     const isConnecting = status === 'connecting';
+    const isActive = isConnected || isConnecting;
 
     const wsUrl = useMemo(() => {
         if (!content) return '';
@@ -161,8 +182,17 @@ export default function TesterTab({ sharedData, readOnly }: TabComponentProps) {
 
     const handleConnect = useCallback(() => {
         if (!wsUrl.trim()) return;
-        connect(wsUrl.trim());
-    }, [wsUrl, connect]);
+        const protocolList = protocols
+            .trim()
+            .split(',')
+            .map((p) => p.trim())
+            .filter(Boolean);
+        connect({
+            url: wsUrl.trim(),
+            protocols: protocolList.length > 0 ? protocolList : undefined,
+            authMessage: authMessage.trim() || undefined,
+        });
+    }, [wsUrl, protocols, authMessage, connect]);
 
     const handleDisconnect = useCallback(() => {
         disconnect();
@@ -176,10 +206,12 @@ export default function TesterTab({ sharedData, readOnly }: TabComponentProps) {
 
     const handleCopyAll = useCallback(() => {
         const text = messages
-            .map(
-                (m) =>
-                    `[${formatTime(m.timestamp)}] ${m.direction === 'sent' ? '>>>' : '<<<'} ${m.data}`,
-            )
+            .map((m) => {
+                if (m.direction === 'system') {
+                    return `[${formatTime(m.timestamp)}] --- ${m.data} ---`;
+                }
+                return `[${formatTime(m.timestamp)}] ${m.direction === 'sent' ? '>>>' : '<<<'} ${m.data}`;
+            })
             .join('\n');
         copy(text);
     }, [messages, copy]);
@@ -190,6 +222,8 @@ export default function TesterTab({ sharedData, readOnly }: TabComponentProps) {
         getContent: () => content,
         onClear: () => {
             setContent('');
+            setProtocols('');
+            setAuthMessage('');
             clearMessages();
         },
         shareDialogOpen: shareOpen,
@@ -209,9 +243,9 @@ export default function TesterTab({ sharedData, readOnly }: TabComponentProps) {
                         placeholder="wss://echo.websocket.org or ws://localhost:8080"
                         className="h-9 font-mono text-sm"
                         spellCheck={false}
-                        disabled={isConnected || isConnecting}
+                        disabled={isActive}
                         onKeyDown={(e) => {
-                            if (e.key === 'Enter' && !isConnected) handleConnect();
+                            if (e.key === 'Enter' && !isActive) handleConnect();
                         }}
                     />
                     {isConnected ? (
@@ -238,6 +272,66 @@ export default function TesterTab({ sharedData, readOnly }: TabComponentProps) {
                             )}
                             {isConnecting ? 'Connecting...' : 'Connect'}
                         </Button>
+                    )}
+                </div>
+
+                <div>
+                    <button
+                        onClick={() => setAuthExpanded(!authExpanded)}
+                        className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                        <KeyRound className="h-3.5 w-3.5" />
+                        <span>Authentication &amp; Protocols</span>
+                        {authExpanded ? (
+                            <ChevronUp className="h-3 w-3" />
+                        ) : (
+                            <ChevronDown className="h-3 w-3" />
+                        )}
+                    </button>
+                    {authExpanded && (
+                        <div className="mt-3 flex flex-col gap-2 rounded-lg border bg-muted/20 p-3">
+                            <div>
+                                <label className="mb-1 block text-[11px] font-medium text-muted-foreground">
+                                    Subprotocols
+                                    <span className="ml-1 font-normal">
+                                        (comma-separated, e.g. graphql-ws, soap)
+                                    </span>
+                                </label>
+                                <Input
+                                    value={protocols}
+                                    onChange={(e) => setProtocols(e.target.value)}
+                                    placeholder="graphql-ws, soap"
+                                    className="h-8 font-mono text-xs"
+                                    spellCheck={false}
+                                    disabled={isActive}
+                                />
+                            </div>
+                            <div>
+                                <label className="mb-1 block text-[11px] font-medium text-muted-foreground">
+                                    Auth Message
+                                    <span className="ml-1 font-normal">
+                                        (auto-sent on connect — JSON or plain text)
+                                    </span>
+                                </label>
+                                <Textarea
+                                    value={authMessage}
+                                    onChange={(e) => setAuthMessage(e.target.value)}
+                                    placeholder='{"type":"auth","token":"your-jwt-here"}'
+                                    className="min-h-[60px] font-mono text-xs resize-none"
+                                    spellCheck={false}
+                                    disabled={isActive}
+                                />
+                            </div>
+                            <p className="text-[10px] text-muted-foreground/70">
+                                Browser WebSocket API does not support custom headers. Use the auth
+                                message for token-based auth, or pass credentials via URL query
+                                parameters (e.g.,{' '}
+                                <code className="rounded bg-muted px-0.5">
+                                    wss://host?token=abc
+                                </code>
+                                ).
+                            </p>
+                        </div>
                     )}
                 </div>
 
@@ -351,7 +445,7 @@ export default function TesterTab({ sharedData, readOnly }: TabComponentProps) {
                 config={{
                     pageName: 'websocket',
                     tabName: 'tester',
-                    getState: () => ({ content }),
+                    getState: () => ({ content, protocols, authMessage }),
                     extraActions:
                         messages.length > 0
                             ? [
