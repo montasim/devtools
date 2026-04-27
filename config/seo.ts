@@ -605,6 +605,46 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        stun: {
+            title: 'STUN Server Checker - Test STUN Connectivity & Discover Public IP',
+            description:
+                'Test STUN server reachability and discover your public IP address using WebRTC ICE candidates. Supports Google, Mozilla, and custom STUN servers with detailed candidate analysis.',
+            keywords: [
+                'STUN server checker',
+                'STUN tester',
+                'STUN connectivity test',
+                'public IP discovery',
+                'ICE candidate',
+                'WebRTC STUN',
+                'STUN server test',
+                'NAT traversal test',
+                'STUN online',
+            ],
+            path: '/stun',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
+        turn: {
+            title: 'TURN Server Checker - Test TURN Relay Allocation & Credentials',
+            description:
+                'Verify TURN server connectivity, test relay allocation, and validate credentials using WebRTC ICE. Supports UDP, TCP transports with detailed candidate analysis and public IP discovery.',
+            keywords: [
+                'TURN server checker',
+                'TURN tester',
+                'TURN relay test',
+                'TURN credentials validator',
+                'TURN connectivity',
+                'WebRTC TURN',
+                'relay allocation test',
+                'NAT traversal relay',
+                'TURN server online',
+            ],
+            path: '/turn',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
         'git-branch-generator': {
             title: 'Git Branch Name Generator - Consistent Branch Naming',
             description:

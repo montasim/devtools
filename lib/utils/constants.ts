@@ -68,6 +68,8 @@ export const STORAGE_KEYS = {
     CRON_BUILDER_CONFIG: 'cron-builder-config',
     NSLOOKUP_DOMAIN: 'nslookup-domain',
     NSLOOKUP_TYPE: 'nslookup-type',
+    STUN_CHECKER_URL: 'stun-checker-url',
+    TURN_CHECKER_URL: 'turn-checker-url',
     THEME: 'theme',
 } as const;
 
@@ -102,6 +104,8 @@ export const PAGE_NAMES = {
     CERT_DECODER: 'cert-decoder',
     CRON: 'cron',
     NSLOOKUP: 'nslookup',
+    STUN: 'stun',
+    TURN: 'turn',
 } as const;
 
 export const BASE64_TABS = {
@@ -242,6 +246,14 @@ export const NSLOOKUP_TABS = {
     LOOKUP: 'lookup',
 } as const;
 
+export const STUN_TABS = {
+    CHECKER: 'checker',
+} as const;
+
+export const TURN_TABS = {
+    CHECKER: 'checker',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -273,4 +285,6 @@ export const TAB_NAMES = {
     ...CERT_DECODER_TABS,
     ...CRON_TABS,
     ...NSLOOKUP_TABS,
+    ...STUN_TABS,
+    ...TURN_TABS,
 } as const;

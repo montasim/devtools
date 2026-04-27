@@ -28,6 +28,8 @@ import {
     Lock,
     Table2,
     Timer,
+    Radio,
+    Route,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -203,6 +205,20 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Check DNS records without opening a terminal',
                 icon: <Globe className="size-5 shrink-0" />,
                 url: '/nslookup',
+                category: 'Network & API',
+            },
+            {
+                title: 'STUN Server Checker',
+                description: 'Test STUN connectivity and discover your public IP',
+                icon: <Radio className="size-5 shrink-0" />,
+                url: '/stun',
+                category: 'Network & API',
+            },
+            {
+                title: 'TURN Server Checker',
+                description: 'Test TURN relay allocation and verify credentials',
+                icon: <Route className="size-5 shrink-0" />,
+                url: '/turn',
                 category: 'Network & API',
             },
             {

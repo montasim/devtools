@@ -40,6 +40,8 @@ import {
     Plug,
     ShieldCheck,
     Table2,
+    Radio,
+    Route,
 } from 'lucide-react';
 import {
     PageLayout,
@@ -104,6 +106,8 @@ const docSections = [
         icon: <Monitor className="h-5 w-5" />,
     },
     { id: 'dns-lookup', title: 'DNS Lookup', icon: <Globe className="h-5 w-5" /> },
+    { id: 'stun-checker', title: 'STUN Server Checker', icon: <Radio className="h-5 w-5" /> },
+    { id: 'turn-checker', title: 'TURN Server Checker', icon: <Route className="h-5 w-5" /> },
     { id: 'regex-tester', title: 'Regex Tester', icon: <Regex className="h-5 w-5" /> },
     { id: 'http-status', title: 'HTTP Status Codes', icon: <Globe className="h-5 w-5" /> },
     { id: 'mime-type', title: 'MIME Type Reference', icon: <FileText className="h-5 w-5" /> },
@@ -775,6 +779,76 @@ export default function DocsPage() {
                                 Enter a domain, pick a record type (A, AAAA, MX, TXT, CNAME, NS,
                                 SOA, PTR), and get results instantly with copy-per-row. Export
                                 everything as JSON when you need to share.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="stun-checker"
+                    title="STUN Server Checker"
+                    description="Test STUN server connectivity and discover your public IP address using WebRTC."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Radio className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                                <h3 className="font-semibold">STUN Connectivity Test</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Enter a STUN server URL (e.g.{' '}
+                                <code className="rounded bg-muted px-1 text-xs">
+                                    stun:stun.l.google.com:19302
+                                </code>
+                                ) or pick from built-in presets. The tool uses WebRTC ICE to test
+                                server reachability, discover your public IP via server reflexive
+                                candidates, and display all gathered candidates with expandable
+                                details.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Globe className="h-5 w-5 text-green-600 dark:text-green-400" />
+                                <h3 className="font-semibold">Public IP Discovery</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                When the STUN server responds, your public IP address is extracted
+                                from the srflx (server reflexive) ICE candidates &mdash; no server
+                                round-trips needed, everything runs locally in your browser.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="turn-checker"
+                    title="TURN Server Checker"
+                    description="Verify TURN server credentials, test relay allocation, and debug WebRTC connectivity."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Route className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                                <h3 className="font-semibold">TURN Relay Allocation</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Enter a TURN server URL with username and credential (password) to
+                                test relay allocation. The tool attempts to allocate a relay via
+                                WebRTC ICE and reports whether the server accepted the credentials
+                                and successfully allocated a relay address. Supports UDP and TCP
+                                transports.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <ShieldCheck className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">Credential Verification</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Quickly validate TURN credentials before deploying them. Get clear
+                                pass/fail status, relay IP addresses, response time, and a full ICE
+                                candidate breakdown &mdash; host, srflx, and relay candidates all
+                                shown with expandable details and raw SDP.
                             </p>
                         </div>
                     </div>

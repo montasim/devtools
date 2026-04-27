@@ -29,6 +29,8 @@ import {
     Shield,
     Sparkles,
     Heart,
+    Radio,
+    Route,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -190,6 +192,18 @@ export const TOOL_CATEGORIES = [
                 label: 'DNS Lookup',
                 description: 'Query NS, A, AAAA, MX, TXT, CNAME, SOA, PTR records',
                 icon: Globe,
+            },
+            {
+                href: '/stun',
+                label: 'STUN Server Checker',
+                description: 'Test STUN connectivity and discover your public IP',
+                icon: Radio,
+            },
+            {
+                href: '/turn',
+                label: 'TURN Server Checker',
+                description: 'Test TURN relay allocation and verify credentials',
+                icon: Route,
             },
         ],
     },
