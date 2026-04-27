@@ -18,7 +18,7 @@ export const STORAGE_KEYS = {
     TEXT_COUNT_INPUT_CONTENT: 'text-count-input-content',
     TEXT_CLEAN_INPUT_CONTENT: 'text-clean-input-content',
     SHARE_TEXT_CONTENT: 'share-text-content',
-    GIT_BRANCH_LAST_GENERATED: 'git-branch-last-generated',
+    GIT_BRANCH_LAST_GENERATED: 'git-branch-generator-result',
     BASE64_MEDIA_TO_BASE64_INPUT: 'base64-media-to-base64-input',
     BASE64_MEDIA_TO_BASE64_OUTPUT: 'base64-media-to-base64-output',
     BASE64_TO_MEDIA_INPUT: 'base64-to-media-input',
