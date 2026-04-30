@@ -1,8 +1,26 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, Terminal, Braces } from 'lucide-react';
+import {
+    ArrowRight,
+    Terminal,
+    Braces,
+    Zap,
+    Shield,
+    Sparkles,
+    Lock,
+    Hash,
+    Binary,
+    Code2,
+    Pipette,
+    Fingerprint,
+    KeyRound,
+    Globe,
+    FileJson,
+    FileText,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { useInView } from '@/hooks/use-in-view';
 import { TOOL_CATEGORIES, FEATURES } from '@/config/home-tools';
 import type { LucideIcon } from 'lucide-react';
@@ -34,83 +52,129 @@ function AnimatedSection({
     );
 }
 
+const QUICK_TOOLS: { icon: LucideIcon; label: string; href: string; color: string }[] = [
+    { icon: FileJson, label: 'JSON', href: '/json', color: 'text-amber-500' },
+    { icon: Binary, label: 'Base64', href: '/base64', color: 'text-blue-500' },
+    { icon: Hash, label: 'Hash', href: '/hash', color: 'text-emerald-500' },
+    { icon: Code2, label: 'cURL', href: '/curl', color: 'text-purple-500' },
+    { icon: Pipette, label: 'Color', href: '/color', color: 'text-pink-500' },
+    { icon: Globe, label: 'API', href: '/api-builder', color: 'text-cyan-500' },
+    { icon: Fingerprint, label: 'UUID', href: '/id', color: 'text-orange-500' },
+    { icon: KeyRound, label: 'RSA', href: '/rsa-key', color: 'text-rose-500' },
+    { icon: Braces, label: 'Regex', href: '/regex', color: 'text-teal-500' },
+    { icon: Lock, label: 'Bcrypt', href: '/password-hash', color: 'text-indigo-500' },
+    { icon: Sparkles, label: 'QR', href: '/qrcode', color: 'text-yellow-500' },
+    { icon: FileText, label: 'Markdown', href: '/markdown', color: 'text-lime-600' },
+];
+
 function HeroSection() {
     return (
-        <section className="relative overflow-hidden border-b py-20 sm:py-28 lg:py-36">
+        <section className="relative overflow-hidden border-b">
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                <div className="absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full bg-primary/5 blur-3xl animate-pulse" />
-                <div
-                    className="absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-secondary/5 blur-3xl"
-                    style={{ animation: 'pulse 4s ease-in-out infinite 2s' }}
-                />
-                <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/5 blur-3xl animate-pulse" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[length:24px_24px]" />
+                <div className="absolute -left-32 -top-32 h-[400px] w-[400px] rounded-full bg-primary/5 blur-3xl animate-pulse" />
+                <div className="absolute -bottom-32 -right-32 h-[400px] w-[400px] rounded-full bg-secondary/5 blur-3xl animate-pulse [animation-delay:2s]" />
             </div>
 
-            <div className="relative mx-auto max-w-5xl">
-                <div className="flex flex-col items-center text-center">
+            <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+                <div className="flex flex-col items-center py-16 sm:py-20 lg:py-24">
                     <AnimatedSection delay={0}>
-                        <div className="mb-8 inline-flex items-center gap-2 rounded-full border bg-background/80 px-4 py-2 text-sm backdrop-blur-sm">
-                            <Terminal className="h-4 w-4 text-primary" />
-                            <span className="font-medium">30+ Tools Built for Developers</span>
-                            <span className="h-4 w-px bg-border" />
-                            <span className="text-muted-foreground">No Sign-up Required</span>
-                        </div>
+                        <Badge
+                            variant="outline"
+                            className="mb-6 gap-1.5 px-3 py-1 text-xs font-medium"
+                        >
+                            <Zap className="h-3 w-3 text-primary" />
+                            30+ Developer Tools &mdash; No Sign-up Required
+                        </Badge>
                     </AnimatedSection>
 
-                    <AnimatedSection delay={100}>
-                        <h1 className="mb-6 text-6xl font-bold tracking-tight">
-                            Stop switching tabs.
-                            <br />
-                            <span className="text-primary">Start shipping faster.</span>
+                    <AnimatedSection delay={80}>
+                        <h1 className="mb-4 text-center text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+                            Developer tools that{' '}
+                            <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
+                                just work
+                            </span>
                         </h1>
                     </AnimatedSection>
 
-                    <AnimatedSection delay={200}>
-                        <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-                            30+ essential tools that run instantly in your browser. No installs, no
-                            accounts, no data leaves your machine &mdash; just open and use.
+                    <AnimatedSection delay={160}>
+                        <p className="mx-auto mb-8 max-w-xl text-center text-base text-muted-foreground sm:text-lg">
+                            Format JSON, test APIs, generate hashes, build QR codes &mdash;
+                            everything runs in your browser. No installs, no accounts, no data
+                            leaves your machine.
                         </p>
                     </AnimatedSection>
 
-                    <AnimatedSection delay={300}>
-                        <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                            <Button size="lg" asChild className="h-12 px-8 text-base">
+                    <AnimatedSection delay={240}>
+                        <div className="mb-10 flex items-center gap-3">
+                            <Button size="lg" asChild className="h-11 px-6 text-sm">
                                 <Link href="/json">
-                                    <Braces className="mr-2 h-5 w-5" />
-                                    Start Using &mdash; It&apos;s Free
-                                    <ArrowRight className="ml-2 h-5 w-5" />
+                                    <Braces className="mr-2 h-4 w-4" />
+                                    Start Using &mdash; Free
+                                    <ArrowRight className="ml-2 h-4 w-4" />
                                 </Link>
                             </Button>
                             <Button
                                 size="lg"
                                 variant="outline"
                                 asChild
-                                className="h-12 px-8 text-base"
+                                className="h-11 px-6 text-sm"
                             >
                                 <Link href="/docs">
-                                    <Terminal className="mr-2 h-5 w-5" />
-                                    Documentation
+                                    <Terminal className="mr-2 h-4 w-4" />
+                                    Docs
                                 </Link>
                             </Button>
                         </div>
                     </AnimatedSection>
 
+                    <AnimatedSection delay={320}>
+                        <div className="w-full max-w-2xl">
+                            <div className="rounded-xl border bg-card/50 p-4 backdrop-blur-sm">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <Shield className="h-3.5 w-3.5 text-green-500" />
+                                    <span className="text-[11px] font-medium text-muted-foreground">
+                                        Everything runs locally &mdash; your data never leaves the
+                                        browser
+                                    </span>
+                                </div>
+                                <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-6">
+                                    {QUICK_TOOLS.map((tool) => (
+                                        <Link
+                                            key={tool.href}
+                                            href={tool.href}
+                                            className="group flex flex-col items-center gap-1.5 rounded-lg border bg-background/50 px-2 py-2.5 transition-all hover:border-primary/30 hover:bg-primary/5 hover:-translate-y-0.5"
+                                        >
+                                            <tool.icon className={`h-4 w-4 ${tool.color}`} />
+                                            <span className="text-[10px] font-medium text-muted-foreground group-hover:text-foreground">
+                                                {tool.label}
+                                            </span>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </AnimatedSection>
+
                     <AnimatedSection delay={400}>
-                        <div className="mt-16 flex items-center gap-8 text-sm text-muted-foreground sm:gap-12">
-                            <div className="flex flex-col items-center gap-1">
-                                <span className="text-2xl font-bold text-foreground">30+</span>
-                                <span>Tools</span>
+                        <div className="mt-8 flex items-center gap-6 text-xs text-muted-foreground sm:gap-10">
+                            <div className="flex items-center gap-1.5">
+                                <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                                <span>
+                                    <span className="font-semibold text-foreground">30+</span> Tools
+                                </span>
                             </div>
-                            <div className="h-8 w-px bg-border" />
-                            <div className="flex flex-col items-center gap-1">
-                                <span className="text-2xl font-bold text-foreground">0</span>
-                                <span>Data sent to servers</span>
+                            <div className="flex items-center gap-1.5">
+                                <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                                <span>
+                                    <span className="font-semibold text-foreground">100%</span>{' '}
+                                    Client-side
+                                </span>
                             </div>
-                            <div className="h-8 w-px bg-border" />
-                            <div className="flex flex-col items-center gap-1">
-                                <span className="text-2xl font-bold text-foreground">0s</span>
-                                <span>Setup required</span>
+                            <div className="flex items-center gap-1.5">
+                                <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                                <span>
+                                    <span className="font-semibold text-foreground">0</span> Setup
+                                </span>
                             </div>
                         </div>
                     </AnimatedSection>
