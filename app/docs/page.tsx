@@ -46,6 +46,7 @@ import {
     Database,
     MailQuestion,
     ShieldAlert,
+    Globe2,
 } from 'lucide-react';
 import {
     PageLayout,
@@ -136,6 +137,11 @@ const docSections = [
         id: 'spam-words',
         title: 'Spam Words Checker',
         icon: <ShieldAlert className="h-5 w-5" />,
+    },
+    {
+        id: 'timezones',
+        title: 'Timezones',
+        icon: <Globe2 className="h-5 w-5" />,
     },
 ];
 
@@ -1244,6 +1250,37 @@ export default function DocsPage() {
                                 filtering, and pagination. View category distribution charts and
                                 starting letter statistics to understand the landscape of spam
                                 triggers.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="timezones"
+                    title="Timezones"
+                    description="World clock and timezone database for 247 countries."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Clock className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">World Clock</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Add cities to see their current time in real-time. Search by city
+                                name or timezone, and compare times across the globe with live
+                                updating clocks and UTC offset badges.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Globe2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                                <h3 className="font-semibold">Timezone Browser</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Browse 247 countries and their 437 IANA timezones. Filter by
+                                region, search countries, and expand to see all timezones per
+                                country with one-click copy.
                             </p>
                         </div>
                     </div>

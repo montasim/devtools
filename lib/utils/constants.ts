@@ -73,6 +73,7 @@ export const STORAGE_KEYS = {
     TEMP_EMAIL_INPUT: 'temp-email-input',
     FREE_EMAIL_INPUT: 'free-email-input',
     SPAM_WORDS_INPUT: 'spam-words-input',
+    TIMEZONES_INPUT: 'timezones-input',
     THEME: 'theme',
 } as const;
 
@@ -112,6 +113,7 @@ export const PAGE_NAMES = {
     TEMP_EMAIL: 'temp-email',
     FREE_EMAIL: 'free-email',
     SPAM_WORDS: 'spam-words',
+    TIMEZONES: 'timezones',
 } as const;
 
 export const BASE64_TABS = {
@@ -275,6 +277,11 @@ export const SPAM_WORDS_TABS = {
     BROWSER: 'browser',
 } as const;
 
+export const TIMEZONES_TABS = {
+    WORLD_CLOCK: 'world-clock',
+    BROWSER: 'browser',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -311,4 +318,5 @@ export const TAB_NAMES = {
     ...TEMP_EMAIL_TABS,
     ...FREE_EMAIL_TABS,
     ...SPAM_WORDS_TABS,
+    ...TIMEZONES_TABS,
 } as const;

@@ -52,6 +52,7 @@ import {
     MailX,
     MailQuestion,
     ShieldAlert,
+    Globe2,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -90,6 +91,7 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
     '/temp-email': MailX,
     '/free-email': MailQuestion,
     '/spam-words': ShieldAlert,
+    '/timezones': Globe2,
 };
 
 interface CommandEntry {

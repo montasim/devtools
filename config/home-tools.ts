@@ -34,6 +34,8 @@ import {
     MailX,
     MailQuestion,
     ShieldAlert,
+    Globe2,
+    Clock,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -287,6 +289,12 @@ export const TOOL_CATEGORIES = [
                 label: 'Spam Words Checker',
                 description: 'Detect spam trigger words in email content to improve deliverability',
                 icon: ShieldAlert,
+            },
+            {
+                href: '/timezones',
+                label: 'Timezones',
+                description: 'World clock and timezone database for 247 countries',
+                icon: Globe2,
             },
         ],
     },

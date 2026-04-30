@@ -1,0 +1,105 @@
+{
+  "totalCountries": 247,
+  "totalTimezones": 437,
+  "totalMappings": 437,
+  "regionDistribution": [
+    {
+      "name": "America",
+      "value": 149
+    },
+    {
+      "name": "Asia",
+      "value": 88
+    },
+    {
+      "name": "Europe",
+      "value": 60
+    },
+    {
+      "name": "Africa",
+      "value": 52
+    },
+    {
+      "name": "Pacific",
+      "value": 38
+    },
+    {
+      "name": "Australia",
+      "value": 12
+    },
+    {
+      "name": "Antarctica",
+      "value": 11
+    },
+    {
+      "name": "Indian",
+      "value": 11
+    },
+    {
+      "name": "Atlantic",
+      "value": 10
+    },
+    {
+      "name": "US",
+      "value": 4
+    },
+    {
+      "name": "Arctic",
+      "value": 1
+    },
+    {
+      "name": "Other",
+      "value": 1
+    }
+  ],
+  "timezoneCountDistribution": [
+    {
+      "name": "1",
+      "value": 212
+    },
+    {
+      "name": "2",
+      "value": 14
+    },
+    {
+      "name": "3",
+      "value": 9
+    },
+    {
+      "name": "4",
+      "value": 3
+    },
+    {
+      "name": "6",
+      "value": 1
+    },
+    {
+      "name": "10",
+      "value": 1
+    },
+    {
+      "name": "11",
+      "value": 1
+    },
+    {
+      "name": "13",
+      "value": 2
+    },
+    {
+      "name": "16",
+      "value": 1
+    },
+    {
+      "name": "27",
+      "value": 1
+    },
+    {
+      "name": "29",
+      "value": 1
+    },
+    {
+      "name": "33",
+      "value": 1
+    }
+  ]
+}

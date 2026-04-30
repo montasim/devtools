@@ -766,6 +766,22 @@ export const seoConfig: SEOConfig = {
             priority: 0.7,
             changeFrequency: 'monthly',
         },
+        timezones: {
+            title: 'Timezones & World Clock - 247 Countries, 437 Timezones',
+            description:
+                'Explore world timezones across 247 countries. Live world clock with real-time time for any city. Search, filter by region, and browse the full IANA timezone database.',
+            keywords: [
+                'world clock',
+                'timezone converter',
+                'timezone database',
+                'current time',
+                'IANA timezones',
+                'time zones by country',
+            ],
+            path: '/timezones',
+            priority: 0.7,
+            changeFrequency: 'monthly',
+        },
     },
 
     disallowedPaths: [

@@ -33,6 +33,8 @@ import {
     MailX,
     MailQuestion,
     ShieldAlert,
+    Globe2,
+    Clock,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -292,6 +294,13 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Detect spam trigger words in your email content',
                 icon: <ShieldAlert className="size-5 shrink-0" />,
                 url: '/spam-words',
+                category: 'Utilities',
+            },
+            {
+                title: 'Timezones',
+                description: 'World clock and timezone database for 247 countries',
+                icon: <Globe2 className="size-5 shrink-0" />,
+                url: '/timezones',
                 category: 'Utilities',
             },
             {
