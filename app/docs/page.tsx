@@ -45,6 +45,7 @@ import {
     MailX,
     Database,
     MailQuestion,
+    ShieldAlert,
 } from 'lucide-react';
 import {
     PageLayout,
@@ -58,6 +59,8 @@ import { useScrollSpy } from '@/hooks/use-scroll-spy';
 
 const docSections = [
     { id: 'overview', title: 'Overview', icon: <BookOpen className="h-5 w-5" /> },
+    { id: 'features', title: 'Key Features', icon: <Sparkles className="h-5 w-5" /> },
+    { id: 'getting-started', title: 'Getting Started', icon: <Play className="h-5 w-5" /> },
     { id: 'json-tools', title: 'JSON Tools', icon: <FileJson className="h-5 w-5" /> },
     { id: 'text-tools', title: 'Text Tools', icon: <FileText className="h-5 w-5" /> },
     { id: 'base64-tools', title: 'Base64 Tools', icon: <FileCode className="h-5 w-5" /> },
@@ -129,8 +132,11 @@ const docSections = [
         title: 'Free Email Checker',
         icon: <MailQuestion className="h-5 w-5" />,
     },
-    { id: 'features', title: 'Key Features', icon: <Sparkles className="h-5 w-5" /> },
-    { id: 'getting-started', title: 'Getting Started', icon: <Play className="h-5 w-5" /> },
+    {
+        id: 'spam-words',
+        title: 'Spam Words Checker',
+        icon: <ShieldAlert className="h-5 w-5" />,
+    },
 ];
 
 export default function DocsPage() {
@@ -200,6 +206,91 @@ export default function DocsPage() {
                                 Everything runs locally. Nothing ever leaves your machine.
                             </p>
                         </div>
+                    </div>
+                </PageSection>
+
+                <PageSection id="features" title="Key Features">
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Save className="h-5 w-5 text-muted-foreground" />
+                                <h3 className="font-semibold">Auto-Save</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Your work is saved automatically as you type. Close the tab by
+                                accident? Your data is still here when you come back.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <History className="h-5 w-5 text-muted-foreground" />
+                                <h3 className="font-semibold">History Management</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Every tool remembers what you did. Restore, copy, or clear past
+                                inputs and outputs across all pages.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Zap className="h-5 w-5 text-muted-foreground" />
+                                <h3 className="font-semibold">Keyboard Shortcuts</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Work faster with shortcuts for filtering, exporting, and toggling
+                                panels &mdash; keep your hands on the keyboard.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Shield className="h-5 w-5 text-muted-foreground" />
+                                <h3 className="font-semibold">Privacy First</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Everything runs in your browser. No servers, no tracking, no data
+                                collection &mdash; your data never leaves your machine.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection id="getting-started" title="Getting Started">
+                    <div className="space-y-4">
+                        {[
+                            {
+                                step: 1,
+                                title: 'Pick a tool',
+                                desc: 'Browse 30+ tools by category or search for what you need. Every tool is one click away.',
+                            },
+                            {
+                                step: 2,
+                                title: 'Paste your data',
+                                desc: 'Drop in your text, JSON, file, or URL. Syntax highlighting and validation happen as you type.',
+                            },
+                            {
+                                step: 3,
+                                title: 'Get instant results',
+                                desc: 'Adjust options if needed, then copy, download, or share the output. No waiting, no server round-trips.',
+                            },
+                            {
+                                step: 4,
+                                title: 'Come back anytime',
+                                desc: 'Your inputs are auto-saved per tool. Reopen the page and everything is right where you left it.',
+                            },
+                        ].map((item) => (
+                            <div
+                                key={item.step}
+                                className="flex gap-4 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-5 dark:border-emerald-800 dark:from-emerald-950/30 dark:to-teal-950/30"
+                            >
+                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-sm font-bold text-white">
+                                    {item.step}
+                                </div>
+                                <div>
+                                    <h3 className="mb-1 font-semibold">{item.title}</h3>
+                                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </PageSection>
 
@@ -1125,88 +1216,36 @@ export default function DocsPage() {
                     </div>
                 </PageSection>
 
-                <PageSection id="features" title="Key Features">
+                <PageSection
+                    id="spam-words"
+                    title="Spam Words Checker"
+                    description="Detect spam trigger words in your email content to improve deliverability."
+                >
                     <div className="space-y-4">
                         <div className="rounded-xl border bg-background p-5">
                             <div className="mb-2 flex items-center gap-3">
-                                <Save className="h-5 w-5 text-muted-foreground" />
-                                <h3 className="font-semibold">Auto-Save</h3>
+                                <ShieldAlert className="h-5 w-5 text-red-600 dark:text-red-400" />
+                                <h3 className="font-semibold">Content Checker</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Your work is saved automatically as you type. Close the tab by
-                                accident? Your data is still here when you come back.
+                                Paste your email content, subject line, or marketing copy to find
+                                spam trigger words. The tool matches against a database of 558+ known
+                                spam words across 12 categories, shows a risk level assessment, and
+                                lists all matched words with hit counts.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
                             <div className="mb-2 flex items-center gap-3">
-                                <History className="h-5 w-5 text-muted-foreground" />
-                                <h3 className="font-semibold">History Management</h3>
+                                <Database className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                                <h3 className="font-semibold">Word Browser</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Every tool remembers what you did. Restore, copy, or clear past
-                                inputs and outputs across all pages.
+                                Browse the full list of spam trigger words with search, category
+                                filtering, and pagination. View category distribution charts and
+                                starting letter statistics to understand the landscape of spam
+                                triggers.
                             </p>
                         </div>
-                        <div className="rounded-xl border bg-background p-5">
-                            <div className="mb-2 flex items-center gap-3">
-                                <Zap className="h-5 w-5 text-muted-foreground" />
-                                <h3 className="font-semibold">Keyboard Shortcuts</h3>
-                            </div>
-                            <p className="text-sm text-muted-foreground">
-                                Work faster with shortcuts for filtering, exporting, and toggling
-                                panels &mdash; keep your hands on the keyboard.
-                            </p>
-                        </div>
-                        <div className="rounded-xl border bg-background p-5">
-                            <div className="mb-2 flex items-center gap-3">
-                                <Shield className="h-5 w-5 text-muted-foreground" />
-                                <h3 className="font-semibold">Privacy First</h3>
-                            </div>
-                            <p className="text-sm text-muted-foreground">
-                                Everything runs in your browser. No servers, no tracking, no data
-                                collection &mdash; your data never leaves your machine.
-                            </p>
-                        </div>
-                    </div>
-                </PageSection>
-
-                <PageSection id="getting-started" title="Getting Started">
-                    <div className="space-y-4">
-                        {[
-                            {
-                                step: 1,
-                                title: 'Pick a tool',
-                                desc: 'Browse 30+ tools by category or search for what you need. Every tool is one click away.',
-                            },
-                            {
-                                step: 2,
-                                title: 'Paste your data',
-                                desc: 'Drop in your text, JSON, file, or URL. Syntax highlighting and validation happen as you type.',
-                            },
-                            {
-                                step: 3,
-                                title: 'Get instant results',
-                                desc: 'Adjust options if needed, then copy, download, or share the output. No waiting, no server round-trips.',
-                            },
-                            {
-                                step: 4,
-                                title: 'Come back anytime',
-                                desc: 'Your inputs are auto-saved per tool. Reopen the page and everything is right where you left it.',
-                            },
-                        ].map((item) => (
-                            <div
-                                key={item.step}
-                                className="flex gap-4 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-5 dark:border-emerald-800 dark:from-emerald-950/30 dark:to-teal-950/30"
-                            >
-                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-sm font-bold text-white">
-                                    {item.step}
-                                </div>
-                                <div>
-                                    <h3 className="mb-1 font-semibold">{item.title}</h3>
-                                    <p className="text-sm text-muted-foreground">{item.desc}</p>
-                                </div>
-                            </div>
-                        ))}
                     </div>
                 </PageSection>
             </PageContent>

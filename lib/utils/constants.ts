@@ -72,6 +72,7 @@ export const STORAGE_KEYS = {
     TURN_CHECKER_URL: 'turn-checker-url',
     TEMP_EMAIL_INPUT: 'temp-email-input',
     FREE_EMAIL_INPUT: 'free-email-input',
+    SPAM_WORDS_INPUT: 'spam-words-input',
     THEME: 'theme',
 } as const;
 
@@ -110,6 +111,7 @@ export const PAGE_NAMES = {
     TURN: 'turn',
     TEMP_EMAIL: 'temp-email',
     FREE_EMAIL: 'free-email',
+    SPAM_WORDS: 'spam-words',
 } as const;
 
 export const BASE64_TABS = {
@@ -268,6 +270,11 @@ export const FREE_EMAIL_TABS = {
     SAMPLE_DATA: 'sample-data',
 } as const;
 
+export const SPAM_WORDS_TABS = {
+    CHECKER: 'checker',
+    BROWSER: 'browser',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -303,4 +310,5 @@ export const TAB_NAMES = {
     ...TURN_TABS,
     ...TEMP_EMAIL_TABS,
     ...FREE_EMAIL_TABS,
+    ...SPAM_WORDS_TABS,
 } as const;

@@ -33,6 +33,7 @@ import {
     Route,
     MailX,
     MailQuestion,
+    ShieldAlert,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -280,6 +281,12 @@ export const TOOL_CATEGORIES = [
                 label: 'Free Email Checker',
                 description: 'Detect free email provider domains like Gmail, Yahoo, and Outlook',
                 icon: MailQuestion,
+            },
+            {
+                href: '/spam-words',
+                label: 'Spam Words Checker',
+                description: 'Detect spam trigger words in email content to improve deliverability',
+                icon: ShieldAlert,
             },
         ],
     },

@@ -32,6 +32,7 @@ import {
     Route,
     MailX,
     MailQuestion,
+    ShieldAlert,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -284,6 +285,13 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Detect free email provider domains like Gmail, Yahoo, Outlook',
                 icon: <MailQuestion className="size-5 shrink-0" />,
                 url: '/free-email',
+                category: 'Utilities',
+            },
+            {
+                title: 'Spam Words Checker',
+                description: 'Detect spam trigger words in your email content',
+                icon: <ShieldAlert className="size-5 shrink-0" />,
+                url: '/spam-words',
                 category: 'Utilities',
             },
             {

@@ -51,6 +51,7 @@ import {
     Timer,
     MailX,
     MailQuestion,
+    ShieldAlert,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -88,6 +89,7 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
     '/url-shortener': Link2,
     '/temp-email': MailX,
     '/free-email': MailQuestion,
+    '/spam-words': ShieldAlert,
 };
 
 interface CommandEntry {

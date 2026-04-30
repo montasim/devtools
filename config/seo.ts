@@ -750,6 +750,22 @@ export const seoConfig: SEOConfig = {
             priority: 0.7,
             changeFrequency: 'monthly',
         },
+        'spam-words': {
+            title: 'Spam Words Checker - Detect Email Spam Trigger Words',
+            description:
+                'Check your email content for common spam trigger words that may land your message in the junk folder. Search 558+ known spam words across 12 categories. All processing happens in your browser.',
+            keywords: [
+                'spam words checker',
+                'spam trigger words',
+                'email spam checker',
+                'spam filter words',
+                'junk mail words',
+                'email deliverability',
+            ],
+            path: '/spam-words',
+            priority: 0.7,
+            changeFrequency: 'monthly',
+        },
     },
 
     disallowedPaths: [
