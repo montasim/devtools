@@ -7,13 +7,14 @@ import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { parseUserAgent, type UserAgentInfo } from '../utils/user-agent-parser';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Input } from '@/components/ui/input';
 import {
     BarChart,
     Bar,
     XAxis,
     YAxis,
-    Tooltip,
+    Tooltip as RechartsTooltip,
     ResponsiveContainer,
     PieChart,
     Pie,
@@ -89,11 +90,26 @@ function toChartData(counts: Record<string, number>, sort = true) {
     return data;
 }
 
-const DEVICE_FILTERS: { id: DeviceFilter; label: string; icon: React.ReactNode }[] = [
-    { id: 'all', label: 'All', icon: <Database className="h-3 w-3" /> },
-    { id: 'Desktop', label: 'Desktop', icon: <Monitor className="h-3 w-3" /> },
-    { id: 'Mobile', label: 'Mobile', icon: <Smartphone className="h-3 w-3" /> },
-    { id: 'Tablet', label: 'Tablet', icon: <Tablet className="h-3 w-3" /> },
+const DEVICE_FILTERS: { id: DeviceFilter; label: string; icon: React.ReactNode; desc: string }[] = [
+    { id: 'all', label: 'All', icon: <Database className="h-3 w-3" />, desc: 'Show all devices' },
+    {
+        id: 'Desktop',
+        label: 'Desktop',
+        icon: <Monitor className="h-3 w-3" />,
+        desc: 'Desktop user agents',
+    },
+    {
+        id: 'Mobile',
+        label: 'Mobile',
+        icon: <Smartphone className="h-3 w-3" />,
+        desc: 'Mobile user agents',
+    },
+    {
+        id: 'Tablet',
+        label: 'Tablet',
+        icon: <Tablet className="h-3 w-3" />,
+        desc: 'Tablet user agents',
+    },
 ];
 
 const DEVICE_BADGE_STYLES: Record<string, string> = {
@@ -259,7 +275,7 @@ function MiniBarChart({
                     tick={{ fontSize: 10 }}
                     className="fill-muted-foreground"
                 />
-                <Tooltip
+                <RechartsTooltip
                     contentStyle={{
                         fontSize: 11,
                         borderRadius: 8,
@@ -305,7 +321,7 @@ function MiniDonut({
                             <Cell key={idx} fill={colors[idx % colors.length]} />
                         ))}
                     </Pie>
-                    <Tooltip
+                    <RechartsTooltip
                         contentStyle={{
                             fontSize: 11,
                             borderRadius: 8,
@@ -449,25 +465,29 @@ export default function StatsTab({ readOnly }: TabComponentProps) {
                             {DEVICE_FILTERS.map((f) => {
                                 const isActive = deviceFilter === f.id;
                                 return (
-                                    <Button
-                                        key={f.id}
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => {
-                                            setDeviceFilter(f.id);
-                                            setPage(0);
-                                        }}
-                                        className={`h-auto px-2 py-1 text-[11px] font-medium gap-1 ${
-                                            isActive
-                                                ? 'border-primary/50 bg-primary/10 text-primary hover:bg-primary/15'
-                                                : 'text-muted-foreground hover:bg-muted/50'
-                                        }`}
-                                    >
-                                        {f.icon}
-                                        {f.id === 'all'
-                                            ? `All (${counts.all ?? 0})`
-                                            : `${f.label} (${counts[f.id] ?? 0})`}
-                                    </Button>
+                                    <Tooltip key={f.id}>
+                                        <TooltipTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => {
+                                                    setDeviceFilter(f.id);
+                                                    setPage(0);
+                                                }}
+                                                className={`h-auto px-2 py-1 text-[11px] font-medium gap-1 ${
+                                                    isActive
+                                                        ? 'border-primary/50 bg-primary/10 text-primary hover:bg-primary/15'
+                                                        : 'text-muted-foreground hover:bg-muted/50'
+                                                }`}
+                                            >
+                                                {f.icon}
+                                                {f.id === 'all'
+                                                    ? `All (${counts.all ?? 0})`
+                                                    : `${f.label} (${counts[f.id] ?? 0})`}
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>{f.desc}</TooltipContent>
+                                    </Tooltip>
                                 );
                             })}
                         </div>

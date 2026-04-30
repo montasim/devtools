@@ -6,13 +6,14 @@ import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import {
     BarChart,
     Bar,
     XAxis,
     YAxis,
-    Tooltip,
+    Tooltip as RechartsTooltip,
     ResponsiveContainer,
     PieChart,
     Pie,
@@ -62,11 +63,11 @@ const CHART_COLORS_DARK = [
 
 type TldFilter = 'all' | 'com' | 'net' | 'other';
 
-const TLD_FILTERS: { id: TldFilter; label: string }[] = [
-    { id: 'all', label: 'All' },
-    { id: 'com', label: '.com' },
-    { id: 'net', label: '.net' },
-    { id: 'other', label: 'Other' },
+const TLD_FILTERS: { id: TldFilter; label: string; desc: string }[] = [
+    { id: 'all', label: 'All', desc: 'Show all domains' },
+    { id: 'com', label: '.com', desc: 'Only .com domains' },
+    { id: 'net', label: '.net', desc: 'Only .net domains' },
+    { id: 'other', label: 'Other', desc: 'All other TLDs' },
 ];
 
 function MiniBarChart({
@@ -92,7 +93,7 @@ function MiniBarChart({
                     tick={{ fontSize: 10 }}
                     className="fill-muted-foreground"
                 />
-                <Tooltip
+                <RechartsTooltip
                     contentStyle={{
                         fontSize: 11,
                         borderRadius: 8,
@@ -142,7 +143,7 @@ function MiniDonut({
                             <Cell key={idx} fill={colors[idx % colors.length]} />
                         ))}
                     </Pie>
-                    <Tooltip
+                    <RechartsTooltip
                         contentStyle={{
                             fontSize: 11,
                             borderRadius: 8,
@@ -270,22 +271,26 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                         {TLD_FILTERS.map((f) => {
                             const isActive = tldFilter === f.id;
                             return (
-                                <Button
-                                    key={f.id}
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => {
-                                        setTldFilter(f.id);
-                                        setPage(0);
-                                    }}
-                                    className={`h-auto px-2 py-1 text-[11px] font-medium ${
-                                        isActive
-                                            ? 'border-primary/50 bg-primary/10 text-primary hover:bg-primary/15'
-                                            : 'text-muted-foreground hover:bg-muted/50'
-                                    }`}
-                                >
-                                    {f.label} ({counts[f.id] ?? 0})
-                                </Button>
+                                <Tooltip key={f.id}>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => {
+                                                setTldFilter(f.id);
+                                                setPage(0);
+                                            }}
+                                            className={`h-auto px-2 py-1 text-[11px] font-medium ${
+                                                isActive
+                                                    ? 'border-primary/50 bg-primary/10 text-primary hover:bg-primary/15'
+                                                    : 'text-muted-foreground hover:bg-muted/50'
+                                            }`}
+                                        >
+                                            {f.label} ({counts[f.id] ?? 0})
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>{f.desc}</TooltipContent>
+                                </Tooltip>
                             );
                         })}
                     </div>
