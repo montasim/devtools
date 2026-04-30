@@ -733,6 +733,23 @@ export const seoConfig: SEOConfig = {
             priority: 0.7,
             changeFrequency: 'monthly',
         },
+
+        'free-email': {
+            title: 'Free Email Checker - Detect Free Email Provider Domains',
+            description:
+                'Check if an email address uses a free email provider like Gmail, Yahoo, or Outlook. Search 4,700+ known free email domains. All processing happens in your browser.',
+            keywords: [
+                'free email checker',
+                'free email detector',
+                'free email provider',
+                'email validation',
+                'business email checker',
+                'disposable email',
+            ],
+            path: '/free-email',
+            priority: 0.7,
+            changeFrequency: 'monthly',
+        },
     },
 
     disallowedPaths: [

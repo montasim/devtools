@@ -42,6 +42,9 @@ import {
     Table2,
     Radio,
     Route,
+    MailX,
+    Database,
+    MailQuestion,
 } from 'lucide-react';
 import {
     PageLayout,
@@ -116,6 +119,16 @@ const docSections = [
     { id: 'cron-builder', title: 'CRON Builder', icon: <Timer className="h-5 w-5" /> },
     { id: 'unit-converter', title: 'Unit Converter', icon: <ArrowLeftRight className="h-5 w-5" /> },
     { id: 'url-shortener', title: 'URL Shortener', icon: <Link2 className="h-5 w-5" /> },
+    {
+        id: 'temp-email',
+        title: 'Temporary Email Checker',
+        icon: <MailX className="h-5 w-5" />,
+    },
+    {
+        id: 'free-email',
+        title: 'Free Email Checker',
+        icon: <MailQuestion className="h-5 w-5" />,
+    },
     { id: 'features', title: 'Key Features', icon: <Sparkles className="h-5 w-5" /> },
     { id: 'getting-started', title: 'Getting Started', icon: <Play className="h-5 w-5" /> },
 ];
@@ -1040,6 +1053,73 @@ export default function DocsPage() {
                             <p className="text-sm text-muted-foreground">
                                 See all your shortened URLs with click counts and creation dates.
                                 Copy, delete, or clear all with one action. Requires authentication.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="temp-email"
+                    title="Temporary Email Checker"
+                    description="Detect disposable and temporary email addresses instantly."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <MailX className="h-5 w-5 text-red-600 dark:text-red-400" />
+                                <h3 className="font-semibold">Email Checker</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Paste any email address to check if its domain is disposable. The
+                                tool matches against a database of 3,600+ known temporary email
+                                domains and shows whether the address is safe or disposable, along
+                                with a full check history.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Database className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                                <h3 className="font-semibold">Sample Data</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Browse the full list of known disposable domains with search,
+                                filtering, and pagination. View TLD distribution charts and keyword
+                                cluster stats to understand the landscape of temporary email
+                                providers.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="free-email"
+                    title="Free Email Checker"
+                    description="Detect free email provider domains like Gmail, Yahoo, and Outlook."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <MailQuestion className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                                <h3 className="font-semibold">Email Checker</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Paste any email address to check if its domain is a free email
+                                provider. The tool matches against a database of 4,700+ known free
+                                email domains (Gmail, Yahoo, Outlook, AOL, etc.) and shows whether
+                                the address is personal or business, along with a full check
+                                history.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Database className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                                <h3 className="font-semibold">Sample Data</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Browse the full list of known free email provider domains with
+                                search, filtering, and pagination. View TLD distribution charts and
+                                keyword cluster stats to understand the landscape of free email
+                                providers.
                             </p>
                         </div>
                     </div>

@@ -71,6 +71,7 @@ export const STORAGE_KEYS = {
     STUN_CHECKER_URL: 'stun-checker-url',
     TURN_CHECKER_URL: 'turn-checker-url',
     TEMP_EMAIL_INPUT: 'temp-email-input',
+    FREE_EMAIL_INPUT: 'free-email-input',
     THEME: 'theme',
 } as const;
 
@@ -108,6 +109,7 @@ export const PAGE_NAMES = {
     STUN: 'stun',
     TURN: 'turn',
     TEMP_EMAIL: 'temp-email',
+    FREE_EMAIL: 'free-email',
 } as const;
 
 export const BASE64_TABS = {
@@ -261,6 +263,11 @@ export const TEMP_EMAIL_TABS = {
     SAMPLE_DATA: 'sample-data',
 } as const;
 
+export const FREE_EMAIL_TABS = {
+    CHECKER: 'checker',
+    SAMPLE_DATA: 'sample-data',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -295,4 +302,5 @@ export const TAB_NAMES = {
     ...STUN_TABS,
     ...TURN_TABS,
     ...TEMP_EMAIL_TABS,
+    ...FREE_EMAIL_TABS,
 } as const;

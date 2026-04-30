@@ -1,0 +1,128 @@
+{
+    "total": 4730,
+    "uniqueTlds": 120,
+    "tldDistribution": [
+        {
+            "name": ".com",
+            "value": 3154
+        },
+        {
+            "name": ".net",
+            "value": 419
+        },
+        {
+            "name": ".de",
+            "value": 148
+        },
+        {
+            "name": ".org",
+            "value": 82
+        },
+        {
+            "name": ".ru",
+            "value": 62
+        },
+        {
+            "name": ".hu",
+            "value": 46
+        },
+        {
+            "name": ".nl",
+            "value": 45
+        },
+        {
+            "name": ".uk",
+            "value": 38
+        },
+        {
+            "name": ".it",
+            "value": 37
+        },
+        {
+            "name": ".au",
+            "value": 37
+        },
+        {
+            "name": ".info",
+            "value": 35
+        },
+        {
+            "name": ".tk",
+            "value": 29
+        },
+        {
+            "name": ".fr",
+            "value": 26
+        },
+        {
+            "name": ".za",
+            "value": 21
+        },
+        {
+            "name": ".ua",
+            "value": 21
+        },
+        {
+            "name": ".cc",
+            "value": 20
+        },
+        {
+            "name": ".br",
+            "value": 20
+        },
+        {
+            "name": ".pl",
+            "value": 18
+        },
+        {
+            "name": ".biz",
+            "value": 18
+        },
+        {
+            "name": ".in",
+            "value": 16
+        }
+    ],
+    "keywordClusters": [
+        {
+            "name": "mail/email",
+            "value": 2146
+        },
+        {
+            "name": "web/online",
+            "value": 80
+        },
+        {
+            "name": "free",
+            "value": 66
+        },
+        {
+            "name": "hotmail/outlook",
+            "value": 53
+        },
+        {
+            "name": "yahoo",
+            "value": 52
+        },
+        {
+            "name": "fast/quick",
+            "value": 51
+        },
+        {
+            "name": "spam",
+            "value": 39
+        },
+        {
+            "name": "live/msn",
+            "value": 34
+        },
+        {
+            "name": "gmail/google",
+            "value": 21
+        },
+        {
+            "name": "aol",
+            "value": 1
+        }
+    ]
+}

@@ -31,6 +31,7 @@ import {
     Radio,
     Route,
     MailX,
+    MailQuestion,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -276,6 +277,13 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Detect disposable and temporary email domains',
                 icon: <MailX className="size-5 shrink-0" />,
                 url: '/temp-email',
+                category: 'Utilities',
+            },
+            {
+                title: 'Free Email Checker',
+                description: 'Detect free email provider domains like Gmail, Yahoo, Outlook',
+                icon: <MailQuestion className="size-5 shrink-0" />,
+                url: '/free-email',
                 category: 'Utilities',
             },
             {

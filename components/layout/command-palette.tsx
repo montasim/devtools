@@ -50,6 +50,7 @@ import {
     Table2,
     Timer,
     MailX,
+    MailQuestion,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -86,6 +87,7 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
     '/unit': ArrowLeftRight,
     '/url-shortener': Link2,
     '/temp-email': MailX,
+    '/free-email': MailQuestion,
 };
 
 interface CommandEntry {

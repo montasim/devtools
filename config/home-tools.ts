@@ -32,6 +32,7 @@ import {
     Radio,
     Route,
     MailX,
+    MailQuestion,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -273,6 +274,12 @@ export const TOOL_CATEGORIES = [
                 label: 'Temporary Email Checker',
                 description: 'Detect disposable and temporary email domains instantly',
                 icon: MailX,
+            },
+            {
+                href: '/free-email',
+                label: 'Free Email Checker',
+                description: 'Detect free email provider domains like Gmail, Yahoo, and Outlook',
+                icon: MailQuestion,
             },
         ],
     },
