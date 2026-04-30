@@ -49,6 +49,7 @@ import {
     Lock,
     Table2,
     Timer,
+    MailX,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -84,6 +85,7 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
     '/cron': Timer,
     '/unit': ArrowLeftRight,
     '/url-shortener': Link2,
+    '/temp-email': MailX,
 };
 
 interface CommandEntry {

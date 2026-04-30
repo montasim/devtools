@@ -30,6 +30,7 @@ import {
     Timer,
     Radio,
     Route,
+    MailX,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -268,6 +269,13 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Data sizes, time durations, and timezones',
                 icon: <ArrowLeftRight className="size-5 shrink-0" />,
                 url: '/unit',
+                category: 'Utilities',
+            },
+            {
+                title: 'Temporary Email Checker',
+                description: 'Detect disposable and temporary email domains',
+                icon: <MailX className="size-5 shrink-0" />,
+                url: '/temp-email',
                 category: 'Utilities',
             },
             {

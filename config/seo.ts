@@ -716,6 +716,23 @@ export const seoConfig: SEOConfig = {
             priority: 0.3,
             changeFrequency: 'yearly',
         },
+
+        'temp-email': {
+            title: 'Temporary Email Checker - Detect Disposable Email Domains',
+            description:
+                'Check if an email address uses a disposable or temporary domain. Search 3,600+ known throwaway email providers. All processing happens in your browser.',
+            keywords: [
+                'disposable email checker',
+                'temporary email detector',
+                'throwaway email',
+                'fake email checker',
+                'spam email detector',
+                'email validation',
+            ],
+            path: '/temp-email',
+            priority: 0.7,
+            changeFrequency: 'monthly',
+        },
     },
 
     disallowedPaths: [

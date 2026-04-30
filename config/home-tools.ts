@@ -31,6 +31,7 @@ import {
     Heart,
     Radio,
     Route,
+    MailX,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -266,6 +267,12 @@ export const TOOL_CATEGORIES = [
                 label: 'URL Shortener',
                 description: 'Shorten long URLs into compact shareable links',
                 icon: Link2,
+            },
+            {
+                href: '/temp-email',
+                label: 'Temporary Email Checker',
+                description: 'Detect disposable and temporary email domains instantly',
+                icon: MailX,
             },
         ],
     },

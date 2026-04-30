@@ -27,13 +27,12 @@ import {
     Copy,
     Check,
     BarChart3,
+    Globe,
     Hash,
-    Type,
-    ShieldAlert,
 } from 'lucide-react';
 import type { TabComponentProps } from '../../core/types/tool';
-import precomputedStats from '../data/password-stats.json';
-import allPasswordsRaw from '../data/common-passwords.json';
+import rawDomains from '../data/domains.json';
+import precomputedStats from '../data/stats.json';
 
 const CHART_COLORS = [
     'hsl(258, 90%, 66%)',
@@ -61,59 +60,21 @@ const CHART_COLORS_DARK = [
     'hsl(200, 75%, 58%)',
 ];
 
-type LengthFilter = 'all' | 'short' | 'medium' | 'long';
+type TldFilter = 'all' | 'com' | 'net' | 'other';
 
-const LENGTH_FILTERS: { id: LengthFilter; label: string; desc: string }[] = [
-    { id: 'all', label: 'All', desc: 'All passwords' },
-    { id: 'short', label: '≤ 5', desc: '5 chars or less' },
-    { id: 'medium', label: '6–8', desc: '6 to 8 chars' },
-    { id: 'long', label: '9+', desc: '9 chars or more' },
+const TLD_FILTERS: { id: TldFilter; label: string }[] = [
+    { id: 'all', label: 'All' },
+    { id: 'com', label: '.com' },
+    { id: 'net', label: '.net' },
+    { id: 'other', label: 'Other' },
 ];
-
-const LENGTH_RANGES: Record<LengthFilter, [number, number]> = {
-    all: [0, Infinity],
-    short: [0, 5],
-    medium: [6, 8],
-    long: [9, Infinity],
-};
-
-function getCategoryColor(cat: string): string {
-    if (cat === 'Numeric only')
-        return 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300';
-    if (cat === 'Lowercase alpha')
-        return 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300';
-    if (cat === 'Alphanumeric')
-        return 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300';
-    if (cat === 'Mixed case alpha')
-        return 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300';
-    if (cat === 'Has special chars')
-        return 'bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-300';
-    return 'bg-muted text-muted-foreground';
-}
-
-function categorizePassword(pw: string): string {
-    const hasNum = /\d/.test(pw);
-    const hasAlpha = /[a-zA-Z]/.test(pw);
-    const hasSpecial = /[^a-zA-Z0-9]/.test(pw);
-    const hasUpper = /[A-Z]/.test(pw);
-    const hasLower = /[a-z]/.test(pw);
-
-    if (hasSpecial) return 'Has special chars';
-    if (hasNum && hasAlpha) return 'Alphanumeric';
-    if (hasNum && !hasAlpha) return 'Numeric only';
-    if (hasUpper && hasLower) return 'Mixed case alpha';
-    if (hasLower) return 'Lowercase alpha';
-    return 'Other';
-}
 
 function MiniBarChart({
     data,
     colors,
-    xLabel,
 }: {
     data: { name: string; value: number }[];
     colors: string[];
-    xLabel?: string;
 }) {
     return (
         <ResponsiveContainer width="100%" height={data.length * 28 + 16}>
@@ -127,7 +88,7 @@ function MiniBarChart({
                 <YAxis
                     type="category"
                     dataKey="name"
-                    width={80}
+                    width={90}
                     tick={{ fontSize: 10 }}
                     className="fill-muted-foreground"
                 />
@@ -141,10 +102,7 @@ function MiniBarChart({
                     }}
                     formatter={
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        ((value: any) => [
-                            Number(value ?? 0).toLocaleString(),
-                            xLabel || 'Count',
-                        ]) as never
+                        ((value: any) => [Number(value ?? 0).toLocaleString(), 'Domains']) as never
                     }
                 />
                 <Bar dataKey="value" radius={[0, 3, 3, 0]} barSize={16}>
@@ -168,7 +126,7 @@ function MiniDonut({
 
     return (
         <div className="flex items-center gap-3">
-            <ResponsiveContainer width="50%" height={140}>
+            <ResponsiveContainer width="50%" height={Math.min(data.length * 20 + 40, 180)}>
                 <PieChart>
                     <Pie
                         data={data}
@@ -196,7 +154,7 @@ function MiniDonut({
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             ((value: any) => [
                                 Number(value ?? 0).toLocaleString(),
-                                'Count',
+                                'Domains',
                             ]) as never
                         }
                     />
@@ -231,48 +189,51 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
     const isDark = resolvedTheme === 'dark';
     const colors = isDark ? CHART_COLORS_DARK : CHART_COLORS;
     const [search, setSearch] = useState('');
-    const [lengthFilter, setLengthFilter] = useState<LengthFilter>('all');
+    const [tldFilter, setTldFilter] = useState<TldFilter>('all');
     const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
     const [overviewOpen, setOverviewOpen] = useState(false);
     const [page, setPage] = useState(0);
     const { copy } = useClipboard();
 
-    const allPasswords = allPasswordsRaw as string[];
+    const allDomains = rawDomains as string[];
     const total = precomputedStats.total;
-    const lengthDist = precomputedStats.lengthDistribution as { name: string; value: number }[];
-    const charsetDist = precomputedStats.charsetDistribution as { name: string; value: number }[];
+    const tldDist = precomputedStats.tldDistribution as { name: string; value: number }[];
+    const keywordClusters = precomputedStats.keywordClusters as { name: string; value: number }[];
 
     const filtered = useMemo(() => {
-        let result = allPasswords;
-        if (lengthFilter !== 'all') {
-            const [min, max] = LENGTH_RANGES[lengthFilter];
-            result = result.filter((pw) => pw.length >= min && pw.length <= max);
+        let result = allDomains;
+        if (tldFilter === 'com') {
+            result = result.filter((d) => d.endsWith('.com'));
+        } else if (tldFilter === 'net') {
+            result = result.filter((d) => d.endsWith('.net'));
+        } else if (tldFilter === 'other') {
+            result = result.filter((d) => !d.endsWith('.com') && !d.endsWith('.net'));
         }
         if (search.trim()) {
             const q = search.toLowerCase();
-            result = result.filter((pw) => pw.toLowerCase().includes(q));
+            result = result.filter((d) => d.includes(q));
         }
         return result;
-    }, [allPasswords, lengthFilter, search]);
+    }, [allDomains, tldFilter, search]);
 
     const counts = useMemo(() => {
         const base = search.trim()
-            ? allPasswords.filter((pw) => pw.toLowerCase().includes(search.toLowerCase()))
-            : allPasswords;
-        const map: Record<string, number> = { all: base.length };
-        for (const [id, range] of Object.entries(LENGTH_RANGES)) {
-            if (id === 'all') continue;
-            map[id] = base.filter((pw) => pw.length >= range[0] && pw.length <= range[1]).length;
-        }
-        return map;
-    }, [allPasswords, search]);
+            ? allDomains.filter((d) => d.includes(search.toLowerCase()))
+            : allDomains;
+        return {
+            all: base.length,
+            com: base.filter((d) => d.endsWith('.com')).length,
+            net: base.filter((d) => d.endsWith('.net')).length,
+            other: base.filter((d) => !d.endsWith('.com') && !d.endsWith('.net')).length,
+        };
+    }, [allDomains, search]);
 
     const paged = filtered.slice(0, (page + 1) * PAGE_SIZE);
     const hasMore = filtered.length > (page + 1) * PAGE_SIZE;
 
     const handleCopy = useCallback(
-        async (pw: string, idx: number) => {
-            await copy(pw);
+        async (domain: string, idx: number) => {
+            await copy(domain);
             setCopiedIdx(idx);
             setTimeout(() => setCopiedIdx(null), 1500);
         },
@@ -283,10 +244,10 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
         <ToolTabWrapper>
             <div className="flex flex-col gap-4 py-4">
                 <div className="flex items-center gap-2">
-                    <ShieldAlert className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Common Passwords</span>
+                    <Database className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">Disposable Email Domains</span>
                     <Badge variant="outline" className="text-[10px] font-mono">
-                        {total.toLocaleString()} entries
+                        {total.toLocaleString()} domains
                     </Badge>
                 </div>
 
@@ -299,24 +260,22 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                                 setSearch(e.target.value);
                                 setPage(0);
                             }}
-                            placeholder="Search passwords..."
+                            placeholder="Search domains..."
                             className="h-8 pl-8 text-xs"
                             spellCheck={false}
                             readOnly={readOnly}
                         />
                     </div>
                     <div className="flex gap-1 shrink-0 flex-wrap">
-                        {LENGTH_FILTERS.map((f) => {
-                            const isActive = lengthFilter === f.id;
+                        {TLD_FILTERS.map((f) => {
+                            const isActive = tldFilter === f.id;
                             return (
-                                <Button
-                                    variant={isActive ? 'default' : 'outline'}
+                                <button
                                     key={f.id}
                                     onClick={() => {
-                                        setLengthFilter(f.id);
+                                        setTldFilter(f.id);
                                         setPage(0);
                                     }}
-                                    title={f.desc}
                                     className={`rounded-md border px-2 py-1 text-[11px] font-medium transition-colors ${
                                         isActive
                                             ? 'border-primary/50 bg-primary/10 text-primary'
@@ -324,7 +283,7 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                                     }`}
                                 >
                                     {f.label} ({counts[f.id] ?? 0})
-                                </Button>
+                                </button>
                             );
                         })}
                     </div>
@@ -348,24 +307,27 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                     </button>
                     {overviewOpen && (
                         <div className="border-t px-4 py-3">
-                            <div className="grid gap-4 sm:grid-cols-2">
+                            <div className="grid gap-4 sm:grid-cols-3">
                                 <div>
                                     <h4 className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                                        <Hash className="h-3 w-3" />
-                                        Password Length Distribution
+                                        <Globe className="h-3 w-3" />
+                                        Top TLDs
                                     </h4>
-                                    <MiniBarChart
-                                        data={lengthDist}
-                                        colors={colors}
-                                        xLabel="Passwords"
-                                    />
+                                    <MiniBarChart data={tldDist.slice(0, 10)} colors={colors} />
                                 </div>
                                 <div>
                                     <h4 className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                                        <Type className="h-3 w-3" />
-                                        Character Composition
+                                        <Hash className="h-3 w-3" />
+                                        Keyword Clusters
                                     </h4>
-                                    <MiniDonut data={charsetDist} colors={colors} />
+                                    <MiniBarChart data={keywordClusters} colors={colors} />
+                                </div>
+                                <div>
+                                    <h4 className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                                        <Globe className="h-3 w-3" />
+                                        TLD Distribution
+                                    </h4>
+                                    <MiniDonut data={tldDist.slice(0, 8)} colors={colors} />
                                 </div>
                             </div>
                         </div>
@@ -374,38 +336,35 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
 
                 {filtered.length > 0 ? (
                     <div className="flex flex-col gap-1">
-                        <div className="grid grid-cols-[48px_1fr_120px_80px_32px] gap-2 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-muted-foreground border-b">
+                        <div className="grid grid-cols-[48px_1fr_80px_32px] gap-2 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-muted-foreground border-b">
                             <span>#</span>
-                            <span>Password</span>
-                            <span>Category</span>
-                            <span>Length</span>
+                            <span>Domain</span>
+                            <span>TLD</span>
                             <span />
                         </div>
                         <div className="flex flex-col">
-                            {paged.map((pw, idx) => {
-                                const cat = categorizePassword(pw);
+                            {paged.map((domain, idx) => {
+                                const tld = '.' + domain.split('.').pop();
                                 return (
                                     <div
                                         key={idx}
-                                        className="grid grid-cols-[48px_1fr_120px_80px_32px] gap-2 items-center px-3 py-1.5 border-b last:border-0 hover:bg-muted/30 transition-colors"
+                                        className="grid grid-cols-[48px_1fr_80px_32px] gap-2 items-center px-3 py-1.5 border-b last:border-0 hover:bg-muted/30 transition-colors"
                                     >
                                         <span className="text-[11px] text-muted-foreground tabular-nums">
                                             {idx + 1}
                                         </span>
-                                        <code className="font-mono text-xs truncate">{pw}</code>
+                                        <code className="font-mono text-xs truncate">{domain}</code>
                                         <Badge
-                                            className={`text-[10px] px-1.5 py-0 w-fit ${getCategoryColor(cat)}`}
+                                            variant="outline"
+                                            className="text-[10px] px-1.5 py-0 w-fit font-mono"
                                         >
-                                            {cat}
+                                            {tld}
                                         </Badge>
-                                        <span className="text-[11px] text-muted-foreground tabular-nums">
-                                            {pw.length} chars
-                                        </span>
                                         <Button
                                             variant="ghost"
                                             size="icon-xs"
                                             className="shrink-0"
-                                            onClick={() => handleCopy(pw, idx)}
+                                            onClick={() => handleCopy(domain, idx)}
                                         >
                                             {copiedIdx === idx ? (
                                                 <Check className="h-3 w-3 text-green-500" />
@@ -435,7 +394,7 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                     <div className="h-48 flex flex-col items-center justify-center rounded-lg border p-8 text-center">
                         <Database className="h-10 w-10 text-muted-foreground/40 mb-3" />
                         <p className="text-sm font-medium text-muted-foreground">
-                            No matching passwords
+                            No matching domains
                         </p>
                         <p className="text-xs text-muted-foreground/60 mt-1">
                             Try a different search term or filter

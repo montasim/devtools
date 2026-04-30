@@ -70,6 +70,7 @@ export const STORAGE_KEYS = {
     NSLOOKUP_TYPE: 'nslookup-type',
     STUN_CHECKER_URL: 'stun-checker-url',
     TURN_CHECKER_URL: 'turn-checker-url',
+    TEMP_EMAIL_INPUT: 'temp-email-input',
     THEME: 'theme',
 } as const;
 
@@ -106,6 +107,7 @@ export const PAGE_NAMES = {
     NSLOOKUP: 'nslookup',
     STUN: 'stun',
     TURN: 'turn',
+    TEMP_EMAIL: 'temp-email',
 } as const;
 
 export const BASE64_TABS = {
@@ -254,6 +256,11 @@ export const TURN_TABS = {
     CHECKER: 'checker',
 } as const;
 
+export const TEMP_EMAIL_TABS = {
+    CHECKER: 'checker',
+    SAMPLE_DATA: 'sample-data',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -287,4 +294,5 @@ export const TAB_NAMES = {
     ...NSLOOKUP_TABS,
     ...STUN_TABS,
     ...TURN_TABS,
+    ...TEMP_EMAIL_TABS,
 } as const;
