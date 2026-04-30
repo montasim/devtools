@@ -331,9 +331,9 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                 </div>
 
                 <div className="rounded-lg border">
-                    <button
-                        type="button"
-                        className="flex items-center justify-between w-full px-4 py-2.5 transition-colors hover:bg-muted/50"
+                    <Button
+                        variant="ghost"
+                        className="flex items-center justify-between w-full px-4 py-2.5 h-auto"
                         onClick={() => setOverviewOpen(!overviewOpen)}
                     >
                         <span className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -345,7 +345,7 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                         ) : (
                             <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
                         )}
-                    </button>
+                    </Button>
                     {overviewOpen && (
                         <div className="border-t px-4 py-3">
                             <div className="grid gap-4 sm:grid-cols-2">
@@ -418,13 +418,13 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                             })}
                         </div>
                         {hasMore && (
-                            <button
-                                type="button"
+                            <Button
+                                variant="outline"
+                                className="w-full py-2 h-auto text-xs font-medium text-muted-foreground mt-1"
                                 onClick={() => setPage(page + 1)}
-                                className="w-full rounded-md border py-2 text-xs font-medium text-muted-foreground hover:bg-muted/50 transition-colors mt-1"
                             >
                                 Load more ({filtered.length - (page + 1) * PAGE_SIZE} remaining)
-                            </button>
+                            </Button>
                         )}
                         <div className="mt-1 text-[11px] text-muted-foreground text-right">
                             Showing {Math.min((page + 1) * PAGE_SIZE, filtered.length)} of{' '}

@@ -122,10 +122,10 @@ function UACard({
 
     return (
         <div className="rounded-lg border transition-colors hover:border-border/80">
-            <button
-                type="button"
+            <Button
+                variant="ghost"
                 onClick={onToggle}
-                className="flex items-start gap-3 w-full px-3 py-2.5 text-left"
+                className="flex items-start gap-3 w-full px-3 py-2.5 h-auto text-left justify-start"
             >
                 <span className="shrink-0 mt-0.5 text-muted-foreground">
                     {expanded ? (
@@ -182,7 +182,7 @@ function UACard({
                         <Copy className="h-3 w-3" />
                     )}
                 </Button>
-            </button>
+            </Button>
 
             {expanded && (
                 <div className="px-3 pb-3 pl-9">
@@ -449,15 +449,17 @@ export default function StatsTab({ readOnly }: TabComponentProps) {
                             {DEVICE_FILTERS.map((f) => {
                                 const isActive = deviceFilter === f.id;
                                 return (
-                                    <button
+                                    <Button
                                         key={f.id}
+                                        variant="outline"
+                                        size="sm"
                                         onClick={() => {
                                             setDeviceFilter(f.id);
                                             setPage(0);
                                         }}
-                                        className={`rounded-md border px-2 py-1 text-[11px] font-medium inline-flex items-center gap-1 transition-colors ${
+                                        className={`h-auto px-2 py-1 text-[11px] font-medium gap-1 ${
                                             isActive
-                                                ? 'border-primary/50 bg-primary/10 text-primary'
+                                                ? 'border-primary/50 bg-primary/10 text-primary hover:bg-primary/15'
                                                 : 'text-muted-foreground hover:bg-muted/50'
                                         }`}
                                     >
@@ -465,7 +467,7 @@ export default function StatsTab({ readOnly }: TabComponentProps) {
                                         {f.id === 'all'
                                             ? `All (${counts.all ?? 0})`
                                             : `${f.label} (${counts[f.id] ?? 0})`}
-                                    </button>
+                                    </Button>
                                 );
                             })}
                         </div>
@@ -473,9 +475,9 @@ export default function StatsTab({ readOnly }: TabComponentProps) {
                 </div>
 
                 <div className="rounded-lg border">
-                    <button
-                        type="button"
-                        className="flex items-center justify-between w-full px-4 py-2.5 transition-colors hover:bg-muted/50"
+                    <Button
+                        variant="ghost"
+                        className="flex items-center justify-between w-full px-4 py-2.5 h-auto"
                         onClick={() => setOverviewOpen(!overviewOpen)}
                     >
                         <span className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -487,7 +489,7 @@ export default function StatsTab({ readOnly }: TabComponentProps) {
                         ) : (
                             <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
                         )}
-                    </button>
+                    </Button>
                     {overviewOpen && (
                         <div className="border-t px-4 py-3">
                             <div className="grid gap-4 sm:grid-cols-3">
@@ -531,13 +533,13 @@ export default function StatsTab({ readOnly }: TabComponentProps) {
                             />
                         ))}
                         {hasMore && (
-                            <button
-                                type="button"
+                            <Button
+                                variant="outline"
+                                className="w-full py-2 h-auto text-xs font-medium text-muted-foreground"
                                 onClick={() => setPage(page + 1)}
-                                className="w-full rounded-md border py-2 text-xs font-medium text-muted-foreground hover:bg-muted/50 transition-colors"
                             >
                                 Load more ({filtered.length - (page + 1) * PAGE_SIZE} remaining)
-                            </button>
+                            </Button>
                         )}
                         <div className="mt-1 text-[11px] text-muted-foreground text-right">
                             Showing {Math.min((page + 1) * PAGE_SIZE, filtered.length)} of{' '}
