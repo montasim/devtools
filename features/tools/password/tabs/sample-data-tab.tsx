@@ -6,13 +6,14 @@ import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import {
     BarChart,
     Bar,
     XAxis,
     YAxis,
-    Tooltip,
+    Tooltip as RechartsTooltip,
     ResponsiveContainer,
     PieChart,
     Pie,
@@ -131,7 +132,7 @@ function MiniBarChart({
                     tick={{ fontSize: 10 }}
                     className="fill-muted-foreground"
                 />
-                <Tooltip
+                <RechartsTooltip
                     contentStyle={{
                         fontSize: 11,
                         borderRadius: 8,
@@ -184,7 +185,7 @@ function MiniDonut({
                             <Cell key={idx} fill={colors[idx % colors.length]} />
                         ))}
                     </Pie>
-                    <Tooltip
+                    <RechartsTooltip
                         contentStyle={{
                             fontSize: 11,
                             borderRadius: 8,
@@ -309,22 +310,25 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                         {LENGTH_FILTERS.map((f) => {
                             const isActive = lengthFilter === f.id;
                             return (
-                                <Button
-                                    variant={isActive ? 'default' : 'outline'}
-                                    key={f.id}
-                                    onClick={() => {
-                                        setLengthFilter(f.id);
-                                        setPage(0);
-                                    }}
-                                    title={f.desc}
-                                    className={`rounded-md border px-2 py-1 text-[11px] font-medium transition-colors ${
-                                        isActive
-                                            ? 'border-primary/50 bg-primary/10 text-primary'
-                                            : 'text-muted-foreground hover:bg-muted/50'
-                                    }`}
-                                >
-                                    {f.label} ({counts[f.id] ?? 0})
-                                </Button>
+                                <Tooltip key={f.id}>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant={isActive ? 'default' : 'outline'}
+                                            onClick={() => {
+                                                setLengthFilter(f.id);
+                                                setPage(0);
+                                            }}
+                                            className={`rounded-md border px-2 py-1 text-[11px] font-medium transition-colors ${
+                                                isActive
+                                                    ? 'border-primary/50 bg-primary/10 text-primary'
+                                                    : 'text-muted-foreground hover:bg-muted/50'
+                                            }`}
+                                        >
+                                            {f.label} ({counts[f.id] ?? 0})
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>{f.desc}</TooltipContent>
+                                </Tooltip>
                             );
                         })}
                     </div>
