@@ -1071,7 +1071,7 @@ export default function DocsPage() {
                             </div>
                             <p className="text-sm text-muted-foreground">
                                 Paste any email address to check if its domain is disposable. The
-                                tool matches against a database of 3,600+ known temporary email
+                                tool matches against a database of 53,000+ known temporary email
                                 domains and shows whether the address is safe or disposable, along
                                 with a full check history.
                             </p>

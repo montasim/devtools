@@ -720,7 +720,7 @@ export const seoConfig: SEOConfig = {
         'temp-email': {
             title: 'Temporary Email Checker - Detect Disposable Email Domains',
             description:
-                'Check if an email address uses a disposable or temporary domain. Search 3,600+ known throwaway email providers. All processing happens in your browser.',
+                'Check if an email address uses a disposable or temporary domain. Search 53,000+ known throwaway email providers. All processing happens in your browser.',
             keywords: [
                 'disposable email checker',
                 'temporary email detector',
