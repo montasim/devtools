@@ -111,7 +111,7 @@ function ToolPageInner({ definition, sharedData }: ToolPageProps) {
                                         className={tabTriggerClass}
                                     >
                                         <tab.icon className="h-4 w-4 shrink-0" />
-                                        <span className="hidden sm:inline">{tab.label}</span>
+                                        {tab.label}
                                     </TabsTrigger>
                                 ))}
                             </div>

@@ -73,6 +73,8 @@ export const STORAGE_KEYS = {
     TEMP_EMAIL_INPUT: 'temp-email-input',
     FREE_EMAIL_INPUT: 'free-email-input',
     SPAM_WORDS_INPUT: 'spam-words-input',
+    PASSPHRASE_WORDS_CONFIG: 'passphrase-words-config',
+    PASSPHRASE_WORDS_RESULTS: 'passphrase-words-results',
     TIMEZONES_INPUT: 'timezones-input',
     THEME: 'theme',
 } as const;
@@ -113,6 +115,7 @@ export const PAGE_NAMES = {
     TEMP_EMAIL: 'temp-email',
     FREE_EMAIL: 'free-email',
     SPAM_WORDS: 'spam-words',
+    PASSPHRASE_WORDS: 'passphrase-words',
     TIMEZONES: 'timezones',
 } as const;
 
@@ -277,6 +280,11 @@ export const SPAM_WORDS_TABS = {
     BROWSER: 'browser',
 } as const;
 
+export const PASSPHRASE_WORDS_TABS = {
+    BROWSER: 'browser',
+    GENERATE: 'generate',
+} as const;
+
 export const TIMEZONES_TABS = {
     WORLD_CLOCK: 'world-clock',
     BROWSER: 'browser',
@@ -318,5 +326,6 @@ export const TAB_NAMES = {
     ...TEMP_EMAIL_TABS,
     ...FREE_EMAIL_TABS,
     ...SPAM_WORDS_TABS,
+    ...PASSPHRASE_WORDS_TABS,
     ...TIMEZONES_TABS,
 } as const;

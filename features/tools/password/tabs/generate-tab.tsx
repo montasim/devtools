@@ -9,7 +9,7 @@ import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Copy, KeyRound, Check, Shuffle, RefreshCw } from 'lucide-react';
+import { Copy, KeyRound, Check, Shuffle, RefreshCw, Type, Lock } from 'lucide-react';
 import {
     generatePasswords,
     evaluateStrength,
@@ -89,6 +89,7 @@ export default function GenerateTab({ readOnly }: TabComponentProps) {
 
     const hasActiveCharset = Object.values(config.charsets).some(Boolean);
     const primary = results[0] ?? '';
+    const isPassword = config.mode !== 'passphrase';
 
     return (
         <ToolTabWrapper
@@ -97,7 +98,7 @@ export default function GenerateTab({ readOnly }: TabComponentProps) {
                 <>
                     <Button
                         onClick={handleGenerate}
-                        disabled={readOnly || !hasActiveCharset}
+                        disabled={readOnly || (isPassword && !hasActiveCharset)}
                         size="sm"
                         className="h-7 gap-1.5 text-xs"
                     >
@@ -110,7 +111,7 @@ export default function GenerateTab({ readOnly }: TabComponentProps) {
                             size="sm"
                             className="h-7 gap-1.5 text-xs"
                             onClick={handleGenerate}
-                            disabled={readOnly || !hasActiveCharset}
+                            disabled={readOnly || (isPassword && !hasActiveCharset)}
                         >
                             <RefreshCw className="h-3.5 w-3.5" />
                             Refresh
@@ -125,60 +126,173 @@ export default function GenerateTab({ readOnly }: TabComponentProps) {
                         <Label className="text-sm font-medium text-muted-foreground">
                             Configuration
                         </Label>
+
                         <div className="flex flex-col gap-3 rounded-lg border p-4">
-                            <div className="flex items-center justify-between">
-                                <Label className="text-sm font-medium">
-                                    Length: {config.length}
-                                </Label>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <input
-                                    type="range"
-                                    min={4}
-                                    max={128}
-                                    value={config.length}
-                                    onChange={(e) =>
-                                        setConfig((prev) => ({
-                                            ...prev,
-                                            length: Number(e.target.value),
-                                        }))
+                            <Label className="text-sm font-medium">Mode</Label>
+                            <div className="flex gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setConfig((prev) => ({ ...prev, mode: 'password' }))
                                     }
-                                    className="flex-1 accent-primary"
-                                />
-                                <span className="w-8 text-right text-xs font-mono text-muted-foreground">
-                                    {config.length}
-                                </span>
+                                    className={`flex items-center gap-2 rounded-md border px-3 py-2 text-xs font-medium transition-colors ${
+                                        config.mode === 'password'
+                                            ? 'border-primary/50 bg-primary/5 text-primary'
+                                            : 'hover:bg-muted/50'
+                                    }`}
+                                >
+                                    <Lock className="h-3.5 w-3.5" />
+                                    Password
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setConfig((prev) => ({ ...prev, mode: 'passphrase' }))
+                                    }
+                                    className={`flex items-center gap-2 rounded-md border px-3 py-2 text-xs font-medium transition-colors ${
+                                        config.mode === 'passphrase'
+                                            ? 'border-primary/50 bg-primary/5 text-primary'
+                                            : 'hover:bg-muted/50'
+                                    }`}
+                                >
+                                    <Type className="h-3.5 w-3.5" />
+                                    Passphrase
+                                </button>
                             </div>
                         </div>
 
-                        <div className="flex flex-col gap-3 rounded-lg border p-4">
-                            <Label className="text-sm font-medium">Character Set</Label>
-                            <div className="grid grid-cols-2 gap-2">
-                                {CHARSETS.map((cs) => (
-                                    <label
-                                        key={cs.id}
-                                        className={`flex items-center gap-2 rounded-md border px-3 py-2 cursor-pointer text-xs transition-colors ${
-                                            config.charsets[cs.id]
-                                                ? 'border-primary/50 bg-primary/5'
-                                                : 'hover:bg-muted/50'
-                                        }`}
-                                    >
+                        {isPassword ? (
+                            <>
+                                <div className="flex flex-col gap-3 rounded-lg border p-4">
+                                    <div className="flex items-center justify-between">
+                                        <Label className="text-sm font-medium">
+                                            Length: {config.length}
+                                        </Label>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <input
+                                            type="range"
+                                            min={4}
+                                            max={128}
+                                            value={config.length}
+                                            onChange={(e) =>
+                                                setConfig((prev) => ({
+                                                    ...prev,
+                                                    length: Number(e.target.value),
+                                                }))
+                                            }
+                                            className="flex-1 accent-primary"
+                                        />
+                                        <span className="w-8 text-right text-xs font-mono text-muted-foreground">
+                                            {config.length}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-3 rounded-lg border p-4">
+                                    <Label className="text-sm font-medium">Character Set</Label>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {CHARSETS.map((cs) => (
+                                            <label
+                                                key={cs.id}
+                                                className={`flex items-center gap-2 rounded-md border px-3 py-2 cursor-pointer text-xs transition-colors ${
+                                                    config.charsets[cs.id]
+                                                        ? 'border-primary/50 bg-primary/5'
+                                                        : 'hover:bg-muted/50'
+                                                }`}
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    checked={config.charsets[cs.id]}
+                                                    onChange={() => toggleCharset(cs.id)}
+                                                    className="rounded border-input accent-primary"
+                                                />
+                                                <span>{cs.label}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+
+                                    <label className="flex items-center gap-2 rounded-md border px-3 py-2 cursor-pointer text-xs transition-colors hover:bg-muted/50">
                                         <input
                                             type="checkbox"
-                                            checked={config.charsets[cs.id]}
-                                            onChange={() => toggleCharset(cs.id)}
+                                            checked={config.excludeAmbiguous}
+                                            onChange={() =>
+                                                setConfig((prev) => ({
+                                                    ...prev,
+                                                    excludeAmbiguous: !prev.excludeAmbiguous,
+                                                }))
+                                            }
                                             className="rounded border-input accent-primary"
                                         />
-                                        <span>{cs.label}</span>
+                                        <span>Exclude Ambiguous (I, l, 1, O, 0, o)</span>
                                     </label>
-                                ))}
-                            </div>
-                            {!hasActiveCharset && (
-                                <p className="text-xs text-destructive">
-                                    Select at least one character set
-                                </p>
-                            )}
-                        </div>
+
+                                    {!hasActiveCharset && (
+                                        <p className="text-xs text-destructive">
+                                            Select at least one character set
+                                        </p>
+                                    )}
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className="flex flex-col gap-3 rounded-lg border p-4">
+                                    <div className="flex items-center justify-between">
+                                        <Label className="text-sm font-medium">
+                                            Words: {config.wordCount}
+                                        </Label>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <input
+                                            type="range"
+                                            min={3}
+                                            max={12}
+                                            value={config.wordCount}
+                                            onChange={(e) =>
+                                                setConfig((prev) => ({
+                                                    ...prev,
+                                                    wordCount: Number(e.target.value),
+                                                }))
+                                            }
+                                            className="flex-1 accent-primary"
+                                        />
+                                        <span className="w-8 text-right text-xs font-mono text-muted-foreground">
+                                            {config.wordCount}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-3 rounded-lg border p-4">
+                                    <Label className="text-sm font-medium">Separator</Label>
+                                    <div className="flex gap-2">
+                                        {[
+                                            { id: '-', label: 'Hyphen (-)' },
+                                            { id: '.', label: 'Dot (.)' },
+                                            { id: '_', label: 'Underscore (_)' },
+                                            { id: ' ', label: 'Space' },
+                                        ].map((opt) => (
+                                            <button
+                                                key={opt.id}
+                                                type="button"
+                                                onClick={() =>
+                                                    setConfig((prev) => ({
+                                                        ...prev,
+                                                        separator: opt.id,
+                                                    }))
+                                                }
+                                                className={`rounded-md border px-3 py-2 text-xs font-medium transition-colors ${
+                                                    config.separator === opt.id
+                                                        ? 'border-primary/50 bg-primary/5 text-primary'
+                                                        : 'hover:bg-muted/50'
+                                                }`}
+                                            >
+                                                {opt.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
 

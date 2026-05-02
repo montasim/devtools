@@ -1,8 +1,19 @@
+import WORD_LIST from './wordlist.json';
+
 export interface CharsetOption {
     id: string;
     label: string;
     chars: string;
     defaultEnabled: boolean;
+}
+
+const AMBIGUOUS_CHARS = 'Il1O0o';
+
+function removeAmbiguous(chars: string): string {
+    return chars
+        .split('')
+        .filter((c) => !AMBIGUOUS_CHARS.includes(c))
+        .join('');
 }
 
 export const CHARSETS: CharsetOption[] = [
@@ -30,16 +41,35 @@ export const CHARSETS: CharsetOption[] = [
 export interface PasswordConfig {
     length: number;
     charsets: Record<string, boolean>;
+    excludeAmbiguous: boolean;
+    mode: 'password' | 'passphrase';
+    wordCount: number;
+    separator: string;
 }
 
 export const DEFAULT_CONFIG: PasswordConfig = {
     length: 16,
     charsets: Object.fromEntries(CHARSETS.map((c) => [c.id, c.defaultEnabled])),
+    excludeAmbiguous: false,
+    mode: 'password',
+    wordCount: 4,
+    separator: '-',
 };
 
 export function generatePassword(config: PasswordConfig): string {
-    const activeCharsets = CHARSETS.filter((c) => config.charsets[c.id]);
+    if (config.mode === 'passphrase') {
+        return generatePassphrase(config);
+    }
+
+    let activeCharsets = CHARSETS.filter((c) => config.charsets[c.id]);
     if (activeCharsets.length === 0) return '';
+
+    if (config.excludeAmbiguous) {
+        activeCharsets = activeCharsets.map((c) => ({
+            ...c,
+            chars: removeAmbiguous(c.chars),
+        }));
+    }
 
     const pool = activeCharsets.map((c) => c.chars);
     const allChars = pool.join('');
@@ -62,6 +92,19 @@ export function generatePassword(config: PasswordConfig): string {
     }
 
     return chars.join('');
+}
+
+function generatePassphrase(config: PasswordConfig): string {
+    const count = config.wordCount || 4;
+    const sep = config.separator || '-';
+    const array = new Uint32Array(count);
+    crypto.getRandomValues(array);
+
+    const words: string[] = [];
+    for (let i = 0; i < count; i++) {
+        words.push(WORD_LIST[array[i] % WORD_LIST.length]);
+    }
+    return words.join(sep);
 }
 
 export function generatePasswords(config: PasswordConfig, count: number): string[] {

@@ -35,6 +35,7 @@ import {
     ShieldAlert,
     Globe2,
     Clock,
+    Database,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -294,6 +295,13 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Detect spam trigger words in your email content',
                 icon: <ShieldAlert className="size-5 shrink-0" />,
                 url: '/spam-words',
+                category: 'Utilities',
+            },
+            {
+                title: 'Passphrase Words',
+                description: 'Browse and generate strong passphrases from a curated word list',
+                icon: <Database className="size-5 shrink-0" />,
+                url: '/passphrase-words',
                 category: 'Utilities',
             },
             {
