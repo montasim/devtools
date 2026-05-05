@@ -95,7 +95,10 @@ export function detectMimeFromBase64(base64: string): { mime: string; extension:
     }
 
     try {
-        const cleanBase64 = base64.trim().replace(/^data:[^;]+;base64,/, '');
+        const cleanBase64 = base64
+            .trim()
+            .replace(/^data:[^;]+;base64,/, '')
+            .replace(/\s/g, '');
         const binaryString = atob(cleanBase64.slice(0, 20));
         const hex = Array.from(binaryString)
             .map((char) => char.charCodeAt(0).toString(16).padStart(2, '0'))

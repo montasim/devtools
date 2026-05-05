@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useToolActions } from '../../core/hooks/use-tool-actions';
 import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
 import { ShareSidebarModal } from '../../core/plugins/share-sidebar';
@@ -9,7 +9,7 @@ import { fileToBase64 } from '../utils/mime-detection';
 import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Textarea } from '@/components/ui/textarea';
-import { Upload, Copy, FileCode, File } from 'lucide-react';
+import { Upload, Copy, FileCode, File, Music } from 'lucide-react';
 import Image from 'next/image';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { EditorPaneHeader } from '../../core/components/editor-pane-header';
@@ -21,9 +21,20 @@ export default function MediaToBase64Tab({ readOnly }: TabComponentProps) {
     const [shareOpen, setShareOpen] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [fileType, setFileType] = useState<string | null>(null);
     const [fileName, setFileName] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const prevPreviewRef = useRef<string | null>(null);
     const { copy } = useClipboard();
+
+    // Cleanup object URLs
+    useEffect(() => {
+        return () => {
+            if (prevPreviewRef.current && prevPreviewRef.current.startsWith('blob:')) {
+                URL.revokeObjectURL(prevPreviewRef.current);
+            }
+        };
+    }, []);
 
     const handleFileUpload = useCallback(
         async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,13 +42,19 @@ export default function MediaToBase64Tab({ readOnly }: TabComponentProps) {
             if (!file) return;
             setIsConverting(true);
             setFileName(file.name);
+            setFileType(file.type);
             try {
                 const base64 = await fileToBase64(file);
                 setOutput(base64);
                 if (file.type.startsWith('image/')) {
                     setPreviewUrl(base64);
                 } else {
-                    setPreviewUrl(null);
+                    const url = URL.createObjectURL(file);
+                    if (prevPreviewRef.current?.startsWith('blob:')) {
+                        URL.revokeObjectURL(prevPreviewRef.current);
+                    }
+                    prevPreviewRef.current = url;
+                    setPreviewUrl(url);
                 }
             } catch (error) {
                 console.error('Failed to convert file:', error);
@@ -49,8 +66,13 @@ export default function MediaToBase64Tab({ readOnly }: TabComponentProps) {
     );
 
     const handleClear = useCallback(() => {
+        if (prevPreviewRef.current?.startsWith('blob:')) {
+            URL.revokeObjectURL(prevPreviewRef.current);
+            prevPreviewRef.current = null;
+        }
         setOutput('');
         setPreviewUrl(null);
+        setFileType(null);
         setFileName(null);
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
@@ -78,14 +100,45 @@ export default function MediaToBase64Tab({ readOnly }: TabComponentProps) {
                             onClear={handleClear}
                             hideInputActions
                         />
-                        {output && previewUrl ? (
-                            <div className="relative flex min-h-[250px] items-center justify-center rounded-lg border p-4 md:min-h-[400px] lg:min-h-[500px]">
-                                <Image
-                                    src={previewUrl}
-                                    alt={fileName ?? 'Preview'}
-                                    fill
-                                    className="object-contain"
-                                />
+                        {output && previewUrl && fileType ? (
+                            <div className="relative flex h-[250px] items-center justify-center overflow-hidden rounded-lg border p-4 md:h-[400px] lg:h-[500px]">
+                                {fileType.startsWith('image/') ? (
+                                    <Image
+                                        src={previewUrl}
+                                        alt={fileName ?? 'Preview'}
+                                        fill
+                                        className="object-contain"
+                                    />
+                                ) : fileType.startsWith('video/') ? (
+                                    <video
+                                        src={previewUrl}
+                                        controls
+                                        className="max-h-full max-w-full object-contain"
+                                    />
+                                ) : fileType.startsWith('audio/') ? (
+                                    <div className="flex flex-col items-center gap-4">
+                                        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+                                            <Music className="h-10 w-10 text-muted-foreground" />
+                                        </div>
+                                        <span className="text-sm font-medium text-muted-foreground">
+                                            {fileName}
+                                        </span>
+                                        <audio src={previewUrl} controls className="w-80" />
+                                    </div>
+                                ) : fileType === 'application/pdf' ? (
+                                    <iframe
+                                        src={previewUrl}
+                                        className="h-full w-full border-0"
+                                        title="PDF Preview"
+                                    />
+                                ) : (
+                                    <div className="flex flex-col items-center gap-3">
+                                        <File className="h-12 w-12 text-muted-foreground" />
+                                        <span className="max-w-full truncate text-sm font-medium">
+                                            {fileName}
+                                        </span>
+                                    </div>
+                                )}
                             </div>
                         ) : output && fileName ? (
                             <div className="relative flex min-h-[250px] flex-col items-center justify-center gap-3 rounded-lg border p-4 md:min-h-[400px] lg:min-h-[500px]">
@@ -105,6 +158,7 @@ export default function MediaToBase64Tab({ readOnly }: TabComponentProps) {
                                         : 'Click to upload or drag & drop'}
                                 </span>
                                 <span className="text-xs">Images, audio, video, PDF, ZIP</span>
+                                <span className="text-xs">(max 16 MB)</span>
                                 <input
                                     ref={fileInputRef}
                                     type="file"

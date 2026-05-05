@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useToolActions } from '../../core/hooks/use-tool-actions';
 import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
 import { ShareSidebarModal } from '../../core/plugins/share-sidebar';
@@ -11,7 +11,18 @@ import {
 } from '../utils/mime-detection';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Textarea } from '@/components/ui/textarea';
-import { Download, Copy, FileDown, ImageIcon, Video, Music, FileText, File } from 'lucide-react';
+import {
+    Download,
+    Copy,
+    FileDown,
+    ImageIcon,
+    Video,
+    Music,
+    FileText,
+    File,
+    Loader2,
+} from 'lucide-react';
+import Image from 'next/image';
 import { EmptyEditorPrompt } from '@/components/ui/empty-editor-prompt';
 import { EditorPaneHeader } from '../../core/components/editor-pane-header';
 import { EditorFooter } from '../../core/components/editor-footer';
@@ -25,51 +36,67 @@ const CATEGORY_ICONS: Record<MediaCategory, React.ComponentType<{ className?: st
     other: File,
 };
 
-function base64ToBlob(base64: string, mime: string): Blob | null {
-    try {
-        const cleanBase64 = base64.replace(/^data:[^;]+;base64,/, '');
-        const binaryString = atob(cleanBase64);
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-            bytes[i] = binaryString.charCodeAt(i);
-        }
-        return new Blob([bytes], { type: mime });
-    } catch {
-        return null;
-    }
+function cleanBase64(raw: string): string {
+    return raw.replace(/^data:[^;]+;base64,/, '').replace(/\s/g, '');
 }
 
 export default function Base64ToMediaTab({ readOnly }: TabComponentProps) {
     const [input, setInput] = useState('');
     const [shareOpen, setShareOpen] = useState(false);
+    const [blobUrl, setBlobUrl] = useState<string | null>(null);
+    const [loadedInput, setLoadedInput] = useState('');
+    const prevUrlRef = useRef<string | null>(null);
     const { copy } = useClipboard();
 
     const { mime, extension } = detectMimeFromBase64(input);
     const category = input ? getMediaCategory(mime) : null;
 
-    const blobUrl = useMemo(() => {
-        if (!input || input.trim() === '') return null;
-        const blob = base64ToBlob(input, mime);
-        return blob ? URL.createObjectURL(blob) : null;
+    // Async blob creation via fetch(dataUrl) — handles large files (up to 16MB)
+    // without the memory overhead of atob() + charCodeAt loop
+    useEffect(() => {
+        if (prevUrlRef.current) {
+            URL.revokeObjectURL(prevUrlRef.current);
+            prevUrlRef.current = null;
+        }
+
+        if (!input || input.trim() === '') {
+            return;
+        }
+
+        let cancelled = false;
+        const data = `data:${mime};base64,${cleanBase64(input)}`;
+
+        fetch(data)
+            .then((res) => res.blob())
+            .then((blob) => {
+                if (cancelled) return;
+                const url = URL.createObjectURL(blob);
+                prevUrlRef.current = url;
+                setBlobUrl(url);
+                setLoadedInput(input);
+            })
+            .catch(() => {
+                if (!cancelled) {
+                    setBlobUrl(null);
+                    setLoadedInput('');
+                }
+            });
+
+        return () => {
+            cancelled = true;
+        };
     }, [input, mime]);
 
-    useEffect(() => {
-        return () => {
-            if (blobUrl) URL.revokeObjectURL(blobUrl);
-        };
-    }, [blobUrl]);
+    const effectiveBlobUrl = input ? blobUrl : null;
+    const effectiveLoading = !!input && loadedInput !== input;
 
     const handleDownload = useCallback(() => {
-        if (!input) return;
-        const blob = base64ToBlob(input, mime);
-        if (!blob) return;
-        const url = URL.createObjectURL(blob);
+        if (!effectiveBlobUrl) return;
         const a = document.createElement('a');
-        a.href = url;
+        a.href = effectiveBlobUrl;
         a.download = `converted.${extension}`;
         a.click();
-        URL.revokeObjectURL(url);
-    }, [input, mime, extension]);
+    }, [effectiveBlobUrl, extension]);
 
     const { actions } = useToolActions({
         pageName: 'base64',
@@ -82,7 +109,15 @@ export default function Base64ToMediaTab({ readOnly }: TabComponentProps) {
     });
 
     const renderPreview = () => {
-        if (!blobUrl || !category) {
+        if (effectiveLoading) {
+            return (
+                <div className="flex h-full items-center justify-center">
+                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+            );
+        }
+
+        if (!effectiveBlobUrl || !category) {
             return (
                 <EmptyEditorPrompt
                     icon={ImageIcon}
@@ -99,16 +134,18 @@ export default function Base64ToMediaTab({ readOnly }: TabComponentProps) {
         switch (category) {
             case 'image':
                 return (
-                    <img
-                        src={blobUrl}
+                    <Image
+                        src={effectiveBlobUrl ?? ''}
                         alt="Preview"
-                        className="absolute inset-0 h-full w-full object-contain p-2"
+                        fill
+                        className="object-contain p-2"
+                        unoptimized
                     />
                 );
             case 'video':
                 return (
                     <video
-                        src={blobUrl}
+                        src={effectiveBlobUrl}
                         controls
                         className="absolute inset-0 h-full w-full object-contain"
                     />
@@ -123,13 +160,17 @@ export default function Base64ToMediaTab({ readOnly }: TabComponentProps) {
                             <span className="text-sm font-medium text-muted-foreground">
                                 {mime}
                             </span>
-                            <audio src={blobUrl} controls className="w-80" />
+                            <audio src={effectiveBlobUrl} controls className="w-80" />
                         </div>
                     </div>
                 );
             case 'pdf':
                 return (
-                    <iframe src={blobUrl} className="h-full w-full border-0" title="PDF Preview" />
+                    <iframe
+                        src={effectiveBlobUrl}
+                        className="h-full w-full border-0"
+                        title="PDF Preview"
+                    />
                 );
             default:
                 return (
@@ -177,7 +218,7 @@ export default function Base64ToMediaTab({ readOnly }: TabComponentProps) {
                                 <EmptyEditorPrompt
                                     icon={FileDown}
                                     title="Paste Base64 string"
-                                    description="Paste a Base64 encoded string to decode and download the file"
+                                    description="Paste a Base64 encoded string to decode and download the file (max 16 MB)"
                                     overlay
                                 />
                             )}
