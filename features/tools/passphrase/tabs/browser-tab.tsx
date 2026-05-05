@@ -162,7 +162,7 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                                 },
                                 { key: 'length', label: 'Length', render: (w) => String(w.length) },
                             ]}
-                            filename="passphrase-words"
+                            filename="passphrase"
                         />
                     </div>
                     <div className="flex gap-1 shrink-0 flex-wrap max-h-24 overflow-y-auto">

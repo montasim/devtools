@@ -60,7 +60,8 @@ const STRENGTH_LEVELS: { min: number; label: string; color: string }[] = [
 ];
 
 export function evaluatePassphraseStrength(passphrase: string): PassphraseStrengthResult {
-    if (!passphrase) return { score: 0, label: 'None', color: 'bg-muted', entropy: 0, wordCount: 0 };
+    if (!passphrase)
+        return { score: 0, label: 'None', color: 'bg-muted', entropy: 0, wordCount: 0 };
 
     const wordCount = passphrase.split(/[-._ ]/).length;
     const entropy = Math.round(wordCount * Math.log2(WORD_LIST.length));

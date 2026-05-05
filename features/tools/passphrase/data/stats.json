@@ -1,0 +1,162 @@
+{
+    "total": 279937,
+    "uniqueCategories": 4,
+    "categoryDistribution": [
+        {
+            "name": "Standard (6-7 chars)",
+            "value": 94350
+        },
+        {
+            "name": "Long (8-9 chars)",
+            "value": 76440
+        },
+        {
+            "name": "Medium (4-5 chars)",
+            "value": 67887
+        },
+        {
+            "name": "Extended (10-12 chars)",
+            "value": 41260
+        }
+    ],
+    "startingLetterDistribution": [
+        {
+            "name": "S",
+            "value": 28290
+        },
+        {
+            "name": "C",
+            "value": 22106
+        },
+        {
+            "name": "M",
+            "value": 18826
+        },
+        {
+            "name": "P",
+            "value": 18387
+        },
+        {
+            "name": "A",
+            "value": 18322
+        },
+        {
+            "name": "B",
+            "value": 17416
+        },
+        {
+            "name": "T",
+            "value": 14138
+        },
+        {
+            "name": "D",
+            "value": 14106
+        },
+        {
+            "name": "R",
+            "value": 12637
+        },
+        {
+            "name": "G",
+            "value": 11284
+        },
+        {
+            "name": "L",
+            "value": 11245
+        },
+        {
+            "name": "H",
+            "value": 11117
+        },
+        {
+            "name": "E",
+            "value": 10663
+        },
+        {
+            "name": "F",
+            "value": 10614
+        },
+        {
+            "name": "W",
+            "value": 8948
+        },
+        {
+            "name": "N",
+            "value": 8911
+        },
+        {
+            "name": "K",
+            "value": 8443
+        },
+        {
+            "name": "I",
+            "value": 8421
+        },
+        {
+            "name": "O",
+            "value": 6325
+        },
+        {
+            "name": "V",
+            "value": 5521
+        },
+        {
+            "name": "U",
+            "value": 4332
+        },
+        {
+            "name": "J",
+            "value": 3934
+        },
+        {
+            "name": "Z",
+            "value": 1880
+        },
+        {
+            "name": "Y",
+            "value": 1659
+        },
+        {
+            "name": "Q",
+            "value": 1365
+        },
+        {
+            "name": "X",
+            "value": 1047
+        }
+    ],
+    "lengthDistribution": [
+        {
+            "name": "4 chars",
+            "value": 30061
+        },
+        {
+            "name": "5 chars",
+            "value": 37826
+        },
+        {
+            "name": "6 chars",
+            "value": 46448
+        },
+        {
+            "name": "7 chars",
+            "value": 47902
+        },
+        {
+            "name": "8 chars",
+            "value": 42584
+        },
+        {
+            "name": "9 chars",
+            "value": 33856
+        },
+        {
+            "name": "10 chars",
+            "value": 24995
+        },
+        {
+            "name": "11 chars",
+            "value": 16265
+        }
+    ]
+}

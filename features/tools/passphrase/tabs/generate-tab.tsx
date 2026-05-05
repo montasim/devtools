@@ -48,7 +48,7 @@ export default function GenerateTab({ readOnly }: TabComponentProps) {
     }, [setResults]);
 
     const { actions } = useToolActions({
-        pageName: 'passphrase-words',
+        pageName: 'passphrase',
         tabId: 'generate',
         getContent: () => results.join('\n'),
         onClear: handleClear,
@@ -243,7 +243,8 @@ export default function GenerateTab({ readOnly }: TabComponentProps) {
                                             <span>{strength.entropy} bits entropy</span>
                                             <span>{primary.length} chars</span>
                                             <span>
-                                                {strength.wordCount} word{strength.wordCount !== 1 ? 's' : ''}
+                                                {strength.wordCount} word
+                                                {strength.wordCount !== 1 ? 's' : ''}
                                             </span>
                                         </div>
                                     </div>
@@ -318,7 +319,7 @@ export default function GenerateTab({ readOnly }: TabComponentProps) {
                 open={shareOpen}
                 onOpenChange={setShareOpen}
                 config={{
-                    pageName: 'passphrase-words',
+                    pageName: 'passphrase',
                     tabName: 'generate',
                     getState: () => ({ results, config }),
                     extraActions:

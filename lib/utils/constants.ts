@@ -115,7 +115,7 @@ export const PAGE_NAMES = {
     TEMP_EMAIL: 'temp-email',
     FREE_EMAIL: 'free-email',
     SPAM_WORDS: 'spam-words',
-    PASSPHRASE_WORDS: 'passphrase-words',
+    PASSPHRASE_WORDS: 'passphrase',
     TIMEZONES: 'timezones',
 } as const;
 

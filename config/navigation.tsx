@@ -158,6 +158,13 @@ export const navigationMenu: MenuItem[] = [
                 category: 'Generators',
             },
             {
+                title: 'Passphrase Generator',
+                description: 'Strong passphrases from a curated word list',
+                icon: <Database className="size-5 shrink-0" />,
+                url: '/passphrase',
+                category: 'Generators',
+            },
+            {
                 title: 'QR Code Generator',
                 description: 'Custom QR codes with your colors and size',
                 icon: <QrCode className="size-5 shrink-0" />,
@@ -295,13 +302,6 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Detect spam trigger words in your email content',
                 icon: <ShieldAlert className="size-5 shrink-0" />,
                 url: '/spam-words',
-                category: 'Utilities',
-            },
-            {
-                title: 'Passphrase Words',
-                description: 'Browse and generate strong passphrases from a curated word list',
-                icon: <Database className="size-5 shrink-0" />,
-                url: '/passphrase-words',
                 category: 'Utilities',
             },
             {
