@@ -20,7 +20,7 @@ export default function Image() {
                 fontFamily: 'system-ui, sans-serif',
             }}
         >
-            <div style={{ marginBottom: 32 }}>
+            <div style={{ display: 'flex', marginBottom: 32 }}>
                 <DevLogo size={120} color="#ffffff" />
             </div>
 
