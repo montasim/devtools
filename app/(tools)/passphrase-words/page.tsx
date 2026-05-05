@@ -21,7 +21,7 @@ const GenerateTab = lazy(
 const PASSPHRASE_COLOR = 'bg-violet-100 text-violet-700 dark:bg-violet-900 dark:text-violet-300';
 
 const toolMapping = {
-    browser: {
+    'sample-data': {
         name: 'Word Browser',
         icon: Database,
         color: PASSPHRASE_COLOR,
@@ -39,21 +39,21 @@ function registerToolAndGet() {
     const definition = {
         pageName: 'passphrase-words',
         label: 'Passphrase Words',
-        icon: Database,
-        defaultTab: 'browser',
+        icon: Shuffle,
+        defaultTab: 'generate',
         mainTabs: [
-            {
-                id: 'browser',
-                label: 'Browser',
-                icon: Database,
-                component: BrowserTab,
-                contentType: 'text' as const,
-            },
             {
                 id: 'generate',
                 label: 'Generate',
                 icon: Shuffle,
                 component: GenerateTab,
+                contentType: 'text' as const,
+            },
+            {
+                id: 'sample-data',
+                label: 'Sample Data',
+                icon: Database,
+                component: BrowserTab,
                 contentType: 'text' as const,
             },
         ],
@@ -62,7 +62,7 @@ function registerToolAndGet() {
                 pageName: 'passphrase-words',
                 queryKey: 'passphrase-words-saved',
                 toolMapping,
-                tabMapping: { browser: 'browser', generate: 'generate' },
+                tabMapping: { 'sample-data': 'sample-data', generate: 'generate' },
                 storageKeyMapping: {
                     generate: STORAGE_KEYS.PASSPHRASE_WORDS_RESULTS,
                 },
@@ -71,13 +71,13 @@ function registerToolAndGet() {
                 pageName: 'passphrase-words',
                 queryKey: 'passphrase-words-shared',
                 toolMapping,
-                tabMapping: { browser: 'browser', generate: 'generate' },
+                tabMapping: { 'sample-data': 'sample-data', generate: 'generate' },
             }),
             history: createHistoryTabPlugin({
                 pageName: 'passphrase-words',
                 storageKeyFilter: (key: string) => key.startsWith('passphrase-words-'),
                 toolMapping,
-                tabMapping: { browser: 'browser', generate: 'generate' },
+                tabMapping: { 'sample-data': 'sample-data', generate: 'generate' },
             }),
         },
     };

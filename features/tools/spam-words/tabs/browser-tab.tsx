@@ -20,6 +20,8 @@ import {
     Type,
 } from 'lucide-react';
 import { MiniBarChart, MiniDonut, useChartColors } from '../../shared/charts';
+import { DownloadButton } from '../../core/components/download-button';
+import { DataTablePagination } from '../../core/components/data-table-pagination';
 import type { TabComponentProps } from '../../core/types/tool';
 import rawWords from '../data/words.json';
 import precomputedStats from '../data/stats.json';
@@ -30,18 +32,17 @@ const CATEGORY_COLORS: Record<string, string> = {
     'Free / Giveaway': 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
     'Money / Income': 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300',
     'Call to Action': 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
-    'Urgency': 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
-    'Guarantee / Risk-free': 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
+    Urgency: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
+    'Guarantee / Risk-free':
+        'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
     'Spam / Legal': 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300',
     'Discount / Pricing': 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
-    'Financial': 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
+    Financial: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
     'Health / Pharma': 'bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-300',
-    'Marketing': 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900 dark:text-cyan-300',
+    Marketing: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900 dark:text-cyan-300',
     'Business Opportunity': 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300',
-    'General': 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300',
+    General: 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300',
 };
-
-const PAGE_SIZE = 50;
 
 export default function BrowserTab({ readOnly }: TabComponentProps) {
     const { resolvedTheme } = useTheme();
@@ -51,12 +52,16 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
     const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
     const [overviewOpen, setOverviewOpen] = useState(false);
     const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(50);
     const { copy } = useClipboard();
 
     const allWords = rawWords as SpamWord[];
     const total = precomputedStats.total;
     const catDist = precomputedStats.categoryDistribution as { name: string; value: number }[];
-    const letterDist = precomputedStats.startingLetterDistribution as { name: string; value: number }[];
+    const letterDist = precomputedStats.startingLetterDistribution as {
+        name: string;
+        value: number;
+    }[];
 
     const categories = useMemo(
         () => ['all', ...Array.from(new Set(allWords.map((w) => w.category))).sort()],
@@ -86,8 +91,7 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
         return result;
     }, [allWords, search]);
 
-    const paged = filtered.slice(0, (page + 1) * PAGE_SIZE);
-    const hasMore = filtered.length > (page + 1) * PAGE_SIZE;
+    const paged = filtered.slice(page * pageSize, (page + 1) * pageSize);
 
     const handleCopy = useCallback(
         async (word: string, idx: number) => {
@@ -110,18 +114,29 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                 </div>
 
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
-                    <div className="relative flex-1">
-                        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                        <Input
-                            value={search}
-                            onChange={(e) => {
-                                setSearch(e.target.value);
-                                setPage(0);
-                            }}
-                            placeholder="Search words..."
-                            className="h-8 pl-8 text-xs"
-                            spellCheck={false}
-                            readOnly={readOnly}
+                    <div className="flex gap-1.5">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                            <Input
+                                value={search}
+                                onChange={(e) => {
+                                    setSearch(e.target.value);
+                                    setPage(0);
+                                }}
+                                placeholder="Search words..."
+                                className="h-8 pl-8 text-xs"
+                                spellCheck={false}
+                                readOnly={readOnly}
+                            />
+                        </div>
+                        <DownloadButton
+                            data={filtered}
+                            columns={[
+                                { key: 'word', label: 'Word', render: (w) => w.word },
+                                { key: 'category', label: 'Category', render: (w) => w.category },
+                                { key: 'length', label: 'Length', render: (w) => String(w.length) },
+                            ]}
+                            filename="spam-words"
                         />
                     </div>
                     <div className="flex gap-1 shrink-0 flex-wrap max-h-24 overflow-y-auto">
@@ -138,7 +153,7 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                                                 setCategoryFilter(cat);
                                                 setPage(0);
                                             }}
-                                            className={`h-auto px-2 py-1 text-[11px] font-medium ${
+                                            className={`h-auto px-2 py-1.5 text-[11px] font-medium ${
                                                 isActive
                                                     ? 'border-primary/50 bg-primary/10 text-primary hover:bg-primary/15'
                                                     : 'text-muted-foreground hover:bg-muted/50'
@@ -180,21 +195,33 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                                         <Tag className="h-3 w-3" />
                                         Categories
                                     </h4>
-                                    <MiniBarChart data={catDist.slice(0, 10)} colors={colors} xLabel="Words" />
+                                    <MiniBarChart
+                                        data={catDist.slice(0, 10)}
+                                        colors={colors}
+                                        xLabel="Words"
+                                    />
                                 </div>
                                 <div>
                                     <h4 className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
                                         <Type className="h-3 w-3" />
                                         Starting Letter
                                     </h4>
-                                    <MiniBarChart data={letterDist.slice(0, 10)} colors={colors} xLabel="Words" />
+                                    <MiniBarChart
+                                        data={letterDist.slice(0, 10)}
+                                        colors={colors}
+                                        xLabel="Words"
+                                    />
                                 </div>
                                 <div>
                                     <h4 className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
                                         <Tag className="h-3 w-3" />
                                         Category Distribution
                                     </h4>
-                                    <MiniDonut data={catDist.slice(0, 8)} colors={colors} xLabel="Words" />
+                                    <MiniDonut
+                                        data={catDist.slice(0, 8)}
+                                        colors={colors}
+                                        xLabel="Words"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -210,49 +237,51 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                             <span />
                         </div>
                         <div className="flex flex-col">
-                            {paged.map((item, idx) => (
-                                <div
-                                    key={idx}
-                                    className="grid grid-cols-[48px_1fr_120px_32px] gap-2 items-center px-3 py-1.5 border-b last:border-0 hover:bg-muted/30 transition-colors"
-                                >
-                                    <span className="text-[11px] text-muted-foreground tabular-nums">
-                                        {idx + 1}
-                                    </span>
-                                    <code className="font-mono text-xs truncate">{item.word}</code>
-                                    <Badge
-                                        variant="outline"
-                                        className={`text-[10px] px-1.5 py-0 w-fit ${CATEGORY_COLORS[item.category] || ''}`}
+                            {paged.map((item, idx) => {
+                                const globalIdx = page * pageSize + idx;
+                                return (
+                                    <div
+                                        key={globalIdx}
+                                        className="grid grid-cols-[48px_1fr_120px_32px] gap-2 items-center px-3 py-1.5 border-b last:border-0 hover:bg-muted/30 transition-colors"
                                     >
-                                        {item.category}
-                                    </Badge>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon-xs"
-                                        className="shrink-0"
-                                        onClick={() => handleCopy(item.word, idx)}
-                                    >
-                                        {copiedIdx === idx ? (
-                                            <Check className="h-3 w-3 text-green-500" />
-                                        ) : (
-                                            <Copy className="h-3 w-3" />
-                                        )}
-                                    </Button>
-                                </div>
-                            ))}
+                                        <span className="text-[11px] text-muted-foreground tabular-nums">
+                                            {globalIdx + 1}
+                                        </span>
+                                        <code className="font-mono text-xs truncate">
+                                            {item.word}
+                                        </code>
+                                        <Badge
+                                            variant="outline"
+                                            className={`text-[10px] px-1.5 py-0 w-fit ${CATEGORY_COLORS[item.category] || ''}`}
+                                        >
+                                            {item.category}
+                                        </Badge>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon-xs"
+                                            className="shrink-0"
+                                            onClick={() => handleCopy(item.word, idx)}
+                                        >
+                                            {copiedIdx === idx ? (
+                                                <Check className="h-3 w-3 text-green-500" />
+                                            ) : (
+                                                <Copy className="h-3 w-3" />
+                                            )}
+                                        </Button>
+                                    </div>
+                                );
+                            })}
                         </div>
-                        {hasMore && (
-                            <Button
-                                variant="outline"
-                                className="w-full py-2 h-auto text-xs font-medium text-muted-foreground mt-1"
-                                onClick={() => setPage(page + 1)}
-                            >
-                                Load more ({filtered.length - (page + 1) * PAGE_SIZE} remaining)
-                            </Button>
-                        )}
-                        <div className="mt-1 text-[11px] text-muted-foreground text-right">
-                            Showing {Math.min((page + 1) * PAGE_SIZE, filtered.length)} of{' '}
-                            {filtered.length}
-                        </div>
+                        <DataTablePagination
+                            page={page}
+                            total={filtered.length}
+                            pageSize={pageSize}
+                            onPageChange={setPage}
+                            onPageSizeChange={(size) => {
+                                setPageSize(size);
+                                setPage(0);
+                            }}
+                        />
                     </div>
                 ) : (
                     <div className="h-48 flex flex-col items-center justify-center rounded-lg border p-8 text-center">

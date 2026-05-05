@@ -20,6 +20,8 @@ import {
     Type,
 } from 'lucide-react';
 import { MiniBarChart, MiniDonut, useChartColors } from '../../shared/charts';
+import { DownloadButton } from '../../core/components/download-button';
+import { DataTablePagination } from '../../core/components/data-table-pagination';
 import type { TabComponentProps } from '../../core/types/tool';
 import WORD_LIST from '../utils/wordlist.json';
 import precomputedStats from '../data/stats.json';
@@ -42,8 +44,6 @@ const CATEGORY_COLORS: Record<string, string> = {
     'Maximum (13+)': 'bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-300',
 };
 
-const PAGE_SIZE = 50;
-
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 const ALL_CATEGORIES = [
@@ -65,11 +65,15 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
     const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
     const [overviewOpen, setOverviewOpen] = useState(false);
     const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(50);
     const { copy } = useClipboard();
 
     const total = precomputedStats.total;
     const catDist = precomputedStats.categoryDistribution as { name: string; value: number }[];
-    const letterDist = precomputedStats.startingLetterDistribution as { name: string; value: number }[];
+    const letterDist = precomputedStats.startingLetterDistribution as {
+        name: string;
+        value: number;
+    }[];
     const lengthDist = precomputedStats.lengthDistribution as { name: string; value: number }[];
 
     const filtered = useMemo(() => {
@@ -102,8 +106,7 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
         return result;
     }, [search]);
 
-    const paged = filtered.slice(0, (page + 1) * PAGE_SIZE);
-    const hasMore = filtered.length > (page + 1) * PAGE_SIZE;
+    const paged = filtered.slice(page * pageSize, (page + 1) * pageSize);
 
     const handleCopy = useCallback(
         async (word: string, idx: number) => {
@@ -133,18 +136,33 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                 </div>
 
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
-                    <div className="relative flex-1">
-                        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                        <Input
-                            value={search}
-                            onChange={(e) => {
-                                setSearch(e.target.value);
-                                setPage(0);
-                            }}
-                            placeholder="Search words..."
-                            className="h-8 pl-8 text-xs"
-                            spellCheck={false}
-                            readOnly={readOnly}
+                    <div className="flex gap-1.5">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                            <Input
+                                value={search}
+                                onChange={(e) => {
+                                    setSearch(e.target.value);
+                                    setPage(0);
+                                }}
+                                placeholder="Search words..."
+                                className="h-8 pl-8 text-xs"
+                                spellCheck={false}
+                                readOnly={readOnly}
+                            />
+                        </div>
+                        <DownloadButton
+                            data={filtered}
+                            columns={[
+                                { key: 'word', label: 'Word', render: (w) => w },
+                                {
+                                    key: 'category',
+                                    label: 'Category',
+                                    render: (w) => getLengthCategory(w.length),
+                                },
+                                { key: 'length', label: 'Length', render: (w) => String(w.length) },
+                            ]}
+                            filename="passphrase-words"
                         />
                     </div>
                     <div className="flex gap-1 shrink-0 flex-wrap max-h-24 overflow-y-auto">
@@ -161,7 +179,7 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                                                 setCategoryFilter(cat);
                                                 setPage(0);
                                             }}
-                                            className={`h-auto px-2 py-1 text-[11px] font-medium ${
+                                            className={`h-auto px-2 py-1.5 text-[11px] font-medium ${
                                                 isActive
                                                     ? 'border-primary/50 bg-primary/10 text-primary hover:bg-primary/15'
                                                     : 'text-muted-foreground hover:bg-muted/50'
@@ -183,7 +201,10 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                     <Button
                         variant={letterFilter === 'all' ? 'default' : 'outline'}
                         size="sm"
-                        onClick={() => { setLetterFilter('all'); setPage(0); }}
+                        onClick={() => {
+                            setLetterFilter('all');
+                            setPage(0);
+                        }}
                         className="h-6 w-6 p-0 text-[10px]"
                     >
                         *
@@ -193,7 +214,10 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                             key={letter}
                             variant={letterFilter === letter ? 'default' : 'outline'}
                             size="sm"
-                            onClick={() => { setLetterFilter(letter); setPage(0); }}
+                            onClick={() => {
+                                setLetterFilter(letter);
+                                setPage(0);
+                            }}
                             className="h-6 w-6 p-0 text-[10px]"
                         >
                             {letter}
@@ -232,7 +256,11 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                                         <Type className="h-3 w-3" />
                                         Starting Letter
                                     </h4>
-                                    <MiniBarChart data={letterDist.slice(0, 10)} colors={colors} xLabel="Words" />
+                                    <MiniBarChart
+                                        data={letterDist.slice(0, 10)}
+                                        colors={colors}
+                                        xLabel="Words"
+                                    />
                                 </div>
                                 <div>
                                     <h4 className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
@@ -258,13 +286,14 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                         <div className="flex flex-col">
                             {paged.map((word, idx) => {
                                 const cat = getLengthCategory(word.length);
+                                const globalIdx = page * pageSize + idx;
                                 return (
                                     <div
-                                        key={`${word}-${idx}`}
+                                        key={`${word}-${globalIdx}`}
                                         className="grid grid-cols-[48px_1fr_120px_48px_32px] gap-2 items-center px-3 py-1.5 border-b last:border-0 hover:bg-muted/30 transition-colors"
                                     >
                                         <span className="text-[11px] text-muted-foreground tabular-nums">
-                                            {idx + 1}
+                                            {globalIdx + 1}
                                         </span>
                                         <code className="font-mono text-xs truncate">{word}</code>
                                         <Badge
@@ -292,19 +321,16 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                                 );
                             })}
                         </div>
-                        {hasMore && (
-                            <Button
-                                variant="outline"
-                                className="w-full py-2 h-auto text-xs font-medium text-muted-foreground mt-1"
-                                onClick={() => setPage(page + 1)}
-                            >
-                                Load more ({filtered.length - (page + 1) * PAGE_SIZE} remaining)
-                            </Button>
-                        )}
-                        <div className="mt-1 text-[11px] text-muted-foreground text-right">
-                            Showing {Math.min((page + 1) * PAGE_SIZE, filtered.length)} of{' '}
-                            {filtered.length}
-                        </div>
+                        <DataTablePagination
+                            page={page}
+                            total={filtered.length}
+                            pageSize={pageSize}
+                            onPageChange={setPage}
+                            onPageSizeChange={(size) => {
+                                setPageSize(size);
+                                setPage(0);
+                            }}
+                        />
                     </div>
                 ) : (
                     <div className="h-48 flex flex-col items-center justify-center rounded-lg border p-8 text-center">

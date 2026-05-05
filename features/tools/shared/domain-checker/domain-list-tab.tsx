@@ -20,6 +20,8 @@ import {
     Hash,
 } from 'lucide-react';
 import { MiniBarChart, MiniDonut, useChartColors } from '../charts';
+import { DownloadButton } from '../../core/components/download-button';
+import { DataTablePagination } from '../../core/components/data-table-pagination';
 import type { DomainListProps, DomainListStats } from './types';
 
 type TldFilter = 'all' | 'com' | 'net' | 'other';
@@ -59,21 +61,33 @@ function OverviewSection({ stats, colors }: { stats: DomainListStats; colors: st
                                 <Globe className="h-3 w-3" />
                                 Top TLDs
                             </h4>
-                            <MiniBarChart data={stats.tldDistribution.slice(0, 10)} colors={colors} xLabel="Domains" />
+                            <MiniBarChart
+                                data={stats.tldDistribution.slice(0, 10)}
+                                colors={colors}
+                                xLabel="Domains"
+                            />
                         </div>
                         <div>
                             <h4 className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
                                 <Hash className="h-3 w-3" />
                                 Keyword Clusters
                             </h4>
-                            <MiniBarChart data={stats.keywordClusters} colors={colors} xLabel="Domains" />
+                            <MiniBarChart
+                                data={stats.keywordClusters}
+                                colors={colors}
+                                xLabel="Domains"
+                            />
                         </div>
                         <div>
                             <h4 className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
                                 <Globe className="h-3 w-3" />
                                 TLD Distribution
                             </h4>
-                            <MiniDonut data={stats.tldDistribution.slice(0, 8)} colors={colors} xLabel="Domains" />
+                            <MiniDonut
+                                data={stats.tldDistribution.slice(0, 8)}
+                                colors={colors}
+                                xLabel="Domains"
+                            />
                         </div>
                     </div>
                 </div>
@@ -82,15 +96,20 @@ function OverviewSection({ stats, colors }: { stats: DomainListStats; colors: st
     );
 }
 
-const PAGE_SIZE = 50;
-
-export function DomainListTab({ readOnly, domains, stats, title }: DomainListProps) {
+export function DomainListTab({
+    readOnly,
+    domains,
+    stats,
+    title,
+    downloadFilename,
+}: DomainListProps) {
     const { resolvedTheme } = useTheme();
     const colors = useChartColors(resolvedTheme === 'dark');
     const [search, setSearch] = useState('');
     const [tldFilter, setTldFilter] = useState<TldFilter>('all');
     const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
     const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(50);
     const { copy } = useClipboard();
 
     const allDomains = domains;
@@ -123,8 +142,7 @@ export function DomainListTab({ readOnly, domains, stats, title }: DomainListPro
         };
     }, [allDomains, search]);
 
-    const paged = filtered.slice(0, (page + 1) * PAGE_SIZE);
-    const hasMore = filtered.length > (page + 1) * PAGE_SIZE;
+    const paged = filtered.slice(page * pageSize, (page + 1) * pageSize);
 
     const handleCopy = useCallback(
         async (domain: string, idx: number) => {
@@ -147,18 +165,32 @@ export function DomainListTab({ readOnly, domains, stats, title }: DomainListPro
                 </div>
 
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
-                    <div className="relative flex-1">
-                        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                        <Input
-                            value={search}
-                            onChange={(e) => {
-                                setSearch(e.target.value);
-                                setPage(0);
-                            }}
-                            placeholder="Search domains..."
-                            className="h-8 pl-8 text-xs"
-                            spellCheck={false}
-                            readOnly={readOnly}
+                    <div className="flex gap-1.5">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                            <Input
+                                value={search}
+                                onChange={(e) => {
+                                    setSearch(e.target.value);
+                                    setPage(0);
+                                }}
+                                placeholder="Search domains..."
+                                className="h-8 pl-8 text-xs"
+                                spellCheck={false}
+                                readOnly={readOnly}
+                            />
+                        </div>
+                        <DownloadButton
+                            data={filtered}
+                            columns={[
+                                { key: 'domain', label: 'Domain', render: (d) => d },
+                                {
+                                    key: 'tld',
+                                    label: 'TLD',
+                                    render: (d) => '.' + d.split('.').pop(),
+                                },
+                            ]}
+                            filename={downloadFilename}
                         />
                     </div>
                     <div className="flex gap-1 shrink-0 flex-wrap">
@@ -174,7 +206,7 @@ export function DomainListTab({ readOnly, domains, stats, title }: DomainListPro
                                                 setTldFilter(f.id);
                                                 setPage(0);
                                             }}
-                                            className={`h-auto px-2 py-1 text-[11px] font-medium ${
+                                            className={`h-auto px-2 py-1.5 text-[11px] font-medium ${
                                                 isActive
                                                     ? 'border-primary/50 bg-primary/10 text-primary hover:bg-primary/15'
                                                     : 'text-muted-foreground hover:bg-muted/50'
@@ -203,13 +235,14 @@ export function DomainListTab({ readOnly, domains, stats, title }: DomainListPro
                         <div className="flex flex-col">
                             {paged.map((domain, idx) => {
                                 const tld = '.' + domain.split('.').pop();
+                                const globalIdx = page * pageSize + idx;
                                 return (
                                     <div
-                                        key={idx}
+                                        key={globalIdx}
                                         className="grid grid-cols-[48px_1fr_80px_32px] gap-2 items-center px-3 py-1.5 border-b last:border-0 hover:bg-muted/30 transition-colors"
                                     >
                                         <span className="text-[11px] text-muted-foreground tabular-nums">
-                                            {idx + 1}
+                                            {globalIdx + 1}
                                         </span>
                                         <code className="font-mono text-xs truncate">{domain}</code>
                                         <Badge
@@ -234,19 +267,16 @@ export function DomainListTab({ readOnly, domains, stats, title }: DomainListPro
                                 );
                             })}
                         </div>
-                        {hasMore && (
-                            <Button
-                                variant="outline"
-                                className="w-full py-2 h-auto text-xs font-medium text-muted-foreground mt-1"
-                                onClick={() => setPage(page + 1)}
-                            >
-                                Load more ({filtered.length - (page + 1) * PAGE_SIZE} remaining)
-                            </Button>
-                        )}
-                        <div className="mt-1 text-[11px] text-muted-foreground text-right">
-                            Showing {Math.min((page + 1) * PAGE_SIZE, filtered.length)} of{' '}
-                            {filtered.length}
-                        </div>
+                        <DataTablePagination
+                            page={page}
+                            total={filtered.length}
+                            pageSize={pageSize}
+                            onPageChange={setPage}
+                            onPageSizeChange={(size) => {
+                                setPageSize(size);
+                                setPage(0);
+                            }}
+                        />
                     </div>
                 ) : (
                     <div className="h-48 flex flex-col items-center justify-center rounded-lg border p-8 text-center">

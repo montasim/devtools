@@ -55,10 +55,7 @@ export interface DomainListStats {
     keywordClusters: { name: string; value: number }[];
 }
 
-export type DomainCheckFn = (
-    domain: string,
-    domainSet: Set<string>,
-) => DomainCheckResult;
+export type DomainCheckFn = (domain: string, domainSet: Set<string>) => DomainCheckResult;
 
 export type GetDomainFn = (input: string) => string;
 
@@ -75,4 +72,5 @@ export interface DomainListProps {
     domains: string[];
     stats: DomainListStats;
     title: string;
+    downloadFilename: string;
 }

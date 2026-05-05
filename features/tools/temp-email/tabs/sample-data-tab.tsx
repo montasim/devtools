@@ -10,8 +10,16 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
         <DomainListTab
             readOnly={readOnly}
             domains={rawDomains as string[]}
-            stats={precomputedStats as { total: number; uniqueTlds: number; tldDistribution: { name: string; value: number }[]; keywordClusters: { name: string; value: number }[] }}
+            stats={
+                precomputedStats as {
+                    total: number;
+                    uniqueTlds: number;
+                    tldDistribution: { name: string; value: number }[];
+                    keywordClusters: { name: string; value: number }[];
+                }
+            }
             title="Disposable Email Domains"
+            downloadFilename="disposable-email-domains"
         />
     );
 }

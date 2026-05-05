@@ -20,6 +20,8 @@ import {
     Type,
     ShieldAlert,
 } from 'lucide-react';
+import { DownloadButton } from '../../core/components/download-button';
+import { DataTablePagination } from '../../core/components/data-table-pagination';
 import { MiniBarChart, MiniDonut, useChartColors } from '../../shared/charts';
 import type { TabComponentProps } from '../../core/types/tool';
 import precomputedStats from '../data/password-stats.json';
@@ -70,8 +72,6 @@ function categorizePassword(pw: string): string {
     return 'Other';
 }
 
-const PAGE_SIZE = 50;
-
 export default function SampleDataTab({ readOnly }: TabComponentProps) {
     const { resolvedTheme } = useTheme();
     const colors = useChartColors(resolvedTheme === 'dark');
@@ -80,6 +80,7 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
     const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
     const [overviewOpen, setOverviewOpen] = useState(false);
     const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(50);
     const { copy } = useClipboard();
 
     const allPasswords = allPasswordsRaw as string[];
@@ -112,8 +113,7 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
         return map;
     }, [allPasswords, search]);
 
-    const paged = filtered.slice(0, (page + 1) * PAGE_SIZE);
-    const hasMore = filtered.length > (page + 1) * PAGE_SIZE;
+    const paged = filtered.slice(page * pageSize, (page + 1) * pageSize);
 
     const handleCopy = useCallback(
         async (pw: string, idx: number) => {
@@ -136,18 +136,37 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                 </div>
 
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
-                    <div className="relative flex-1">
-                        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                        <Input
-                            value={search}
-                            onChange={(e) => {
-                                setSearch(e.target.value);
-                                setPage(0);
-                            }}
-                            placeholder="Search passwords..."
-                            className="h-8 pl-8 text-xs"
-                            spellCheck={false}
-                            readOnly={readOnly}
+                    <div className="flex gap-1.5">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                            <Input
+                                value={search}
+                                onChange={(e) => {
+                                    setSearch(e.target.value);
+                                    setPage(0);
+                                }}
+                                placeholder="Search passwords..."
+                                className="h-8 pl-8 text-xs"
+                                spellCheck={false}
+                                readOnly={readOnly}
+                            />
+                        </div>
+                        <DownloadButton
+                            data={filtered}
+                            columns={[
+                                { key: 'password', label: 'Password', render: (pw) => pw },
+                                {
+                                    key: 'category',
+                                    label: 'Category',
+                                    render: (pw) => categorizePassword(pw),
+                                },
+                                {
+                                    key: 'length',
+                                    label: 'Length',
+                                    render: (pw) => String(pw.length),
+                                },
+                            ]}
+                            filename="common-passwords"
                         />
                     </div>
                     <div className="flex gap-1 shrink-0 flex-wrap">
@@ -162,7 +181,7 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                                                 setLengthFilter(f.id);
                                                 setPage(0);
                                             }}
-                                            className={`rounded-md border px-2 py-1 text-[11px] font-medium transition-colors ${
+                                            className={`rounded-md border px-2 py-1.5 text-[11px] font-medium transition-colors ${
                                                 isActive
                                                     ? 'border-primary/50 bg-primary/10 text-primary'
                                                     : 'text-muted-foreground hover:bg-muted/50'
@@ -232,13 +251,14 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                         <div className="flex flex-col">
                             {paged.map((pw, idx) => {
                                 const cat = categorizePassword(pw);
+                                const globalIdx = page * pageSize + idx;
                                 return (
                                     <div
-                                        key={idx}
+                                        key={globalIdx}
                                         className="grid grid-cols-[48px_1fr_120px_80px_32px] gap-2 items-center px-3 py-1.5 border-b last:border-0 hover:bg-muted/30 transition-colors"
                                     >
                                         <span className="text-[11px] text-muted-foreground tabular-nums">
-                                            {idx + 1}
+                                            {globalIdx + 1}
                                         </span>
                                         <code className="font-mono text-xs truncate">{pw}</code>
                                         <Badge
@@ -265,19 +285,16 @@ export default function SampleDataTab({ readOnly }: TabComponentProps) {
                                 );
                             })}
                         </div>
-                        {hasMore && (
-                            <Button
-                                variant="outline"
-                                className="w-full py-2 h-auto text-xs font-medium text-muted-foreground mt-1"
-                                onClick={() => setPage(page + 1)}
-                            >
-                                Load more ({filtered.length - (page + 1) * PAGE_SIZE} remaining)
-                            </Button>
-                        )}
-                        <div className="mt-1 text-[11px] text-muted-foreground text-right">
-                            Showing {Math.min((page + 1) * PAGE_SIZE, filtered.length)} of{' '}
-                            {filtered.length}
-                        </div>
+                        <DataTablePagination
+                            page={page}
+                            total={filtered.length}
+                            pageSize={pageSize}
+                            onPageChange={setPage}
+                            onPageSizeChange={(size) => {
+                                setPageSize(size);
+                                setPage(0);
+                            }}
+                        />
                     </div>
                 ) : (
                     <div className="h-48 flex flex-col items-center justify-center rounded-lg border p-8 text-center">
