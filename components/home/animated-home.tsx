@@ -69,12 +69,12 @@ const QUICK_TOOLS: { icon: LucideIcon; label: string; href: string; color: strin
 
 function HeroSection() {
     return (
-        <section className="relative overflow-hidden border-b">
+        <section className="relative overflow-hidden border-b -mx-4 sm:-mx-6 lg:-mx-8">
+            {' '}
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
                 <div className="absolute -left-32 -top-32 h-[400px] w-[400px] rounded-full bg-primary/5 blur-3xl animate-pulse" />
                 <div className="absolute -bottom-32 -right-32 h-[400px] w-[400px] rounded-full bg-secondary/5 blur-3xl animate-pulse [animation-delay:2s]" />
             </div>
-
             <div className="relative mx-auto max-w-6xl">
                 <div className="flex flex-col items-center py-16 sm:py-20 lg:py-24">
                     <AnimatedSection delay={0}>
@@ -97,7 +97,7 @@ function HeroSection() {
                     </AnimatedSection>
 
                     <AnimatedSection delay={160}>
-                        <p className="mx-auto mb-8 max-w-xl text-center text-base text-muted-foreground sm:text-lg">
+                        <p className="mx-auto mb-8 px-2 max-w-xl text-center text-base text-muted-foreground sm:text-lg">
                             Format JSON, test APIs, generate hashes, build QR codes &mdash;
                             everything runs in your browser. No installs, no accounts, no data
                             leaves your machine.
@@ -287,7 +287,7 @@ function ToolsSection() {
 
 function FeaturesSection() {
     return (
-        <section className="border-t bg-gradient-to-b from-muted/20 to-muted/40 py-16 sm:py-24">
+        <section className="border-t border-b bg-linear-to-b from-muted/20 to-muted/40 py-16 sm:py-24 -mx-4 sm:-mx-6 lg:-mx-8">
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
                 <AnimatedSection>
                     <div className="mb-16 text-center">
@@ -322,7 +322,7 @@ function FeaturesSection() {
 
 function CtaSection() {
     return (
-        <section className="border-t py-16 sm:py-24">
+        <section className="py-16 sm:py-24">
             <div className="mx-auto max-w-4xl text-center">
                 <AnimatedSection>
                     <div className="rounded-2xl border bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-10 sm:p-16">
