@@ -75,7 +75,7 @@ function HeroSection() {
                 <div className="absolute -bottom-32 -right-32 h-[400px] w-[400px] rounded-full bg-secondary/5 blur-3xl animate-pulse [animation-delay:2s]" />
             </div>
 
-            <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="relative mx-auto max-w-6xl">
                 <div className="flex flex-col items-center py-16 sm:py-20 lg:py-24">
                     <AnimatedSection delay={0}>
                         <Badge
@@ -251,7 +251,7 @@ function ToolCard({
 function ToolsSection() {
     return (
         <section className="py-16 sm:py-24">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="mx-auto max-w-7xl">
                 <AnimatedSection>
                     <div className="mb-16 text-center">
                         <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
@@ -323,7 +323,7 @@ function FeaturesSection() {
 function CtaSection() {
     return (
         <section className="border-t py-16 sm:py-24">
-            <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
+            <div className="mx-auto max-w-4xl text-center">
                 <AnimatedSection>
                     <div className="rounded-2xl border bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-10 sm:p-16">
                         <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">

@@ -11,7 +11,7 @@ function buildOpenGraph(title: string, description: string, path: string) {
         type: 'website' as const,
         images: [
             {
-                url: seoConfig.site.ogImage,
+                url: `${seoConfig.site.siteUrl}/opengraph-image`,
                 width: 1200,
                 height: 630,
                 alt: title,
@@ -25,8 +25,8 @@ function buildTwitter(title: string, description: string) {
         card: 'summary_large_image' as const,
         title,
         description,
-        images: [seoConfig.site.ogImage],
         creator: seoConfig.site.twitterHandle,
+        images: [`${seoConfig.site.siteUrl}/opengraph-image`],
     };
 }
 
