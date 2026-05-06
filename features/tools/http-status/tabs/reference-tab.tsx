@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
+import { NpmPackageCard } from '../../core/components/npm-package-card';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -86,6 +87,11 @@ export default function ReferenceTab({}: TabComponentProps) {
                         })}
                     </div>
                 </div>
+
+                <NpmPackageCard
+                    packageName="http-status-lite"
+                    href="https://www.npmjs.com/package/http-status-lite"
+                />
 
                 {filtered.length > 0 ? (
                     <div className="flex flex-col gap-0.5">
