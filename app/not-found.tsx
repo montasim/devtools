@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Home, Braces, Terminal } from 'lucide-react';
+import { Home, Braces, Terminal, Mail } from 'lucide-react';
+import { siteLinks } from '@/config/seo';
 
 export default function NotFound() {
     return (
@@ -36,6 +37,18 @@ export default function NotFound() {
                         </Link>
                     </Button>
                 </div>
+
+                <p className="mt-10 text-xs text-muted-foreground">
+                    Think this is a mistake?{' '}
+                    <a
+                        href={`mailto:${siteLinks.feedback}?subject=404%20%E2%80%93%20Page%20not%20found`}
+                        className="inline items-center gap-1 font-medium text-primary hover:underline"
+                    >
+                        <Mail className="h-3 w-3" />
+                        Let us know
+                    </a>{' '}
+                    &mdash; we fix things fast.
+                </p>
             </div>
         </div>
     );

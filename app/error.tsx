@@ -1,8 +1,9 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { AlertTriangle, RotateCw, Home } from 'lucide-react';
+import { AlertTriangle, RotateCw, Home, Mail } from 'lucide-react';
 import Link from 'next/link';
+import { siteLinks } from '@/config/seo';
 
 export default function ErrorPage({ error, reset }: { error: Error; reset: () => void }) {
     return (
@@ -49,6 +50,18 @@ export default function ErrorPage({ error, reset }: { error: Error; reset: () =>
                         </Link>
                     </Button>
                 </div>
+
+                <p className="mt-10 text-xs text-muted-foreground">
+                    Keeps happening?{' '}
+                    <a
+                        href={`mailto:${siteLinks.feedback}?subject=500%20%E2%80%93%20Internal%20server%20error`}
+                        className="inline items-center gap-1 font-medium text-primary hover:underline"
+                    >
+                        <Mail className="h-3 w-3" />
+                        Report it
+                    </a>{' '}
+                    &mdash; we read every email.
+                </p>
             </div>
         </div>
     );
