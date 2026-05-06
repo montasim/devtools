@@ -311,18 +311,15 @@ export const navigationMenu: MenuItem[] = [
                 url: '/timezones',
                 category: 'Utilities',
             },
-            {
-                title: 'URL Shortener',
-                description: 'Turn long links into short, shareable ones',
-                icon: <Link2 className="size-5 shrink-0" />,
-                url: '/url-shortener',
-                category: 'Utilities',
-            },
         ],
     },
     {
         title: 'Share Text',
         url: '/share/text',
+    },
+    {
+        title: 'URL Shortener',
+        url: '/url-shortener',
     },
     {
         title: 'Resources',
