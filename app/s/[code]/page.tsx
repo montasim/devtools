@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState, use } from 'react';
-import { Loader2, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
+import { Loader2, AlertCircle, Link2, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { apiClient } from '@/lib/api/client';
 
 interface StatsResponse {
@@ -35,36 +37,37 @@ export default function ShortRedirectPage({ params }: { params: Promise<{ code: 
 
     if (error) {
         return (
-            <div className="flex min-h-screen items-center justify-center">
-                <div className="flex flex-col items-center gap-4 text-center">
-                    <div className="rounded-full bg-destructive/10 p-4">
-                        <AlertCircle className="h-8 w-8 text-destructive" />
+            <div className="flex min-h-[70vh] flex-col items-center justify-center px-4">
+                <div className="flex flex-col items-center text-center">
+                    <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border bg-card/50 backdrop-blur-sm">
+                        <AlertCircle className="h-10 w-10 text-destructive" />
                     </div>
-                    <div>
-                        <h1 className="text-lg font-semibold">Link Not Found</h1>
-                        <p className="mt-1 text-sm text-muted-foreground">{error}</p>
-                    </div>
-                    <a href="/url-shortener" className="text-sm text-primary hover:underline">
-                        Create a new short link
-                    </a>
+                    <h1 className="text-lg font-semibold">Link Not Found</h1>
+                    <p className="mt-2 max-w-sm text-sm text-muted-foreground">{error}</p>
+                    <Button size="lg" asChild className="mt-8 h-11 px-6 text-sm">
+                        <Link href="/url-shortener">
+                            <Link2 className="mr-2 h-4 w-4" />
+                            Create a New Link
+                        </Link>
+                    </Button>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center">
-            <div className="flex flex-col items-center gap-4 text-center">
-                <div className="relative">
-                    <div className="absolute -right-1 -top-1">
-                        <Loader2 className="h-10 w-10 animate-spin text-primary" />
-                    </div>
+        <div className="flex min-h-[70vh] flex-col items-center justify-center px-4">
+            <div className="flex flex-col items-center text-center">
+                <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border bg-card/50 backdrop-blur-sm">
+                    <Loader2 className="h-10 w-10 animate-spin text-primary" />
                 </div>
-                <div>
-                    <h1 className="text-lg font-semibold">Redirecting you...</h1>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                        You will be redirected to your destination shortly.
-                    </p>
+                <h1 className="text-lg font-semibold">Redirecting you...</h1>
+                <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+                    Hang tight — we&apos;re sending you to the right place.
+                </p>
+                <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground">
+                    <ArrowRight className="h-3 w-3 animate-pulse" />
+                    <span>Almost there</span>
                 </div>
             </div>
         </div>
