@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback } from 'react';
 import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
+import { NpmPackageCard } from '../../core/components/npm-package-card';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -91,6 +92,10 @@ export default function AnalyzerTab({ readOnly }: TabComponentProps) {
     return (
         <ToolTabWrapper>
             <div className="flex flex-col gap-4 py-4">
+                <NpmPackageCard
+                    packageName="client-parser"
+                    href="https://www.npmjs.com/package/client-parser"
+                />
                 <div className="flex flex-col gap-3">
                     <div className="relative">
                         <Textarea
