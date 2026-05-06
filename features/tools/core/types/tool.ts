@@ -27,7 +27,7 @@ export interface ToolDefinition {
     icon: LucideIcon;
     defaultTab: string;
     mainTabs: TabDefinition[];
-    plugins: {
+    plugins?: {
         saved?: ComponentType<PluginTabProps>;
         shared?: ComponentType<PluginTabProps>;
         history?: ComponentType<PluginTabProps>;

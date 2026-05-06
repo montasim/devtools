@@ -18,7 +18,7 @@ function ToolPageInner({ definition, sharedData }: ToolPageProps) {
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
-    const { mainTabs, plugins } = definition;
+    const { mainTabs, plugins = {} } = definition;
 
     const pluginTabs = [
         ...(plugins.saved

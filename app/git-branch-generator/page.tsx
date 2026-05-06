@@ -3,8 +3,6 @@
 import { lazy, type ComponentType } from 'react';
 import { GitBranch } from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
-import { createSharedTabPlugin } from '@/features/tools/core/plugins/shared';
-import { createSavedTabPlugin } from '@/features/tools/core/plugins/saved';
 import { createHistoryTabPlugin } from '@/features/tools/core/plugins/history';
 import { registerTool } from '@/features/tools/core/config/tool-registry';
 import { STORAGE_KEYS } from '@/lib/utils/constants';
@@ -42,21 +40,6 @@ function registerToolAndGet() {
             },
         ],
         plugins: {
-            saved: createSavedTabPlugin({
-                pageName: 'git-branch-generator',
-                queryKey: 'git-branch-generator-saved',
-                toolMapping,
-                tabMapping: { generator: 'generator' },
-                storageKeyMapping: {
-                    generator: STORAGE_KEYS.GIT_BRANCH_LAST_GENERATED,
-                },
-            }),
-            shared: createSharedTabPlugin({
-                pageName: 'git-branch-generator',
-                queryKey: 'git-branch-generator-shared',
-                toolMapping,
-                tabMapping: { generator: 'generator' },
-            }),
             history: createHistoryTabPlugin({
                 pageName: 'git-branch-generator',
                 storageKeyFilter: (key) => key.startsWith('git-branch'),
