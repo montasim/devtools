@@ -782,6 +782,23 @@ export const seoConfig: SEOConfig = {
             priority: 0.7,
             changeFrequency: 'monthly',
         },
+        'content-type': {
+            title: 'Content-Type Reference - HTTP Header & MIME Type Lookup',
+            description:
+                'Look up HTTP Content-Type headers with descriptions, file extensions, and common usage flags. Search by type, extension, or category. One-click copy for every header.',
+            keywords: [
+                'content-type header',
+                'HTTP content type',
+                'MIME type lookup',
+                'media type reference',
+                'content type list',
+                'HTTP headers',
+                'API content type',
+            ],
+            path: '/content-type',
+            priority: 0.7,
+            changeFrequency: 'monthly',
+        },
     },
 
     disallowedPaths: [

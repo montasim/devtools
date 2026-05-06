@@ -236,6 +236,12 @@ export const TOOL_CATEGORIES = [
                 icon: FileText,
             },
             {
+                href: '/content-type',
+                label: 'Content-Type Reference',
+                description: 'HTTP Content-Type headers with usage guides',
+                icon: FileCode,
+            },
+            {
                 href: '/unicode',
                 label: 'Unicode Lookup',
                 description: 'Search Unicode characters by name and codepoint',

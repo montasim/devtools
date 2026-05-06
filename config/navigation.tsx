@@ -256,6 +256,13 @@ export const navigationMenu: MenuItem[] = [
                 category: 'Reference',
             },
             {
+                title: 'Content-Type Reference',
+                description: 'HTTP Content-Type headers with usage guides and one-click copy',
+                icon: <FileCode className="size-5 shrink-0" />,
+                url: '/content-type',
+                category: 'Reference',
+            },
+            {
                 title: 'Unicode Lookup',
                 description: 'Find any character and copy in every format',
                 icon: <Languages className="size-5 shrink-0" />,

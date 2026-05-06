@@ -118,6 +118,7 @@ const docSections = [
     { id: 'regex-tester', title: 'Regex Tester', icon: <Regex className="h-5 w-5" /> },
     { id: 'http-status', title: 'HTTP Status Codes', icon: <Globe className="h-5 w-5" /> },
     { id: 'mime-type', title: 'MIME Type Reference', icon: <FileText className="h-5 w-5" /> },
+    { id: 'content-type', title: 'Content-Type Reference', icon: <FileCode className="h-5 w-5" /> },
     { id: 'unicode-lookup', title: 'Unicode Lookup', icon: <Languages className="h-5 w-5" /> },
     { id: 'ascii-table', title: 'ASCII Table', icon: <Table2 className="h-5 w-5" /> },
     { id: 'cron-builder', title: 'CRON Builder', icon: <Timer className="h-5 w-5" /> },
@@ -1026,6 +1027,28 @@ export default function DocsPage() {
                 </PageSection>
 
                 <PageSection
+                    id="content-type"
+                    title="Content-Type Reference"
+                    description="Look up HTTP Content-Type headers with descriptions, extensions, and common usage flags."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <FileCode className="h-5 w-5 text-sky-600 dark:text-sky-400" />
+                                <h3 className="font-semibold">Content-Type Reference</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Search by Content-Type header, file extension, or description.
+                                Filter by category (application, audio, font, image, message,
+                                multipart, text, video). Common types like{' '}
+                                <code>application/json</code> and <code>multipart/form-data</code>{' '}
+                                are flagged for quick discovery. Every entry is one-click copyable.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
                     id="unicode-lookup"
                     title="Unicode Lookup"
                     description="Find any Unicode character by name, codepoint, or block — and copy it in every format."
@@ -1235,9 +1258,9 @@ export default function DocsPage() {
                             </div>
                             <p className="text-sm text-muted-foreground">
                                 Paste your email content, subject line, or marketing copy to find
-                                spam trigger words. The tool matches against a database of 558+ known
-                                spam words across 12 categories, shows a risk level assessment, and
-                                lists all matched words with hit counts.
+                                spam trigger words. The tool matches against a database of 558+
+                                known spam words across 12 categories, shows a risk level
+                                assessment, and lists all matched words with hit counts.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -1278,9 +1301,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Timezone Browser</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Browse 247 countries and their 437 IANA timezones. Filter by
-                                region, search countries, and expand to see all timezones per
-                                country with one-click copy.
+                                Browse 247 countries and their 437 IANA timezones. Filter by region,
+                                search countries, and expand to see all timezones per country with
+                                one-click copy.
                             </p>
                         </div>
                     </div>

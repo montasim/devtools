@@ -51,6 +51,7 @@ export const STORAGE_KEYS = {
     UNIT_TIMEZONE_STATE: 'unit-timezone-state',
     HTTP_STATUS_SEARCH: 'http-status-search',
     MIME_TYPE_SEARCH: 'mime-type-search',
+    CONTENT_TYPE_SEARCH: 'content-type-search',
     CSS_UNIT_STATE: 'css-unit-state',
     USER_AGENT_INPUT: 'user-agent-input',
     API_BUILDER_STATE: 'api-builder-state',
@@ -96,6 +97,7 @@ export const PAGE_NAMES = {
     UNIT: 'unit',
     HTTP_STATUS: 'http-status',
     MIME_TYPE: 'mime-type',
+    CONTENT_TYPE: 'content-type',
     CSS_UNIT: 'css-unit',
     USER_AGENT: 'user-agent',
     API_BUILDER: 'api-builder',
@@ -196,6 +198,10 @@ export const HTTP_STATUS_TABS = {
 } as const;
 
 export const MIME_TYPE_TABS = {
+    REFERENCE: 'reference',
+} as const;
+
+export const CONTENT_TYPE_TABS = {
     REFERENCE: 'reference',
 } as const;
 
@@ -307,6 +313,7 @@ export const TAB_NAMES = {
     ...UNIT_TABS,
     ...HTTP_STATUS_TABS,
     ...MIME_TYPE_TABS,
+    ...CONTENT_TYPE_TABS,
     ...CSS_UNIT_TABS,
     ...USER_AGENT_TABS,
     ...API_BUILDER_TABS,
