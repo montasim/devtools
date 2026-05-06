@@ -43,23 +43,9 @@ export function DataTablePagination({
     const pages = getPageNumbers(page, totalPages);
 
     return (
-        <div className="flex items-center justify-between gap-2 mx-auto w-full mt-4">
-            {onPageSizeChange && (
-                <Select value={String(pageSize)} onValueChange={(v) => onPageSizeChange(Number(v))}>
-                    <SelectTrigger className="h-8 w-[70px] text-xs">
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {PAGE_SIZE_OPTIONS.map((size) => (
-                            <SelectItem key={size} value={String(size)} className="text-xs">
-                                {size}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-            )}
+        <div className="flex flex-col gap-2 mx-auto w-full mt-4">
             {totalPages > 1 && (
-                <Pagination>
+                <Pagination className="mx-0">
                     <PaginationContent>
                         <PaginationItem>
                             <PaginationPrevious
@@ -99,10 +85,29 @@ export function DataTablePagination({
                     </PaginationContent>
                 </Pagination>
             )}
-            <span className="shrink-0 text-[11px] text-muted-foreground tabular-nums">
-                {page * pageSize + 1}–{Math.min((page + 1) * pageSize, total)} of{' '}
-                {total.toLocaleString()}
-            </span>
+            <div className="flex items-center justify-between">
+                {onPageSizeChange && (
+                    <Select
+                        value={String(pageSize)}
+                        onValueChange={(v) => onPageSizeChange(Number(v))}
+                    >
+                        <SelectTrigger className="h-8 w-[70px] text-xs">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {PAGE_SIZE_OPTIONS.map((size) => (
+                                <SelectItem key={size} value={String(size)} className="text-xs">
+                                    {size}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                )}
+                <span className="shrink-0 text-[11px] text-muted-foreground tabular-nums">
+                    {page * pageSize + 1}–{Math.min((page + 1) * pageSize, total)} of{' '}
+                    {total.toLocaleString()}
+                </span>
+            </div>
         </div>
     );
 }
