@@ -799,6 +799,39 @@ export const seoConfig: SEOConfig = {
             priority: 0.7,
             changeFrequency: 'monthly',
         },
+        'remove-extra-spaces': {
+            title: 'Remove Extra Spaces - Clean Whitespace from Text Instantly',
+            description:
+                'Remove extra spaces, tabs, and blank lines from any text. Paste messy content and get clean, formatted output in one click.',
+            keywords: [
+                'remove extra spaces',
+                'whitespace remover',
+                'clean text',
+                'remove tabs',
+                'text formatter',
+                'space remover',
+            ],
+            path: '/remove-extra-spaces',
+            priority: 0.6,
+            changeFrequency: 'monthly',
+        },
+        'fancy-text': {
+            title: 'Fancy Text Generator - 27 Unicode Text Styles Instantly',
+            description:
+                'Transform plain text into bold, script, circled, fraktur, zalgo, and 22 more Unicode styles. Copy and paste anywhere. Runs entirely in your browser.',
+            keywords: [
+                'fancy text generator',
+                'unicode text converter',
+                'bold text generator',
+                'cool text',
+                'fancy font',
+                'unicode converter',
+                'text style generator',
+            ],
+            path: '/fancy-text',
+            priority: 0.7,
+            changeFrequency: 'monthly',
+        },
     },
 
     disallowedPaths: [

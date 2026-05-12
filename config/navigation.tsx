@@ -36,6 +36,8 @@ import {
     Globe2,
     Clock,
     Database,
+    Eraser,
+    Sparkles,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -316,6 +318,21 @@ export const navigationMenu: MenuItem[] = [
                 description: 'World clock and timezone database for 247 countries',
                 icon: <Globe2 className="size-5 shrink-0" />,
                 url: '/timezones',
+                category: 'Utilities',
+            },
+            {
+                title: 'Remove Extra Spaces',
+                description: 'Clean messy whitespace from any text in one click',
+                icon: <Eraser className="size-5 shrink-0" />,
+                url: '/remove-extra-spaces',
+                category: 'Utilities',
+            },
+            {
+                title: 'Fancy Text Generator',
+                description:
+                    'Transform text into 27 Unicode styles — bold, script, circled, and more',
+                icon: <Sparkles className="size-5 shrink-0" />,
+                url: '/fancy-text',
                 category: 'Utilities',
             },
         ],
