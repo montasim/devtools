@@ -202,13 +202,6 @@ export const navigationMenu: MenuItem[] = [
                 category: 'Generators',
             },
             {
-                title: 'Emoji Picker',
-                description: '1,900+ emojis — click to copy for any platform',
-                icon: <Smile className="size-5 shrink-0" />,
-                url: '/emoji',
-                category: 'Reference',
-            },
-            {
                 title: 'API Request Builder',
                 description: 'Test APIs without installing Postman',
                 icon: <Zap className="size-5 shrink-0" />,
@@ -304,6 +297,13 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Searchable ASCII reference with one-click copy',
                 icon: <Table2 className="size-5 shrink-0" />,
                 url: '/ascii-table',
+                category: 'Reference',
+            },
+            {
+                title: 'Emoji Picker',
+                description: '1,900+ emojis — click to copy for any platform',
+                icon: <Smile className="size-5 shrink-0" />,
+                url: '/emoji',
                 category: 'Reference',
             },
             {
