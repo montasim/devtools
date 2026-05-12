@@ -52,10 +52,7 @@ const TEMP_EMAIL_THEME: CheckerTheme = {
     historyUnmatchedLabel: 'Safe',
 };
 
-function checkDisposableDomain(
-    domain: string,
-    domainSet: Set<string>,
-): DomainCheckResult {
+function checkDisposableDomain(domain: string, domainSet: Set<string>): DomainCheckResult {
     const d = domain.trim().toLowerCase();
     if (domainSet.has(d)) return { matched: true, domain: d };
     const parts = d.split('.');

@@ -1,154 +1,154 @@
 {
-  "total": 558,
-  "uniqueCategories": 12,
-  "categoryDistribution": [
-    {
-      "name": "General",
-      "value": 242
-    },
-    {
-      "name": "Money / Income",
-      "value": 57
-    },
-    {
-      "name": "Free / Giveaway",
-      "value": 50
-    },
-    {
-      "name": "Discount / Pricing",
-      "value": 38
-    },
-    {
-      "name": "Urgency",
-      "value": 35
-    },
-    {
-      "name": "Call to Action",
-      "value": 32
-    },
-    {
-      "name": "Financial",
-      "value": 22
-    },
-    {
-      "name": "Marketing",
-      "value": 22
-    },
-    {
-      "name": "Spam / Legal",
-      "value": 20
-    },
-    {
-      "name": "Guarantee / Risk-free",
-      "value": 17
-    },
-    {
-      "name": "Health / Pharma",
-      "value": 13
-    },
-    {
-      "name": "Business Opportunity",
-      "value": 10
-    }
-  ],
-  "lengthDistribution": [
-    {
-      "name": "0-4",
-      "value": 36
-    },
-    {
-      "name": "5-9",
-      "value": 153
-    },
-    {
-      "name": "10-14",
-      "value": 182
-    },
-    {
-      "name": "15-19",
-      "value": 129
-    },
-    {
-      "name": "20-24",
-      "value": 37
-    },
-    {
-      "name": "25-29",
-      "value": 15
-    },
-    {
-      "name": "30-34",
-      "value": 4
-    },
-    {
-      "name": "35-39",
-      "value": 1
-    },
-    {
-      "name": "45-49",
-      "value": 1
-    }
-  ],
-  "startingLetterDistribution": [
-    {
-      "name": "C",
-      "value": 58
-    },
-    {
-      "name": "S",
-      "value": 51
-    },
-    {
-      "name": "F",
-      "value": 43
-    },
-    {
-      "name": "N",
-      "value": 40
-    },
-    {
-      "name": "M",
-      "value": 30
-    },
-    {
-      "name": "A",
-      "value": 29
-    },
-    {
-      "name": "L",
-      "value": 29
-    },
-    {
-      "name": "B",
-      "value": 27
-    },
-    {
-      "name": "O",
-      "value": 26
-    },
-    {
-      "name": "W",
-      "value": 25
-    },
-    {
-      "name": "P",
-      "value": 24
-    },
-    {
-      "name": "E",
-      "value": 22
-    },
-    {
-      "name": "I",
-      "value": 22
-    },
-    {
-      "name": "R",
-      "value": 20
-    },
-    {
-      "name": "T",
-      "value": 20
-    }
-  ]
+    "total": 558,
+    "uniqueCategories": 12,
+    "categoryDistribution": [
+        {
+            "name": "General",
+            "value": 242
+        },
+        {
+            "name": "Money / Income",
+            "value": 57
+        },
+        {
+            "name": "Free / Giveaway",
+            "value": 50
+        },
+        {
+            "name": "Discount / Pricing",
+            "value": 38
+        },
+        {
+            "name": "Urgency",
+            "value": 35
+        },
+        {
+            "name": "Call to Action",
+            "value": 32
+        },
+        {
+            "name": "Financial",
+            "value": 22
+        },
+        {
+            "name": "Marketing",
+            "value": 22
+        },
+        {
+            "name": "Spam / Legal",
+            "value": 20
+        },
+        {
+            "name": "Guarantee / Risk-free",
+            "value": 17
+        },
+        {
+            "name": "Health / Pharma",
+            "value": 13
+        },
+        {
+            "name": "Business Opportunity",
+            "value": 10
+        }
+    ],
+    "lengthDistribution": [
+        {
+            "name": "0-4",
+            "value": 36
+        },
+        {
+            "name": "5-9",
+            "value": 153
+        },
+        {
+            "name": "10-14",
+            "value": 182
+        },
+        {
+            "name": "15-19",
+            "value": 129
+        },
+        {
+            "name": "20-24",
+            "value": 37
+        },
+        {
+            "name": "25-29",
+            "value": 15
+        },
+        {
+            "name": "30-34",
+            "value": 4
+        },
+        {
+            "name": "35-39",
+            "value": 1
+        },
+        {
+            "name": "45-49",
+            "value": 1
+        }
+    ],
+    "startingLetterDistribution": [
+        {
+            "name": "C",
+            "value": 58
+        },
+        {
+            "name": "S",
+            "value": 51
+        },
+        {
+            "name": "F",
+            "value": 43
+        },
+        {
+            "name": "N",
+            "value": 40
+        },
+        {
+            "name": "M",
+            "value": 30
+        },
+        {
+            "name": "A",
+            "value": 29
+        },
+        {
+            "name": "L",
+            "value": 29
+        },
+        {
+            "name": "B",
+            "value": 27
+        },
+        {
+            "name": "O",
+            "value": 26
+        },
+        {
+            "name": "W",
+            "value": 25
+        },
+        {
+            "name": "P",
+            "value": 24
+        },
+        {
+            "name": "E",
+            "value": 22
+        },
+        {
+            "name": "I",
+            "value": 22
+        },
+        {
+            "name": "R",
+            "value": 20
+        },
+        {
+            "name": "T",
+            "value": 20
+        }
+    ]
 }

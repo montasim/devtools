@@ -10,8 +10,6 @@ const ReferenceTab = lazy(
     () => import('@/features/tools/content-type/tabs/reference-tab'),
 ) as unknown as ComponentType<TabComponentProps>;
 
-const TOOL_COLOR = 'bg-sky-100 text-sky-700 dark:bg-sky-900 dark:text-sky-300';
-
 const CONTENT_TYPE_TOOL = registerToolAndGet();
 
 function registerToolAndGet() {

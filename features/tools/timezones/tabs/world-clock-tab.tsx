@@ -5,16 +5,7 @@ import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import {
-    Clock,
-    Plus,
-    X,
-    Search,
-    Sun,
-    Moon,
-    Sunrise,
-    Sunset,
-} from 'lucide-react';
+import { Clock, Plus, X, Search, Sun, Moon, Sunrise, Sunset } from 'lucide-react';
 import type { TabComponentProps } from '../../core/types/tool';
 import rawCountries from '../data/countries.json';
 
@@ -112,7 +103,14 @@ function ClockCard({
     const offsetPart = parts.find((p) => p.type === 'timeZoneName');
     const offset = offsetPart?.value ?? '';
 
-    const timeOfDay = hour >= 6 && hour < 8 ? 'sunrise' : hour >= 8 && hour < 18 ? 'day' : hour >= 18 && hour < 20 ? 'sunset' : 'night';
+    const timeOfDay =
+        hour >= 6 && hour < 8
+            ? 'sunrise'
+            : hour >= 8 && hour < 18
+              ? 'day'
+              : hour >= 18 && hour < 20
+                ? 'sunset'
+                : 'night';
     const iconClass = `h-4 w-4 shrink-0 ${getTimeOfDayColor(hour)}`;
 
     return (
@@ -159,9 +157,7 @@ function ClockCard({
 }
 
 export default function WorldClockTab({ readOnly }: TabComponentProps) {
-    const [selected, setSelected] = useState<{ label: string; timezone: string }[]>([
-        ...CAPITALS,
-    ]);
+    const [selected, setSelected] = useState<{ label: string; timezone: string }[]>([...CAPITALS]);
     const [search, setSearch] = useState('');
     const [showPicker, setShowPicker] = useState(false);
 
@@ -192,11 +188,11 @@ export default function WorldClockTab({ readOnly }: TabComponentProps) {
     const filteredOptions = useMemo(() => {
         if (!search.trim()) return allOptions.slice(0, 20);
         const q = search.toLowerCase();
-        return allOptions.filter(
-            (o) =>
-                o.label.toLowerCase().includes(q) ||
-                o.timezone.toLowerCase().includes(q),
-        ).slice(0, 20);
+        return allOptions
+            .filter(
+                (o) => o.label.toLowerCase().includes(q) || o.timezone.toLowerCase().includes(q),
+            )
+            .slice(0, 20);
     }, [allOptions, search]);
 
     const selectedTimezones = useMemo(() => new Set(selected.map((s) => s.timezone)), [selected]);
@@ -276,7 +272,10 @@ export default function WorldClockTab({ readOnly }: TabComponentProps) {
                                                 </span>
                                             </div>
                                             {isSelected && (
-                                                <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                                                <Badge
+                                                    variant="outline"
+                                                    className="text-[10px] px-1.5 py-0"
+                                                >
                                                     Added
                                                 </Badge>
                                             )}
@@ -293,10 +292,7 @@ export default function WorldClockTab({ readOnly }: TabComponentProps) {
                 </div>
 
                 {showPicker && (
-                    <div
-                        className="fixed inset-0 z-40"
-                        onClick={() => setShowPicker(false)}
-                    />
+                    <div className="fixed inset-0 z-40" onClick={() => setShowPicker(false)} />
                 )}
 
                 <div className="grid gap-3 sm:grid-cols-2">
@@ -313,9 +309,7 @@ export default function WorldClockTab({ readOnly }: TabComponentProps) {
                 {selected.length === 0 && (
                     <div className="h-48 flex flex-col items-center justify-center rounded-lg border p-8 text-center">
                         <Clock className="h-10 w-10 text-muted-foreground/40 mb-3" />
-                        <p className="text-sm font-medium text-muted-foreground">
-                            No cities added
-                        </p>
+                        <p className="text-sm font-medium text-muted-foreground">No cities added</p>
                         <p className="text-xs text-muted-foreground/60 mt-1">
                             Search and add cities to see their current time
                         </p>

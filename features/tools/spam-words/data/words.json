@@ -1,2792 +1,2792 @@
 [
-  {
-    "word": "0%",
-    "category": "General",
-    "length": 2
-  },
-  {
-    "word": "0% risk",
-    "category": "Guarantee / Risk-free",
-    "length": 7
-  },
-  {
-    "word": "777",
-    "category": "General",
-    "length": 3
-  },
-  {
-    "word": "99%",
-    "category": "General",
-    "length": 3
-  },
-  {
-    "word": "99.9%",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "100%",
-    "category": "General",
-    "length": 4
-  },
-  {
-    "word": "100% more",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "#1",
-    "category": "General",
-    "length": 2
-  },
-  {
-    "word": "$$$",
-    "category": "Money / Income",
-    "length": 3
-  },
-  {
-    "word": "100% free",
-    "category": "Free / Giveaway",
-    "length": 9
-  },
-  {
-    "word": "100% satisfied",
-    "category": "General",
-    "length": 14
-  },
-  {
-    "word": "4U",
-    "category": "General",
-    "length": 2
-  },
-  {
-    "word": "50% off",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Accept credit cards",
-    "category": "Financial",
-    "length": 19
-  },
-  {
-    "word": "Acceptance",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Access",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Access now",
-    "category": "Urgency",
-    "length": 10
-  },
-  {
-    "word": "Access for free",
-    "category": "Free / Giveaway",
-    "length": 15
-  },
-  {
-    "word": "Accordingly",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Act Now",
-    "category": "Urgency",
-    "length": 7
-  },
-  {
-    "word": "Act immediately",
-    "category": "Urgency",
-    "length": 15
-  },
-  {
-    "word": "Action",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Action required",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Ad",
-    "category": "General",
-    "length": 2
-  },
-  {
-    "word": "Additional income",
-    "category": "Money / Income",
-    "length": 17
-  },
-  {
-    "word": "Addresses on CD",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Affordable",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Affordable deal",
-    "category": "Discount / Pricing",
-    "length": 15
-  },
-  {
-    "word": "All natural",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "All new",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Amazed",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Amazing",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Amazing offer",
-    "category": "Discount / Pricing",
-    "length": 13
-  },
-  {
-    "word": "Amazing stuff",
-    "category": "General",
-    "length": 13
-  },
-  {
-    "word": "Apply here",
-    "category": "Call to Action",
-    "length": 10
-  },
-  {
-    "word": "Apply now",
-    "category": "Call to Action",
-    "length": 9
-  },
-  {
-    "word": "Apply Online",
-    "category": "Call to Action",
-    "length": 12
-  },
-  {
-    "word": "As seen on",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "At no cost",
-    "category": "Guarantee / Risk-free",
-    "length": 10
-  },
-  {
-    "word": "Auto email removal",
-    "category": "Marketing",
-    "length": 18
-  },
-  {
-    "word": "Avoid",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Avoid bankruptcy",
-    "category": "Financial",
-    "length": 16
-  },
-  {
-    "word": "Bargain",
-    "category": "Discount / Pricing",
-    "length": 7
-  },
-  {
-    "word": "Be amazed",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "Be surprised",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "Be your own boss",
-    "category": "Business Opportunity",
-    "length": 16
-  },
-  {
-    "word": "Believe me",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Being a member",
-    "category": "General",
-    "length": 14
-  },
-  {
-    "word": "Beneficiary",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Best bargain",
-    "category": "Discount / Pricing",
-    "length": 12
-  },
-  {
-    "word": "Best deal",
-    "category": "Discount / Pricing",
-    "length": 9
-  },
-  {
-    "word": "Best price",
-    "category": "Discount / Pricing",
-    "length": 10
-  },
-  {
-    "word": "Best offer",
-    "category": "Discount / Pricing",
-    "length": 10
-  },
-  {
-    "word": "Beverage",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "Big bucks",
-    "category": "Money / Income",
-    "length": 9
-  },
-  {
-    "word": "Bill 1618",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "Billing",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Billing address",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Billionaire",
-    "category": "Money / Income",
-    "length": 11
-  },
-  {
-    "word": "Billion",
-    "category": "Money / Income",
-    "length": 7
-  },
-  {
-    "word": "Billion dollars",
-    "category": "Money / Income",
-    "length": 15
-  },
-  {
-    "word": "Bonus",
-    "category": "Free / Giveaway",
-    "length": 5
-  },
-  {
-    "word": "Boss",
-    "category": "Business Opportunity",
-    "length": 4
-  },
-  {
-    "word": "Brand new pager",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Bulk email",
-    "category": "Marketing",
-    "length": 10
-  },
-  {
-    "word": "Buy",
-    "category": "Call to Action",
-    "length": 3
-  },
-  {
-    "word": "Buy now",
-    "category": "Call to Action",
-    "length": 7
-  },
-  {
-    "word": "Buy direct",
-    "category": "Call to Action",
-    "length": 10
-  },
-  {
-    "word": "Buying judgments",
-    "category": "Call to Action",
-    "length": 16
-  },
-  {
-    "word": "Cable converter",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Call",
-    "category": "Call to Action",
-    "length": 4
-  },
-  {
-    "word": "Call free",
-    "category": "Free / Giveaway",
-    "length": 9
-  },
-  {
-    "word": "Call me",
-    "category": "Call to Action",
-    "length": 7
-  },
-  {
-    "word": "Call now",
-    "category": "Call to Action",
-    "length": 8
-  },
-  {
-    "word": "Calling creditors",
-    "category": "Call to Action",
-    "length": 17
-  },
-  {
-    "word": "Can\u2019t live without",
-    "category": "General",
-    "length": 18
-  },
-  {
-    "word": "Cancel",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Cancel at any time",
-    "category": "General",
-    "length": 18
-  },
-  {
-    "word": "Cancel now",
-    "category": "Urgency",
-    "length": 10
-  },
-  {
-    "word": "Cancellation required",
-    "category": "General",
-    "length": 21
-  },
-  {
-    "word": "Cannot be combined with any other offer",
-    "category": "Discount / Pricing",
-    "length": 39
-  },
-  {
-    "word": "Cards accepted",
-    "category": "General",
-    "length": 14
-  },
-  {
-    "word": "Cash",
-    "category": "Money / Income",
-    "length": 4
-  },
-  {
-    "word": "Cash out",
-    "category": "Money / Income",
-    "length": 8
-  },
-  {
-    "word": "Cash bonus",
-    "category": "Free / Giveaway",
-    "length": 10
-  },
-  {
-    "word": "Cashcashcash",
-    "category": "Money / Income",
-    "length": 12
-  },
-  {
-    "word": "Casino",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Celebrity",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "Cell phone cancer scam",
-    "category": "Spam / Legal",
-    "length": 22
-  },
-  {
-    "word": "Cents on the dollar",
-    "category": "Money / Income",
-    "length": 19
-  },
-  {
-    "word": "Certified",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "Chance",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Cheap",
-    "category": "Discount / Pricing",
-    "length": 5
-  },
-  {
-    "word": "Check",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Check or money order",
-    "category": "Money / Income",
-    "length": 20
-  },
-  {
-    "word": "Claims",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Claim now",
-    "category": "Urgency",
-    "length": 9
-  },
-  {
-    "word": "Claim your discount",
-    "category": "Discount / Pricing",
-    "length": 19
-  },
-  {
-    "word": "Claims not to be selling anything",
-    "category": "General",
-    "length": 33
-  },
-  {
-    "word": "Claims to be in accordance with some spam law",
-    "category": "Spam / Legal",
-    "length": 45
-  },
-  {
-    "word": "Claims to be legal",
-    "category": "Spam / Legal",
-    "length": 18
-  },
-  {
-    "word": "Clearance",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "Click",
-    "category": "Call to Action",
-    "length": 5
-  },
-  {
-    "word": "Click below",
-    "category": "Call to Action",
-    "length": 11
-  },
-  {
-    "word": "Click here",
-    "category": "Call to Action",
-    "length": 10
-  },
-  {
-    "word": "Click now",
-    "category": "Call to Action",
-    "length": 9
-  },
-  {
-    "word": "Click to get",
-    "category": "Call to Action",
-    "length": 12
-  },
-  {
-    "word": "Click to remove",
-    "category": "Call to Action",
-    "length": 15
-  },
-  {
-    "word": "Collect",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Collect child support",
-    "category": "General",
-    "length": 21
-  },
-  {
-    "word": "Compare",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Compare now",
-    "category": "Urgency",
-    "length": 11
-  },
-  {
-    "word": "Compare online",
-    "category": "General",
-    "length": 14
-  },
-  {
-    "word": "Compare rates",
-    "category": "General",
-    "length": 13
-  },
-  {
-    "word": "Compete for your business",
-    "category": "Business Opportunity",
-    "length": 25
-  },
-  {
-    "word": "Confidentially on all orders",
-    "category": "Call to Action",
-    "length": 28
-  },
-  {
-    "word": "Congratulations",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Consolidate debt and credit",
-    "category": "Financial",
-    "length": 27
-  },
-  {
-    "word": "Consolidate your debt",
-    "category": "Financial",
-    "length": 21
-  },
-  {
-    "word": "Copy accurately",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Copy DVDs",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "Costs",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Credit",
-    "category": "Financial",
-    "length": 6
-  },
-  {
-    "word": "Credit bureaus",
-    "category": "Financial",
-    "length": 14
-  },
-  {
-    "word": "Credit card offers",
-    "category": "Discount / Pricing",
-    "length": 18
-  },
-  {
-    "word": "Cures",
-    "category": "Health / Pharma",
-    "length": 5
-  },
-  {
-    "word": "Cures baldness",
-    "category": "Health / Pharma",
-    "length": 14
-  },
-  {
-    "word": "Deal",
-    "category": "Discount / Pricing",
-    "length": 4
-  },
-  {
-    "word": "Dear]",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Debt",
-    "category": "Financial",
-    "length": 4
-  },
-  {
-    "word": "Diagnostics",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Dig up dirt on friends",
-    "category": "General",
-    "length": 22
-  },
-  {
-    "word": "Direct email",
-    "category": "Marketing",
-    "length": 12
-  },
-  {
-    "word": "Direct marketing",
-    "category": "Marketing",
-    "length": 16
-  },
-  {
-    "word": "Discount",
-    "category": "Discount / Pricing",
-    "length": 8
-  },
-  {
-    "word": "Do it now",
-    "category": "Urgency",
-    "length": 9
-  },
-  {
-    "word": "Do it today",
-    "category": "Urgency",
-    "length": 11
-  },
-  {
-    "word": "Don\u2019t delete",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "Don\u2019t hesitate",
-    "category": "General",
-    "length": 14
-  },
-  {
-    "word": "Dormant",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Double your",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Double your cash",
-    "category": "Money / Income",
-    "length": 16
-  },
-  {
-    "word": "Double your income",
-    "category": "Money / Income",
-    "length": 18
-  },
-  {
-    "word": "Double your wealth",
-    "category": "Money / Income",
-    "length": 18
-  },
-  {
-    "word": "Drastically reduced",
-    "category": "Call to Action",
-    "length": 19
-  },
-  {
-    "word": "Earn",
-    "category": "Money / Income",
-    "length": 4
-  },
-  {
-    "word": "Earn $",
-    "category": "Money / Income",
-    "length": 6
-  },
-  {
-    "word": "Earn extra cash",
-    "category": "Money / Income",
-    "length": 15
-  },
-  {
-    "word": "Earn money",
-    "category": "Money / Income",
-    "length": 10
-  },
-  {
-    "word": "Earn monthly",
-    "category": "Money / Income",
-    "length": 12
-  },
-  {
-    "word": "Earn from home",
-    "category": "Money / Income",
-    "length": 14
-  },
-  {
-    "word": "Earn per month",
-    "category": "Money / Income",
-    "length": 14
-  },
-  {
-    "word": "Earn per week",
-    "category": "Money / Income",
-    "length": 13
-  },
-  {
-    "word": "Easy terms",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Eliminate bad credit",
-    "category": "Financial",
-    "length": 20
-  },
-  {
-    "word": "Eliminate debt",
-    "category": "Financial",
-    "length": 14
-  },
-  {
-    "word": "Email extractor",
-    "category": "Marketing",
-    "length": 15
-  },
-  {
-    "word": "Email harvest",
-    "category": "Marketing",
-    "length": 13
-  },
-  {
-    "word": "Email marketing",
-    "category": "Marketing",
-    "length": 15
-  },
-  {
-    "word": "Exclusive deal",
-    "category": "Discount / Pricing",
-    "length": 14
-  },
-  {
-    "word": "Expect to earn",
-    "category": "Money / Income",
-    "length": 14
-  },
-  {
-    "word": "Expire",
-    "category": "Urgency",
-    "length": 6
-  },
-  {
-    "word": "Explode your business",
-    "category": "Business Opportunity",
-    "length": 21
-  },
-  {
-    "word": "Extra",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Extra cash",
-    "category": "Money / Income",
-    "length": 10
-  },
-  {
-    "word": "Extra income",
-    "category": "Money / Income",
-    "length": 12
-  },
-  {
-    "word": "Extract email",
-    "category": "Marketing",
-    "length": 13
-  },
-  {
-    "word": "Free",
-    "category": "Free / Giveaway",
-    "length": 4
-  },
-  {
-    "word": "Fantastic",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "Fantastic deal",
-    "category": "Discount / Pricing",
-    "length": 14
-  },
-  {
-    "word": "Fantastic offer",
-    "category": "Discount / Pricing",
-    "length": 15
-  },
-  {
-    "word": "Fast cash",
-    "category": "Money / Income",
-    "length": 9
-  },
-  {
-    "word": "Fast Viagra delivery",
-    "category": "Health / Pharma",
-    "length": 20
-  },
-  {
-    "word": "Financial freedom",
-    "category": "Free / Giveaway",
-    "length": 17
-  },
-  {
-    "word": "Financially independent",
-    "category": "General",
-    "length": 23
-  },
-  {
-    "word": "For free",
-    "category": "Free / Giveaway",
-    "length": 8
-  },
-  {
-    "word": "For instant access",
-    "category": "General",
-    "length": 18
-  },
-  {
-    "word": "For just $",
-    "category": "Money / Income",
-    "length": 10
-  },
-  {
-    "word": "For Only",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "For you",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Form",
-    "category": "General",
-    "length": 4
-  },
-  {
-    "word": "Free",
-    "category": "Free / Giveaway",
-    "length": 4
-  },
-  {
-    "word": "Free access",
-    "category": "Free / Giveaway",
-    "length": 11
-  },
-  {
-    "word": "Free bonus",
-    "category": "Free / Giveaway",
-    "length": 10
-  },
-  {
-    "word": "Free cell phone",
-    "category": "Free / Giveaway",
-    "length": 15
-  },
-  {
-    "word": "Free consultation",
-    "category": "Free / Giveaway",
-    "length": 17
-  },
-  {
-    "word": "Free DVD",
-    "category": "Free / Giveaway",
-    "length": 8
-  },
-  {
-    "word": "Free gift",
-    "category": "Free / Giveaway",
-    "length": 9
-  },
-  {
-    "word": "Free grant money",
-    "category": "Free / Giveaway",
-    "length": 16
-  },
-  {
-    "word": "Free hosting",
-    "category": "Free / Giveaway",
-    "length": 12
-  },
-  {
-    "word": "Free info",
-    "category": "Free / Giveaway",
-    "length": 9
-  },
-  {
-    "word": "Free information",
-    "category": "Free / Giveaway",
-    "length": 16
-  },
-  {
-    "word": "Free installation",
-    "category": "Free / Giveaway",
-    "length": 17
-  },
-  {
-    "word": "Free instant",
-    "category": "Free / Giveaway",
-    "length": 12
-  },
-  {
-    "word": "Free investment",
-    "category": "Free / Giveaway",
-    "length": 15
-  },
-  {
-    "word": "Free iPhone",
-    "category": "Free / Giveaway",
-    "length": 11
-  },
-  {
-    "word": "Free leads",
-    "category": "Free / Giveaway",
-    "length": 10
-  },
-  {
-    "word": "Free Macbook",
-    "category": "Free / Giveaway",
-    "length": 12
-  },
-  {
-    "word": "Free membership",
-    "category": "Free / Giveaway",
-    "length": 15
-  },
-  {
-    "word": "Free money",
-    "category": "Free / Giveaway",
-    "length": 10
-  },
-  {
-    "word": "Free offer",
-    "category": "Free / Giveaway",
-    "length": 10
-  },
-  {
-    "word": "Free preview",
-    "category": "Free / Giveaway",
-    "length": 12
-  },
-  {
-    "word": "Free priority mail",
-    "category": "Free / Giveaway",
-    "length": 18
-  },
-  {
-    "word": "Free quote",
-    "category": "Free / Giveaway",
-    "length": 10
-  },
-  {
-    "word": "Free sample",
-    "category": "Free / Giveaway",
-    "length": 11
-  },
-  {
-    "word": "Free trial",
-    "category": "Free / Giveaway",
-    "length": 10
-  },
-  {
-    "word": "Free website",
-    "category": "Free / Giveaway",
-    "length": 12
-  },
-  {
-    "word": "Freedom",
-    "category": "Free / Giveaway",
-    "length": 7
-  },
-  {
-    "word": "Friend",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Full refund",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Get",
-    "category": "General",
-    "length": 3
-  },
-  {
-    "word": "Get it now",
-    "category": "Urgency",
-    "length": 10
-  },
-  {
-    "word": "Get out of debt",
-    "category": "Financial",
-    "length": 15
-  },
-  {
-    "word": "Get paid",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "Get started now",
-    "category": "Urgency",
-    "length": 15
-  },
-  {
-    "word": "Gift certificate",
-    "category": "Free / Giveaway",
-    "length": 16
-  },
-  {
-    "word": "Give it away",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "Giving away",
-    "category": "Free / Giveaway",
-    "length": 11
-  },
-  {
-    "word": "Great",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Great deal",
-    "category": "Discount / Pricing",
-    "length": 10
-  },
-  {
-    "word": "Great offer",
-    "category": "Discount / Pricing",
-    "length": 11
-  },
-  {
-    "word": "Guarantee",
-    "category": "Guarantee / Risk-free",
-    "length": 9
-  },
-  {
-    "word": "Guaranteed",
-    "category": "Guarantee / Risk-free",
-    "length": 10
-  },
-  {
-    "word": "Guaranteed deposit",
-    "category": "Guarantee / Risk-free",
-    "length": 18
-  },
-  {
-    "word": "Guaranteed income",
-    "category": "Money / Income",
-    "length": 17
-  },
-  {
-    "word": "Guaranteed payment",
-    "category": "Guarantee / Risk-free",
-    "length": 18
-  },
-  {
-    "word": "Have you been turned down?",
-    "category": "General",
-    "length": 26
-  },
-  {
-    "word": "Hello",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Here",
-    "category": "General",
-    "length": 4
-  },
-  {
-    "word": "Hidden",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Hidden assets",
-    "category": "General",
-    "length": 13
-  },
-  {
-    "word": "Hidden charges",
-    "category": "General",
-    "length": 14
-  },
-  {
-    "word": "Hidden fees",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "High score",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Home",
-    "category": "Business Opportunity",
-    "length": 4
-  },
-  {
-    "word": "Home based",
-    "category": "Business Opportunity",
-    "length": 10
-  },
-  {
-    "word": "Home employment",
-    "category": "Business Opportunity",
-    "length": 15
-  },
-  {
-    "word": "Home based business",
-    "category": "Business Opportunity",
-    "length": 19
-  },
-  {
-    "word": "Human growth hormone",
-    "category": "Health / Pharma",
-    "length": 20
-  },
-  {
-    "word": "Huge discount",
-    "category": "Discount / Pricing",
-    "length": 13
-  },
-  {
-    "word": "Hurry up",
-    "category": "Urgency",
-    "length": 8
-  },
-  {
-    "word": "If only it were that easy",
-    "category": "General",
-    "length": 25
-  },
-  {
-    "word": "Important information regarding",
-    "category": "General",
-    "length": 31
-  },
-  {
-    "word": "Important notification",
-    "category": "General",
-    "length": 22
-  },
-  {
-    "word": "In accordance with laws",
-    "category": "Spam / Legal",
-    "length": 23
-  },
-  {
-    "word": "Income",
-    "category": "Money / Income",
-    "length": 6
-  },
-  {
-    "word": "Income from home",
-    "category": "Money / Income",
-    "length": 16
-  },
-  {
-    "word": "Increase sales",
-    "category": "Discount / Pricing",
-    "length": 14
-  },
-  {
-    "word": "Increase traffic",
-    "category": "Marketing",
-    "length": 16
-  },
-  {
-    "word": "Increase your chances",
-    "category": "General",
-    "length": 21
-  },
-  {
-    "word": "Increase your sales",
-    "category": "Discount / Pricing",
-    "length": 19
-  },
-  {
-    "word": "Incredible deal",
-    "category": "Discount / Pricing",
-    "length": 15
-  },
-  {
-    "word": "Info you requested",
-    "category": "General",
-    "length": 18
-  },
-  {
-    "word": "Information you requested",
-    "category": "General",
-    "length": 25
-  },
-  {
-    "word": "Instant",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Instant earnings",
-    "category": "Money / Income",
-    "length": 16
-  },
-  {
-    "word": "Instant income",
-    "category": "Money / Income",
-    "length": 14
-  },
-  {
-    "word": "Insurance",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "Internet market",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Internet marketing",
-    "category": "Marketing",
-    "length": 18
-  },
-  {
-    "word": "Investment",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Investment decision",
-    "category": "General",
-    "length": 19
-  },
-  {
-    "word": "It\u2019s effective",
-    "category": "General",
-    "length": 14
-  },
-  {
-    "word": "Join millions",
-    "category": "Money / Income",
-    "length": 13
-  },
-  {
-    "word": "Join millions of Americans",
-    "category": "Money / Income",
-    "length": 26
-  },
-  {
-    "word": "Junk",
-    "category": "Spam / Legal",
-    "length": 4
-  },
-  {
-    "word": "Laser printer",
-    "category": "General",
-    "length": 13
-  },
-  {
-    "word": "Leave",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Legal",
-    "category": "Spam / Legal",
-    "length": 5
-  },
-  {
-    "word": "Legal notice",
-    "category": "Spam / Legal",
-    "length": 12
-  },
-  {
-    "word": "Life",
-    "category": "General",
-    "length": 4
-  },
-  {
-    "word": "Life Insurance",
-    "category": "General",
-    "length": 14
-  },
-  {
-    "word": "Lifetime",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "Lifetime access",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Lifetime deal",
-    "category": "Discount / Pricing",
-    "length": 13
-  },
-  {
-    "word": "Limited amount",
-    "category": "Urgency",
-    "length": 14
-  },
-  {
-    "word": "Limited number",
-    "category": "Urgency",
-    "length": 14
-  },
-  {
-    "word": "Limited offer",
-    "category": "Urgency",
-    "length": 13
-  },
-  {
-    "word": "Limited supply",
-    "category": "Urgency",
-    "length": 14
-  },
-  {
-    "word": "Limited time",
-    "category": "Urgency",
-    "length": 12
-  },
-  {
-    "word": "Limited time offer",
-    "category": "Urgency",
-    "length": 18
-  },
-  {
-    "word": "Limited time only",
-    "category": "Urgency",
-    "length": 17
-  },
-  {
-    "word": "Loan",
-    "category": "Financial",
-    "length": 4
-  },
-  {
-    "word": "Long distance phone offer",
-    "category": "Discount / Pricing",
-    "length": 25
-  },
-  {
-    "word": "Lose",
-    "category": "General",
-    "length": 4
-  },
-  {
-    "word": "Lose weight",
-    "category": "Health / Pharma",
-    "length": 11
-  },
-  {
-    "word": "Lose weight spam",
-    "category": "Spam / Legal",
-    "length": 16
-  },
-  {
-    "word": "Lower interest rates",
-    "category": "Financial",
-    "length": 20
-  },
-  {
-    "word": "Lower monthly payment",
-    "category": "General",
-    "length": 21
-  },
-  {
-    "word": "Lower your mortgage rate",
-    "category": "Financial",
-    "length": 24
-  },
-  {
-    "word": "Lowest insurance rates",
-    "category": "Discount / Pricing",
-    "length": 22
-  },
-  {
-    "word": "Lowest price",
-    "category": "Discount / Pricing",
-    "length": 12
-  },
-  {
-    "word": "Lowest rate",
-    "category": "Discount / Pricing",
-    "length": 11
-  },
-  {
-    "word": "Luxury",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Luxury car",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Mail in order form",
-    "category": "Call to Action",
-    "length": 18
-  },
-  {
-    "word": "Maintained",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Make $",
-    "category": "Money / Income",
-    "length": 6
-  },
-  {
-    "word": "Make money",
-    "category": "Money / Income",
-    "length": 10
-  },
-  {
-    "word": "Marketing",
-    "category": "Marketing",
-    "length": 9
-  },
-  {
-    "word": "Marketing solutions",
-    "category": "Marketing",
-    "length": 19
-  },
-  {
-    "word": "Mass email",
-    "category": "Marketing",
-    "length": 10
-  },
-  {
-    "word": "Medicine",
-    "category": "Health / Pharma",
-    "length": 8
-  },
-  {
-    "word": "Medium",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Meet girls",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Meet me",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Meet singles",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "Meet women",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Member",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Member stuff",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "Message contains",
-    "category": "General",
-    "length": 16
-  },
-  {
-    "word": "Message contains disclaimer",
-    "category": "Spam / Legal",
-    "length": 27
-  },
-  {
-    "word": "Million",
-    "category": "Money / Income",
-    "length": 7
-  },
-  {
-    "word": "Millionaire",
-    "category": "Money / Income",
-    "length": 11
-  },
-  {
-    "word": "Million dollars",
-    "category": "Money / Income",
-    "length": 15
-  },
-  {
-    "word": "Miracle",
-    "category": "Health / Pharma",
-    "length": 7
-  },
-  {
-    "word": "MLM",
-    "category": "Business Opportunity",
-    "length": 3
-  },
-  {
-    "word": "Money",
-    "category": "Money / Income",
-    "length": 5
-  },
-  {
-    "word": "Money back",
-    "category": "Money / Income",
-    "length": 10
-  },
-  {
-    "word": "Money making",
-    "category": "Money / Income",
-    "length": 12
-  },
-  {
-    "word": "Month trial offer",
-    "category": "Free / Giveaway",
-    "length": 17
-  },
-  {
-    "word": "More Internet Traffic",
-    "category": "Marketing",
-    "length": 21
-  },
-  {
-    "word": "Mortgage",
-    "category": "Financial",
-    "length": 8
-  },
-  {
-    "word": "Mortgage rates",
-    "category": "Financial",
-    "length": 14
-  },
-  {
-    "word": "Multi-level marketing",
-    "category": "Marketing",
-    "length": 21
-  },
-  {
-    "word": "Name brand",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Never",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Never before",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "New customers only",
-    "category": "General",
-    "length": 18
-  },
-  {
-    "word": "New domain extensions",
-    "category": "General",
-    "length": 21
-  },
-  {
-    "word": "Nigerian",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "No age restrictions",
-    "category": "General",
-    "length": 19
-  },
-  {
-    "word": "No catch",
-    "category": "Guarantee / Risk-free",
-    "length": 8
-  },
-  {
-    "word": "No claim forms",
-    "category": "General",
-    "length": 14
-  },
-  {
-    "word": "No cost",
-    "category": "Guarantee / Risk-free",
-    "length": 7
-  },
-  {
-    "word": "No credit check",
-    "category": "Financial",
-    "length": 15
-  },
-  {
-    "word": "No deposit required",
-    "category": "General",
-    "length": 19
-  },
-  {
-    "word": "No disappointment",
-    "category": "General",
-    "length": 17
-  },
-  {
-    "word": "No experience",
-    "category": "General",
-    "length": 13
-  },
-  {
-    "word": "No fees",
-    "category": "Guarantee / Risk-free",
-    "length": 7
-  },
-  {
-    "word": "No gimmick",
-    "category": "Guarantee / Risk-free",
-    "length": 10
-  },
-  {
-    "word": "No hidden",
-    "category": "Guarantee / Risk-free",
-    "length": 9
-  },
-  {
-    "word": "No hidden \u0441osts",
-    "category": "Guarantee / Risk-free",
-    "length": 15
-  },
-  {
-    "word": "No hidden fees",
-    "category": "Guarantee / Risk-free",
-    "length": 14
-  },
-  {
-    "word": "No interests",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "No inventory",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "No investment",
-    "category": "General",
-    "length": 13
-  },
-  {
-    "word": "No investment required",
-    "category": "General",
-    "length": 22
-  },
-  {
-    "word": "No medical exams",
-    "category": "General",
-    "length": 16
-  },
-  {
-    "word": "No middleman",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "No obligation",
-    "category": "Guarantee / Risk-free",
-    "length": 13
-  },
-  {
-    "word": "No payment required",
-    "category": "General",
-    "length": 19
-  },
-  {
-    "word": "No purchase necessary",
-    "category": "General",
-    "length": 21
-  },
-  {
-    "word": "No questions asked",
-    "category": "General",
-    "length": 18
-  },
-  {
-    "word": "No selling",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "No strings attached",
-    "category": "General",
-    "length": 19
-  },
-  {
-    "word": "No-obligation",
-    "category": "General",
-    "length": 13
-  },
-  {
-    "word": "Not intended",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "Not junk",
-    "category": "Spam / Legal",
-    "length": 8
-  },
-  {
-    "word": "Not scam",
-    "category": "Spam / Legal",
-    "length": 8
-  },
-  {
-    "word": "Not spam",
-    "category": "Spam / Legal",
-    "length": 8
-  },
-  {
-    "word": "Now",
-    "category": "Urgency",
-    "length": 3
-  },
-  {
-    "word": "Now only",
-    "category": "Urgency",
-    "length": 8
-  },
-  {
-    "word": "Number 1",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "Number one",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Obligation",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Offshore",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "Offer",
-    "category": "Discount / Pricing",
-    "length": 5
-  },
-  {
-    "word": "Offer expires",
-    "category": "Urgency",
-    "length": 13
-  },
-  {
-    "word": "Once in lifetime",
-    "category": "General",
-    "length": 16
-  },
-  {
-    "word": "Once in a lifetime",
-    "category": "General",
-    "length": 18
-  },
-  {
-    "word": "One hundred percent free",
-    "category": "Free / Giveaway",
-    "length": 24
-  },
-  {
-    "word": "One hundred percent guaranteed",
-    "category": "Money / Income",
-    "length": 30
-  },
-  {
-    "word": "One time",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "One time mailing",
-    "category": "General",
-    "length": 16
-  },
-  {
-    "word": "Online biz opportunity",
-    "category": "Marketing",
-    "length": 22
-  },
-  {
-    "word": "Online degree",
-    "category": "General",
-    "length": 13
-  },
-  {
-    "word": "Online job",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Online income",
-    "category": "Money / Income",
-    "length": 13
-  },
-  {
-    "word": "Online marketing",
-    "category": "Marketing",
-    "length": 16
-  },
-  {
-    "word": "Online pharmacy",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Only",
-    "category": "General",
-    "length": 4
-  },
-  {
-    "word": "Only $",
-    "category": "Money / Income",
-    "length": 6
-  },
-  {
-    "word": "Open Opportunity",
-    "category": "General",
-    "length": 16
-  },
-  {
-    "word": "Opt in",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Order",
-    "category": "Call to Action",
-    "length": 5
-  },
-  {
-    "word": "Order now",
-    "category": "Call to Action",
-    "length": 9
-  },
-  {
-    "word": "Order shipped by",
-    "category": "Call to Action",
-    "length": 16
-  },
-  {
-    "word": "Order status",
-    "category": "Call to Action",
-    "length": 12
-  },
-  {
-    "word": "Order today",
-    "category": "Call to Action",
-    "length": 11
-  },
-  {
-    "word": "Outstanding values",
-    "category": "General",
-    "length": 18
-  },
-  {
-    "word": "Passwords",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "Pennies a day",
-    "category": "General",
-    "length": 13
-  },
-  {
-    "word": "Per day",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Per month",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "Per week",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "Performance",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Phone",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Please read",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Potential earnings",
-    "category": "Money / Income",
-    "length": 18
-  },
-  {
-    "word": "Pre-approved",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "Presently",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "Price",
-    "category": "Discount / Pricing",
-    "length": 5
-  },
-  {
-    "word": "Price protection",
-    "category": "Discount / Pricing",
-    "length": 16
-  },
-  {
-    "word": "Print form signature",
-    "category": "General",
-    "length": 20
-  },
-  {
-    "word": "Print out and fax",
-    "category": "General",
-    "length": 17
-  },
-  {
-    "word": "Priority mail",
-    "category": "General",
-    "length": 13
-  },
-  {
-    "word": "Prize",
-    "category": "Free / Giveaway",
-    "length": 5
-  },
-  {
-    "word": "Problem",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Produced and sent out",
-    "category": "General",
-    "length": 21
-  },
-  {
-    "word": "Profits",
-    "category": "Money / Income",
-    "length": 7
-  },
-  {
-    "word": "Promise",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Promise you",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Purchase",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "Pure profits",
-    "category": "Money / Income",
-    "length": 12
-  },
-  {
-    "word": "Quote",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Rates",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Real thing",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Refinance",
-    "category": "Financial",
-    "length": 9
-  },
-  {
-    "word": "Refinance home",
-    "category": "Financial",
-    "length": 14
-  },
-  {
-    "word": "Refund",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Removal",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Removal instructions",
-    "category": "General",
-    "length": 20
-  },
-  {
-    "word": "Remove",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Removes wrinkles",
-    "category": "General",
-    "length": 16
-  },
-  {
-    "word": "Request",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Request now",
-    "category": "Urgency",
-    "length": 11
-  },
-  {
-    "word": "Request today",
-    "category": "Urgency",
-    "length": 13
-  },
-  {
-    "word": "Requires initial investment",
-    "category": "General",
-    "length": 27
-  },
-  {
-    "word": "Reserves the right",
-    "category": "General",
-    "length": 18
-  },
-  {
-    "word": "Reverses",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "Reverses aging",
-    "category": "General",
-    "length": 14
-  },
-  {
-    "word": "Risk free",
-    "category": "Free / Giveaway",
-    "length": 9
-  },
-  {
-    "word": "Risk-free",
-    "category": "Free / Giveaway",
-    "length": 9
-  },
-  {
-    "word": "Rolex",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Round the world",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "S 1618",
-    "category": "General",
-    "length": 6
-  },
-  {
-    "word": "Safeguard notice",
-    "category": "General",
-    "length": 16
-  },
-  {
-    "word": "Sale",
-    "category": "Discount / Pricing",
-    "length": 4
-  },
-  {
-    "word": "Sample",
-    "category": "Free / Giveaway",
-    "length": 6
-  },
-  {
-    "word": "Satisfaction",
-    "category": "Guarantee / Risk-free",
-    "length": 12
-  },
-  {
-    "word": "Satisfaction guaranteed",
-    "category": "Guarantee / Risk-free",
-    "length": 23
-  },
-  {
-    "word": "Save $",
-    "category": "Money / Income",
-    "length": 6
-  },
-  {
-    "word": "Save money",
-    "category": "Money / Income",
-    "length": 10
-  },
-  {
-    "word": "Save now",
-    "category": "Urgency",
-    "length": 8
-  },
-  {
-    "word": "Save big money",
-    "category": "Money / Income",
-    "length": 14
-  },
-  {
-    "word": "Save up to",
-    "category": "Discount / Pricing",
-    "length": 10
-  },
-  {
-    "word": "Score",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Score with babes",
-    "category": "General",
-    "length": 16
-  },
-  {
-    "word": "Search engine listings",
-    "category": "Marketing",
-    "length": 22
-  },
-  {
-    "word": "Search engines",
-    "category": "Marketing",
-    "length": 14
-  },
-  {
-    "word": "Section 301",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "See for yourself",
-    "category": "General",
-    "length": 16
-  },
-  {
-    "word": "Sent in compliance",
-    "category": "Spam / Legal",
-    "length": 18
-  },
-  {
-    "word": "Serious",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Serious cash",
-    "category": "Money / Income",
-    "length": 12
-  },
-  {
-    "word": "Serious only",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "Serious offer",
-    "category": "Discount / Pricing",
-    "length": 13
-  },
-  {
-    "word": "Shopper",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Shopping spree",
-    "category": "General",
-    "length": 14
-  },
-  {
-    "word": "Sign up free today",
-    "category": "Free / Giveaway",
-    "length": 18
-  },
-  {
-    "word": "Social security number",
-    "category": "General",
-    "length": 22
-  },
-  {
-    "word": "Solution",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "Spam",
-    "category": "Spam / Legal",
-    "length": 4
-  },
-  {
-    "word": "Special deal",
-    "category": "Discount / Pricing",
-    "length": 12
-  },
-  {
-    "word": "Special discount",
-    "category": "Discount / Pricing",
-    "length": 16
-  },
-  {
-    "word": "Special for you",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Special offer",
-    "category": "Discount / Pricing",
-    "length": 13
-  },
-  {
-    "word": "Special promotion",
-    "category": "General",
-    "length": 17
-  },
-  {
-    "word": "Stainless steel",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Stock alert",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Stock disclaimer statement",
-    "category": "Spam / Legal",
-    "length": 26
-  },
-  {
-    "word": "Stock pick",
-    "category": "General",
-    "length": 10
-  },
-  {
-    "word": "Stop",
-    "category": "General",
-    "length": 4
-  },
-  {
-    "word": "Stop calling me",
-    "category": "Call to Action",
-    "length": 15
-  },
-  {
-    "word": "Stop emailing me",
-    "category": "Marketing",
-    "length": 16
-  },
-  {
-    "word": "Stop snoring",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "Strong buy",
-    "category": "Call to Action",
-    "length": 10
-  },
-  {
-    "word": "Stuff on sale",
-    "category": "Discount / Pricing",
-    "length": 13
-  },
-  {
-    "word": "Subject to cash",
-    "category": "Money / Income",
-    "length": 15
-  },
-  {
-    "word": "Subject to credit",
-    "category": "Financial",
-    "length": 17
-  },
-  {
-    "word": "Subscribe",
-    "category": "Call to Action",
-    "length": 9
-  },
-  {
-    "word": "Subscribe now",
-    "category": "Call to Action",
-    "length": 13
-  },
-  {
-    "word": "Subscribe for free",
-    "category": "Free / Giveaway",
-    "length": 18
-  },
-  {
-    "word": "Success",
-    "category": "General",
-    "length": 7
-  },
-  {
-    "word": "Supplies",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "Supplies are limited",
-    "category": "Urgency",
-    "length": 20
-  },
-  {
-    "word": "Take action",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Take action now",
-    "category": "Urgency",
-    "length": 15
-  },
-  {
-    "word": "Talks about hidden charges",
-    "category": "General",
-    "length": 26
-  },
-  {
-    "word": "Talks about prizes",
-    "category": "Free / Giveaway",
-    "length": 18
-  },
-  {
-    "word": "Teen",
-    "category": "General",
-    "length": 4
-  },
-  {
-    "word": "Tells you it\u2019s an ad",
-    "category": "General",
-    "length": 20
-  },
-  {
-    "word": "Terms",
-    "category": "General",
-    "length": 5
-  },
-  {
-    "word": "Terms and conditions",
-    "category": "General",
-    "length": 20
-  },
-  {
-    "word": "The best rates",
-    "category": "General",
-    "length": 14
-  },
-  {
-    "word": "The following form",
-    "category": "General",
-    "length": 18
-  },
-  {
-    "word": "They keep your money \u2014 no refund!",
-    "category": "Money / Income",
-    "length": 33
-  },
-  {
-    "word": "They\u2019re just giving it away",
-    "category": "General",
-    "length": 27
-  },
-  {
-    "word": "This isn\u2019t a scam",
-    "category": "Spam / Legal",
-    "length": 17
-  },
-  {
-    "word": "This isn\u2019t junk",
-    "category": "Spam / Legal",
-    "length": 15
-  },
-  {
-    "word": "This isn\u2019t spam",
-    "category": "Spam / Legal",
-    "length": 15
-  },
-  {
-    "word": "This won\u2019t last",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Thousands",
-    "category": "General",
-    "length": 9
-  },
-  {
-    "word": "Time limited",
-    "category": "Urgency",
-    "length": 12
-  },
-  {
-    "word": "Traffic",
-    "category": "Marketing",
-    "length": 7
-  },
-  {
-    "word": "Trial",
-    "category": "Free / Giveaway",
-    "length": 5
-  },
-  {
-    "word": "Undisclosed recipient",
-    "category": "General",
-    "length": 21
-  },
-  {
-    "word": "University diplomas",
-    "category": "General",
-    "length": 19
-  },
-  {
-    "word": "Unlimited",
-    "category": "Urgency",
-    "length": 9
-  },
-  {
-    "word": "Unsecured credit",
-    "category": "Financial",
-    "length": 16
-  },
-  {
-    "word": "Unsecured debt",
-    "category": "Financial",
-    "length": 14
-  },
-  {
-    "word": "Unsolicited",
-    "category": "Spam / Legal",
-    "length": 11
-  },
-  {
-    "word": "Unsubscribe",
-    "category": "Call to Action",
-    "length": 11
-  },
-  {
-    "word": "Urgent",
-    "category": "Urgency",
-    "length": 6
-  },
-  {
-    "word": "US dollars",
-    "category": "Money / Income",
-    "length": 10
-  },
-  {
-    "word": "Vacation",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "Vacation offers",
-    "category": "Discount / Pricing",
-    "length": 15
-  },
-  {
-    "word": "Valium",
-    "category": "Health / Pharma",
-    "length": 6
-  },
-  {
-    "word": "Viagra",
-    "category": "Health / Pharma",
-    "length": 6
-  },
-  {
-    "word": "Vicodin",
-    "category": "Health / Pharma",
-    "length": 7
-  },
-  {
-    "word": "VIP",
-    "category": "General",
-    "length": 3
-  },
-  {
-    "word": "Visit our website",
-    "category": "Call to Action",
-    "length": 17
-  },
-  {
-    "word": "Wants credit card",
-    "category": "Financial",
-    "length": 17
-  },
-  {
-    "word": "Warranty",
-    "category": "General",
-    "length": 8
-  },
-  {
-    "word": "Warranty expired",
-    "category": "Urgency",
-    "length": 16
-  },
-  {
-    "word": "We hate spam",
-    "category": "Spam / Legal",
-    "length": 12
-  },
-  {
-    "word": "We honor all",
-    "category": "General",
-    "length": 12
-  },
-  {
-    "word": "Web traffic",
-    "category": "Marketing",
-    "length": 11
-  },
-  {
-    "word": "Website visitors",
-    "category": "Call to Action",
-    "length": 16
-  },
-  {
-    "word": "Weekend getaway",
-    "category": "General",
-    "length": 15
-  },
-  {
-    "word": "Weight",
-    "category": "Health / Pharma",
-    "length": 6
-  },
-  {
-    "word": "Weight loss",
-    "category": "Health / Pharma",
-    "length": 11
-  },
-  {
-    "word": "What are you waiting for?",
-    "category": "General",
-    "length": 25
-  },
-  {
-    "word": "What\u2019s keeping you?",
-    "category": "General",
-    "length": 19
-  },
-  {
-    "word": "While available",
-    "category": "Urgency",
-    "length": 15
-  },
-  {
-    "word": "While in stock",
-    "category": "Urgency",
-    "length": 14
-  },
-  {
-    "word": "While supplies last",
-    "category": "Urgency",
-    "length": 19
-  },
-  {
-    "word": "While you sleep",
-    "category": "Urgency",
-    "length": 15
-  },
-  {
-    "word": "Who really wins?",
-    "category": "General",
-    "length": 16
-  },
-  {
-    "word": "Why pay more?",
-    "category": "General",
-    "length": 13
-  },
-  {
-    "word": "Wife",
-    "category": "General",
-    "length": 4
-  },
-  {
-    "word": "Will not believe your eyes",
-    "category": "General",
-    "length": 26
-  },
-  {
-    "word": "Win",
-    "category": "General",
-    "length": 3
-  },
-  {
-    "word": "Winner",
-    "category": "Free / Giveaway",
-    "length": 6
-  },
-  {
-    "word": "Winning",
-    "category": "Free / Giveaway",
-    "length": 7
-  },
-  {
-    "word": "Won",
-    "category": "General",
-    "length": 3
-  },
-  {
-    "word": "Work from home",
-    "category": "Business Opportunity",
-    "length": 14
-  },
-  {
-    "word": "Xanax",
-    "category": "Health / Pharma",
-    "length": 5
-  },
-  {
-    "word": "You are a winner!",
-    "category": "Free / Giveaway",
-    "length": 17
-  },
-  {
-    "word": "You have been chosen",
-    "category": "General",
-    "length": 20
-  },
-  {
-    "word": "You have been selected",
-    "category": "General",
-    "length": 22
-  },
-  {
-    "word": "Your chance",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Your income",
-    "category": "Money / Income",
-    "length": 11
-  },
-  {
-    "word": "Your status",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Zero chance",
-    "category": "General",
-    "length": 11
-  },
-  {
-    "word": "Zero percent",
-    "category": "Money / Income",
-    "length": 12
-  },
-  {
-    "word": "Zero risk",
-    "category": "Guarantee / Risk-free",
-    "length": 9
-  }
+    {
+        "word": "0%",
+        "category": "General",
+        "length": 2
+    },
+    {
+        "word": "0% risk",
+        "category": "Guarantee / Risk-free",
+        "length": 7
+    },
+    {
+        "word": "777",
+        "category": "General",
+        "length": 3
+    },
+    {
+        "word": "99%",
+        "category": "General",
+        "length": 3
+    },
+    {
+        "word": "99.9%",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "100%",
+        "category": "General",
+        "length": 4
+    },
+    {
+        "word": "100% more",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "#1",
+        "category": "General",
+        "length": 2
+    },
+    {
+        "word": "$$$",
+        "category": "Money / Income",
+        "length": 3
+    },
+    {
+        "word": "100% free",
+        "category": "Free / Giveaway",
+        "length": 9
+    },
+    {
+        "word": "100% satisfied",
+        "category": "General",
+        "length": 14
+    },
+    {
+        "word": "4U",
+        "category": "General",
+        "length": 2
+    },
+    {
+        "word": "50% off",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Accept credit cards",
+        "category": "Financial",
+        "length": 19
+    },
+    {
+        "word": "Acceptance",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Access",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Access now",
+        "category": "Urgency",
+        "length": 10
+    },
+    {
+        "word": "Access for free",
+        "category": "Free / Giveaway",
+        "length": 15
+    },
+    {
+        "word": "Accordingly",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Act Now",
+        "category": "Urgency",
+        "length": 7
+    },
+    {
+        "word": "Act immediately",
+        "category": "Urgency",
+        "length": 15
+    },
+    {
+        "word": "Action",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Action required",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Ad",
+        "category": "General",
+        "length": 2
+    },
+    {
+        "word": "Additional income",
+        "category": "Money / Income",
+        "length": 17
+    },
+    {
+        "word": "Addresses on CD",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Affordable",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Affordable deal",
+        "category": "Discount / Pricing",
+        "length": 15
+    },
+    {
+        "word": "All natural",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "All new",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Amazed",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Amazing",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Amazing offer",
+        "category": "Discount / Pricing",
+        "length": 13
+    },
+    {
+        "word": "Amazing stuff",
+        "category": "General",
+        "length": 13
+    },
+    {
+        "word": "Apply here",
+        "category": "Call to Action",
+        "length": 10
+    },
+    {
+        "word": "Apply now",
+        "category": "Call to Action",
+        "length": 9
+    },
+    {
+        "word": "Apply Online",
+        "category": "Call to Action",
+        "length": 12
+    },
+    {
+        "word": "As seen on",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "At no cost",
+        "category": "Guarantee / Risk-free",
+        "length": 10
+    },
+    {
+        "word": "Auto email removal",
+        "category": "Marketing",
+        "length": 18
+    },
+    {
+        "word": "Avoid",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Avoid bankruptcy",
+        "category": "Financial",
+        "length": 16
+    },
+    {
+        "word": "Bargain",
+        "category": "Discount / Pricing",
+        "length": 7
+    },
+    {
+        "word": "Be amazed",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "Be surprised",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "Be your own boss",
+        "category": "Business Opportunity",
+        "length": 16
+    },
+    {
+        "word": "Believe me",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Being a member",
+        "category": "General",
+        "length": 14
+    },
+    {
+        "word": "Beneficiary",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Best bargain",
+        "category": "Discount / Pricing",
+        "length": 12
+    },
+    {
+        "word": "Best deal",
+        "category": "Discount / Pricing",
+        "length": 9
+    },
+    {
+        "word": "Best price",
+        "category": "Discount / Pricing",
+        "length": 10
+    },
+    {
+        "word": "Best offer",
+        "category": "Discount / Pricing",
+        "length": 10
+    },
+    {
+        "word": "Beverage",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "Big bucks",
+        "category": "Money / Income",
+        "length": 9
+    },
+    {
+        "word": "Bill 1618",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "Billing",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Billing address",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Billionaire",
+        "category": "Money / Income",
+        "length": 11
+    },
+    {
+        "word": "Billion",
+        "category": "Money / Income",
+        "length": 7
+    },
+    {
+        "word": "Billion dollars",
+        "category": "Money / Income",
+        "length": 15
+    },
+    {
+        "word": "Bonus",
+        "category": "Free / Giveaway",
+        "length": 5
+    },
+    {
+        "word": "Boss",
+        "category": "Business Opportunity",
+        "length": 4
+    },
+    {
+        "word": "Brand new pager",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Bulk email",
+        "category": "Marketing",
+        "length": 10
+    },
+    {
+        "word": "Buy",
+        "category": "Call to Action",
+        "length": 3
+    },
+    {
+        "word": "Buy now",
+        "category": "Call to Action",
+        "length": 7
+    },
+    {
+        "word": "Buy direct",
+        "category": "Call to Action",
+        "length": 10
+    },
+    {
+        "word": "Buying judgments",
+        "category": "Call to Action",
+        "length": 16
+    },
+    {
+        "word": "Cable converter",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Call",
+        "category": "Call to Action",
+        "length": 4
+    },
+    {
+        "word": "Call free",
+        "category": "Free / Giveaway",
+        "length": 9
+    },
+    {
+        "word": "Call me",
+        "category": "Call to Action",
+        "length": 7
+    },
+    {
+        "word": "Call now",
+        "category": "Call to Action",
+        "length": 8
+    },
+    {
+        "word": "Calling creditors",
+        "category": "Call to Action",
+        "length": 17
+    },
+    {
+        "word": "Can\u2019t live without",
+        "category": "General",
+        "length": 18
+    },
+    {
+        "word": "Cancel",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Cancel at any time",
+        "category": "General",
+        "length": 18
+    },
+    {
+        "word": "Cancel now",
+        "category": "Urgency",
+        "length": 10
+    },
+    {
+        "word": "Cancellation required",
+        "category": "General",
+        "length": 21
+    },
+    {
+        "word": "Cannot be combined with any other offer",
+        "category": "Discount / Pricing",
+        "length": 39
+    },
+    {
+        "word": "Cards accepted",
+        "category": "General",
+        "length": 14
+    },
+    {
+        "word": "Cash",
+        "category": "Money / Income",
+        "length": 4
+    },
+    {
+        "word": "Cash out",
+        "category": "Money / Income",
+        "length": 8
+    },
+    {
+        "word": "Cash bonus",
+        "category": "Free / Giveaway",
+        "length": 10
+    },
+    {
+        "word": "Cashcashcash",
+        "category": "Money / Income",
+        "length": 12
+    },
+    {
+        "word": "Casino",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Celebrity",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "Cell phone cancer scam",
+        "category": "Spam / Legal",
+        "length": 22
+    },
+    {
+        "word": "Cents on the dollar",
+        "category": "Money / Income",
+        "length": 19
+    },
+    {
+        "word": "Certified",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "Chance",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Cheap",
+        "category": "Discount / Pricing",
+        "length": 5
+    },
+    {
+        "word": "Check",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Check or money order",
+        "category": "Money / Income",
+        "length": 20
+    },
+    {
+        "word": "Claims",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Claim now",
+        "category": "Urgency",
+        "length": 9
+    },
+    {
+        "word": "Claim your discount",
+        "category": "Discount / Pricing",
+        "length": 19
+    },
+    {
+        "word": "Claims not to be selling anything",
+        "category": "General",
+        "length": 33
+    },
+    {
+        "word": "Claims to be in accordance with some spam law",
+        "category": "Spam / Legal",
+        "length": 45
+    },
+    {
+        "word": "Claims to be legal",
+        "category": "Spam / Legal",
+        "length": 18
+    },
+    {
+        "word": "Clearance",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "Click",
+        "category": "Call to Action",
+        "length": 5
+    },
+    {
+        "word": "Click below",
+        "category": "Call to Action",
+        "length": 11
+    },
+    {
+        "word": "Click here",
+        "category": "Call to Action",
+        "length": 10
+    },
+    {
+        "word": "Click now",
+        "category": "Call to Action",
+        "length": 9
+    },
+    {
+        "word": "Click to get",
+        "category": "Call to Action",
+        "length": 12
+    },
+    {
+        "word": "Click to remove",
+        "category": "Call to Action",
+        "length": 15
+    },
+    {
+        "word": "Collect",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Collect child support",
+        "category": "General",
+        "length": 21
+    },
+    {
+        "word": "Compare",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Compare now",
+        "category": "Urgency",
+        "length": 11
+    },
+    {
+        "word": "Compare online",
+        "category": "General",
+        "length": 14
+    },
+    {
+        "word": "Compare rates",
+        "category": "General",
+        "length": 13
+    },
+    {
+        "word": "Compete for your business",
+        "category": "Business Opportunity",
+        "length": 25
+    },
+    {
+        "word": "Confidentially on all orders",
+        "category": "Call to Action",
+        "length": 28
+    },
+    {
+        "word": "Congratulations",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Consolidate debt and credit",
+        "category": "Financial",
+        "length": 27
+    },
+    {
+        "word": "Consolidate your debt",
+        "category": "Financial",
+        "length": 21
+    },
+    {
+        "word": "Copy accurately",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Copy DVDs",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "Costs",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Credit",
+        "category": "Financial",
+        "length": 6
+    },
+    {
+        "word": "Credit bureaus",
+        "category": "Financial",
+        "length": 14
+    },
+    {
+        "word": "Credit card offers",
+        "category": "Discount / Pricing",
+        "length": 18
+    },
+    {
+        "word": "Cures",
+        "category": "Health / Pharma",
+        "length": 5
+    },
+    {
+        "word": "Cures baldness",
+        "category": "Health / Pharma",
+        "length": 14
+    },
+    {
+        "word": "Deal",
+        "category": "Discount / Pricing",
+        "length": 4
+    },
+    {
+        "word": "Dear]",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Debt",
+        "category": "Financial",
+        "length": 4
+    },
+    {
+        "word": "Diagnostics",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Dig up dirt on friends",
+        "category": "General",
+        "length": 22
+    },
+    {
+        "word": "Direct email",
+        "category": "Marketing",
+        "length": 12
+    },
+    {
+        "word": "Direct marketing",
+        "category": "Marketing",
+        "length": 16
+    },
+    {
+        "word": "Discount",
+        "category": "Discount / Pricing",
+        "length": 8
+    },
+    {
+        "word": "Do it now",
+        "category": "Urgency",
+        "length": 9
+    },
+    {
+        "word": "Do it today",
+        "category": "Urgency",
+        "length": 11
+    },
+    {
+        "word": "Don\u2019t delete",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "Don\u2019t hesitate",
+        "category": "General",
+        "length": 14
+    },
+    {
+        "word": "Dormant",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Double your",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Double your cash",
+        "category": "Money / Income",
+        "length": 16
+    },
+    {
+        "word": "Double your income",
+        "category": "Money / Income",
+        "length": 18
+    },
+    {
+        "word": "Double your wealth",
+        "category": "Money / Income",
+        "length": 18
+    },
+    {
+        "word": "Drastically reduced",
+        "category": "Call to Action",
+        "length": 19
+    },
+    {
+        "word": "Earn",
+        "category": "Money / Income",
+        "length": 4
+    },
+    {
+        "word": "Earn $",
+        "category": "Money / Income",
+        "length": 6
+    },
+    {
+        "word": "Earn extra cash",
+        "category": "Money / Income",
+        "length": 15
+    },
+    {
+        "word": "Earn money",
+        "category": "Money / Income",
+        "length": 10
+    },
+    {
+        "word": "Earn monthly",
+        "category": "Money / Income",
+        "length": 12
+    },
+    {
+        "word": "Earn from home",
+        "category": "Money / Income",
+        "length": 14
+    },
+    {
+        "word": "Earn per month",
+        "category": "Money / Income",
+        "length": 14
+    },
+    {
+        "word": "Earn per week",
+        "category": "Money / Income",
+        "length": 13
+    },
+    {
+        "word": "Easy terms",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Eliminate bad credit",
+        "category": "Financial",
+        "length": 20
+    },
+    {
+        "word": "Eliminate debt",
+        "category": "Financial",
+        "length": 14
+    },
+    {
+        "word": "Email extractor",
+        "category": "Marketing",
+        "length": 15
+    },
+    {
+        "word": "Email harvest",
+        "category": "Marketing",
+        "length": 13
+    },
+    {
+        "word": "Email marketing",
+        "category": "Marketing",
+        "length": 15
+    },
+    {
+        "word": "Exclusive deal",
+        "category": "Discount / Pricing",
+        "length": 14
+    },
+    {
+        "word": "Expect to earn",
+        "category": "Money / Income",
+        "length": 14
+    },
+    {
+        "word": "Expire",
+        "category": "Urgency",
+        "length": 6
+    },
+    {
+        "word": "Explode your business",
+        "category": "Business Opportunity",
+        "length": 21
+    },
+    {
+        "word": "Extra",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Extra cash",
+        "category": "Money / Income",
+        "length": 10
+    },
+    {
+        "word": "Extra income",
+        "category": "Money / Income",
+        "length": 12
+    },
+    {
+        "word": "Extract email",
+        "category": "Marketing",
+        "length": 13
+    },
+    {
+        "word": "Free",
+        "category": "Free / Giveaway",
+        "length": 4
+    },
+    {
+        "word": "Fantastic",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "Fantastic deal",
+        "category": "Discount / Pricing",
+        "length": 14
+    },
+    {
+        "word": "Fantastic offer",
+        "category": "Discount / Pricing",
+        "length": 15
+    },
+    {
+        "word": "Fast cash",
+        "category": "Money / Income",
+        "length": 9
+    },
+    {
+        "word": "Fast Viagra delivery",
+        "category": "Health / Pharma",
+        "length": 20
+    },
+    {
+        "word": "Financial freedom",
+        "category": "Free / Giveaway",
+        "length": 17
+    },
+    {
+        "word": "Financially independent",
+        "category": "General",
+        "length": 23
+    },
+    {
+        "word": "For free",
+        "category": "Free / Giveaway",
+        "length": 8
+    },
+    {
+        "word": "For instant access",
+        "category": "General",
+        "length": 18
+    },
+    {
+        "word": "For just $",
+        "category": "Money / Income",
+        "length": 10
+    },
+    {
+        "word": "For Only",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "For you",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Form",
+        "category": "General",
+        "length": 4
+    },
+    {
+        "word": "Free",
+        "category": "Free / Giveaway",
+        "length": 4
+    },
+    {
+        "word": "Free access",
+        "category": "Free / Giveaway",
+        "length": 11
+    },
+    {
+        "word": "Free bonus",
+        "category": "Free / Giveaway",
+        "length": 10
+    },
+    {
+        "word": "Free cell phone",
+        "category": "Free / Giveaway",
+        "length": 15
+    },
+    {
+        "word": "Free consultation",
+        "category": "Free / Giveaway",
+        "length": 17
+    },
+    {
+        "word": "Free DVD",
+        "category": "Free / Giveaway",
+        "length": 8
+    },
+    {
+        "word": "Free gift",
+        "category": "Free / Giveaway",
+        "length": 9
+    },
+    {
+        "word": "Free grant money",
+        "category": "Free / Giveaway",
+        "length": 16
+    },
+    {
+        "word": "Free hosting",
+        "category": "Free / Giveaway",
+        "length": 12
+    },
+    {
+        "word": "Free info",
+        "category": "Free / Giveaway",
+        "length": 9
+    },
+    {
+        "word": "Free information",
+        "category": "Free / Giveaway",
+        "length": 16
+    },
+    {
+        "word": "Free installation",
+        "category": "Free / Giveaway",
+        "length": 17
+    },
+    {
+        "word": "Free instant",
+        "category": "Free / Giveaway",
+        "length": 12
+    },
+    {
+        "word": "Free investment",
+        "category": "Free / Giveaway",
+        "length": 15
+    },
+    {
+        "word": "Free iPhone",
+        "category": "Free / Giveaway",
+        "length": 11
+    },
+    {
+        "word": "Free leads",
+        "category": "Free / Giveaway",
+        "length": 10
+    },
+    {
+        "word": "Free Macbook",
+        "category": "Free / Giveaway",
+        "length": 12
+    },
+    {
+        "word": "Free membership",
+        "category": "Free / Giveaway",
+        "length": 15
+    },
+    {
+        "word": "Free money",
+        "category": "Free / Giveaway",
+        "length": 10
+    },
+    {
+        "word": "Free offer",
+        "category": "Free / Giveaway",
+        "length": 10
+    },
+    {
+        "word": "Free preview",
+        "category": "Free / Giveaway",
+        "length": 12
+    },
+    {
+        "word": "Free priority mail",
+        "category": "Free / Giveaway",
+        "length": 18
+    },
+    {
+        "word": "Free quote",
+        "category": "Free / Giveaway",
+        "length": 10
+    },
+    {
+        "word": "Free sample",
+        "category": "Free / Giveaway",
+        "length": 11
+    },
+    {
+        "word": "Free trial",
+        "category": "Free / Giveaway",
+        "length": 10
+    },
+    {
+        "word": "Free website",
+        "category": "Free / Giveaway",
+        "length": 12
+    },
+    {
+        "word": "Freedom",
+        "category": "Free / Giveaway",
+        "length": 7
+    },
+    {
+        "word": "Friend",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Full refund",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Get",
+        "category": "General",
+        "length": 3
+    },
+    {
+        "word": "Get it now",
+        "category": "Urgency",
+        "length": 10
+    },
+    {
+        "word": "Get out of debt",
+        "category": "Financial",
+        "length": 15
+    },
+    {
+        "word": "Get paid",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "Get started now",
+        "category": "Urgency",
+        "length": 15
+    },
+    {
+        "word": "Gift certificate",
+        "category": "Free / Giveaway",
+        "length": 16
+    },
+    {
+        "word": "Give it away",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "Giving away",
+        "category": "Free / Giveaway",
+        "length": 11
+    },
+    {
+        "word": "Great",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Great deal",
+        "category": "Discount / Pricing",
+        "length": 10
+    },
+    {
+        "word": "Great offer",
+        "category": "Discount / Pricing",
+        "length": 11
+    },
+    {
+        "word": "Guarantee",
+        "category": "Guarantee / Risk-free",
+        "length": 9
+    },
+    {
+        "word": "Guaranteed",
+        "category": "Guarantee / Risk-free",
+        "length": 10
+    },
+    {
+        "word": "Guaranteed deposit",
+        "category": "Guarantee / Risk-free",
+        "length": 18
+    },
+    {
+        "word": "Guaranteed income",
+        "category": "Money / Income",
+        "length": 17
+    },
+    {
+        "word": "Guaranteed payment",
+        "category": "Guarantee / Risk-free",
+        "length": 18
+    },
+    {
+        "word": "Have you been turned down?",
+        "category": "General",
+        "length": 26
+    },
+    {
+        "word": "Hello",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Here",
+        "category": "General",
+        "length": 4
+    },
+    {
+        "word": "Hidden",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Hidden assets",
+        "category": "General",
+        "length": 13
+    },
+    {
+        "word": "Hidden charges",
+        "category": "General",
+        "length": 14
+    },
+    {
+        "word": "Hidden fees",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "High score",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Home",
+        "category": "Business Opportunity",
+        "length": 4
+    },
+    {
+        "word": "Home based",
+        "category": "Business Opportunity",
+        "length": 10
+    },
+    {
+        "word": "Home employment",
+        "category": "Business Opportunity",
+        "length": 15
+    },
+    {
+        "word": "Home based business",
+        "category": "Business Opportunity",
+        "length": 19
+    },
+    {
+        "word": "Human growth hormone",
+        "category": "Health / Pharma",
+        "length": 20
+    },
+    {
+        "word": "Huge discount",
+        "category": "Discount / Pricing",
+        "length": 13
+    },
+    {
+        "word": "Hurry up",
+        "category": "Urgency",
+        "length": 8
+    },
+    {
+        "word": "If only it were that easy",
+        "category": "General",
+        "length": 25
+    },
+    {
+        "word": "Important information regarding",
+        "category": "General",
+        "length": 31
+    },
+    {
+        "word": "Important notification",
+        "category": "General",
+        "length": 22
+    },
+    {
+        "word": "In accordance with laws",
+        "category": "Spam / Legal",
+        "length": 23
+    },
+    {
+        "word": "Income",
+        "category": "Money / Income",
+        "length": 6
+    },
+    {
+        "word": "Income from home",
+        "category": "Money / Income",
+        "length": 16
+    },
+    {
+        "word": "Increase sales",
+        "category": "Discount / Pricing",
+        "length": 14
+    },
+    {
+        "word": "Increase traffic",
+        "category": "Marketing",
+        "length": 16
+    },
+    {
+        "word": "Increase your chances",
+        "category": "General",
+        "length": 21
+    },
+    {
+        "word": "Increase your sales",
+        "category": "Discount / Pricing",
+        "length": 19
+    },
+    {
+        "word": "Incredible deal",
+        "category": "Discount / Pricing",
+        "length": 15
+    },
+    {
+        "word": "Info you requested",
+        "category": "General",
+        "length": 18
+    },
+    {
+        "word": "Information you requested",
+        "category": "General",
+        "length": 25
+    },
+    {
+        "word": "Instant",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Instant earnings",
+        "category": "Money / Income",
+        "length": 16
+    },
+    {
+        "word": "Instant income",
+        "category": "Money / Income",
+        "length": 14
+    },
+    {
+        "word": "Insurance",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "Internet market",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Internet marketing",
+        "category": "Marketing",
+        "length": 18
+    },
+    {
+        "word": "Investment",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Investment decision",
+        "category": "General",
+        "length": 19
+    },
+    {
+        "word": "It\u2019s effective",
+        "category": "General",
+        "length": 14
+    },
+    {
+        "word": "Join millions",
+        "category": "Money / Income",
+        "length": 13
+    },
+    {
+        "word": "Join millions of Americans",
+        "category": "Money / Income",
+        "length": 26
+    },
+    {
+        "word": "Junk",
+        "category": "Spam / Legal",
+        "length": 4
+    },
+    {
+        "word": "Laser printer",
+        "category": "General",
+        "length": 13
+    },
+    {
+        "word": "Leave",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Legal",
+        "category": "Spam / Legal",
+        "length": 5
+    },
+    {
+        "word": "Legal notice",
+        "category": "Spam / Legal",
+        "length": 12
+    },
+    {
+        "word": "Life",
+        "category": "General",
+        "length": 4
+    },
+    {
+        "word": "Life Insurance",
+        "category": "General",
+        "length": 14
+    },
+    {
+        "word": "Lifetime",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "Lifetime access",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Lifetime deal",
+        "category": "Discount / Pricing",
+        "length": 13
+    },
+    {
+        "word": "Limited amount",
+        "category": "Urgency",
+        "length": 14
+    },
+    {
+        "word": "Limited number",
+        "category": "Urgency",
+        "length": 14
+    },
+    {
+        "word": "Limited offer",
+        "category": "Urgency",
+        "length": 13
+    },
+    {
+        "word": "Limited supply",
+        "category": "Urgency",
+        "length": 14
+    },
+    {
+        "word": "Limited time",
+        "category": "Urgency",
+        "length": 12
+    },
+    {
+        "word": "Limited time offer",
+        "category": "Urgency",
+        "length": 18
+    },
+    {
+        "word": "Limited time only",
+        "category": "Urgency",
+        "length": 17
+    },
+    {
+        "word": "Loan",
+        "category": "Financial",
+        "length": 4
+    },
+    {
+        "word": "Long distance phone offer",
+        "category": "Discount / Pricing",
+        "length": 25
+    },
+    {
+        "word": "Lose",
+        "category": "General",
+        "length": 4
+    },
+    {
+        "word": "Lose weight",
+        "category": "Health / Pharma",
+        "length": 11
+    },
+    {
+        "word": "Lose weight spam",
+        "category": "Spam / Legal",
+        "length": 16
+    },
+    {
+        "word": "Lower interest rates",
+        "category": "Financial",
+        "length": 20
+    },
+    {
+        "word": "Lower monthly payment",
+        "category": "General",
+        "length": 21
+    },
+    {
+        "word": "Lower your mortgage rate",
+        "category": "Financial",
+        "length": 24
+    },
+    {
+        "word": "Lowest insurance rates",
+        "category": "Discount / Pricing",
+        "length": 22
+    },
+    {
+        "word": "Lowest price",
+        "category": "Discount / Pricing",
+        "length": 12
+    },
+    {
+        "word": "Lowest rate",
+        "category": "Discount / Pricing",
+        "length": 11
+    },
+    {
+        "word": "Luxury",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Luxury car",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Mail in order form",
+        "category": "Call to Action",
+        "length": 18
+    },
+    {
+        "word": "Maintained",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Make $",
+        "category": "Money / Income",
+        "length": 6
+    },
+    {
+        "word": "Make money",
+        "category": "Money / Income",
+        "length": 10
+    },
+    {
+        "word": "Marketing",
+        "category": "Marketing",
+        "length": 9
+    },
+    {
+        "word": "Marketing solutions",
+        "category": "Marketing",
+        "length": 19
+    },
+    {
+        "word": "Mass email",
+        "category": "Marketing",
+        "length": 10
+    },
+    {
+        "word": "Medicine",
+        "category": "Health / Pharma",
+        "length": 8
+    },
+    {
+        "word": "Medium",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Meet girls",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Meet me",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Meet singles",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "Meet women",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Member",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Member stuff",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "Message contains",
+        "category": "General",
+        "length": 16
+    },
+    {
+        "word": "Message contains disclaimer",
+        "category": "Spam / Legal",
+        "length": 27
+    },
+    {
+        "word": "Million",
+        "category": "Money / Income",
+        "length": 7
+    },
+    {
+        "word": "Millionaire",
+        "category": "Money / Income",
+        "length": 11
+    },
+    {
+        "word": "Million dollars",
+        "category": "Money / Income",
+        "length": 15
+    },
+    {
+        "word": "Miracle",
+        "category": "Health / Pharma",
+        "length": 7
+    },
+    {
+        "word": "MLM",
+        "category": "Business Opportunity",
+        "length": 3
+    },
+    {
+        "word": "Money",
+        "category": "Money / Income",
+        "length": 5
+    },
+    {
+        "word": "Money back",
+        "category": "Money / Income",
+        "length": 10
+    },
+    {
+        "word": "Money making",
+        "category": "Money / Income",
+        "length": 12
+    },
+    {
+        "word": "Month trial offer",
+        "category": "Free / Giveaway",
+        "length": 17
+    },
+    {
+        "word": "More Internet Traffic",
+        "category": "Marketing",
+        "length": 21
+    },
+    {
+        "word": "Mortgage",
+        "category": "Financial",
+        "length": 8
+    },
+    {
+        "word": "Mortgage rates",
+        "category": "Financial",
+        "length": 14
+    },
+    {
+        "word": "Multi-level marketing",
+        "category": "Marketing",
+        "length": 21
+    },
+    {
+        "word": "Name brand",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Never",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Never before",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "New customers only",
+        "category": "General",
+        "length": 18
+    },
+    {
+        "word": "New domain extensions",
+        "category": "General",
+        "length": 21
+    },
+    {
+        "word": "Nigerian",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "No age restrictions",
+        "category": "General",
+        "length": 19
+    },
+    {
+        "word": "No catch",
+        "category": "Guarantee / Risk-free",
+        "length": 8
+    },
+    {
+        "word": "No claim forms",
+        "category": "General",
+        "length": 14
+    },
+    {
+        "word": "No cost",
+        "category": "Guarantee / Risk-free",
+        "length": 7
+    },
+    {
+        "word": "No credit check",
+        "category": "Financial",
+        "length": 15
+    },
+    {
+        "word": "No deposit required",
+        "category": "General",
+        "length": 19
+    },
+    {
+        "word": "No disappointment",
+        "category": "General",
+        "length": 17
+    },
+    {
+        "word": "No experience",
+        "category": "General",
+        "length": 13
+    },
+    {
+        "word": "No fees",
+        "category": "Guarantee / Risk-free",
+        "length": 7
+    },
+    {
+        "word": "No gimmick",
+        "category": "Guarantee / Risk-free",
+        "length": 10
+    },
+    {
+        "word": "No hidden",
+        "category": "Guarantee / Risk-free",
+        "length": 9
+    },
+    {
+        "word": "No hidden \u0441osts",
+        "category": "Guarantee / Risk-free",
+        "length": 15
+    },
+    {
+        "word": "No hidden fees",
+        "category": "Guarantee / Risk-free",
+        "length": 14
+    },
+    {
+        "word": "No interests",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "No inventory",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "No investment",
+        "category": "General",
+        "length": 13
+    },
+    {
+        "word": "No investment required",
+        "category": "General",
+        "length": 22
+    },
+    {
+        "word": "No medical exams",
+        "category": "General",
+        "length": 16
+    },
+    {
+        "word": "No middleman",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "No obligation",
+        "category": "Guarantee / Risk-free",
+        "length": 13
+    },
+    {
+        "word": "No payment required",
+        "category": "General",
+        "length": 19
+    },
+    {
+        "word": "No purchase necessary",
+        "category": "General",
+        "length": 21
+    },
+    {
+        "word": "No questions asked",
+        "category": "General",
+        "length": 18
+    },
+    {
+        "word": "No selling",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "No strings attached",
+        "category": "General",
+        "length": 19
+    },
+    {
+        "word": "No-obligation",
+        "category": "General",
+        "length": 13
+    },
+    {
+        "word": "Not intended",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "Not junk",
+        "category": "Spam / Legal",
+        "length": 8
+    },
+    {
+        "word": "Not scam",
+        "category": "Spam / Legal",
+        "length": 8
+    },
+    {
+        "word": "Not spam",
+        "category": "Spam / Legal",
+        "length": 8
+    },
+    {
+        "word": "Now",
+        "category": "Urgency",
+        "length": 3
+    },
+    {
+        "word": "Now only",
+        "category": "Urgency",
+        "length": 8
+    },
+    {
+        "word": "Number 1",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "Number one",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Obligation",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Offshore",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "Offer",
+        "category": "Discount / Pricing",
+        "length": 5
+    },
+    {
+        "word": "Offer expires",
+        "category": "Urgency",
+        "length": 13
+    },
+    {
+        "word": "Once in lifetime",
+        "category": "General",
+        "length": 16
+    },
+    {
+        "word": "Once in a lifetime",
+        "category": "General",
+        "length": 18
+    },
+    {
+        "word": "One hundred percent free",
+        "category": "Free / Giveaway",
+        "length": 24
+    },
+    {
+        "word": "One hundred percent guaranteed",
+        "category": "Money / Income",
+        "length": 30
+    },
+    {
+        "word": "One time",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "One time mailing",
+        "category": "General",
+        "length": 16
+    },
+    {
+        "word": "Online biz opportunity",
+        "category": "Marketing",
+        "length": 22
+    },
+    {
+        "word": "Online degree",
+        "category": "General",
+        "length": 13
+    },
+    {
+        "word": "Online job",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Online income",
+        "category": "Money / Income",
+        "length": 13
+    },
+    {
+        "word": "Online marketing",
+        "category": "Marketing",
+        "length": 16
+    },
+    {
+        "word": "Online pharmacy",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Only",
+        "category": "General",
+        "length": 4
+    },
+    {
+        "word": "Only $",
+        "category": "Money / Income",
+        "length": 6
+    },
+    {
+        "word": "Open Opportunity",
+        "category": "General",
+        "length": 16
+    },
+    {
+        "word": "Opt in",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Order",
+        "category": "Call to Action",
+        "length": 5
+    },
+    {
+        "word": "Order now",
+        "category": "Call to Action",
+        "length": 9
+    },
+    {
+        "word": "Order shipped by",
+        "category": "Call to Action",
+        "length": 16
+    },
+    {
+        "word": "Order status",
+        "category": "Call to Action",
+        "length": 12
+    },
+    {
+        "word": "Order today",
+        "category": "Call to Action",
+        "length": 11
+    },
+    {
+        "word": "Outstanding values",
+        "category": "General",
+        "length": 18
+    },
+    {
+        "word": "Passwords",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "Pennies a day",
+        "category": "General",
+        "length": 13
+    },
+    {
+        "word": "Per day",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Per month",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "Per week",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "Performance",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Phone",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Please read",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Potential earnings",
+        "category": "Money / Income",
+        "length": 18
+    },
+    {
+        "word": "Pre-approved",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "Presently",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "Price",
+        "category": "Discount / Pricing",
+        "length": 5
+    },
+    {
+        "word": "Price protection",
+        "category": "Discount / Pricing",
+        "length": 16
+    },
+    {
+        "word": "Print form signature",
+        "category": "General",
+        "length": 20
+    },
+    {
+        "word": "Print out and fax",
+        "category": "General",
+        "length": 17
+    },
+    {
+        "word": "Priority mail",
+        "category": "General",
+        "length": 13
+    },
+    {
+        "word": "Prize",
+        "category": "Free / Giveaway",
+        "length": 5
+    },
+    {
+        "word": "Problem",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Produced and sent out",
+        "category": "General",
+        "length": 21
+    },
+    {
+        "word": "Profits",
+        "category": "Money / Income",
+        "length": 7
+    },
+    {
+        "word": "Promise",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Promise you",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Purchase",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "Pure profits",
+        "category": "Money / Income",
+        "length": 12
+    },
+    {
+        "word": "Quote",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Rates",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Real thing",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Refinance",
+        "category": "Financial",
+        "length": 9
+    },
+    {
+        "word": "Refinance home",
+        "category": "Financial",
+        "length": 14
+    },
+    {
+        "word": "Refund",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Removal",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Removal instructions",
+        "category": "General",
+        "length": 20
+    },
+    {
+        "word": "Remove",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Removes wrinkles",
+        "category": "General",
+        "length": 16
+    },
+    {
+        "word": "Request",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Request now",
+        "category": "Urgency",
+        "length": 11
+    },
+    {
+        "word": "Request today",
+        "category": "Urgency",
+        "length": 13
+    },
+    {
+        "word": "Requires initial investment",
+        "category": "General",
+        "length": 27
+    },
+    {
+        "word": "Reserves the right",
+        "category": "General",
+        "length": 18
+    },
+    {
+        "word": "Reverses",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "Reverses aging",
+        "category": "General",
+        "length": 14
+    },
+    {
+        "word": "Risk free",
+        "category": "Free / Giveaway",
+        "length": 9
+    },
+    {
+        "word": "Risk-free",
+        "category": "Free / Giveaway",
+        "length": 9
+    },
+    {
+        "word": "Rolex",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Round the world",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "S 1618",
+        "category": "General",
+        "length": 6
+    },
+    {
+        "word": "Safeguard notice",
+        "category": "General",
+        "length": 16
+    },
+    {
+        "word": "Sale",
+        "category": "Discount / Pricing",
+        "length": 4
+    },
+    {
+        "word": "Sample",
+        "category": "Free / Giveaway",
+        "length": 6
+    },
+    {
+        "word": "Satisfaction",
+        "category": "Guarantee / Risk-free",
+        "length": 12
+    },
+    {
+        "word": "Satisfaction guaranteed",
+        "category": "Guarantee / Risk-free",
+        "length": 23
+    },
+    {
+        "word": "Save $",
+        "category": "Money / Income",
+        "length": 6
+    },
+    {
+        "word": "Save money",
+        "category": "Money / Income",
+        "length": 10
+    },
+    {
+        "word": "Save now",
+        "category": "Urgency",
+        "length": 8
+    },
+    {
+        "word": "Save big money",
+        "category": "Money / Income",
+        "length": 14
+    },
+    {
+        "word": "Save up to",
+        "category": "Discount / Pricing",
+        "length": 10
+    },
+    {
+        "word": "Score",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Score with babes",
+        "category": "General",
+        "length": 16
+    },
+    {
+        "word": "Search engine listings",
+        "category": "Marketing",
+        "length": 22
+    },
+    {
+        "word": "Search engines",
+        "category": "Marketing",
+        "length": 14
+    },
+    {
+        "word": "Section 301",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "See for yourself",
+        "category": "General",
+        "length": 16
+    },
+    {
+        "word": "Sent in compliance",
+        "category": "Spam / Legal",
+        "length": 18
+    },
+    {
+        "word": "Serious",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Serious cash",
+        "category": "Money / Income",
+        "length": 12
+    },
+    {
+        "word": "Serious only",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "Serious offer",
+        "category": "Discount / Pricing",
+        "length": 13
+    },
+    {
+        "word": "Shopper",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Shopping spree",
+        "category": "General",
+        "length": 14
+    },
+    {
+        "word": "Sign up free today",
+        "category": "Free / Giveaway",
+        "length": 18
+    },
+    {
+        "word": "Social security number",
+        "category": "General",
+        "length": 22
+    },
+    {
+        "word": "Solution",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "Spam",
+        "category": "Spam / Legal",
+        "length": 4
+    },
+    {
+        "word": "Special deal",
+        "category": "Discount / Pricing",
+        "length": 12
+    },
+    {
+        "word": "Special discount",
+        "category": "Discount / Pricing",
+        "length": 16
+    },
+    {
+        "word": "Special for you",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Special offer",
+        "category": "Discount / Pricing",
+        "length": 13
+    },
+    {
+        "word": "Special promotion",
+        "category": "General",
+        "length": 17
+    },
+    {
+        "word": "Stainless steel",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Stock alert",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Stock disclaimer statement",
+        "category": "Spam / Legal",
+        "length": 26
+    },
+    {
+        "word": "Stock pick",
+        "category": "General",
+        "length": 10
+    },
+    {
+        "word": "Stop",
+        "category": "General",
+        "length": 4
+    },
+    {
+        "word": "Stop calling me",
+        "category": "Call to Action",
+        "length": 15
+    },
+    {
+        "word": "Stop emailing me",
+        "category": "Marketing",
+        "length": 16
+    },
+    {
+        "word": "Stop snoring",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "Strong buy",
+        "category": "Call to Action",
+        "length": 10
+    },
+    {
+        "word": "Stuff on sale",
+        "category": "Discount / Pricing",
+        "length": 13
+    },
+    {
+        "word": "Subject to cash",
+        "category": "Money / Income",
+        "length": 15
+    },
+    {
+        "word": "Subject to credit",
+        "category": "Financial",
+        "length": 17
+    },
+    {
+        "word": "Subscribe",
+        "category": "Call to Action",
+        "length": 9
+    },
+    {
+        "word": "Subscribe now",
+        "category": "Call to Action",
+        "length": 13
+    },
+    {
+        "word": "Subscribe for free",
+        "category": "Free / Giveaway",
+        "length": 18
+    },
+    {
+        "word": "Success",
+        "category": "General",
+        "length": 7
+    },
+    {
+        "word": "Supplies",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "Supplies are limited",
+        "category": "Urgency",
+        "length": 20
+    },
+    {
+        "word": "Take action",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Take action now",
+        "category": "Urgency",
+        "length": 15
+    },
+    {
+        "word": "Talks about hidden charges",
+        "category": "General",
+        "length": 26
+    },
+    {
+        "word": "Talks about prizes",
+        "category": "Free / Giveaway",
+        "length": 18
+    },
+    {
+        "word": "Teen",
+        "category": "General",
+        "length": 4
+    },
+    {
+        "word": "Tells you it\u2019s an ad",
+        "category": "General",
+        "length": 20
+    },
+    {
+        "word": "Terms",
+        "category": "General",
+        "length": 5
+    },
+    {
+        "word": "Terms and conditions",
+        "category": "General",
+        "length": 20
+    },
+    {
+        "word": "The best rates",
+        "category": "General",
+        "length": 14
+    },
+    {
+        "word": "The following form",
+        "category": "General",
+        "length": 18
+    },
+    {
+        "word": "They keep your money \u2014 no refund!",
+        "category": "Money / Income",
+        "length": 33
+    },
+    {
+        "word": "They\u2019re just giving it away",
+        "category": "General",
+        "length": 27
+    },
+    {
+        "word": "This isn\u2019t a scam",
+        "category": "Spam / Legal",
+        "length": 17
+    },
+    {
+        "word": "This isn\u2019t junk",
+        "category": "Spam / Legal",
+        "length": 15
+    },
+    {
+        "word": "This isn\u2019t spam",
+        "category": "Spam / Legal",
+        "length": 15
+    },
+    {
+        "word": "This won\u2019t last",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Thousands",
+        "category": "General",
+        "length": 9
+    },
+    {
+        "word": "Time limited",
+        "category": "Urgency",
+        "length": 12
+    },
+    {
+        "word": "Traffic",
+        "category": "Marketing",
+        "length": 7
+    },
+    {
+        "word": "Trial",
+        "category": "Free / Giveaway",
+        "length": 5
+    },
+    {
+        "word": "Undisclosed recipient",
+        "category": "General",
+        "length": 21
+    },
+    {
+        "word": "University diplomas",
+        "category": "General",
+        "length": 19
+    },
+    {
+        "word": "Unlimited",
+        "category": "Urgency",
+        "length": 9
+    },
+    {
+        "word": "Unsecured credit",
+        "category": "Financial",
+        "length": 16
+    },
+    {
+        "word": "Unsecured debt",
+        "category": "Financial",
+        "length": 14
+    },
+    {
+        "word": "Unsolicited",
+        "category": "Spam / Legal",
+        "length": 11
+    },
+    {
+        "word": "Unsubscribe",
+        "category": "Call to Action",
+        "length": 11
+    },
+    {
+        "word": "Urgent",
+        "category": "Urgency",
+        "length": 6
+    },
+    {
+        "word": "US dollars",
+        "category": "Money / Income",
+        "length": 10
+    },
+    {
+        "word": "Vacation",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "Vacation offers",
+        "category": "Discount / Pricing",
+        "length": 15
+    },
+    {
+        "word": "Valium",
+        "category": "Health / Pharma",
+        "length": 6
+    },
+    {
+        "word": "Viagra",
+        "category": "Health / Pharma",
+        "length": 6
+    },
+    {
+        "word": "Vicodin",
+        "category": "Health / Pharma",
+        "length": 7
+    },
+    {
+        "word": "VIP",
+        "category": "General",
+        "length": 3
+    },
+    {
+        "word": "Visit our website",
+        "category": "Call to Action",
+        "length": 17
+    },
+    {
+        "word": "Wants credit card",
+        "category": "Financial",
+        "length": 17
+    },
+    {
+        "word": "Warranty",
+        "category": "General",
+        "length": 8
+    },
+    {
+        "word": "Warranty expired",
+        "category": "Urgency",
+        "length": 16
+    },
+    {
+        "word": "We hate spam",
+        "category": "Spam / Legal",
+        "length": 12
+    },
+    {
+        "word": "We honor all",
+        "category": "General",
+        "length": 12
+    },
+    {
+        "word": "Web traffic",
+        "category": "Marketing",
+        "length": 11
+    },
+    {
+        "word": "Website visitors",
+        "category": "Call to Action",
+        "length": 16
+    },
+    {
+        "word": "Weekend getaway",
+        "category": "General",
+        "length": 15
+    },
+    {
+        "word": "Weight",
+        "category": "Health / Pharma",
+        "length": 6
+    },
+    {
+        "word": "Weight loss",
+        "category": "Health / Pharma",
+        "length": 11
+    },
+    {
+        "word": "What are you waiting for?",
+        "category": "General",
+        "length": 25
+    },
+    {
+        "word": "What\u2019s keeping you?",
+        "category": "General",
+        "length": 19
+    },
+    {
+        "word": "While available",
+        "category": "Urgency",
+        "length": 15
+    },
+    {
+        "word": "While in stock",
+        "category": "Urgency",
+        "length": 14
+    },
+    {
+        "word": "While supplies last",
+        "category": "Urgency",
+        "length": 19
+    },
+    {
+        "word": "While you sleep",
+        "category": "Urgency",
+        "length": 15
+    },
+    {
+        "word": "Who really wins?",
+        "category": "General",
+        "length": 16
+    },
+    {
+        "word": "Why pay more?",
+        "category": "General",
+        "length": 13
+    },
+    {
+        "word": "Wife",
+        "category": "General",
+        "length": 4
+    },
+    {
+        "word": "Will not believe your eyes",
+        "category": "General",
+        "length": 26
+    },
+    {
+        "word": "Win",
+        "category": "General",
+        "length": 3
+    },
+    {
+        "word": "Winner",
+        "category": "Free / Giveaway",
+        "length": 6
+    },
+    {
+        "word": "Winning",
+        "category": "Free / Giveaway",
+        "length": 7
+    },
+    {
+        "word": "Won",
+        "category": "General",
+        "length": 3
+    },
+    {
+        "word": "Work from home",
+        "category": "Business Opportunity",
+        "length": 14
+    },
+    {
+        "word": "Xanax",
+        "category": "Health / Pharma",
+        "length": 5
+    },
+    {
+        "word": "You are a winner!",
+        "category": "Free / Giveaway",
+        "length": 17
+    },
+    {
+        "word": "You have been chosen",
+        "category": "General",
+        "length": 20
+    },
+    {
+        "word": "You have been selected",
+        "category": "General",
+        "length": 22
+    },
+    {
+        "word": "Your chance",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Your income",
+        "category": "Money / Income",
+        "length": 11
+    },
+    {
+        "word": "Your status",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Zero chance",
+        "category": "General",
+        "length": 11
+    },
+    {
+        "word": "Zero percent",
+        "category": "Money / Income",
+        "length": 12
+    },
+    {
+        "word": "Zero risk",
+        "category": "Guarantee / Risk-free",
+        "length": 9
+    }
 ]

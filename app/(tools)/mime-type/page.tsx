@@ -10,8 +10,6 @@ const ReferenceTab = lazy(
     () => import('@/features/tools/mime-type/tabs/reference-tab'),
 ) as unknown as ComponentType<TabComponentProps>;
 
-const MIME_COLOR = 'bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-900 dark:text-fuchsia-300';
-
 const MIME_TYPE_TOOL = registerToolAndGet();
 
 function registerToolAndGet() {

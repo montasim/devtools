@@ -6,15 +6,7 @@ import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import {
-    ShieldAlert,
-    Copy,
-    Check,
-    AlertTriangle,
-    Info,
-    ShieldCheck,
-    X,
-} from 'lucide-react';
+import { ShieldAlert, Copy, Check, AlertTriangle, Info, ShieldCheck, X } from 'lucide-react';
 import type { TabComponentProps } from '../../core/types/tool';
 import rawWords from '../data/words.json';
 
@@ -32,7 +24,12 @@ export default function CheckerTab({ readOnly }: TabComponentProps) {
         const inputLower = input.toLowerCase();
         const found: { word: string; category: string; count: number }[] = [];
         for (const sw of spamWords) {
-            const regex = new RegExp('\\b' + sw.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/%/g, '\\d*%?') + '\\b', 'gi');
+            const regex = new RegExp(
+                '\\b' +
+                    sw.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/%/g, '\\d*%?') +
+                    '\\b',
+                'gi',
+            );
             const matchCount = (inputLower.match(regex) || []).length;
             if (matchCount > 0) {
                 found.push({ word: sw.word, category: sw.category, count: matchCount });
@@ -70,10 +67,30 @@ export default function CheckerTab({ readOnly }: TabComponentProps) {
     const hasInput = input.trim().length > 0;
 
     const riskConfig = {
-        none: { label: 'Clean', color: 'text-green-600 dark:text-green-400', bg: 'border-green-500/30 bg-green-500/5', icon: ShieldCheck },
-        low: { label: 'Low Risk', color: 'text-blue-600 dark:text-blue-400', bg: 'border-blue-500/30 bg-blue-500/5', icon: Info },
-        medium: { label: 'Medium Risk', color: 'text-amber-600 dark:text-amber-400', bg: 'border-amber-500/30 bg-amber-500/5', icon: AlertTriangle },
-        high: { label: 'High Risk', color: 'text-destructive', bg: 'border-destructive/30 bg-destructive/5', icon: ShieldAlert },
+        none: {
+            label: 'Clean',
+            color: 'text-green-600 dark:text-green-400',
+            bg: 'border-green-500/30 bg-green-500/5',
+            icon: ShieldCheck,
+        },
+        low: {
+            label: 'Low Risk',
+            color: 'text-blue-600 dark:text-blue-400',
+            bg: 'border-blue-500/30 bg-blue-500/5',
+            icon: Info,
+        },
+        medium: {
+            label: 'Medium Risk',
+            color: 'text-amber-600 dark:text-amber-400',
+            bg: 'border-amber-500/30 bg-amber-500/5',
+            icon: AlertTriangle,
+        },
+        high: {
+            label: 'High Risk',
+            color: 'text-destructive',
+            bg: 'border-destructive/30 bg-destructive/5',
+            icon: ShieldAlert,
+        },
     };
 
     const currentRisk = riskConfig[riskLevel];
@@ -114,7 +131,9 @@ export default function CheckerTab({ readOnly }: TabComponentProps) {
                     <div className="flex flex-col gap-4">
                         <div className={`rounded-lg border p-4 ${currentRisk.bg}`}>
                             <div className="flex items-start gap-3">
-                                <RiskIcon className={`h-5 w-5 shrink-0 mt-0.5 ${currentRisk.color}`} />
+                                <RiskIcon
+                                    className={`h-5 w-5 shrink-0 mt-0.5 ${currentRisk.color}`}
+                                />
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 flex-wrap">
                                         <span className="text-sm font-semibold">
@@ -131,7 +150,8 @@ export default function CheckerTab({ readOnly }: TabComponentProps) {
                                                         : 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
                                             }`}
                                         >
-                                            {matches.length} word{matches.length !== 1 ? 's' : ''} found
+                                            {matches.length} word{matches.length !== 1 ? 's' : ''}{' '}
+                                            found
                                         </Badge>
                                     </div>
                                     <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">

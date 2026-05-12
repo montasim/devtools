@@ -1,282 +1,282 @@
 {
-  "total": 53369,
-  "uniqueTlds": 442,
-  "tldDistribution": [
-    {
-      "name": ".com",
-      "value": 36349
-    },
-    {
-      "name": ".eu",
-      "value": 2956
-    },
-    {
-      "name": ".net",
-      "value": 1725
-    },
-    {
-      "name": ".pl",
-      "value": 1246
-    },
-    {
-      "name": ".org",
-      "value": 1060
-    },
-    {
-      "name": ".kr",
-      "value": 1025
-    },
-    {
-      "name": ".ru",
-      "value": 893
-    },
-    {
-      "name": ".info",
-      "value": 867
-    },
-    {
-      "name": ".uk",
-      "value": 575
-    },
-    {
-      "name": ".de",
-      "value": 425
-    },
-    {
-      "name": ".in",
-      "value": 379
-    },
-    {
-      "name": ".ro",
-      "value": 315
-    },
-    {
-      "name": ".top",
-      "value": 295
-    },
-    {
-      "name": ".xyz",
-      "value": 291
-    },
-    {
-      "name": ".us",
-      "value": 262
-    },
-    {
-      "name": ".biz",
-      "value": 216
-    },
-    {
-      "name": ".tk",
-      "value": 189
-    },
-    {
-      "name": ".co",
-      "value": 153
-    },
-    {
-      "name": ".ml",
-      "value": 144
-    },
-    {
-      "name": ".edu",
-      "value": 142
-    }
-  ],
-  "lengthDistribution": [
-    {
-      "name": "1",
-      "value": 475
-    },
-    {
-      "name": "2",
-      "value": 963
-    },
-    {
-      "name": "3",
-      "value": 1834
-    },
-    {
-      "name": "4",
-      "value": 1838
-    },
-    {
-      "name": "5",
-      "value": 2268
-    },
-    {
-      "name": "6",
-      "value": 14229
-    },
-    {
-      "name": "7",
-      "value": 2788
-    },
-    {
-      "name": "8",
-      "value": 14394
-    },
-    {
-      "name": "9",
-      "value": 2251
-    },
-    {
-      "name": "10",
-      "value": 2084
-    },
-    {
-      "name": "11",
-      "value": 1902
-    },
-    {
-      "name": "12",
-      "value": 1764
-    },
-    {
-      "name": "13",
-      "value": 1384
-    },
-    {
-      "name": "14",
-      "value": 1147
-    },
-    {
-      "name": "15",
-      "value": 937
-    },
-    {
-      "name": "16",
-      "value": 772
-    },
-    {
-      "name": "17",
-      "value": 585
-    },
-    {
-      "name": "18",
-      "value": 428
-    },
-    {
-      "name": "19",
-      "value": 310
-    },
-    {
-      "name": "20",
-      "value": 255
-    },
-    {
-      "name": "21",
-      "value": 207
-    },
-    {
-      "name": "22",
-      "value": 123
-    },
-    {
-      "name": "23",
-      "value": 112
-    },
-    {
-      "name": "24",
-      "value": 73
-    },
-    {
-      "name": "25",
-      "value": 56
-    },
-    {
-      "name": "26",
-      "value": 48
-    },
-    {
-      "name": "27",
-      "value": 35
-    },
-    {
-      "name": "28",
-      "value": 30
-    },
-    {
-      "name": "29",
-      "value": 24
-    },
-    {
-      "name": "30",
-      "value": 15
-    },
-    {
-      "name": "31",
-      "value": 17
-    },
-    {
-      "name": "32",
-      "value": 11
-    },
-    {
-      "name": "33",
-      "value": 3
-    },
-    {
-      "name": "34",
-      "value": 3
-    },
-    {
-      "name": "36",
-      "value": 1
-    },
-    {
-      "name": "40",
-      "value": 1
-    },
-    {
-      "name": "42",
-      "value": 1
-    },
-    {
-      "name": "43",
-      "value": 1
-    }
-  ],
-  "keywordClusters": [
-    {
-      "name": "mail/email",
-      "value": 3971
-    },
-    {
-      "name": "spam",
-      "value": 154
-    },
-    {
-      "name": "temp/temporary",
-      "value": 80
-    },
-    {
-      "name": "trash/junk",
-      "value": 60
-    },
-    {
-      "name": "fake/fraud",
-      "value": 33
-    },
-    {
-      "name": "10min/10minute",
-      "value": 27
-    },
-    {
-      "name": "disposable",
-      "value": 12
-    },
-    {
-      "name": "guerrilla",
-      "value": 7
-    },
-    {
-      "name": "throwaway",
-      "value": 3
-    },
-    {
-      "name": "anonymous",
-      "value": 2
-    }
-  ]
+    "total": 53369,
+    "uniqueTlds": 442,
+    "tldDistribution": [
+        {
+            "name": ".com",
+            "value": 36349
+        },
+        {
+            "name": ".eu",
+            "value": 2956
+        },
+        {
+            "name": ".net",
+            "value": 1725
+        },
+        {
+            "name": ".pl",
+            "value": 1246
+        },
+        {
+            "name": ".org",
+            "value": 1060
+        },
+        {
+            "name": ".kr",
+            "value": 1025
+        },
+        {
+            "name": ".ru",
+            "value": 893
+        },
+        {
+            "name": ".info",
+            "value": 867
+        },
+        {
+            "name": ".uk",
+            "value": 575
+        },
+        {
+            "name": ".de",
+            "value": 425
+        },
+        {
+            "name": ".in",
+            "value": 379
+        },
+        {
+            "name": ".ro",
+            "value": 315
+        },
+        {
+            "name": ".top",
+            "value": 295
+        },
+        {
+            "name": ".xyz",
+            "value": 291
+        },
+        {
+            "name": ".us",
+            "value": 262
+        },
+        {
+            "name": ".biz",
+            "value": 216
+        },
+        {
+            "name": ".tk",
+            "value": 189
+        },
+        {
+            "name": ".co",
+            "value": 153
+        },
+        {
+            "name": ".ml",
+            "value": 144
+        },
+        {
+            "name": ".edu",
+            "value": 142
+        }
+    ],
+    "lengthDistribution": [
+        {
+            "name": "1",
+            "value": 475
+        },
+        {
+            "name": "2",
+            "value": 963
+        },
+        {
+            "name": "3",
+            "value": 1834
+        },
+        {
+            "name": "4",
+            "value": 1838
+        },
+        {
+            "name": "5",
+            "value": 2268
+        },
+        {
+            "name": "6",
+            "value": 14229
+        },
+        {
+            "name": "7",
+            "value": 2788
+        },
+        {
+            "name": "8",
+            "value": 14394
+        },
+        {
+            "name": "9",
+            "value": 2251
+        },
+        {
+            "name": "10",
+            "value": 2084
+        },
+        {
+            "name": "11",
+            "value": 1902
+        },
+        {
+            "name": "12",
+            "value": 1764
+        },
+        {
+            "name": "13",
+            "value": 1384
+        },
+        {
+            "name": "14",
+            "value": 1147
+        },
+        {
+            "name": "15",
+            "value": 937
+        },
+        {
+            "name": "16",
+            "value": 772
+        },
+        {
+            "name": "17",
+            "value": 585
+        },
+        {
+            "name": "18",
+            "value": 428
+        },
+        {
+            "name": "19",
+            "value": 310
+        },
+        {
+            "name": "20",
+            "value": 255
+        },
+        {
+            "name": "21",
+            "value": 207
+        },
+        {
+            "name": "22",
+            "value": 123
+        },
+        {
+            "name": "23",
+            "value": 112
+        },
+        {
+            "name": "24",
+            "value": 73
+        },
+        {
+            "name": "25",
+            "value": 56
+        },
+        {
+            "name": "26",
+            "value": 48
+        },
+        {
+            "name": "27",
+            "value": 35
+        },
+        {
+            "name": "28",
+            "value": 30
+        },
+        {
+            "name": "29",
+            "value": 24
+        },
+        {
+            "name": "30",
+            "value": 15
+        },
+        {
+            "name": "31",
+            "value": 17
+        },
+        {
+            "name": "32",
+            "value": 11
+        },
+        {
+            "name": "33",
+            "value": 3
+        },
+        {
+            "name": "34",
+            "value": 3
+        },
+        {
+            "name": "36",
+            "value": 1
+        },
+        {
+            "name": "40",
+            "value": 1
+        },
+        {
+            "name": "42",
+            "value": 1
+        },
+        {
+            "name": "43",
+            "value": 1
+        }
+    ],
+    "keywordClusters": [
+        {
+            "name": "mail/email",
+            "value": 3971
+        },
+        {
+            "name": "spam",
+            "value": 154
+        },
+        {
+            "name": "temp/temporary",
+            "value": 80
+        },
+        {
+            "name": "trash/junk",
+            "value": 60
+        },
+        {
+            "name": "fake/fraud",
+            "value": 33
+        },
+        {
+            "name": "10min/10minute",
+            "value": 27
+        },
+        {
+            "name": "disposable",
+            "value": 12
+        },
+        {
+            "name": "guerrilla",
+            "value": 7
+        },
+        {
+            "name": "throwaway",
+            "value": 3
+        },
+        {
+            "name": "anonymous",
+            "value": 2
+        }
+    ]
 }

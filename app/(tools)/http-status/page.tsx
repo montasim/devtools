@@ -10,8 +10,6 @@ const ReferenceTab = lazy(
     () => import('@/features/tools/http-status/tabs/reference-tab'),
 ) as unknown as ComponentType<TabComponentProps>;
 
-const HTTP_STATUS_COLOR = 'bg-sky-100 text-sky-700 dark:bg-sky-900 dark:text-sky-300';
-
 const HTTP_STATUS_TOOL = registerToolAndGet();
 
 function registerToolAndGet() {

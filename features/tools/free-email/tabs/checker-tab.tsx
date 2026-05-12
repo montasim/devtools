@@ -52,10 +52,7 @@ const FREE_EMAIL_THEME: CheckerTheme = {
     historyUnmatchedLabel: 'Business',
 };
 
-function checkFreeEmailDomain(
-    domain: string,
-    domainSet: Set<string>,
-): DomainCheckResult {
+function checkFreeEmailDomain(domain: string, domainSet: Set<string>): DomainCheckResult {
     const d = domain.trim().toLowerCase();
     if (domainSet.has(d)) return { matched: true, domain: d };
     const parts = d.split('.');

@@ -61,7 +61,6 @@ const CHART_COLORS_DARK = [
 ];
 
 type Country = { code: string; name: string; timezones: string[] };
-type RegionFilter = 'all' | string;
 
 function MiniBarChart({
     data,
@@ -96,7 +95,10 @@ function MiniBarChart({
                     }}
                     formatter={
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        ((value: any) => [Number(value ?? 0).toLocaleString(), 'Timezones']) as never
+                        ((value: any) => [
+                            Number(value ?? 0).toLocaleString(),
+                            'Timezones',
+                        ]) as never
                     }
                 />
                 <Bar dataKey="value" radius={[0, 3, 3, 0]} barSize={16}>
@@ -195,14 +197,21 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
     const regionDist = stats.regionDistribution as { name: string; value: number }[];
 
     const regions = useMemo(
-        () => ['all', ...Array.from(new Set(countries.flatMap((c) => c.timezones.map((tz) => tz.split('/')[0])))).sort()],
+        () => [
+            'all',
+            ...Array.from(
+                new Set(countries.flatMap((c) => c.timezones.map((tz) => tz.split('/')[0]))),
+            ).sort(),
+        ],
         [countries],
     );
 
     const filtered = useMemo(() => {
         let result = countries;
         if (regionFilter !== 'all') {
-            result = result.filter((c) => c.timezones.some((tz) => tz.startsWith(regionFilter + '/')));
+            result = result.filter((c) =>
+                c.timezones.some((tz) => tz.startsWith(regionFilter + '/')),
+            );
         }
         if (search.trim()) {
             const q = search.toLowerCase();
@@ -215,37 +224,6 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
         }
         return result;
     }, [countries, regionFilter, search]);
-
-    const counts = useMemo(() => {
-        const base = search.trim()
-            ? countries.filter(
-                  (c) =>
-                      c.name.toLowerCase().includes(search.toLowerCase()) ||
-                      c.code.toLowerCase().includes(search.toLowerCase()) ||
-                      c.timezones.some((tz) => tz.toLowerCase().includes(search.toLowerCase())),
-              )
-            : countries;
-        const result: Record<string, number> = { all: base.length };
-        for (const c of base) {
-            for (const tz of c.timezones) {
-                const region = tz.split('/')[0];
-                if (!result[region]) result[region] = 0;
-                if (!result[region + '_counted']) {
-                    result[region]!++;
-                    result[region + '_counted'] = 1;
-                }
-            }
-            for (const key of Object.keys(result)) {
-                if (key.endsWith('_counted')) delete result[key];
-            }
-        }
-        for (const r of regions) {
-            if (r !== 'all' && !(r in result)) {
-                result[r] = 0;
-            }
-        }
-        return result;
-    }, [countries, search, regions]);
 
     const paged = filtered.slice(0, (page + 1) * PAGE_SIZE);
     const hasMore = filtered.length > (page + 1) * PAGE_SIZE;
@@ -355,7 +333,10 @@ export default function BrowserTab({ readOnly }: TabComponentProps) {
                                         data={[...countries]
                                             .sort((a, b) => b.timezones.length - a.timezones.length)
                                             .slice(0, 8)
-                                            .map((c) => ({ name: c.code, value: c.timezones.length }))}
+                                            .map((c) => ({
+                                                name: c.code,
+                                                value: c.timezones.length,
+                                            }))}
                                         colors={colors}
                                     />
                                 </div>

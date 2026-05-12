@@ -5,7 +5,6 @@ import { GitBranch } from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { createHistoryTabPlugin } from '@/features/tools/core/plugins/history';
 import { registerTool } from '@/features/tools/core/config/tool-registry';
-import { STORAGE_KEYS } from '@/lib/utils/constants';
 import type { TabComponentProps } from '@/features/tools/core/types/tool';
 
 const GeneratorTab = lazy(

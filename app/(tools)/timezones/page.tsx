@@ -1,7 +1,7 @@
 'use client';
 
 import { lazy, type ComponentType } from 'react';
-import { Globe2, Clock, Database, Search } from 'lucide-react';
+import { Globe2, Clock, Search } from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { registerTool } from '@/features/tools/core/config/tool-registry';
 import type { TabComponentProps } from '@/features/tools/core/types/tool';

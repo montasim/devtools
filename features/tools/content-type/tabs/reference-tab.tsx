@@ -11,7 +11,6 @@ import type { TabComponentProps } from '../../core/types/tool';
 import {
     CATEGORY_META,
     type ContentCategory,
-    type ContentTypeEntry,
     searchContentTypes,
 } from '../utils/content-type-data';
 

@@ -132,14 +132,20 @@ export function DomainCheckerTab({
                         >
                             <div className="flex items-start gap-3">
                                 {result.matched ? (
-                                    <MatchedIcon className={`h-5 w-5 shrink-0 mt-0.5 ${theme.matchedIconClass}`} />
+                                    <MatchedIcon
+                                        className={`h-5 w-5 shrink-0 mt-0.5 ${theme.matchedIconClass}`}
+                                    />
                                 ) : (
-                                    <UnmatchedIcon className={`h-5 w-5 shrink-0 mt-0.5 ${theme.unmatchedIconClass}`} />
+                                    <UnmatchedIcon
+                                        className={`h-5 w-5 shrink-0 mt-0.5 ${theme.unmatchedIconClass}`}
+                                    />
                                 )}
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 flex-wrap">
                                         <span className="text-sm font-semibold">
-                                            {result.matched ? theme.matchedTitle : theme.unmatchedTitle}
+                                            {result.matched
+                                                ? theme.matchedTitle
+                                                : theme.unmatchedTitle}
                                         </span>
                                         <Badge
                                             className={`text-[10px] ${
@@ -148,7 +154,9 @@ export function DomainCheckerTab({
                                                     : theme.unmatchedBadgeClass
                                             }`}
                                         >
-                                            {result.matched ? theme.matchedBadge : theme.unmatchedBadge}
+                                            {result.matched
+                                                ? theme.matchedBadge
+                                                : theme.unmatchedBadge}
                                         </Badge>
                                     </div>
                                     <div className="flex flex-col gap-1 mt-2">
@@ -172,24 +180,32 @@ export function DomainCheckerTab({
                         </div>
 
                         {result.matched && (
-                            <div className={`flex items-start gap-2.5 rounded-lg border p-3 ${theme.matchedWarningBorder} ${theme.matchedWarningBg}`}>
-                                <MatchedWarningIcon className={`h-4 w-4 shrink-0 mt-0.5 ${theme.matchedWarningIconClass}`} />
-                                <div className={`text-xs leading-relaxed ${theme.matchedWarningTextClass}`}>
-                                    <span className="font-medium">
-                                        {theme.matchedWarningTitle}
-                                    </span>{' '}
+                            <div
+                                className={`flex items-start gap-2.5 rounded-lg border p-3 ${theme.matchedWarningBorder} ${theme.matchedWarningBg}`}
+                            >
+                                <MatchedWarningIcon
+                                    className={`h-4 w-4 shrink-0 mt-0.5 ${theme.matchedWarningIconClass}`}
+                                />
+                                <div
+                                    className={`text-xs leading-relaxed ${theme.matchedWarningTextClass}`}
+                                >
+                                    <span className="font-medium">{theme.matchedWarningTitle}</span>{' '}
                                     {theme.matchedWarningText}
                                 </div>
                             </div>
                         )}
 
                         {!result.matched && (
-                            <div className={`flex items-start gap-2.5 rounded-lg border p-3 ${theme.unmatchedInfoBorder} ${theme.unmatchedInfoBg}`}>
-                                <UnmatchedInfoIcon className={`h-4 w-4 shrink-0 mt-0.5 ${theme.unmatchedInfoIconClass}`} />
-                                <div className={`text-xs leading-relaxed ${theme.unmatchedInfoTextClass}`}>
-                                    <span className="font-medium">
-                                        {theme.unmatchedInfoTitle}
-                                    </span>{' '}
+                            <div
+                                className={`flex items-start gap-2.5 rounded-lg border p-3 ${theme.unmatchedInfoBorder} ${theme.unmatchedInfoBg}`}
+                            >
+                                <UnmatchedInfoIcon
+                                    className={`h-4 w-4 shrink-0 mt-0.5 ${theme.unmatchedInfoIconClass}`}
+                                />
+                                <div
+                                    className={`text-xs leading-relaxed ${theme.unmatchedInfoTextClass}`}
+                                >
+                                    <span className="font-medium">{theme.unmatchedInfoTitle}</span>{' '}
                                     {theme.unmatchedInfoText}
                                 </div>
                             </div>
@@ -250,9 +266,13 @@ export function DomainCheckerTab({
                                     className="flex items-center gap-2 rounded-md border px-3 py-1.5 hover:bg-muted/30 transition-colors"
                                 >
                                     {entry.matched ? (
-                                        <HistoryMatchedIcon className={`h-3.5 w-3.5 shrink-0 ${theme.historyMatchedIconClass}`} />
+                                        <HistoryMatchedIcon
+                                            className={`h-3.5 w-3.5 shrink-0 ${theme.historyMatchedIconClass}`}
+                                        />
                                     ) : (
-                                        <HistoryUnmatchedIcon className={`h-3.5 w-3.5 shrink-0 ${theme.historyUnmatchedIconClass}`} />
+                                        <HistoryUnmatchedIcon
+                                            className={`h-3.5 w-3.5 shrink-0 ${theme.historyUnmatchedIconClass}`}
+                                        />
                                     )}
                                     <code className="flex-1 font-mono text-[11px] truncate">
                                         {entry.email}
@@ -265,7 +285,9 @@ export function DomainCheckerTab({
                                                 : theme.historyUnmatchedBadgeClass
                                         }`}
                                     >
-                                        {entry.matched ? theme.historyMatchedLabel : theme.historyUnmatchedLabel}
+                                        {entry.matched
+                                            ? theme.historyMatchedLabel
+                                            : theme.historyUnmatchedLabel}
                                     </Badge>
                                 </div>
                             ))}
