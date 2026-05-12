@@ -4,7 +4,6 @@ import {
     FileText,
     FileCode,
     GitBranch,
-    Link2,
     QrCode,
     Hash,
     Link,
@@ -37,6 +36,7 @@ import {
     Database,
     Sparkles,
     Terminal,
+    Type,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -191,6 +191,13 @@ export const navigationMenu: MenuItem[] = [
                 description: '10 leet speak variants with auto-detect decoder',
                 icon: <Terminal className="size-5 shrink-0" />,
                 url: '/leet-text',
+                category: 'Generators',
+            },
+            {
+                title: 'Text Art Generator',
+                description: 'ASCII banners, text boxes, and Unicode block art',
+                icon: <Type className="size-5 shrink-0" />,
+                url: '/text-art',
                 category: 'Generators',
             },
             {

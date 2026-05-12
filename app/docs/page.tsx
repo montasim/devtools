@@ -47,6 +47,7 @@ import {
     MailQuestion,
     ShieldAlert,
     Globe2,
+    Type,
 } from 'lucide-react';
 import {
     PageLayout,
@@ -153,6 +154,11 @@ const docSections = [
         id: 'leet-text',
         title: 'Leet Text Encoder / Decoder',
         icon: <Terminal className="h-5 w-5" />,
+    },
+    {
+        id: 'text-art',
+        title: 'Text Art Generator',
+        icon: <Type className="h-5 w-5" />,
     },
 ];
 
@@ -1396,6 +1402,47 @@ export default function DocsPage() {
                             <p className="text-sm text-muted-foreground">
                                 Browse the full character reference for all 10 leet variants,
                                 grouped by category with filter and search.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="text-art"
+                    title="Text Art Generator"
+                    description="Create ASCII banners, text boxes, and Unicode block art from plain text."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Type className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                <h3 className="font-semibold">Generate</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Type or paste text and instantly see 48+ art styles — figlet banners
+                                (Standard, Block, Shadow, Doom, Star Wars, etc.), text boxes with
+                                various borders, and Unicode block pixel art. Filter by category and
+                                copy any style with one click.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <ArrowLeftRight className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                                <h3 className="font-semibold">Decode</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Paste text art and the decoder strips box borders and decorative
+                                characters to recover the original plain text.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">Styles</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Browse all available styles with live previews, grouped by category.
+                                Filter by type or search to find the right style.
                             </p>
                         </div>
                     </div>

@@ -36,7 +36,6 @@ import {
     MailQuestion,
     ShieldAlert,
     Globe2,
-    Clock,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -167,6 +166,12 @@ export const TOOL_CATEGORIES = [
                 label: 'Leet Text Encoder / Decoder',
                 description: '10 leet speak variants with auto-detect decoder',
                 icon: Terminal,
+            },
+            {
+                href: '/text-art',
+                label: 'Text Art Generator',
+                description: 'ASCII banners, text boxes, and Unicode block art',
+                icon: Type,
             },
         ],
     },

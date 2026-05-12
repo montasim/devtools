@@ -51,11 +51,11 @@ export default function ErrorPage({ error, reset }: { error: Error; reset: () =>
                     </Button>
                 </div>
 
-                <p className="mt-10 text-xs text-muted-foreground">
+                <p className="flex items-center gap-1 mt-10 text-xs text-muted-foreground">
                     Keeps happening?{' '}
                     <a
                         href={`mailto:${siteLinks.feedback}?subject=500%20%E2%80%93%20Internal%20server%20error`}
-                        className="inline items-center gap-1 font-medium text-primary hover:underline"
+                        className="flex items-center gap-1 font-medium text-primary hover:underline"
                     >
                         <Mail className="h-3 w-3" />
                         Report it

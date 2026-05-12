@@ -81,6 +81,8 @@ export const STORAGE_KEYS = {
     FANCY_TEXT_DECODE_INPUT: 'fancy-text-decode-input',
     LEET_TEXT_ENCODE_INPUT: 'leet-text-encode-input',
     LEET_TEXT_DECODE_INPUT: 'leet-text-decode-input',
+    TEXT_ART_INPUT: 'text-art-input',
+    TEXT_ART_DECODE_INPUT: 'text-art-decode-input',
     THEME: 'theme',
 } as const;
 
@@ -125,6 +127,7 @@ export const PAGE_NAMES = {
     TIMEZONES: 'timezones',
     FANCY_TEXT: 'fancy-text',
     LEET_TEXT: 'leet-text',
+    TEXT_ART: 'text-art',
 } as const;
 
 export const BASE64_TABS = {
@@ -313,6 +316,12 @@ export const LEET_TEXT_TABS = {
     CHARACTERS: 'characters',
 } as const;
 
+export const TEXT_ART_TABS = {
+    GENERATE: 'generate',
+    DECODE: 'decode',
+    STYLES: 'styles',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -354,4 +363,5 @@ export const TAB_NAMES = {
     ...TIMEZONES_TABS,
     ...FANCY_TEXT_TABS,
     ...LEET_TEXT_TABS,
+    ...TEXT_ART_TABS,
 } as const;
