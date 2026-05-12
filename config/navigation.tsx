@@ -180,6 +180,20 @@ export const navigationMenu: MenuItem[] = [
                 category: 'Generators',
             },
             {
+                title: 'Fancy Text Generator',
+                description: '109 Unicode styles — bold, script, circled, and more',
+                icon: <Sparkles className="size-5 shrink-0" />,
+                url: '/fancy-text',
+                category: 'Generators',
+            },
+            {
+                title: 'Leet Text Encoder / Decoder',
+                description: '10 leet speak variants with auto-detect decoder',
+                icon: <Terminal className="size-5 shrink-0" />,
+                url: '/leet-text',
+                category: 'Generators',
+            },
+            {
                 title: 'API Request Builder',
                 description: 'Test APIs without installing Postman',
                 icon: <Zap className="size-5 shrink-0" />,
@@ -317,22 +331,6 @@ export const navigationMenu: MenuItem[] = [
                 description: 'World clock and timezone database for 247 countries',
                 icon: <Globe2 className="size-5 shrink-0" />,
                 url: '/timezones',
-                category: 'Utilities',
-            },
-            {
-                title: 'Fancy Text Generator',
-                description:
-                    'Transform text into 27 Unicode styles — bold, script, circled, and more',
-                icon: <Sparkles className="size-5 shrink-0" />,
-                url: '/fancy-text',
-                category: 'Utilities',
-            },
-            {
-                title: 'Leet Text Encoder / Decoder',
-                description:
-                    'Encode text into 10 leet speak variants and decode leet back to plain text',
-                icon: <Terminal className="size-5 shrink-0" />,
-                url: '/leet-text',
                 category: 'Utilities',
             },
         ],

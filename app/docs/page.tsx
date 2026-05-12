@@ -144,6 +144,16 @@ const docSections = [
         title: 'Timezones',
         icon: <Globe2 className="h-5 w-5" />,
     },
+    {
+        id: 'fancy-text',
+        title: 'Fancy Text Generator',
+        icon: <Sparkles className="h-5 w-5" />,
+    },
+    {
+        id: 'leet-text',
+        title: 'Leet Text Encoder / Decoder',
+        icon: <Terminal className="h-5 w-5" />,
+    },
 ];
 
 export default function DocsPage() {
@@ -1304,6 +1314,88 @@ export default function DocsPage() {
                                 Browse 247 countries and their 437 IANA timezones. Filter by region,
                                 search countries, and expand to see all timezones per country with
                                 one-click copy.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="fancy-text"
+                    title="Fancy Text Generator"
+                    description="Transform plain text into 109 Unicode styles — bold, script, circled, and more."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Sparkles className="h-5 w-5 text-pink-600 dark:text-pink-400" />
+                                <h3 className="font-semibold">Generate</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Type or paste text and see 109 Unicode styles instantly — bold,
+                                italic, script, fraktur, circled, squared, fullwidth, braille,
+                                runic, georgian, and more. Copy any style with one click.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <ArrowLeftRight className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                                <h3 className="font-semibold">Decode</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Paste fancy Unicode text and auto-detect the style. The decoder
+                                reverses character mappings and strips combining marks to recover
+                                the original plain text.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">Characters</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Browse all 109 styles with their character mappings, grouped by
+                                category. Filter by type or search to find the right style.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="leet-text"
+                    title="Leet Text Encoder / Decoder"
+                    description="Encode text into 10 leet speak variants and decode leet back to plain text."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Terminal className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+                                <h3 className="font-semibold">Encode</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Transform plain text into 10 leet speak variants — from basic
+                                substitutions to advanced multi-character replacements. Each variant
+                                shows the full mapping and one-click copy.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <ArrowLeftRight className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                                <h3 className="font-semibold">Decode</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Paste leet text and the auto-detect decoder identifies the variant
+                                and reverses it back to plain English. Works across all 10 encoding
+                                levels.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">Characters</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Browse the full character reference for all 10 leet variants,
+                                grouped by category with filter and search.
                             </p>
                         </div>
                     </div>
