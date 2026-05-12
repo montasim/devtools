@@ -78,6 +78,7 @@ export const STORAGE_KEYS = {
     PASSPHRASE_WORDS_RESULTS: 'passphrase-words-results',
     TIMEZONES_INPUT: 'timezones-input',
     FANCY_TEXT_INPUT: 'fancy-text-input',
+    FANCY_TEXT_DECODE_INPUT: 'fancy-text-decode-input',
     LEET_TEXT_ENCODE_INPUT: 'leet-text-encode-input',
     LEET_TEXT_DECODE_INPUT: 'leet-text-decode-input',
     THEME: 'theme',
@@ -303,6 +304,7 @@ export const TIMEZONES_TABS = {
 
 export const FANCY_TEXT_TABS = {
     GENERATE: 'generate',
+    DECODE: 'decode',
 } as const;
 
 export const LEET_TEXT_TABS = {
