@@ -92,7 +92,7 @@ export default function GenerateTab({ sharedData, readOnly }: TabComponentProps)
                         </div>
                         <div
                             className="flex flex-col gap-1.5 overflow-y-auto"
-                            style={{ maxHeight: 'calc(100vh - 220px)' }}
+                            style={{ maxHeight: 'calc(100vh - 435px)' }}
                         >
                             {content ? (
                                 transformed.map((style) => (
