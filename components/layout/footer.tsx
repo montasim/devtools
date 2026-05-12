@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Logo } from './logo';
 import { siteLinks } from '@/config/seo';
+import { TOOL_COUNT_LABEL } from '@/lib/utils/constants';
 import { navigationMenu } from '@/config/navigation';
 import { Braces, Hash, Network, Book, Wrench, BookOpen, Mail } from 'lucide-react';
 
@@ -49,8 +50,8 @@ export function Footer() {
                     <div className="lg:col-span-4">
                         <Logo />
                         <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-                            30+ free developer tools that run entirely in your browser. No installs,
-                            no sign-ups, no data leaves your machine.
+                            {TOOL_COUNT_LABEL} free developer tools that run entirely in your
+                            browser. No installs, no sign-ups, no data leaves your machine.
                         </p>
                         <div className="mt-6 flex items-center gap-4">
                             <Link

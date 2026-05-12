@@ -322,6 +322,10 @@ export const TEXT_ART_TABS = {
     STYLES: 'styles',
 } as const;
 
+export const TOOL_COUNT = Object.keys(PAGE_NAMES).length;
+
+export const TOOL_COUNT_LABEL = `${TOOL_COUNT - 3}+`;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,

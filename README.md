@@ -1,6 +1,6 @@
 # DevTools
 
-A comprehensive suite of 30+ free developer tools for formatting, validating, generating, and transforming data. All tools run entirely in your browser for maximum privacy and speed.
+A comprehensive suite of 40+ free developer tools for formatting, validating, generating, and transforming data. All tools run entirely in your browser for maximum privacy and speed.
 
 ## Features
 

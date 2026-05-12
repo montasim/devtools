@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { DevLogo } from '@/lib/og/dev-logo';
+import { TOOL_COUNT_LABEL } from '@/lib/utils/constants';
 
 export const alt = 'DevTools - Free Developer Tools';
 export const size = { width: 1200, height: 630 };
@@ -43,7 +44,7 @@ export default function Image() {
                     textAlign: 'center',
                 }}
             >
-                30+ free developer tools that run in your browser
+                {TOOL_COUNT_LABEL} free developer tools that run in your browser
             </div>
         </div>,
         {

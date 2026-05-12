@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { TOOL_COUNT_LABEL } from '@/lib/utils/constants';
 import {
     ArrowRight,
     Terminal,
@@ -83,7 +84,7 @@ function HeroSection() {
                             className="mb-6 gap-1.5 px-3 py-1 text-xs font-medium"
                         >
                             <Zap className="h-3 w-3 text-primary" />
-                            30+ Developer Tools &mdash; No Sign-up Required
+                            {TOOL_COUNT_LABEL} Developer Tools &mdash; No Sign-up Required
                         </Badge>
                     </AnimatedSection>
 
@@ -160,7 +161,10 @@ function HeroSection() {
                             <div className="flex items-center gap-1.5">
                                 <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
                                 <span>
-                                    <span className="font-semibold text-foreground">30+</span> Tools
+                                    <span className="font-semibold text-foreground">
+                                        {TOOL_COUNT_LABEL}
+                                    </span>{' '}
+                                    Tools
                                 </span>
                             </div>
                             <div className="flex items-center gap-1.5">

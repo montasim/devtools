@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { TOOL_COUNT_LABEL } from '@/lib/utils/constants';
 import {
     Code,
     FileCode,
@@ -192,7 +193,7 @@ export default function DocsPage() {
                 <PageSection
                     id="overview"
                     title="Overview"
-                    description="30+ tools you'll actually use — not just bookmark. No installs, no accounts, no data leaving your browser. Open any tool and get results in seconds."
+                    description={`${TOOL_COUNT_LABEL} tools you'll actually use — not just bookmark. No installs, no accounts, no data leaving your browser. Open any tool and get results in seconds.`}
                 >
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                         <div className="rounded-xl border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-5 dark:border-blue-800 dark:from-blue-950/30 dark:to-indigo-950/30">
@@ -283,7 +284,7 @@ export default function DocsPage() {
                             {
                                 step: 1,
                                 title: 'Pick a tool',
-                                desc: 'Browse 30+ tools by category or search for what you need. Every tool is one click away.',
+                                desc: `Browse ${TOOL_COUNT_LABEL} tools by category or search for what you need. Every tool is one click away.`,
                             },
                             {
                                 step: 2,

@@ -1,4 +1,5 @@
 import type { SEOConfig } from '@/lib/seo/types';
+import { TOOL_COUNT_LABEL } from '@/lib/utils/constants';
 
 export const siteLinks = {
     name: 'DevTools',
@@ -12,8 +13,7 @@ export const seoConfig: SEOConfig = {
         siteName: siteLinks.name,
         siteUrl: siteLinks.website,
         titleDefault: 'DevTools - Free Developer Tools That Run in Your Browser',
-        description:
-            '30+ free developer tools that run instantly in your browser — no installs, no sign-ups, no data leaves your machine. JSON, regex, hashing, API testing, DNS lookup, and more.',
+        description: `${TOOL_COUNT_LABEL} free developer tools that run instantly in your browser — no installs, no sign-ups, no data leaves your machine. JSON, regex, hashing, API testing, DNS lookup, and more.`,
         locale: 'en_US',
         twitterHandle: '@devtools',
         ogImage: '/og-default.png',
@@ -31,9 +31,8 @@ export const seoConfig: SEOConfig = {
 
     pages: {
         home: {
-            title: 'DevTools - 30+ Free Developer Tools | No Install Required',
-            description:
-                'Stop switching tabs. 30+ free tools for JSON, regex, hashing, API testing, encoding, and more — all running in your browser. No installs, no accounts, no data sent anywhere.',
+            title: `DevTools - ${TOOL_COUNT_LABEL} Free Developer Tools | No Install Required`,
+            description: `Stop switching tabs. ${TOOL_COUNT_LABEL} free tools for JSON, regex, hashing, API testing, encoding, and more — all running in your browser. No installs, no accounts, no data sent anywhere.`,
             keywords: [
                 'developer tools',
                 'online tools',
@@ -49,8 +48,7 @@ export const seoConfig: SEOConfig = {
 
         docs: {
             title: 'Documentation - Master Every Tool in Under 2 Minutes | DevTools',
-            description:
-                'Learn how to use all 30+ DevTools in seconds. Step-by-step guides for JSON tools, regex tester, API builder, password hasher, DNS lookup, and more.',
+            description: `Learn how to use all ${TOOL_COUNT_LABEL} DevTools in seconds. Step-by-step guides for JSON tools, regex tester, API builder, password hasher, DNS lookup, and more.`,
             keywords: [
                 'devtools documentation',
                 'developer tools guide',

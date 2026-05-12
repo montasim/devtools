@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { TOOL_COUNT_LABEL } from '@/lib/utils/constants';
 import { FileText } from 'lucide-react';
 import {
     PageLayout,
@@ -84,8 +85,8 @@ export default function TermsOfServicePage() {
                 >
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            DevTools is a free suite of 30+ browser-based utilities for developers.
-                            Everything runs locally in your browser:
+                            DevTools is a free suite of {TOOL_COUNT_LABEL} browser-based utilities
+                            for developers. Everything runs locally in your browser:
                         </p>
                         <ul className="ml-4 list-inside list-disc space-y-1">
                             <li>JSON formatting, validation, diffing, and transformation</li>
