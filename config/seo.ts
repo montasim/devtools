@@ -816,6 +816,23 @@ export const seoConfig: SEOConfig = {
             priority: 0.7,
             changeFrequency: 'monthly',
         },
+        'leet-text': {
+            title: 'Leet Text Encoder / Decoder - 10 Leet Speak Variants',
+            description:
+                'Encode plain text into 10 leet speak variants (1337, hardcore, cyber, hacker) and auto-detect and decode leet text back to plain text. Runs entirely in your browser.',
+            keywords: [
+                'leet text generator',
+                'leet speak encoder',
+                '1337 converter',
+                'leet decoder',
+                'leet translator',
+                'hacker text',
+                'leet speak',
+            ],
+            path: '/leet-text',
+            priority: 0.7,
+            changeFrequency: 'monthly',
+        },
     },
 
     disallowedPaths: [

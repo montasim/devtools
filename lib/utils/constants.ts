@@ -78,6 +78,8 @@ export const STORAGE_KEYS = {
     PASSPHRASE_WORDS_RESULTS: 'passphrase-words-results',
     TIMEZONES_INPUT: 'timezones-input',
     FANCY_TEXT_INPUT: 'fancy-text-input',
+    LEET_TEXT_ENCODE_INPUT: 'leet-text-encode-input',
+    LEET_TEXT_DECODE_INPUT: 'leet-text-decode-input',
     THEME: 'theme',
 } as const;
 
@@ -121,6 +123,7 @@ export const PAGE_NAMES = {
     PASSPHRASE_WORDS: 'passphrase',
     TIMEZONES: 'timezones',
     FANCY_TEXT: 'fancy-text',
+    LEET_TEXT: 'leet-text',
 } as const;
 
 export const BASE64_TABS = {
@@ -302,6 +305,12 @@ export const FANCY_TEXT_TABS = {
     GENERATE: 'generate',
 } as const;
 
+export const LEET_TEXT_TABS = {
+    ENCODE: 'encode',
+    DECODE: 'decode',
+    CHARACTERS: 'characters',
+} as const;
+
 export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
@@ -342,4 +351,5 @@ export const TAB_NAMES = {
     ...PASSPHRASE_WORDS_TABS,
     ...TIMEZONES_TABS,
     ...FANCY_TEXT_TABS,
+    ...LEET_TEXT_TABS,
 } as const;

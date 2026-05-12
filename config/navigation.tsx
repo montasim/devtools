@@ -36,6 +36,7 @@ import {
     Globe2,
     Database,
     Sparkles,
+    Terminal,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -324,6 +325,14 @@ export const navigationMenu: MenuItem[] = [
                     'Transform text into 27 Unicode styles — bold, script, circled, and more',
                 icon: <Sparkles className="size-5 shrink-0" />,
                 url: '/fancy-text',
+                category: 'Utilities',
+            },
+            {
+                title: 'Leet Text Encoder / Decoder',
+                description:
+                    'Encode text into 10 leet speak variants and decode leet back to plain text',
+                icon: <Terminal className="size-5 shrink-0" />,
+                url: '/leet-text',
                 category: 'Utilities',
             },
         ],
