@@ -77,7 +77,6 @@ export const STORAGE_KEYS = {
     PASSPHRASE_WORDS_CONFIG: 'passphrase-words-config',
     PASSPHRASE_WORDS_RESULTS: 'passphrase-words-results',
     TIMEZONES_INPUT: 'timezones-input',
-    REMOVE_EXTRA_SPACES_INPUT: 'remove-extra-spaces-input',
     FANCY_TEXT_INPUT: 'fancy-text-input',
     THEME: 'theme',
 } as const;
@@ -121,7 +120,6 @@ export const PAGE_NAMES = {
     SPAM_WORDS: 'spam-words',
     PASSPHRASE_WORDS: 'passphrase',
     TIMEZONES: 'timezones',
-    REMOVE_EXTRA_SPACES: 'remove-extra-spaces',
     FANCY_TEXT: 'fancy-text',
 } as const;
 
@@ -300,10 +298,6 @@ export const TIMEZONES_TABS = {
     BROWSER: 'browser',
 } as const;
 
-export const REMOVE_EXTRA_SPACES_TABS = {
-    CLEAN: 'clean',
-} as const;
-
 export const FANCY_TEXT_TABS = {
     GENERATE: 'generate',
 } as const;
@@ -347,6 +341,5 @@ export const TAB_NAMES = {
     ...SPAM_WORDS_TABS,
     ...PASSPHRASE_WORDS_TABS,
     ...TIMEZONES_TABS,
-    ...REMOVE_EXTRA_SPACES_TABS,
     ...FANCY_TEXT_TABS,
 } as const;

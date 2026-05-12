@@ -34,9 +34,7 @@ import {
     MailQuestion,
     ShieldAlert,
     Globe2,
-    Clock,
     Database,
-    Eraser,
     Sparkles,
 } from 'lucide-react';
 
@@ -318,13 +316,6 @@ export const navigationMenu: MenuItem[] = [
                 description: 'World clock and timezone database for 247 countries',
                 icon: <Globe2 className="size-5 shrink-0" />,
                 url: '/timezones',
-                category: 'Utilities',
-            },
-            {
-                title: 'Remove Extra Spaces',
-                description: 'Clean messy whitespace from any text in one click',
-                icon: <Eraser className="size-5 shrink-0" />,
-                url: '/remove-extra-spaces',
                 category: 'Utilities',
             },
             {
