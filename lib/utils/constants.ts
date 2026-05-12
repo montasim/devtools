@@ -128,6 +128,7 @@ export const PAGE_NAMES = {
     FANCY_TEXT: 'fancy-text',
     LEET_TEXT: 'leet-text',
     TEXT_ART: 'text-art',
+    EMOJI: 'emoji',
 } as const;
 
 export const BASE64_TABS = {
@@ -322,6 +323,10 @@ export const TEXT_ART_TABS = {
     STYLES: 'styles',
 } as const;
 
+export const EMOJI_TABS = {
+    BROWSE: 'browse',
+} as const;
+
 export const TOOL_COUNT = Object.keys(PAGE_NAMES).length;
 
 export const TOOL_COUNT_LABEL = `${TOOL_COUNT - 3}+`;
@@ -368,4 +373,5 @@ export const TAB_NAMES = {
     ...FANCY_TEXT_TABS,
     ...LEET_TEXT_TABS,
     ...TEXT_ART_TABS,
+    ...EMOJI_TABS,
 } as const;

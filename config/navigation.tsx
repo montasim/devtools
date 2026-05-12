@@ -37,6 +37,7 @@ import {
     Sparkles,
     Terminal,
     Type,
+    Smile,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -199,6 +200,13 @@ export const navigationMenu: MenuItem[] = [
                 icon: <Type className="size-5 shrink-0" />,
                 url: '/text-art',
                 category: 'Generators',
+            },
+            {
+                title: 'Emoji Picker',
+                description: '1,900+ emojis — click to copy for any platform',
+                icon: <Smile className="size-5 shrink-0" />,
+                url: '/emoji',
+                category: 'Reference',
             },
             {
                 title: 'API Request Builder',

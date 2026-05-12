@@ -36,6 +36,7 @@ import {
     MailQuestion,
     ShieldAlert,
     Globe2,
+    Smile,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -270,6 +271,12 @@ export const TOOL_CATEGORIES = [
                 label: 'ASCII Table',
                 description: 'Interactive ASCII reference table with search and copy',
                 icon: Table2,
+            },
+            {
+                href: '/emoji',
+                label: 'Emoji Picker',
+                description: '1,900+ emojis — click to copy for any platform',
+                icon: Smile,
             },
         ],
     },

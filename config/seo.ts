@@ -831,6 +831,26 @@ export const seoConfig: SEOConfig = {
             priority: 0.7,
             changeFrequency: 'monthly',
         },
+        emoji: {
+            title: 'Emoji Picker - Copy & Paste 1,900+ Emojis for Any Platform',
+            description:
+                'Browse and copy 1,900+ emojis organized by category. Click to copy for Twitter, Facebook, Slack, Instagram, WhatsApp, GitHub, and more. Works on iOS, Android, macOS, Windows, Linux, and ChromeOS.',
+            keywords: [
+                'emoji picker',
+                'copy paste emoji',
+                'emoji keyboard',
+                'emoji copy',
+                'emoji for twitter',
+                'emoji for instagram',
+                'emoji for slack',
+                'emoji browser',
+                'emoji search',
+                'get emoji',
+            ],
+            path: '/emoji',
+            priority: 0.7,
+            changeFrequency: 'monthly',
+        },
     },
 
     disallowedPaths: [

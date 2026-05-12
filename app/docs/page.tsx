@@ -49,6 +49,8 @@ import {
     ShieldAlert,
     Globe2,
     Type,
+    Smile,
+    Search,
 } from 'lucide-react';
 import {
     PageLayout,
@@ -160,6 +162,11 @@ const docSections = [
         id: 'text-art',
         title: 'Text Art Generator',
         icon: <Type className="h-5 w-5" />,
+    },
+    {
+        id: 'emoji',
+        title: 'Emoji Picker',
+        icon: <Smile className="h-5 w-5" />,
     },
 ];
 
@@ -1444,6 +1451,39 @@ export default function DocsPage() {
                             <p className="text-sm text-muted-foreground">
                                 Browse all available styles with live previews, grouped by category.
                                 Filter by type or search to find the right style.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="emoji"
+                    title="Emoji Picker"
+                    description="Browse and copy 1,900+ emojis for any platform."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Smile className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                                <h3 className="font-semibold">Browse & Copy</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Browse 1,900+ emojis organized into 9 Unicode categories — Smileys
+                                &amp; Emotion, People &amp; Body, Animals &amp; Nature, Food &amp;
+                                Drink, Travel &amp; Places, Activities, Objects, Symbols, and Flags.
+                                Click any emoji to copy it instantly. Works on iOS, Android, macOS,
+                                Windows, Linux, and ChromeOS. Paste directly into Twitter, Facebook,
+                                Slack, Instagram, WhatsApp, GitHub, and more.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Search className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">Search</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Find any emoji by name or keyword. Results update as you type.
+                                Filter by category using the pill buttons to narrow results.
                             </p>
                         </div>
                     </div>
