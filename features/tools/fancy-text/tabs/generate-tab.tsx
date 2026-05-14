@@ -74,7 +74,7 @@ export default function GenerateTab({ sharedData, readOnly }: TabComponentProps)
                             readOnly={readOnly}
                             emptyIcon={Sparkles}
                             emptyTitle="Add text to transform"
-                            emptyDescription="Type or paste text to see 109 fancy Unicode styles"
+                            emptyDescription="Type or paste text to see 110 fancy Unicode styles"
                         />
                     </div>
                 </div>

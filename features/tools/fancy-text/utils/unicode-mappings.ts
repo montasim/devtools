@@ -544,6 +544,27 @@ const regionalIndicator: StyleDef = {
     transform: regionalIndicatorTransform,
 };
 
+function regionalColoredTransform(text: string): string {
+    let out = '';
+    for (const ch of text) {
+        const code = ch.codePointAt(0)!;
+        if (code >= 65 && code <= 90) {
+            out += String.fromCodePoint(0x1f1e6 + (code - 65)) + '\u200B';
+        } else if (code >= 97 && code <= 122) {
+            out += String.fromCodePoint(0x1f1e6 + (code - 97)) + '\u200B';
+        } else {
+            out += ch;
+        }
+    }
+    return out;
+}
+
+const regionalColored: StyleDef = {
+    id: 'regional-colored',
+    name: 'Regional Colored',
+    transform: regionalColoredTransform,
+};
+
 const WINGDINGS_MAP: Record<string, string> = {
     a: '\u2702',
     b: '\u2709',
@@ -1909,7 +1930,7 @@ const alternatingUpper: StyleDef = {
 };
 
 // ---------------------------------------------------------------------------
-// Exported style array (109 styles)
+// Exported style array (110 styles)
 // ---------------------------------------------------------------------------
 
 export const STYLE_DEFS: StyleDef[] = [
@@ -1966,6 +1987,7 @@ export const STYLE_DEFS: StyleDef[] = [
     superscript,
     subscript,
     regionalIndicator,
+    regionalColored,
     wingdings,
     spongemock,
     // Additional Unicode styles

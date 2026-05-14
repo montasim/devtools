@@ -182,7 +182,7 @@ export const navigationMenu: MenuItem[] = [
             },
             {
                 title: 'Fancy Text Generator',
-                description: '109 Unicode styles — bold, script, circled, and more',
+                description: '110 Unicode styles — bold, script, circled, and more',
                 icon: <Sparkles className="size-5 shrink-0" />,
                 url: '/fancy-text',
                 category: 'Generators',
