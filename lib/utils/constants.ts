@@ -11,6 +11,12 @@ export const STORAGE_KEYS = {
     JSON_SCHEMA_MODE: 'json-schema-mode',
     JSON_SCHEMA_JSON_CONTENT: 'json-schema-json-content',
     JSON_SCHEMA_SCHEMA_CONTENT: 'json-schema-schema-content',
+    XML_DIFF_LEFT_CONTENT: 'xml-diff-left-content',
+    XML_DIFF_RIGHT_CONTENT: 'xml-diff-right-content',
+    XML_FORMAT_LEFT_CONTENT: 'xml-format-left-content',
+    XML_MINIFY_LEFT_CONTENT: 'xml-minify-left-content',
+    XML_PARSER_CONTENT: 'xml-parser-content',
+    XML_VIEWER_CONTENT: 'xml-viewer-content',
     TEXT_DIFF_LEFT_CONTENT: 'text-diff-left-content',
     TEXT_DIFF_RIGHT_CONTENT: 'text-diff-right-content',
     TEXT_CONVERT_INPUT_CONTENT: 'text-convert-input-content',
@@ -89,6 +95,7 @@ export const STORAGE_KEYS = {
 export const PAGE_NAMES = {
     TEXT: 'text',
     JSON: 'json',
+    XML: 'xml',
     BASE64: 'base64',
     QRCODE: 'qrcode',
     SHARE: 'share',
@@ -150,6 +157,14 @@ export const JSON_TABS = {
     FORMAT: 'format',
     PARSER: 'parser',
     EXPORT: 'export',
+} as const;
+
+export const XML_TABS = {
+    DIFF: 'diff',
+    VIEWER: 'viewer',
+    MINIFY: 'minify',
+    FORMAT: 'format',
+    PARSER: 'parser',
 } as const;
 
 export const SHARE_TABS = {
@@ -335,6 +350,7 @@ export const TAB_NAMES = {
     ...BASE64_TABS,
     ...TEXT_TABS,
     ...JSON_TABS,
+    ...XML_TABS,
     ...SHARE_TABS,
     ...QRCODE_TABS,
     ...HASH_TABS,

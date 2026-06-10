@@ -3,6 +3,7 @@ import {
     FileJson,
     FileText,
     FileCode,
+    Code,
     GitBranch,
     QrCode,
     Hash,
@@ -59,6 +60,13 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Format, diff, validate — stop wrestling with broken JSON',
                 icon: <FileJson className="size-5 shrink-0" />,
                 url: '/json',
+                category: 'Formatters & Converters',
+            },
+            {
+                title: 'XML Tools',
+                description: 'Format, diff, validate — easily handle XML data',
+                icon: <Code className="size-5 shrink-0" />,
+                url: '/xml',
                 category: 'Formatters & Converters',
             },
             {
