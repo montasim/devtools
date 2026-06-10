@@ -15,7 +15,7 @@ import {
     FileDown,
 } from 'lucide-react';
 
-type FooterMode = 'text' | 'json' | 'base64';
+type FooterMode = 'text' | 'json' | 'base64' | 'xml';
 
 interface EditorFooterProps {
     content: string;
@@ -75,6 +75,26 @@ function getTextStats(content: string) {
     return { ...common, words, sentences };
 }
 
+function getXmlStats(content: string) {
+    const common = getCommonStats(content);
+    if (!content.trim()) return { ...common, valid: false, elements: 0 };
+
+    try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(content, 'application/xml');
+        const parseError = doc.getElementsByTagName('parsererror');
+        
+        if (parseError.length > 0) {
+            return { ...common, valid: false, elements: 0 };
+        }
+        
+        const elements = doc.getElementsByTagName('*').length;
+        return { ...common, valid: true, elements };
+    } catch {
+        return { ...common, valid: false, elements: 0 };
+    }
+}
+
 function getBase64Stats(content: string) {
     const common = getCommonStats(content);
     const clean = content.replace(/^data:[^;]+;base64,/, '').replace(/\s/g, '');
@@ -105,6 +125,8 @@ export function EditorFooter({ content, mode = 'text' }: EditorFooterProps) {
                 return { mode: 'json' as const, data: getJsonStats(content) };
             case 'base64':
                 return { mode: 'base64' as const, data: getBase64Stats(content) };
+            case 'xml':
+                return { mode: 'xml' as const, data: getXmlStats(content) };
             default:
                 return { mode: 'text' as const, data: getTextStats(content) };
         }
@@ -144,6 +166,14 @@ export function EditorFooter({ content, mode = 'text' }: EditorFooterProps) {
                     </>
                 )}
 
+                {stats.mode === 'xml' && (
+                    <>
+                        {stats.data.elements > 0 && (
+                            <Stat icon={Layers} label={`${stats.data.elements.toLocaleString()} elements`} />
+                        )}
+                    </>
+                )}
+
                 {stats.mode === 'base64' && (
                     <Stat
                         icon={FileDown}
@@ -164,6 +194,23 @@ export function EditorFooter({ content, mode = 'text' }: EditorFooterProps) {
                             <span className="inline-flex items-center gap-1 text-destructive">
                                 <XCircle className="h-3 w-3" />
                                 Invalid JSON
+                            </span>
+                        )
+                    )}
+                </div>
+            )}
+            {stats.mode === 'xml' && (
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                    {stats.data.valid ? (
+                        <span className="inline-flex items-center gap-1 text-green-600 dark:text-green-400">
+                            <CheckCircle className="h-3 w-3" />
+                            Valid XML
+                        </span>
+                    ) : (
+                        stats.data.chars > 0 && (
+                            <span className="inline-flex items-center gap-1 text-destructive">
+                                <XCircle className="h-3 w-3" />
+                                Invalid XML
                             </span>
                         )
                     )}
