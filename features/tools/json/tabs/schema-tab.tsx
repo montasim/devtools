@@ -30,7 +30,7 @@ export default function SchemaTab({ sharedData, readOnly }: TabComponentProps) {
         STORAGE_KEYS.JSON_SCHEMA_SCHEMA_CONTENT,
         '',
     );
-    const [mode, setMode] = useState<'validate' | 'generate'>('validate');
+    const [mode, setMode] = useState<'validate' | 'generate'>('generate');
     const [shareOpen, setShareOpen] = useState(false);
     const { result, error } = useJsonSchema(jsonContent, schemaContent, mode);
 
@@ -55,18 +55,18 @@ export default function SchemaTab({ sharedData, readOnly }: TabComponentProps) {
             leadingContent={
                 <div className="flex items-center gap-2">
                     <Button
-                        variant={mode === 'validate' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setMode('validate')}
-                    >
-                        Validate
-                    </Button>
-                    <Button
                         variant={mode === 'generate' ? 'default' : 'outline'}
                         size="sm"
                         onClick={() => setMode('generate')}
                     >
                         Generate Schema
+                    </Button>
+                    <Button
+                        variant={mode === 'validate' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setMode('validate')}
+                    >
+                        Validate
                     </Button>
                 </div>
             }
