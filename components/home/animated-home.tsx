@@ -13,6 +13,7 @@ import {
     Hash,
     Binary,
     Code2,
+    Code,
     Pipette,
     Fingerprint,
     KeyRound,
@@ -55,6 +56,7 @@ function AnimatedSection({
 
 const QUICK_TOOLS: { icon: LucideIcon; label: string; href: string; color: string }[] = [
     { icon: FileJson, label: 'JSON', href: '/json', color: 'text-amber-500' },
+    { icon: Code, label: 'XML', href: '/xml', color: 'text-blue-400' },
     { icon: Binary, label: 'Base64', href: '/base64', color: 'text-blue-500' },
     { icon: Hash, label: 'Hash', href: '/hash', color: 'text-emerald-500' },
     { icon: Code2, label: 'cURL', href: '/curl', color: 'text-purple-500' },
@@ -65,7 +67,6 @@ const QUICK_TOOLS: { icon: LucideIcon; label: string; href: string; color: strin
     { icon: Braces, label: 'Regex', href: '/regex', color: 'text-teal-500' },
     { icon: Lock, label: 'Bcrypt', href: '/password-hash', color: 'text-indigo-500' },
     { icon: Sparkles, label: 'QR', href: '/qrcode', color: 'text-yellow-500' },
-    { icon: FileText, label: 'Markdown', href: '/markdown', color: 'text-lime-600' },
 ];
 
 function HeroSection() {

@@ -81,6 +81,24 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        xml: {
+            title: 'XML Tools - Format, Minify, Diff & Validate XML Instantly',
+            description:
+                'Easily handle XML data. Format, minify, diff, and parse — all in one place. Paste messy XML and get clean results in seconds. Runs locally in your browser.',
+            keywords: [
+                'XML formatter',
+                'XML minifier',
+                'XML diff',
+                'XML validator',
+                'XML viewer',
+                'XML parser',
+                'online XML tools',
+            ],
+            path: '/xml',
+            priority: 0.9,
+            changeFrequency: 'monthly',
+        },
+
         text: {
             title: 'Text Tools - Diff, Case Convert & Clean Text in Seconds',
             description:

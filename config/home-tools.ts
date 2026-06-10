@@ -52,6 +52,12 @@ export const TOOL_CATEGORIES = [
                 featured: true,
             },
             {
+                href: '/xml',
+                label: 'XML Tools',
+                description: 'Format, minify, diff, and parse XML easily',
+                icon: Code2,
+            },
+            {
                 href: '/text',
                 label: 'Text Tools',
                 description: 'Convert case, clean text, diff, and analyze',

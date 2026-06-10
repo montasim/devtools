@@ -42,6 +42,7 @@ import {
     Ruler,
     Monitor,
     Zap,
+    Code,
     Code2,
     Plug,
     ShieldCheck,
@@ -58,6 +59,7 @@ import type { LucideIcon } from 'lucide-react';
 
 const TOOL_ICONS: Record<string, LucideIcon> = {
     '/json': FileJson,
+    '/xml': Code,
     '/text': FileText,
     '/base64': FileCode,
     '/url-encode': Link,

@@ -67,6 +67,7 @@ const docSections = [
     { id: 'features', title: 'Key Features', icon: <Sparkles className="h-5 w-5" /> },
     { id: 'getting-started', title: 'Getting Started', icon: <Play className="h-5 w-5" /> },
     { id: 'json-tools', title: 'JSON Tools', icon: <FileJson className="h-5 w-5" /> },
+    { id: 'xml-tools', title: 'XML Tools', icon: <Code className="h-5 w-5" /> },
     { id: 'text-tools', title: 'Text Tools', icon: <FileText className="h-5 w-5" /> },
     { id: 'base64-tools', title: 'Base64 Tools', icon: <FileCode className="h-5 w-5" /> },
     { id: 'url-encode-decode', title: 'URL Encode / Decode', icon: <Link className="h-5 w-5" /> },
@@ -371,6 +372,42 @@ export default function DocsPage() {
                             <p className="text-sm text-muted-foreground">
                                 Validate data against schemas and export to any format you need.
                                 Stop writing conversion scripts by hand.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="xml-tools"
+                    title="XML Tools"
+                    description="Work with XML seamlessly. Format, minify, and compare XML data effortlessly."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Layers className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">XML Diff</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Compare two XML structures side by side to quickly spot additions, removals, and changes.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Wrench className="h-5 w-5 text-green-600 dark:text-green-400" />
+                                <h3 className="font-semibold">XML Format &amp; Minify</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Beautify raw XML into readable code or minify it to save space for production.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Code className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                <h3 className="font-semibold">XML Parser &amp; Viewer</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                View complex XML structures with an interactive, collapsible tree view.
                             </p>
                         </div>
                     </div>
