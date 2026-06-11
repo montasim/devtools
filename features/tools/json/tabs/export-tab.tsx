@@ -1,4 +1,5 @@
 'use client';
+import { ToolContentSkeleton } from '@/app/(tools)/loading';
 
 import { useState } from 'react';
 import { useToolState } from '../../core/hooks/use-tool-state';
@@ -38,7 +39,7 @@ export default function ExportTab({ sharedData, readOnly }: TabComponentProps) {
         readOnly,
     });
 
-    if (!isReady) return null;
+    if (!isReady) return <ToolContentSkeleton />;
 
     return (
         <ToolTabWrapper

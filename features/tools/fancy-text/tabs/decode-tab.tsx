@@ -1,4 +1,5 @@
 'use client';
+import { ToolContentSkeleton } from '@/app/(tools)/loading';
 
 import { useState, useMemo } from 'react';
 import { useToolState } from '../../core/hooks/use-tool-state';
@@ -81,7 +82,7 @@ export default function DecodeTab({ sharedData, readOnly }: TabComponentProps) {
         readOnly,
     });
 
-    if (!isReady) return null;
+    if (!isReady) return <ToolContentSkeleton />;
 
     return (
         <ToolTabWrapper actions={actions}>

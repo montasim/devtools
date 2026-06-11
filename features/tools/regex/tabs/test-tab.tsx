@@ -1,4 +1,5 @@
 'use client';
+import { ToolContentSkeleton } from '@/app/(tools)/loading';
 
 import { useState, useMemo, useCallback } from 'react';
 import { useToolState } from '../../core/hooks/use-tool-state';
@@ -61,7 +62,7 @@ export default function TestTab({ sharedData, readOnly }: TabComponentProps) {
         setFlags((prev) => (prev.includes(flag) ? prev.replace(flag, '') : prev + flag));
     }, []);
 
-    if (!isReady) return null;
+    if (!isReady) return <ToolContentSkeleton />;
 
     return (
         <ToolTabWrapper

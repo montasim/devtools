@@ -1,4 +1,5 @@
 'use client';
+import { ToolContentSkeleton } from '@/app/(tools)/loading';
 
 import { useState, useRef, useCallback, useMemo } from 'react';
 import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
@@ -231,7 +232,7 @@ export default function TesterTab({ sharedData, readOnly }: TabComponentProps) {
         readOnly,
     });
 
-    if (!isReady) return null;
+    if (!isReady) return <ToolContentSkeleton />;
 
     return (
         <ToolTabWrapper actions={actions}>

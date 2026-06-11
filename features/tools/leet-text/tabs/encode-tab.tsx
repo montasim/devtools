@@ -1,4 +1,5 @@
 'use client';
+import { ToolContentSkeleton } from '@/app/(tools)/loading';
 
 import { useState, useMemo, useCallback } from 'react';
 import { useToolState } from '../../core/hooks/use-tool-state';
@@ -80,7 +81,7 @@ export default function EncodeTab({ sharedData, readOnly }: TabComponentProps) {
         [copy],
     );
 
-    if (!isReady) return null;
+    if (!isReady) return <ToolContentSkeleton />;
 
     return (
         <ToolTabWrapper actions={actions}>

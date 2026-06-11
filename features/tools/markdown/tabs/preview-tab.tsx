@@ -1,4 +1,5 @@
 'use client';
+import { ToolContentSkeleton } from '@/app/(tools)/loading';
 
 import { useMemo, useState, useCallback } from 'react';
 import { useToolState } from '../../core/hooks/use-tool-state';
@@ -41,7 +42,7 @@ export default function PreviewTab({ sharedData, readOnly }: TabComponentProps) 
         if (html) await copy(html, 'HTML copied to clipboard');
     }, [html, copy]);
 
-    if (!isReady) return null;
+    if (!isReady) return <ToolContentSkeleton />;
 
     return (
         <ToolTabWrapper actions={actions}>

@@ -1,4 +1,5 @@
 'use client';
+import { ToolContentSkeleton } from '@/app/(tools)/loading';
 
 import { useState, useMemo, useCallback } from 'react';
 import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
@@ -145,7 +146,7 @@ export default function BuilderTab({ sharedData, readOnly }: TabComponentProps) 
         readOnly,
     });
 
-    if (!isReady) return null;
+    if (!isReady) return <ToolContentSkeleton />;
 
     const responseBodyType = response
         ? getResponseBodyType(response.headers['content-type'] || '')

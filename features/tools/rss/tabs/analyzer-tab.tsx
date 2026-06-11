@@ -1,4 +1,5 @@
 'use client';
+import { ToolContentSkeleton } from '@/app/(tools)/loading';
 
 import { useState } from 'react';
 import { useToolState } from '../../core/hooks/use-tool-state';
@@ -35,7 +36,7 @@ export default function AnalyzerTab({ sharedData, readOnly }: TabComponentProps)
         readOnly,
     });
 
-    if (!isReady) return null;
+    if (!isReady) return <ToolContentSkeleton />;
 
     const isEmpty = !content || content.trim() === '';
     const shouldShowPrompt = isEmpty && (!readOnly);

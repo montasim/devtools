@@ -1,4 +1,5 @@
 'use client';
+import { ToolContentSkeleton } from '@/app/(tools)/loading';
 
 import { useState, useCallback, useRef } from 'react';
 import { useToolState } from '../../core/hooks/use-tool-state';
@@ -94,7 +95,7 @@ export default function HmacTab({ sharedData, readOnly }: TabComponentProps) {
         [copy],
     );
 
-    if (!isReady) return null;
+    if (!isReady) return <ToolContentSkeleton />;
 
     const hasInput = content.trim().length > 0 && secretKey.trim().length > 0;
 

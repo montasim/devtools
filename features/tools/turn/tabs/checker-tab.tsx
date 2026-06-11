@@ -1,4 +1,5 @@
 'use client';
+import { ToolContentSkeleton } from '@/app/(tools)/loading';
 
 import { useState, useCallback, useRef } from 'react';
 import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
@@ -414,7 +415,7 @@ export default function CheckerTab({ sharedData, readOnly }: TabComponentProps) 
         readOnly,
     });
 
-    if (!isReady) return null;
+    if (!isReady) return <ToolContentSkeleton />;
 
     return (
         <ToolTabWrapper actions={actions}>
