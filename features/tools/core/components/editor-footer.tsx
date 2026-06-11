@@ -133,7 +133,7 @@ export function EditorFooter({ content, mode = 'text' }: EditorFooterProps) {
     }, [content, mode]);
 
     return (
-        <div className="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-muted-foreground">
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-muted-foreground">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
                 <Stat icon={HardDrive} label={formatSize(stats.data.bytes)} />
                 <Stat icon={Type} label={`${stats.data.chars.toLocaleString()} chars`} />

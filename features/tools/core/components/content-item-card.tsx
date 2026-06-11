@@ -74,7 +74,7 @@ export function ContentItemCard({
     return (
         <>
             <div
-                className={`flex-1 min-w-0 border rounded-lg p-3 sm:p-4 hover:border-primary/50 transition-colors overflow-hidden ${className || ''}`}
+                className={`flex-1 min-w-0 border rounded-lg p-4 hover:border-primary/50 transition-colors overflow-hidden ${className || ''}`}
             >
                 {header}
 

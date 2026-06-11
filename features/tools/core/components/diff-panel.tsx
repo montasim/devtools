@@ -72,7 +72,7 @@ export function DiffPanel({
                                     value={safeLeft}
                                     onChange={(e) => onLeftChange?.(e.target.value)}
                                     readOnly={readOnly}
-                                    className="min-h-[250px] resize-none font-mono text-sm md:min-h-[400px]"
+                                    className="min-h-[350px] resize-none font-mono text-sm md:min-h-[400px] lg:min-h-[500px]"
                                     style={{ fieldSizing: 'fixed', overflow: 'auto' }}
                                 />
                                 {(!safeLeft || safeLeft.trim() === '') && (
@@ -101,7 +101,7 @@ export function DiffPanel({
                                     value={safeRight}
                                     onChange={(e) => onRightChange?.(e.target.value)}
                                     readOnly={readOnly}
-                                    className="min-h-[250px] resize-none font-mono text-sm md:min-h-[400px]"
+                                    className="min-h-[350px] resize-none font-mono text-sm md:min-h-[400px] lg:min-h-[500px]"
                                     style={{ fieldSizing: 'fixed', overflow: 'auto' }}
                                 />
                                 {(!safeRight || safeRight.trim() === '') && (
@@ -119,7 +119,7 @@ export function DiffPanel({
                 </div>
             )}
             {!safeLeft && !safeRight ? (
-                <div className="relative flex items-center justify-center min-h-[250px] rounded-lg border md:min-h-[400px]">
+                <div className="relative flex items-center justify-center min-h-[350px] rounded-lg border md:min-h-[400px] lg:min-h-[500px]">
                     <EmptyEditorPrompt
                         icon={GitCompare}
                         title="No diff to display"
