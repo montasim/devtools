@@ -39,6 +39,7 @@ import {
     Terminal,
     Type,
     Smile,
+    Rss,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -354,6 +355,13 @@ export const navigationMenu: MenuItem[] = [
                 description: 'World clock and timezone database for 247 countries',
                 icon: <Globe2 className="size-5 shrink-0" />,
                 url: '/timezones',
+                category: 'Utilities',
+            },
+            {
+                title: 'RSS Analyzer',
+                description: 'Analyze RSS and Atom feeds, view items and structures',
+                icon: <Rss className="size-5 shrink-0" />,
+                url: '/rss',
                 category: 'Utilities',
             },
         ],

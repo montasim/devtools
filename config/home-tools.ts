@@ -37,6 +37,7 @@ import {
     ShieldAlert,
     Globe2,
     Smile,
+    Rss,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -332,6 +333,12 @@ export const TOOL_CATEGORIES = [
                 label: 'Timezones',
                 description: 'World clock and timezone database for 247 countries',
                 icon: Globe2,
+            },
+            {
+                href: '/rss',
+                label: 'RSS Analyzer',
+                description: 'Analyze RSS and Atom feeds, view items and structures',
+                icon: Rss,
             },
         ],
     },

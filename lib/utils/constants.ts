@@ -90,6 +90,7 @@ export const STORAGE_KEYS = {
     TEXT_ART_INPUT: 'text-art-input',
     TEXT_ART_DECODE_INPUT: 'text-art-decode-input',
     THEME: 'theme',
+    RSS_ANALYZER_CONTENT: 'rss-analyzer-content',
 } as const;
 
 export const PAGE_NAMES = {
@@ -136,6 +137,7 @@ export const PAGE_NAMES = {
     LEET_TEXT: 'leet-text',
     TEXT_ART: 'text-art',
     EMOJI: 'emoji',
+    RSS: 'rss',
 } as const;
 
 export const BASE64_TABS = {
@@ -342,6 +344,10 @@ export const EMOJI_TABS = {
     BROWSE: 'browse',
 } as const;
 
+export const RSS_TABS = {
+    ANALYZER: 'analyzer',
+} as const;
+
 export const TOOL_COUNT = Object.keys(PAGE_NAMES).length;
 
 export const TOOL_COUNT_LABEL = `${TOOL_COUNT - 3}+`;
@@ -390,4 +396,5 @@ export const TAB_NAMES = {
     ...LEET_TEXT_TABS,
     ...TEXT_ART_TABS,
     ...EMOJI_TABS,
+    ...RSS_TABS,
 } as const;

@@ -23,7 +23,7 @@ interface DiffPanelProps {
     onRightChange?: (value: string) => void;
     splitView?: boolean;
     showEditor?: boolean;
-    mode?: 'text' | 'json' | 'base64';
+    mode?: 'text' | 'json' | 'base64' | 'xml';
     diffStats?: DiffStats | null;
     readOnly?: boolean;
 }
