@@ -12,6 +12,7 @@ import { useAuth } from '@/features/auth/hooks/use-auth';
 import { useRedirectIfAuthenticated } from '@/features/auth/hooks/use-redirect-if-authenticated';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import AuthLoadingSkeleton from '@/app/(auth)/loading';
 
 function isValidRedirect(url: string | null): boolean {
     if (!url) return false;
@@ -107,13 +108,7 @@ function LoginForm() {
 
 export default function LoginPage() {
     return (
-        <Suspense
-            fallback={
-                <div className="flex min-h-screen items-center justify-center">
-                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                </div>
-            }
-        >
+        <Suspense fallback={<AuthLoadingSkeleton />}>
             <LoginForm />
         </Suspense>
     );

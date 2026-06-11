@@ -26,6 +26,7 @@ import { useAuth } from '@/features/auth/hooks/use-auth';
 import { useConfirmAction } from '@/hooks/use-confirm-action';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { EmptyStateCard } from '@/components/ui/empty-state-card';
+import { ContentListSkeleton } from '@/components/ui/content-list-skeleton';
 
 const tabTriggerClass =
     'gap-2 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary data-[state=active]:text-primary data-[state=active]:font-semibold data-[state=active]:bg-primary/10';
@@ -248,11 +249,7 @@ function UrlHistory() {
     }
 
     if (isLoading) {
-        return (
-            <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-            </div>
-        );
+        return <ContentListSkeleton />;
     }
 
     if (!urls || urls.length === 0) {

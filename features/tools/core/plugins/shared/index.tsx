@@ -9,6 +9,7 @@ import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { useConfirmAction } from '@/hooks/use-confirm-action';
 import { SharedLinkCard } from './components/shared-link-card';
 import { EmptyStateCard } from '@/components/ui/empty-state-card';
+import { ContentListSkeleton } from '@/components/ui/content-list-skeleton';
 import { useAuth } from '@/features/auth/hooks/use-auth';
 import type { SharedTabConfig } from './types';
 import type { PluginTabProps } from '../../types/tool';
@@ -53,11 +54,7 @@ export function createSharedTabPlugin(config: SharedTabConfig) {
         }
 
         if (isLoading) {
-            return (
-                <div className="flex items-center justify-center py-12">
-                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                </div>
-            );
+            return <ContentListSkeleton />;
         }
 
         if (!items || items.length === 0) {

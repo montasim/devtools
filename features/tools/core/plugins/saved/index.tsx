@@ -9,6 +9,7 @@ import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { useConfirmAction } from '@/hooks/use-confirm-action';
 import { SavedItemCard } from './components/saved-item-card';
 import { EmptyStateCard } from '@/components/ui/empty-state-card';
+import { ContentListSkeleton } from '@/components/ui/content-list-skeleton';
 import { useAuth } from '@/features/auth/hooks/use-auth';
 import type { SavedTabConfig, SavedItemData } from './types';
 import type { PluginTabProps } from '../../types/tool';
@@ -48,11 +49,7 @@ export function createSavedTabPlugin(config: SavedTabConfig) {
         }
 
         if (isLoading) {
-            return (
-                <div className="flex items-center justify-center py-12">
-                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                </div>
-            );
+            return <ContentListSkeleton />;
         }
 
         if (!items || items.length === 0) {
