@@ -5,6 +5,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import type { ToolDefinition, SharedData } from '../types/tool';
 import { Bookmark, Clock, Globe } from 'lucide-react';
+import ToolLoadingSkeleton from "@/app/(tools)/loading";
 
 interface ToolPageProps {
     definition: ToolDefinition;
@@ -135,9 +136,10 @@ function ToolPageInner({ definition, sharedData }: ToolPageProps) {
     );
 }
 
+
 export function ToolPage(props: ToolPageProps) {
     return (
-        <Suspense>
+        <Suspense fallback={<ToolLoadingSkeleton />}>
             <ToolPageInner {...props} />
         </Suspense>
     );
