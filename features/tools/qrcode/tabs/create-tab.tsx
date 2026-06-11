@@ -192,11 +192,11 @@ export default function CreateTab({ readOnly }: TabComponentProps) {
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 placeholder="Enter text, URL, email, phone number..."
-                                className="min-h-[250px] resize-none font-mono text-sm md:min-h-[400px] lg:min-h-[500px]"
+                                className="min-h-[350px] resize-none font-mono text-sm md:min-h-[400px] lg:min-h-[500px]"
                                 readOnly={readOnly}
                             />
                         ) : (
-                            <div className="relative min-h-[250px] rounded-lg border md:min-h-[400px] lg:min-h-[500px]">
+                            <div className="relative min-h-[350px] rounded-lg border md:min-h-[400px] lg:min-h-[500px]">
                                 <EmptyEditorPrompt
                                     icon={QrCode}
                                     title="Enter content"
@@ -239,7 +239,7 @@ export default function CreateTab({ readOnly }: TabComponentProps) {
                             }
                         />
                         {input.trim() ? (
-                            <div className="flex items-center justify-center rounded-lg border p-6 min-h-[250px] md:min-h-[400px] lg:min-h-[500px]">
+                            <div className="flex items-center justify-center rounded-lg border p-6 min-h-[350px] md:min-h-[400px] lg:min-h-[500px]">
                                 <QRCodeCanvas
                                     ref={canvasRef}
                                     value={input}
@@ -251,7 +251,7 @@ export default function CreateTab({ readOnly }: TabComponentProps) {
                                 />
                             </div>
                         ) : (
-                            <div className="relative min-h-[250px] rounded-lg border md:min-h-[400px] lg:min-h-[500px]">
+                            <div className="relative min-h-[350px] rounded-lg border md:min-h-[400px] lg:min-h-[500px]">
                                 <EmptyEditorPrompt
                                     icon={Image}
                                     title="QR code preview"

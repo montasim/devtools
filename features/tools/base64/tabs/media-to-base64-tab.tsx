@@ -141,7 +141,7 @@ export default function MediaToBase64Tab({ readOnly }: TabComponentProps) {
                                 )}
                             </div>
                         ) : output && fileName ? (
-                            <div className="relative flex min-h-[250px] flex-col items-center justify-center gap-3 rounded-lg border p-4 md:min-h-[400px] lg:min-h-[500px]">
+                            <div className="relative flex min-h-[350px] flex-col items-center justify-center gap-3 rounded-lg border p-4 md:min-h-[400px] lg:min-h-[500px]">
                                 <File className="h-12 w-12 text-muted-foreground" />
                                 <span className="max-w-full truncate text-sm font-medium">
                                     {fileName}
@@ -149,7 +149,7 @@ export default function MediaToBase64Tab({ readOnly }: TabComponentProps) {
                             </div>
                         ) : (
                             <label
-                                className={`flex min-h-[250px] cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-4 text-muted-foreground hover:bg-primary/10 hover:text-primary md:min-h-[400px] lg:min-h-[500px] ${readOnly ? 'pointer-events-none opacity-50' : ''}`}
+                                className={`flex min-h-[350px] cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-4 text-muted-foreground hover:bg-primary/10 hover:text-primary md:min-h-[400px] lg:min-h-[500px] ${readOnly ? 'pointer-events-none opacity-50' : ''}`}
                             >
                                 <Upload className="h-8 w-8" />
                                 <span className="text-sm font-medium">
@@ -185,13 +185,13 @@ export default function MediaToBase64Tab({ readOnly }: TabComponentProps) {
                                 <Textarea
                                     value={output}
                                     readOnly
-                                    className="min-h-[250px] resize-none font-mono text-xs md:min-h-[400px] lg:min-h-[500px]"
+                                    className="min-h-[350px] resize-none font-mono text-xs md:min-h-[400px] lg:min-h-[500px]"
                                     style={{ fieldSizing: 'fixed', overflow: 'auto' }}
                                 />
                                 <EditorFooter content={output} mode="base64" />
                             </div>
                         ) : (
-                            <div className="relative min-h-[250px] rounded-lg border md:min-h-[400px] lg:min-h-[500px]">
+                            <div className="relative min-h-[350px] rounded-lg border md:min-h-[400px] lg:min-h-[500px]">
                                 <EmptyEditorPrompt
                                     icon={FileCode}
                                     title="Base64 output"

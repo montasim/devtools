@@ -211,7 +211,7 @@ export default function Base64ToMediaTab({ readOnly }: TabComponentProps) {
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 readOnly={readOnly}
-                                className="min-h-[250px] resize-none font-mono text-xs md:min-h-[400px] lg:min-h-[500px]"
+                                className="min-h-[350px] resize-none font-mono text-xs md:min-h-[400px] lg:min-h-[500px]"
                                 style={{ fieldSizing: 'fixed', overflow: 'auto' }}
                             />
                             {(!input || input.trim() === '') && (
@@ -236,7 +236,7 @@ export default function Base64ToMediaTab({ readOnly }: TabComponentProps) {
                             hideInputActions
                             downloadFilename={`converted.${extension}`}
                         />
-                        <div className="relative min-h-[250px] overflow-hidden rounded-lg border md:min-h-[400px] lg:min-h-[500px]">
+                        <div className="relative min-h-[350px] overflow-hidden rounded-lg border md:min-h-[400px] lg:min-h-[500px]">
                             {renderPreview()}
                         </div>
                     </div>

@@ -57,7 +57,7 @@ export default function AnalyzerTab({ sharedData, readOnly }: TabComponentProps)
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 placeholder="Paste your RSS or Atom Feed XML here..."
-                                className="min-h-[250px] resize-none font-mono text-sm md:min-h-[400px] lg:min-h-[500px]"
+                                className="min-h-[350px] resize-none font-mono text-sm md:min-h-[400px] lg:min-h-[500px]"
                                 style={{ fieldSizing: 'fixed', overflow: 'auto' }}
                                 readOnly={readOnly}
                             />
@@ -87,7 +87,7 @@ export default function AnalyzerTab({ sharedData, readOnly }: TabComponentProps)
                             downloadFilename="rss_analysis.json"
                             hideInputActions
                         />
-                        <div className="relative min-h-[250px] md:min-h-[400px] lg:min-h-[500px] rounded-lg border p-3 sm:p-4 overflow-auto">
+                        <div className="relative min-h-[350px] md:min-h-[400px] lg:min-h-[500px] rounded-lg border p-4 overflow-auto">
                             {error && <p className="text-sm text-destructive">{error}</p>}
                             {parsedData !== null && !error && (
                                 <div className="flex flex-col gap-6">
