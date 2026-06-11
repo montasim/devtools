@@ -34,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" className="h-full antialiased" suppressHydrationWarning>
             <body
+                suppressHydrationWarning
                 className={`${inter.variable} ${jetbrainsMono.variable} ${montserrat.variable} flex min-h-full flex-col font-sans`}
             >
                 <Providers>
