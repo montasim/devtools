@@ -1,4 +1,5 @@
 import { Inter, JetBrains_Mono, Montserrat } from 'next/font/google';
+import Script from 'next/script';
 import { Providers } from '@/components/providers/providers';
 import { Navbar } from '@/components/navbar/navbar';
 import { Footer } from '@/components/layout/footer';
@@ -49,6 +50,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     </AppContextMenu>
                     <Footer />
                 </Providers>
+                <Script
+                    src="https://www.supportkori.com/widget.js"
+                    data-id="montasim"
+                    data-message="Support montasim"
+                    data-color="#FFDD00"
+                    data-position="right"
+                    strategy="lazyOnload"
+                    className="px-4 sm:px-6 lg:px-8"
+                />
             </body>
         </html>
     );
