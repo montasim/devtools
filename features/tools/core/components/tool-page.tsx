@@ -5,7 +5,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import type { ToolDefinition, SharedData } from '../types/tool';
 import { Bookmark, Clock, Globe } from 'lucide-react';
-import ToolLoadingSkeleton from "@/app/(tools)/loading";
+import ToolLoadingSkeleton, { ToolContentSkeleton } from "@/app/(tools)/loading";
 
 interface ToolPageProps {
     definition: ToolDefinition;
@@ -123,12 +123,16 @@ function ToolPageInner({ definition, sharedData }: ToolPageProps) {
             <div className="mx-auto">
                 {mainTabItems.map((tab) => (
                     <TabsContent key={tab.id} value={tab.id} className="mt-0">
-                        <tab.component sharedData={sharedData} readOnly={!!sharedData} />
+                        <Suspense fallback={<ToolContentSkeleton />}>
+                            <tab.component sharedData={sharedData} readOnly={!!sharedData} />
+                        </Suspense>
                     </TabsContent>
                 ))}
                 {pluginTabs.map((tab) => (
                     <TabsContent key={tab.id} value={tab.id} className="mt-0">
-                        <tab.component onTabChange={setActiveTab} />
+                        <Suspense fallback={<ToolContentSkeleton />}>
+                            <tab.component onTabChange={setActiveTab} />
+                        </Suspense>
                     </TabsContent>
                 ))}
             </div>
