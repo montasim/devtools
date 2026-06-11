@@ -229,18 +229,3 @@
         background-position: 100% center;
     }
 }
-
-/* Support Kori Widget Position Overrides (matching px-4 sm:px-6 lg:px-8) */
-.sk-widget-btn, .sk-widget-iframe-container {
-    right: 1rem !important; /* px-4 */
-}
-@media (min-width: 640px) {
-    .sk-widget-btn, .sk-widget-iframe-container {
-        right: 1.5rem !important; /* sm:px-6 */
-    }
-}
-@media (min-width: 1024px) {
-    .sk-widget-btn, .sk-widget-iframe-container {
-        right: 2rem !important; /* lg:px-8 */
-    }
-}

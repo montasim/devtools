@@ -57,7 +57,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     data-color="#FFDD00"
                     data-position="right"
                     strategy="lazyOnload"
-                    className="px-4 sm:px-6 lg:px-8"
                 />
             </body>
         </html>
