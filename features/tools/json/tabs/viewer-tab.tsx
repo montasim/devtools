@@ -67,7 +67,7 @@ export default function ViewerTab({ sharedData, readOnly }: TabComponentProps) {
                             downloadFilename="tree-view.json"
                             hideInputActions
                         />
-                        <div className="relative min-h-[250px] md:min-h-[400px] lg:min-h-[500px] overflow-auto rounded-lg border p-3 sm:p-4">
+                        <div className="relative min-h-[350px] md:min-h-[400px] lg:min-h-[500px] overflow-auto rounded-lg border p-4">
                             {tree ? (
                                 <JsonTreeView tree={tree} />
                             ) : (

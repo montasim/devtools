@@ -71,7 +71,7 @@ export default function ParserTab({ sharedData, readOnly }: TabComponentProps) {
                             downloadFilename="parsed.json"
                             hideInputActions
                         />
-                        <div className="relative min-h-[250px] md:min-h-[400px] lg:min-h-[500px] rounded-lg border p-3 sm:p-4">
+                        <div className="relative min-h-[350px] md:min-h-[400px] lg:min-h-[500px] rounded-lg border p-4">
                             {error && <p className="text-sm text-destructive">{error}</p>}
                             {parsed !== null && !error && (
                                 <div className="flex flex-col gap-3">
