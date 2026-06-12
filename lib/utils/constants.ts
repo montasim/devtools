@@ -91,6 +91,7 @@ export const STORAGE_KEYS = {
     TEXT_ART_DECODE_INPUT: 'text-art-decode-input',
     THEME: 'theme',
     RSS_ANALYZER_CONTENT: 'rss-analyzer-content',
+    RSS_URL_ANALYZER_URL: 'rss-url-analyzer-url',
 } as const;
 
 export const PAGE_NAMES = {
@@ -346,6 +347,7 @@ export const EMOJI_TABS = {
 
 export const RSS_TABS = {
     ANALYZER: 'analyzer',
+    URL_ANALYZER: 'url-analyzer',
 } as const;
 
 export const TOOL_COUNT = Object.keys(PAGE_NAMES).length;
