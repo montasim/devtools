@@ -15,6 +15,7 @@ import { Rss, SearchCode } from 'lucide-react';
 import type { TabComponentProps } from '../../core/types/tool';
 import { Textarea } from '@/components/ui/textarea';
 import { EditorFooter } from '../../core/components/editor-footer';
+import { Button } from '@/components/ui/button';
 
 export default function AnalyzerTab({ sharedData, readOnly }: TabComponentProps) {
     const { content, setContent, isReady } = useToolState({
@@ -24,6 +25,7 @@ export default function AnalyzerTab({ sharedData, readOnly }: TabComponentProps)
         readOnly,
     });
     const [shareOpen, setShareOpen] = useState(false);
+    const [showAllItems, setShowAllItems] = useState(false);
     const { parsedData, error } = useRssAnalyzer(content);
 
     const { actions } = useToolActions({
@@ -105,19 +107,31 @@ export default function AnalyzerTab({ sharedData, readOnly }: TabComponentProps)
                                     
                                     <div className="flex flex-col gap-4">
                                         <h4 className="font-semibold text-md border-b pb-1">Latest Items</h4>
-                                        {parsedData.items.slice(0, 10).map((item, index) => (
+                                {parsedData.items.slice(0, showAllItems ? undefined : 10).map((item, index) => (
                                             <div key={index} className="flex flex-col gap-1 border border-border/50 rounded p-3 bg-secondary/10">
-                                                <a href={item.link} target="_blank" rel="noreferrer" className="font-medium hover:underline">
+                                                <a href={item.link} target="_blank" rel="noreferrer" className="font-medium hover:underline break-words">
                                                     {item.title}
                                                 </a>
                                                 <span className="text-xs text-muted-foreground">{item.pubDate}</span>
                                                 <p className="text-sm line-clamp-2 mt-1">{item.description}</p>
                                             </div>
                                         ))}
-                                        {parsedData.items.length > 10 && (
-                                            <p className="text-xs text-muted-foreground italic text-center mt-2">
-                                                Showing 10 of {parsedData.items.length} items...
-                                            </p>
+                                        {parsedData.items.length > 10 && !showAllItems && (
+                                            <div className="flex flex-col items-center mt-2 gap-2">
+                                                <p className="text-xs text-muted-foreground italic">
+                                                    Showing 10 of {parsedData.items.length} items...
+                                                </p>
+                                                <Button variant="outline" size="sm" onClick={() => setShowAllItems(true)}>
+                                                    View All Items
+                                                </Button>
+                                            </div>
+                                        )}
+                                        {showAllItems && parsedData.items.length > 10 && (
+                                            <div className="flex justify-center mt-2">
+                                                <Button variant="outline" size="sm" onClick={() => setShowAllItems(false)}>
+                                                    Show Less
+                                                </Button>
+                                            </div>
                                         )}
                                     </div>
                                 </div>
