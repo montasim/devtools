@@ -91,6 +91,34 @@ function AppContextMenuInner({ children }: { children: ReactNode }) {
             {
                 items: [
                     {
+                        id: 'copy',
+                        label: 'Copy',
+                        icon: Copy,
+                        shortcut: '⌘C',
+                        onClick: copy ?? (() => {}),
+                        disabled: !copy,
+                    },
+                    {
+                        id: 'paste',
+                        label: 'Paste',
+                        icon: Paste,
+                        shortcut: '⌘V',
+                        onClick: paste ?? (() => {}),
+                        disabled: !paste,
+                    },
+                    {
+                        id: 'select-all',
+                        label: 'Select All',
+                        icon: SelectAll,
+                        shortcut: '⌘A',
+                        onClick: selectAll ?? (() => {}),
+                        disabled: !selectAll,
+                    },
+                ],
+            },
+            {
+                items: [
+                    {
                         id: 'save',
                         label: 'Save',
                         icon: Bookmark,
