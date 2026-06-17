@@ -17,7 +17,19 @@ import {
 } from '@/components/ui/context-menu';
 import { navigationMenu } from '@/config/navigation';
 import { useToolActionsContext } from '@/features/tools/core/context/tool-actions-context';
-import { Bookmark, Share2, History, ArrowLeft, ArrowRight, RotateCw, Wrench } from 'lucide-react';
+import {
+    Bookmark,
+    Share2,
+    History,
+    ArrowLeft,
+    ArrowRight,
+    RotateCw,
+    Wrench,
+    Copy,
+    ClipboardPaste,
+    TextSelect,
+    Coffee,
+} from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 interface ToolEntry {
@@ -87,6 +99,69 @@ function AppContextMenuInner({ children }: { children: ReactNode }) {
             }
         };
 
+        const handleCopy = () => {
+            setTimeout(() => {
+                document.execCommand('copy');
+            }, 50);
+        };
+
+        const handlePaste = () => {
+            setTimeout(async () => {
+                try {
+                    const text = await navigator.clipboard.readText();
+                    const activeElement = document.activeElement;
+                    if (
+                        activeElement instanceof HTMLInputElement ||
+                        activeElement instanceof HTMLTextAreaElement
+                    ) {
+                        activeElement.setRangeText(
+                            text,
+                            activeElement.selectionStart || 0,
+                            activeElement.selectionEnd || 0,
+                            'end',
+                        );
+                        activeElement.dispatchEvent(new Event('input', { bubbles: true }));
+                    } else {
+                        document.execCommand('paste');
+                    }
+                } catch (err) {
+                    console.error('Paste failed:', err);
+                }
+            }, 50);
+        };
+
+        const handleSelectAll = () => {
+            setTimeout(() => {
+                const activeElement = document.activeElement;
+                if (
+                    activeElement instanceof HTMLInputElement ||
+                    activeElement instanceof HTMLTextAreaElement
+                ) {
+                    activeElement.select();
+                } else {
+                    document.execCommand('selectAll');
+                }
+            }, 50);
+        };
+
+        const handleBuyMeACoffee = () => {
+            setTimeout(() => {
+                const btn = document.querySelector('.sk-widget-btn') as HTMLElement;
+                const container = document.querySelector(
+                    '.sk-widget-iframe-container',
+                ) as HTMLElement;
+                if (btn) {
+                    if (container && !container.classList.contains('open')) {
+                        btn.click();
+                    } else if (!container) {
+                        btn.click();
+                    }
+                } else {
+                    window.open('https://supportkori.com/montasim', '_blank');
+                }
+            }, 50);
+        };
+
         return [
             {
                 items: [
@@ -95,24 +170,21 @@ function AppContextMenuInner({ children }: { children: ReactNode }) {
                         label: 'Copy',
                         icon: Copy,
                         shortcut: '⌘C',
-                        onClick: copy ?? (() => {}),
-                        disabled: !copy,
+                        onClick: handleCopy,
                     },
                     {
                         id: 'paste',
                         label: 'Paste',
-                        icon: Paste,
+                        icon: ClipboardPaste,
                         shortcut: '⌘V',
-                        onClick: paste ?? (() => {}),
-                        disabled: !paste,
+                        onClick: handlePaste,
                     },
                     {
                         id: 'select-all',
                         label: 'Select All',
-                        icon: SelectAll,
+                        icon: TextSelect,
                         shortcut: '⌘A',
-                        onClick: selectAll ?? (() => {}),
-                        disabled: !selectAll,
+                        onClick: handleSelectAll,
                     },
                 ],
             },
@@ -135,6 +207,17 @@ function AppContextMenuInner({ children }: { children: ReactNode }) {
                         disabled: !share,
                     },
                     { id: 'history', label: 'History', icon: History, onClick: handleHistory },
+                ],
+            },
+            {
+                items: [
+                    {
+                        id: 'buy-me-a-coffee',
+                        label: 'Buy Me a Coffee',
+                        icon: Coffee,
+                        shortcut: '⌘K',
+                        onClick: handleBuyMeACoffee,
+                    },
                 ],
             },
             {
