@@ -22,11 +22,11 @@ function DropdownLink({ item }: { item: MenuItem }) {
     return (
         <a
             href={item.url}
-            className="group flex flex-row gap-3 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
+            className="group/link flex flex-row gap-3 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
         >
             {item.icon && <div className="shrink-0 text-foreground">{item.icon}</div>}
             <div className="min-w-0 flex-1">
-                <div className="text-sm group-hover:underline">{item.title}</div>
+                <div className="text-sm group-hover/link:underline">{item.title}</div>
                 {item.description && (
                     <p className="text-xs leading-snug text-muted-foreground">{item.description}</p>
                 )}
