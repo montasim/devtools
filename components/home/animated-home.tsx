@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { TOOL_COUNT_LABEL } from '@/lib/utils/constants';
 import {
@@ -20,8 +21,10 @@ import {
     Globe,
     FileJson,
     FileText,
+    Search,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useInView } from '@/hooks/use-in-view';
 import { TOOL_CATEGORIES, FEATURES } from '@/config/home-tools';
@@ -254,11 +257,30 @@ function ToolCard({
 }
 
 function ToolsSection() {
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredCategories = useMemo(() => {
+        if (!searchQuery.trim()) return TOOL_CATEGORIES;
+        const lowerQuery = searchQuery.toLowerCase();
+
+        return TOOL_CATEGORIES.map((category) => {
+            if (category.title.toLowerCase().includes(lowerQuery)) {
+                return category;
+            }
+            const filteredTools = category.tools.filter(
+                (tool) =>
+                    tool.label.toLowerCase().includes(lowerQuery) ||
+                    tool.description.toLowerCase().includes(lowerQuery),
+            );
+            return { ...category, tools: filteredTools };
+        }).filter((category) => category.tools.length > 0);
+    }, [searchQuery]);
+
     return (
         <section className="py-16 sm:py-24">
             <div className="mx-auto max-w-7xl">
                 <AnimatedSection>
-                    <div className="mb-16 text-center">
+                    <div className="text-center px-4">
                         <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
                             Your complete developer toolkit
                         </h2>
@@ -266,25 +288,52 @@ function ToolsSection() {
                             Stop Googling for that one online tool. Everything you reach for daily
                             is right here, organized and ready.
                         </p>
+                        <div className="mx-auto max-w-xl relative mt-12 mb-16">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input
+                                type="text"
+                                placeholder="Search for tools, formats, or categories..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="pl-12 h-14 text-base rounded-2xl bg-card border-primary/20 shadow-xs focus-visible:ring-primary/30"
+                            />
+                        </div>
                     </div>
                 </AnimatedSection>
 
-                <div className="space-y-14">
-                    {TOOL_CATEGORIES.map((category, catIndex) => (
-                        <div key={category.title}>
-                            <CategoryHeader
-                                title={category.title}
-                                icon={category.icon}
-                                index={catIndex}
-                            />
-                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                                {category.tools.map((tool, toolIndex) => (
-                                    <ToolCard key={tool.href} tool={tool} index={toolIndex} />
-                                ))}
-                            </div>
+                {filteredCategories.length === 0 ? (
+                    <AnimatedSection>
+                        <div className="text-center py-16 px-4">
+                            <p className="text-lg text-muted-foreground">
+                                No tools found matching &quot;{searchQuery}&quot;
+                            </p>
+                            <Button
+                                variant="outline"
+                                className="mt-6"
+                                onClick={() => setSearchQuery('')}
+                            >
+                                Clear search
+                            </Button>
                         </div>
-                    ))}
-                </div>
+                    </AnimatedSection>
+                ) : (
+                    <div className="space-y-14 px-4">
+                        {filteredCategories.map((category, catIndex) => (
+                            <div key={category.title}>
+                                <CategoryHeader
+                                    title={category.title}
+                                    icon={category.icon}
+                                    index={catIndex}
+                                />
+                                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                    {category.tools.map((tool, toolIndex) => (
+                                        <ToolCard key={tool.href} tool={tool} index={toolIndex} />
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     );
