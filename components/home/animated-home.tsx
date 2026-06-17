@@ -80,13 +80,10 @@ function HeroSection() {
                 <div className="absolute -left-32 -top-32 h-[400px] w-[400px] rounded-full bg-primary/5 blur-3xl animate-pulse" />
                 <div className="absolute -bottom-32 -right-32 h-[400px] w-[400px] rounded-full bg-secondary/5 blur-3xl animate-pulse [animation-delay:2s]" />
             </div>
-            <div className="relative mx-auto max-w-6xl">
+            <div className="relative mx-auto max-w-6xl mx-4">
                 <div className="flex flex-col items-center py-16 sm:py-20 lg:py-24">
                     <AnimatedSection delay={0}>
-                        <Badge
-                            variant="outline"
-                            className="mb-6 gap-1.5 px-3 py-1 text-xs font-medium"
-                        >
+                        <Badge variant="outline" className="mb-6 gap-1.5 p-3 text-xs font-medium">
                             <Zap className="h-3 w-3 text-primary" />
                             {TOOL_COUNT_LABEL} Developer Tools &mdash; No Sign-up Required
                         </Badge>
@@ -111,10 +108,10 @@ function HeroSection() {
 
                     <AnimatedSection delay={240}>
                         <div className="mb-10 flex items-center gap-3">
-                            <Button size="lg" asChild className="h-11 px-6 text-sm">
+                            <Button size="lg" asChild className="md:h-11 h-9 px-6 text-sm">
                                 <Link href="/json">
                                     <Braces className="mr-2 h-4 w-4" />
-                                    Start Using &mdash; Free
+                                    Start Using Free
                                     <ArrowRight className="ml-2 h-4 w-4" />
                                 </Link>
                             </Button>
@@ -122,7 +119,7 @@ function HeroSection() {
                                 size="lg"
                                 variant="outline"
                                 asChild
-                                className="h-11 px-6 text-sm"
+                                className="md:h-11 h-9 px-6 text-sm"
                             >
                                 <Link href="/docs">
                                     <Terminal className="mr-2 h-4 w-4" />
@@ -133,7 +130,7 @@ function HeroSection() {
                     </AnimatedSection>
 
                     <AnimatedSection delay={320}>
-                        <div className="w-full max-w-2xl">
+                        <div className="w-full max-w-2xl px-4">
                             <div className="rounded-xl border bg-card/50 p-4 backdrop-blur-sm">
                                 <div className="flex items-center gap-2 mb-3">
                                     <Shield className="h-3.5 w-3.5 text-green-500" />
@@ -280,7 +277,7 @@ function ToolsSection() {
         <section className="py-16 sm:py-24">
             <div className="mx-auto max-w-7xl">
                 <AnimatedSection>
-                    <div className="text-center px-4">
+                    <div className="text-center">
                         <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
                             Your complete developer toolkit
                         </h2>
@@ -317,7 +314,7 @@ function ToolsSection() {
                         </div>
                     </AnimatedSection>
                 ) : (
-                    <div className="space-y-14 px-4">
+                    <div className="space-y-14">
                         {filteredCategories.map((category, catIndex) => (
                             <div key={category.title}>
                                 <CategoryHeader
