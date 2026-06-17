@@ -111,7 +111,7 @@ interface CommandSection {
 }
 
 const COMMAND_PRIMARY =
-    '[&_[data-slot=command-item]]:border [&_[data-slot=command-item]]:border-border [&_[data-slot=command-item]]:data-selected:border-primary/30 [&_[data-slot=command-item]]:data-selected:bg-primary/10 [&_[data-slot=command-item]]:data-selected:text-primary [&_[data-slot=command-item]]:data-selected:*:[svg]:text-primary [&_[data-slot=command-group]]:**:[[cmdk-group-heading]]:text-primary/70';
+    '[&_[data-slot=command-item]]:data-[selected=true]:bg-primary/10 [&_[data-slot=command-item]]:data-[selected=true]:text-primary [&_[data-slot=command-item]]:data-[selected=true]:*:[svg]:text-primary [&_[data-slot=command-group]]:**:[[cmdk-group-heading]]:text-muted-foreground';
 
 export function CommandPalette() {
     const [open, setOpen] = useState(false);
