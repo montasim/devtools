@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Menu, ChevronDown } from 'lucide-react';
+import { Menu, ChevronDown, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
     Accordion,
@@ -21,11 +22,11 @@ function DropdownLink({ item }: { item: MenuItem }) {
     return (
         <a
             href={item.url}
-            className="flex flex-row gap-3 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
+            className="group flex flex-row gap-3 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
         >
             {item.icon && <div className="shrink-0 text-foreground">{item.icon}</div>}
             <div className="min-w-0 flex-1">
-                <div className="text-sm font-semibold">{item.title}</div>
+                <div className="text-sm group-hover:underline">{item.title}</div>
                 {item.description && (
                     <p className="text-xs leading-snug text-muted-foreground">{item.description}</p>
                 )}
@@ -58,10 +59,29 @@ function groupByCategory(items: MenuItem[]) {
 }
 
 function HoverDropdown({ item }: { item: MenuItem }) {
+    const [searchQuery, setSearchQuery] = useState('');
     const items = useMemo(() => item.items ?? [], [item.items]);
-    const groups = useMemo(() => groupByCategory(items), [items]);
-    const hasCategories = items.some((i) => i.category);
+
+    const filteredItems = useMemo(() => {
+        if (!searchQuery.trim()) return items;
+        const lowerQuery = searchQuery.toLowerCase();
+        return items.filter(
+            (i) =>
+                i.title.toLowerCase().includes(lowerQuery) ||
+                i.description?.toLowerCase().includes(lowerQuery) ||
+                i.category?.toLowerCase().includes(lowerQuery),
+        );
+    }, [items, searchQuery]);
+
+    const groups = useMemo(() => groupByCategory(filteredItems), [filteredItems]);
+    const hasCategories = items.some((i) => i.category); // use original items for category check if needed, or keeping filtered is fine
     const cols = items.length > 6 ? 3 : items.length > 3 ? 2 : 1;
+    const dropdownWidth =
+        cols === 3
+            ? 'w-[700px] max-w-[calc(100vw-2rem)]'
+            : cols === 2
+              ? 'w-[480px] max-w-[calc(100vw-2rem)]'
+              : 'w-[240px] max-w-[calc(100vw-2rem)]';
 
     return (
         <div className="group relative">
@@ -70,9 +90,28 @@ function HoverDropdown({ item }: { item: MenuItem }) {
                 <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
             </Button>
             <div
-                className={`${items.length > 8 ? 'max-h-[80vh]' : items.length > 4 ? 'max-h-[70vh]' : ''} overflow-y-auto overflow-x-hidden invisible absolute left-0 z-50 rounded-lg border bg-popover p-2 opacity-0 shadow-md transition-all group-hover:visible group-hover:opacity-100`}
+                className={`${filteredItems.length > 8 ? 'max-h-[80vh]' : filteredItems.length > 4 ? 'max-h-[70vh]' : ''} ${dropdownWidth} overflow-y-auto overflow-x-hidden invisible absolute left-0 z-50 rounded-lg border bg-popover p-2 opacity-0 shadow-md transition-all group-hover:visible group-hover:opacity-100 flex flex-col gap-2`}
             >
-                {hasCategories ? (
+                {items.length > 5 && (
+                    <div className="px-2 pt-2 pb-1 sticky top-0 bg-popover z-10">
+                        <div className="relative">
+                            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                            <Input
+                                type="text"
+                                placeholder="Search tools..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="pl-8 h-8 text-xs bg-muted/50 border-transparent focus-visible:border-primary/50 focus-visible:ring-primary/20"
+                                onClick={(e) => e.stopPropagation()}
+                            />
+                        </div>
+                    </div>
+                )}
+                {filteredItems.length === 0 ? (
+                    <div className="p-4 text-center text-sm text-muted-foreground min-w-[200px]">
+                        No tools found matching &quot;{searchQuery}&quot;
+                    </div>
+                ) : hasCategories ? (
                     <div
                         className="grid gap-1"
                         style={{ gridTemplateColumns: `repeat(${cols}, minmax(220px, 1fr))` }}
@@ -99,7 +138,7 @@ function HoverDropdown({ item }: { item: MenuItem }) {
                         className="grid gap-1"
                         style={{ gridTemplateColumns: `repeat(${cols}, minmax(220px, 1fr))` }}
                     >
-                        {items.map((subItem) => (
+                        {filteredItems.map((subItem) => (
                             <DropdownLink key={subItem.title} item={subItem} />
                         ))}
                     </div>
@@ -134,6 +173,71 @@ function DesktopMenu() {
     );
 }
 
+function MobileAccordionItem({ item }: { item: MenuItem }) {
+    const [searchQuery, setSearchQuery] = useState('');
+    const items = useMemo(() => item.items ?? [], [item.items]);
+
+    const filteredItems = useMemo(() => {
+        if (!searchQuery.trim()) return items;
+        const lowerQuery = searchQuery.toLowerCase();
+        return items.filter(
+            (i) =>
+                i.title.toLowerCase().includes(lowerQuery) ||
+                i.description?.toLowerCase().includes(lowerQuery) ||
+                i.category?.toLowerCase().includes(lowerQuery),
+        );
+    }, [items, searchQuery]);
+
+    const groups = useMemo(() => groupByCategory(filteredItems), [filteredItems]);
+
+    return (
+        <AccordionItem value={item.title} className="border-b-0">
+            <AccordionTrigger className="py-0 text-base font-semibold hover:no-underline">
+                {item.title}
+            </AccordionTrigger>
+            <AccordionContent className="mt-2 flex flex-col gap-2 [&_a]:no-underline">
+                {items.length > 5 && (
+                    <div className="p-3 text-muted-foreground sticky top-0 z-10">
+                        <div className="relative">
+                            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                            <Input
+                                type="text"
+                                placeholder="Search tools..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="pl-8 h-8 text-xs bg-muted/50 border-transparent focus-visible:border-primary/50 focus-visible:ring-primary/20"
+                                onClick={(e) => e.stopPropagation()}
+                            />
+                        </div>
+                    </div>
+                )}
+                {filteredItems.length === 0 ? (
+                    <div className="p-4 text-center text-sm text-muted-foreground">
+                        No tools found matching &quot;{searchQuery}&quot;
+                    </div>
+                ) : (
+                    groups.map((group, gi, arr) => (
+                        <div key={group.category}>
+                            {group.category && (
+                                <div className="flex items-center gap-1.5 px-3 py-1.5">
+                                    {CATEGORY_ICONS[group.category]}
+                                    <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                                        {group.category}
+                                    </span>
+                                </div>
+                            )}
+                            {group.items.map((subItem) => (
+                                <DropdownLink key={subItem.title} item={subItem} />
+                            ))}
+                            {gi < arr.length - 1 && <div className="my-1.5 mx-3 border-t" />}
+                        </div>
+                    ))
+                )}
+            </AccordionContent>
+        </AccordionItem>
+    );
+}
+
 function MobileMenu() {
     const [open, setOpen] = useState(false);
 
@@ -158,38 +262,7 @@ function MobileMenu() {
                         <Accordion type="single" collapsible className="flex w-full flex-col gap-4">
                             {navigationMenu.map((item) =>
                                 item.items ? (
-                                    <AccordionItem
-                                        key={item.title}
-                                        value={item.title}
-                                        className="border-b-0"
-                                    >
-                                        <AccordionTrigger className="py-0 text-base font-semibold hover:no-underline">
-                                            {item.title}
-                                        </AccordionTrigger>
-                                        <AccordionContent className="mt-2">
-                                            {groupByCategory(item.items).map((group, gi, arr) => (
-                                                <div key={group.category}>
-                                                    {group.category && (
-                                                        <div className="flex items-center gap-1.5 px-3 py-1.5">
-                                                            {CATEGORY_ICONS[group.category]}
-                                                            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                                                                {group.category}
-                                                            </span>
-                                                        </div>
-                                                    )}
-                                                    {group.items.map((subItem) => (
-                                                        <DropdownLink
-                                                            key={subItem.title}
-                                                            item={subItem}
-                                                        />
-                                                    ))}
-                                                    {gi < arr.length - 1 && (
-                                                        <div className="my-1.5 mx-3 border-t" />
-                                                    )}
-                                                </div>
-                                            ))}
-                                        </AccordionContent>
-                                    </AccordionItem>
+                                    <MobileAccordionItem key={item.title} item={item} />
                                 ) : (
                                     <a
                                         key={item.title}
