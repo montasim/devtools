@@ -3,7 +3,7 @@ export interface SampleDataEntry {
     title: string;
     description: string;
     content: string;
-    category: 'json' | 'xml' | 'text' | 'base64' | 'html' | 'css' | 'js' | 'http';
+    category: 'json' | 'xml' | 'text' | 'base64' | 'html' | 'css' | 'js' | 'http' | 'sql' | 'yaml';
 }
 
 export const SAMPLE_DATA_LIST: SampleDataEntry[] = [
@@ -80,7 +80,8 @@ export const SAMPLE_DATA_LIST: SampleDataEntry[] = [
     {
         id: 'json-config',
         title: 'App Settings Configuration',
-        description: 'Application configuration payload with boolean features and nested properties.',
+        description:
+            'Application configuration payload with boolean features and nested properties.',
         category: 'json',
         content: `{
   "server": {
@@ -233,7 +234,8 @@ npm install devtools
     {
         id: 'http-headers-get',
         title: 'HTTP Request Headers (GET)',
-        description: 'Raw browser GET request headers including method line, authority, tokens, and browser settings.',
+        description:
+            'Raw browser GET request headers including method line, authority, tokens, and browser settings.',
         category: 'http',
         content: `GET /api/v1/users?limit=10 HTTP/1.1
 Host: api.devtools.local
@@ -251,7 +253,8 @@ Sec-Fetch-Site: same-origin`,
     {
         id: 'http-headers-post',
         title: 'HTTP Request Headers (POST)',
-        description: 'Raw POST request headers containing body specs, custom credentials, and cross-origin details.',
+        description:
+            'Raw POST request headers containing body specs, custom credentials, and cross-origin details.',
         category: 'http',
         content: `POST /api/shares HTTP/2
 Host: devtools.local
@@ -286,7 +289,8 @@ Accept-Language: en-US,en;q=0.9`,
     {
         id: 'base64-text-doc',
         title: 'Simple Text Document',
-        description: 'Base64 string representing a text file containing: "Hello, World! This is a simple test document."',
+        description:
+            'Base64 string representing a text file containing: "Hello, World! This is a simple test document."',
         category: 'base64',
         content: `SGVsbG8sIFdvcmxkISBUaGlzIGlzIGEgc2ltcGxlIHRlc3QgZG9jdW1lbnQu`,
     },
@@ -375,6 +379,251 @@ Accept-Language: en-US,en;q=0.9`,
   place-items: center;
 }`,
     },
+    // --- SQL ---
+    {
+        id: 'sql-create-table',
+        title: 'CREATE TABLE with Constraints',
+        description:
+            'DDL statement creating a users table with primary key, unique, not null, and default constraints.',
+        category: 'sql',
+        content: `CREATE TABLE users (
+  id          BIGINT        NOT NULL AUTO_INCREMENT,
+  username    VARCHAR(64)   NOT NULL UNIQUE,
+  email       VARCHAR(255)  NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role        ENUM('user','editor','admin') NOT NULL DEFAULT 'user',
+  is_active   BOOLEAN       NOT NULL DEFAULT TRUE,
+  created_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  INDEX idx_email (email),
+  INDEX idx_username (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;`,
+    },
+    {
+        id: 'sql-select-join',
+        title: 'SELECT with JOIN and Aggregates',
+        description:
+            'Query joining orders and users tables with GROUP BY, HAVING, and ORDER BY clauses.',
+        category: 'sql',
+        content: `SELECT
+  u.id,
+  u.username,
+  u.email,
+  COUNT(o.id)    AS total_orders,
+  SUM(o.amount)  AS total_spent,
+  MAX(o.created_at) AS last_order_date
+FROM users u
+  INNER JOIN orders o ON o.user_id = u.id
+WHERE u.is_active = TRUE
+  AND o.created_at >= '2026-01-01'
+GROUP BY u.id, u.username, u.email
+HAVING total_orders > 5
+ORDER BY total_spent DESC
+LIMIT 20;`,
+    },
+    {
+        id: 'sql-upsert',
+        title: 'INSERT … ON CONFLICT (Upsert)',
+        description:
+            'PostgreSQL upsert pattern — inserts a row or updates it if the unique key already exists.',
+        category: 'sql',
+        content: `INSERT INTO product_inventory (product_id, warehouse_id, quantity, updated_at)
+VALUES (42, 7, 150, NOW())
+ON CONFLICT (product_id, warehouse_id)
+DO UPDATE SET
+  quantity   = EXCLUDED.quantity,
+  updated_at = EXCLUDED.updated_at;`,
+    },
+    {
+        id: 'sql-cte',
+        title: 'Common Table Expression (CTE)',
+        description:
+            'Recursive CTE that builds an org-chart hierarchy from a self-referencing employees table.',
+        category: 'sql',
+        content: `WITH RECURSIVE org_chart AS (
+  -- Anchor: top-level employees (no manager)
+  SELECT id, name, manager_id, 1 AS depth
+  FROM employees
+  WHERE manager_id IS NULL
+
+  UNION ALL
+
+  -- Recursive: direct reports of each employee
+  SELECT e.id, e.name, e.manager_id, oc.depth + 1
+  FROM employees e
+    INNER JOIN org_chart oc ON oc.id = e.manager_id
+  WHERE oc.depth < 10
+)
+SELECT id, name, manager_id, depth
+FROM org_chart
+ORDER BY depth, name;`,
+    },
+
+    // --- YAML ---
+    {
+        id: 'yaml-docker-compose',
+        title: 'Docker Compose Service Stack',
+        description: 'Multi-service docker-compose.yml with app, PostgreSQL, and Redis containers.',
+        category: 'yaml',
+        content: `version: "3.9"
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://devtools:secret@db:5432/devtools
+      REDIS_URL: redis://cache:6379
+    depends_on:
+      - db
+      - cache
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: devtools
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: devtools
+
+  cache:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+
+volumes:
+  pg_data:`,
+    },
+    {
+        id: 'yaml-openapi',
+        title: 'OpenAPI 3.1 Endpoint Spec',
+        description:
+            'Partial OpenAPI spec defining a GET /users endpoint with query params and responses.',
+        category: 'yaml',
+        content: `openapi: "3.1.0"
+info:
+  title: DevTools API
+  version: "1.0.0"
+  description: Example REST API for developer utilities.
+
+paths:
+  /users:
+    get:
+      summary: List users
+      operationId: listUsers
+      tags:
+        - Users
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+        - name: role
+          in: query
+          schema:
+            type: string
+            enum: [user, editor, admin]
+      responses:
+        "200":
+          description: Paginated list of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized`,
+    },
+    {
+        id: 'yaml-github-actions',
+        title: 'GitHub Actions CI Workflow',
+        description:
+            'CI workflow triggered on push and PR to main, running lint, type-check, and tests.',
+        category: 'yaml',
+        content: `name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: \${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Run tests
+        run: npm test`,
+    },
+    {
+        id: 'yaml-app-config',
+        title: 'Application Config File',
+        description:
+            'Structured YAML app configuration with server, database, auth, and logging sections.',
+        category: 'yaml',
+        content: `server:
+  host: 0.0.0.0
+  port: 8080
+  readTimeout: 30s
+  writeTimeout: 30s
+
+database:
+  driver: postgres
+  host: localhost
+  port: 5432
+  name: devtools
+  poolSize: 10
+  sslMode: require
+
+auth:
+  jwtSecret: \${JWT_SECRET}
+  accessTokenTTL: 15m
+  refreshTokenTTL: 7d
+  allowedOrigins:
+    - https://devtools.example.com
+    - https://staging.devtools.example.com
+
+logging:
+  level: info
+  format: json
+  outputs:
+    - stdout
+    - /var/log/app/devtools.log`,
+    },
+
     // --- JS ---
     {
         id: 'js-debounce',

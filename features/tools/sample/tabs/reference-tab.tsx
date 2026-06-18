@@ -5,11 +5,37 @@ import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Copy, Check, Search, FileJson, Code, FileText, FileCode, Database, Palette, Terminal, Code2, List } from 'lucide-react';
+import {
+    Copy,
+    Check,
+    Search,
+    FileJson,
+    Code,
+    FileText,
+    FileCode,
+    Database,
+    Palette,
+    Terminal,
+    Code2,
+    List,
+    Layers,
+} from 'lucide-react';
 import type { TabComponentProps } from '../../core/types/tool';
 import { SAMPLE_DATA_LIST, type SampleDataEntry } from '../utils/sample-data';
 
-const CATEGORIES = ['all', 'json', 'xml', 'text', 'base64', 'html', 'css', 'js', 'http'] as const;
+const CATEGORIES = [
+    'all',
+    'json',
+    'xml',
+    'text',
+    'base64',
+    'html',
+    'css',
+    'js',
+    'http',
+    'sql',
+    'yaml',
+] as const;
 
 function getCategoryIcon(cat: string) {
     switch (cat) {
@@ -29,6 +55,10 @@ function getCategoryIcon(cat: string) {
             return <Terminal className="h-4 w-4 text-yellow-500" />;
         case 'http':
             return <List className="h-4 w-4 text-cyan-500" />;
+        case 'sql':
+            return <Database className="h-4 w-4 text-indigo-500" />;
+        case 'yaml':
+            return <Layers className="h-4 w-4 text-rose-500" />;
         default:
             return <Database className="h-4 w-4 text-muted-foreground" />;
     }
@@ -36,7 +66,7 @@ function getCategoryIcon(cat: string) {
 
 export default function ReferenceTab({}: TabComponentProps) {
     const [search, setSearch] = useState('');
-    const [activeCategory, setActiveCategory] = useState<typeof CATEGORIES[number]>('all');
+    const [activeCategory, setActiveCategory] = useState<(typeof CATEGORIES)[number]>('all');
     const [copiedId, setCopiedId] = useState<string | null>(null);
     const { copy } = useClipboard();
 
@@ -83,7 +113,7 @@ export default function ReferenceTab({}: TabComponentProps) {
                                     className={`rounded-md border px-3 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors ${
                                         isActive
                                             ? 'border-primary/50 bg-primary/10 text-primary'
-                                             : 'text-muted-foreground hover:bg-muted/50 border-input'
+                                            : 'text-muted-foreground hover:bg-muted/50 border-input'
                                     }`}
                                 >
                                     {cat}
@@ -106,7 +136,9 @@ export default function ReferenceTab({}: TabComponentProps) {
                                             {getCategoryIcon(item.category)}
                                         </div>
                                         <div className="min-w-0">
-                                            <h3 className="font-semibold text-sm truncate">{item.title}</h3>
+                                            <h3 className="font-semibold text-sm truncate">
+                                                {item.title}
+                                            </h3>
                                             <span className="text-[10px] text-muted-foreground uppercase tracking-widest">
                                                 {item.category}
                                             </span>
