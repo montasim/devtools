@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getTokenFromCookies, verifyToken } from '@/lib/auth/jwt';
 import { prisma } from '@/lib/db/prisma';
 import bcrypt from 'bcrypt';
+import { generateUniqueShortId } from '@/lib/utils/short-id';
 
 export async function POST(request: Request) {
     try {
@@ -26,8 +27,31 @@ export async function POST(request: Request) {
 
         const passwordHash = password ? await bcrypt.hash(password, 12) : null;
 
+        // Generate a unique 5-character ID
+        const id = await generateUniqueShortId(async (val) => {
+            const existing = await prisma.sharedLink.findUnique({
+                where: { id: val },
+                select: { id: true },
+            });
+            return !!existing;
+        });
+
+        if (!id) {
+            return NextResponse.json(
+                {
+                    ok: false,
+                    error: {
+                        code: 'INTERNAL',
+                        message: 'Failed to generate a unique share link ID',
+                    },
+                },
+                { status: 500 },
+            );
+        }
+
         const sharedLink = await prisma.sharedLink.create({
             data: {
+                id,
                 userId,
                 pageName,
                 tabName,

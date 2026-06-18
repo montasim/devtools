@@ -1,12 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getTokenFromCookies, verifyToken } from '@/lib/auth/jwt';
 import { prisma } from '@/lib/db/prisma';
-import { customAlphabet } from 'nanoid';
-
-const generateCode = customAlphabet(
-    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
-    8,
-);
+import { generateUniqueShortId } from '@/lib/utils/short-id';
 
 export async function POST(request: Request) {
     try {
@@ -34,7 +29,27 @@ export async function POST(request: Request) {
             if (payload) userId = payload.userId;
         }
 
-        const shortCode = generateCode();
+        // Generate a unique 5-character short code
+        const shortCode = await generateUniqueShortId(async (val) => {
+            const existing = await prisma.shortenedUrl.findUnique({
+                where: { shortCode: val },
+                select: { id: true },
+            });
+            return !!existing;
+        });
+
+        if (!shortCode) {
+            return NextResponse.json(
+                {
+                    ok: false,
+                    error: {
+                        code: 'INTERNAL',
+                        message: 'Failed to generate a unique short code',
+                    },
+                },
+                { status: 500 },
+            );
+        }
 
         const url = await prisma.shortenedUrl.create({
             data: { shortCode, originalUrl, userId },
