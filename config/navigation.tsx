@@ -35,6 +35,7 @@ import {
     ShieldAlert,
     Globe2,
     Database,
+    List,
     Sparkles,
     Terminal,
     Type,
