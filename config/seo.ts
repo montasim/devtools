@@ -1033,6 +1033,63 @@ export const seoConfig: SEOConfig = {
             priority: 0.8,
             changeFrequency: 'monthly',
         },
+
+        webhook: {
+            title: 'Webhook Tester - Inspect Incoming HTTP Requests Instantly',
+            description:
+                'Spin up a temporary webhook endpoint to receive and inspect incoming HTTP requests. View headers, body, query params, and timestamps in real-time. No server required — runs entirely in your browser.',
+            keywords: [
+                'webhook tester',
+                'webhook inspector',
+                'http request viewer',
+                'webhook receiver',
+                'webhook debugger',
+                'test webhooks locally',
+                'webhook endpoint',
+                'api testing',
+            ],
+            path: '/webhook',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
+        ip: {
+            title: 'IP & CIDR Tools - Analyze IPs, Calculate Subnets, Detect Types',
+            description:
+                'Analyze IPv4 addresses, detect types (private/public/loopback), convert to binary/hex/decimal, and calculate CIDR subnets with network/broadcast addresses. Instant results in your browser.',
+            keywords: [
+                'ip analyzer',
+                'cidr calculator',
+                'subnet calculator',
+                'ipv4 converter',
+                'ip type detector',
+                'network address calculator',
+                'subnet mask calculator',
+                'ip range calculator',
+            ],
+            path: '/ip',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
+        csv: {
+            title: 'CSV Tools - Parse, Preview & Convert CSV ↔ JSON',
+            description:
+                'Parse CSV files with auto delimiter detection, preview in a sortable table, and convert bidirectionally between CSV and JSON. Handles quoted fields, escaped characters, and custom delimiters. Runs entirely in your browser.',
+            keywords: [
+                'csv parser',
+                'csv to json',
+                'json to csv',
+                'csv viewer',
+                'csv previewer',
+                'csv delimiter detector',
+                'csv converter',
+                'online csv tools',
+            ],
+            path: '/csv',
+            priority: 0.9,
+            changeFrequency: 'monthly',
+        },
     },
 
     disallowedPaths: [

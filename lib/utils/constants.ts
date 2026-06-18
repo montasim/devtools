@@ -112,6 +112,11 @@ export const STORAGE_KEYS = {
     JSON_ESCAPE_CONTENT: 'json-escape-content',
     REGEX_ESCAPE_CONTENT: 'regex-escape-content',
     SQL_ESCAPE_CONTENT: 'sql-escape-content',
+    WEBHOOK_INBOX_ID: 'webhook-inbox-id',
+    IP_ANALYZE_INPUT: 'ip-analyze-input',
+    IP_CIDR_INPUT: 'ip-cidr-input',
+    CSV_CONVERT_CONTENT: 'csv-convert-content',
+    CSV_PREVIEW_CONTENT: 'csv-preview-content',
 } as const;
 
 export const PAGE_NAMES = {
@@ -168,6 +173,9 @@ export const PAGE_NAMES = {
     SQL: 'sql',
     YAML: 'yaml',
     TIMESTAMP: 'timestamp',
+    WEBHOOK: 'webhook',
+    IP: 'ip',
+    CSV: 'csv',
 } as const;
 
 export const BASE64_TABS = {
@@ -412,6 +420,20 @@ export const TIMESTAMP_TABS = {
     CONVERT: 'convert',
 } as const;
 
+export const WEBHOOK_TABS = {
+    INBOX: 'inbox',
+} as const;
+
+export const IP_TABS = {
+    ANALYZE: 'analyze',
+    CALCULATOR: 'calculator',
+} as const;
+
+export const CSV_TABS = {
+    CONVERT: 'convert',
+    PREVIEW: 'preview',
+} as const;
+
 export const TOOL_COUNT = Object.keys(PAGE_NAMES).length;
 
 export const TOOL_COUNT_LABEL = `${TOOL_COUNT - 3}+`;
@@ -467,4 +489,7 @@ export const TAB_NAMES = {
     ...SQL_TABS,
     ...YAML_TABS,
     ...TIMESTAMP_TABS,
+    ...WEBHOOK_TABS,
+    ...IP_TABS,
+    ...CSV_TABS,
 } as const;

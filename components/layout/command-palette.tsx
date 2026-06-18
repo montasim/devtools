@@ -60,6 +60,9 @@ import {
     Paintbrush,
     Layers,
     Clock,
+    Webhook,
+    Network,
+    FileSpreadsheet,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -109,6 +112,9 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
     '/sql': Database,
     '/yaml': Layers,
     '/timestamp': Clock,
+    '/webhook': Webhook,
+    '/ip': Network,
+    '/csv': FileSpreadsheet,
 };
 
 interface CommandEntry {

@@ -44,6 +44,8 @@ import {
     Paintbrush,
     Layers,
     Clock,
+    Webhook,
+    FileSpreadsheet,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -115,6 +117,13 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Convert unix ↔ ISO ↔ relative time with a live ticker',
                 icon: <Clock className="size-5 shrink-0" />,
                 url: '/timestamp',
+                category: 'Formatters & Converters',
+            },
+            {
+                title: 'CSV Tools',
+                description: 'Parse, preview, and convert CSV ↔ JSON',
+                icon: <FileSpreadsheet className="size-5 shrink-0" />,
+                url: '/csv',
                 category: 'Formatters & Converters',
             },
             {
@@ -318,6 +327,20 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Test TURN relay allocation and verify credentials',
                 icon: <Route className="size-5 shrink-0" />,
                 url: '/turn',
+                category: 'Network & API',
+            },
+            {
+                title: 'Webhook Tester',
+                description: 'Spin up a temporary endpoint, inspect incoming HTTP requests',
+                icon: <Webhook className="size-5 shrink-0" />,
+                url: '/webhook',
+                category: 'Network & API',
+            },
+            {
+                title: 'IP & CIDR Tools',
+                description: 'Analyze IPs, calculate subnets, detect types',
+                icon: <Network className="size-5 shrink-0" />,
+                url: '/ip',
                 category: 'Network & API',
             },
             {

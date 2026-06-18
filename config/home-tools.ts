@@ -43,6 +43,8 @@ import {
     Paintbrush,
     Layers,
     Clock,
+    Webhook,
+    FileSpreadsheet,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -155,6 +157,12 @@ export const TOOL_CATEGORIES = [
                 label: 'Unix Timestamp Converter',
                 description: 'Convert unix ↔ ISO ↔ relative time with a live ticker',
                 icon: Clock,
+            },
+            {
+                href: '/csv',
+                label: 'CSV Tools',
+                description: 'Parse, preview, and convert CSV ↔ JSON',
+                icon: FileSpreadsheet,
             },
         ],
     },
@@ -283,6 +291,18 @@ export const TOOL_CATEGORIES = [
                 label: 'TURN Server Checker',
                 description: 'Test TURN relay allocation and verify credentials',
                 icon: Route,
+            },
+            {
+                href: '/webhook',
+                label: 'Webhook Tester',
+                description: 'Spin up a temporary endpoint, inspect incoming HTTP requests',
+                icon: Webhook,
+            },
+            {
+                href: '/ip',
+                label: 'IP & CIDR Tools',
+                description: 'Analyze IPs, calculate subnets, detect types',
+                icon: Network,
             },
         ],
     },
