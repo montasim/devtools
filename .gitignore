@@ -94,3 +94,5 @@ pnpm-lock.yaml
 /lib/generated/prisma
 
 /lib/generated/prisma
+.vercel
+.env*

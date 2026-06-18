@@ -19,10 +19,12 @@ export function HistoryItemCard({
     onCopy,
 }: HistoryItemCardProps) {
     const toolInfo = config.toolMapping[item.tabName];
+    const date = new Date(item.timestamp).toLocaleString();
 
     return (
         <ContentItemCard
             title={toolInfo?.name ?? item.tabName}
+            subtitle={date}
             content={item.content}
             toolInfo={toolInfo}
             statsComponent={config.statsComponent}
