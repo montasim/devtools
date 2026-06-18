@@ -312,6 +312,12 @@ export const TOOL_CATEGORIES = [
                 featured: true,
             },
             {
+                href: '/web-playground',
+                label: 'Web Playground',
+                description: 'Lightweight sandboxed HTML/JS/CSS playground to run code locally',
+                icon: Monitor,
+            },
+            {
                 href: '/unit',
                 label: 'Unit Converter',
                 description: 'Data sizes, time durations, and time zones',

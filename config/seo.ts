@@ -905,6 +905,23 @@ export const seoConfig: SEOConfig = {
             priority: 0.8,
             changeFrequency: 'monthly',
         },
+
+        'web-playground': {
+            title: 'Web Playground & Sandbox - Run HTML, CSS & JS Locally',
+            description:
+                'A lightweight, client-side, single-tab sandboxed playground to run HTML, CSS, and Javascript code blocks locally. Safe execution environment with zero uploads.',
+            keywords: [
+                'web playground',
+                'html sandbox',
+                'run javascript online',
+                'client side playground',
+                'js sandbox',
+                'html code previewer',
+            ],
+            path: '/web-playground',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
     },
 
     disallowedPaths: [

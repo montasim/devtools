@@ -97,6 +97,7 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
     '/spam-words': ShieldAlert,
     '/timezones': Globe2,
     '/sample': Database,
+    '/web-playground': Monitor,
 };
 
 interface CommandEntry {

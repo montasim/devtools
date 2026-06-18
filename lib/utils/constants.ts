@@ -94,6 +94,7 @@ export const STORAGE_KEYS = {
     RSS_URL_ANALYZER_URL: 'rss-url-analyzer-url',
     JSON_TO_TS_INPUT_CONTENT: 'json-to-ts-input-content',
     JSON_TO_TS_ROOT_NAME: 'json-to-ts-root-name',
+    PLAYGROUND_CODE: 'playground-code',
 } as const;
 
 export const PAGE_NAMES = {
@@ -143,6 +144,7 @@ export const PAGE_NAMES = {
     RSS: 'rss',
     SAMPLE: 'sample',
     JSON_TO_TYPESCRIPT: 'json-to-typescript',
+    WEB_PLAYGROUND: 'web-playground',
 } as const;
 
 export const BASE64_TABS = {

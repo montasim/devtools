@@ -337,6 +337,13 @@ export const navigationMenu: MenuItem[] = [
                 category: 'Utilities',
             },
             {
+                title: 'Web Playground',
+                description: 'Lightweight sandboxed HTML/JS/CSS playground',
+                icon: <Monitor className="size-5 shrink-0" />,
+                url: '/web-playground',
+                category: 'Utilities',
+            },
+            {
                 title: 'Unit Converter',
                 description: 'Data sizes, time durations, and timezones',
                 icon: <ArrowLeftRight className="size-5 shrink-0" />,
