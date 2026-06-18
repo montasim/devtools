@@ -3,7 +3,7 @@ export interface SampleDataEntry {
     title: string;
     description: string;
     content: string;
-    category: 'json' | 'xml' | 'text' | 'base64';
+    category: 'json' | 'xml' | 'text' | 'base64' | 'html' | 'css' | 'js';
 }
 
 export const SAMPLE_DATA_LIST: SampleDataEntry[] = [
@@ -258,5 +258,128 @@ npm install devtools
         description: 'Base64 string representing a simple XML SVG circle vector shape.',
         category: 'base64',
         content: `PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDAiIHN0cm9rZT0ibmF2eSIgc3Ryb2std2lkdGg9IjQiIGZpbGw9InJveWFsYmx1ZSIgLz4KPC9zdmc+`,
+    },
+    // --- HTML ---
+    {
+        id: 'html-pricing-card',
+        title: 'Bootstrap Pricing Card',
+        description: 'A clean, responsive pricing table card using Bootstrap styles.',
+        category: 'html',
+        content: `<div class="card mb-4 rounded-3 shadow-sm border-primary">
+  <div class="card-header py-3 text-white bg-primary border-primary">
+    <h4 class="my-0 fw-normal">Enterprise</h4>
+  </div>
+  <div class="card-body">
+    <h1 class="card-title pricing-card-title">$29<small class="text-muted fw-light">/mo</small></h1>
+    <ul class="list-unstyled mt-3 mb-4">
+      <li>30 users included</li>
+      <li>15 GB of storage</li>
+      <li>Phone and email support</li>
+      <li>Help center access</li>
+    </ul>
+    <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
+  </div>
+</div>`,
+    },
+    {
+        id: 'html-registration-form',
+        title: 'Registration Form Template',
+        description: 'A clean contact or registration form structure with validation inputs.',
+        category: 'html',
+        content: `<form class="needs-validation" novalidate>
+  <div class="row g-3">
+    <div class="col-sm-6">
+      <label for="firstName" class="form-label">First name</label>
+      <input type="text" class="form-control" id="firstName" required>
+    </div>
+    <div class="col-sm-6">
+      <label for="lastName" class="form-label">Last name</label>
+      <input type="text" class="form-control" id="lastName" required>
+    </div>
+    <div class="col-12">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" placeholder="you@example.com">
+    </div>
+  </div>
+  <button class="w-100 btn btn-primary btn-lg mt-4" type="submit">Complete Signup</button>
+</form>`,
+    },
+    // --- CSS ---
+    {
+        id: 'css-glassmorphism',
+        title: 'Glassmorphism Card Effect',
+        description: 'Frosted glass container styles with semi-transparent borders and blur.',
+        category: 'css',
+        content: `.glass-container {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}`,
+    },
+    {
+        id: 'css-centering',
+        title: 'Flexbox & Grid Alignment',
+        description: 'Common quick layouts to align elements perfectly centered.',
+        category: 'css',
+        content: `/* Center using Flexbox */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Center using CSS Grid */
+.grid-center {
+  display: grid;
+  place-items: center;
+}`,
+    },
+    // --- JS ---
+    {
+        id: 'js-debounce',
+        title: 'Debounce Helper Function',
+        description: 'Prevents a function from running too frequently (e.g. keyup searches).',
+        category: 'js',
+        content: `function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}`,
+    },
+    {
+        id: 'js-fetch-timeout',
+        title: 'Async Fetch with Timeout',
+        description: 'Wraps the standard native fetch API with an abort signal timeout.',
+        category: 'js',
+        content: `async function fetchWithTimeout(resource, options = {}) {
+  const { timeout = 8000 } = options;
+  
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  
+  try {
+    const response = await fetch(resource, {
+      ...options,
+      signal: controller.signal
+    });
+    clearTimeout(id);
+    if (!response.ok) {
+      throw new Error(\`HTTP error! status: \${response.status}\`);
+    }
+    return await response.json();
+  } catch (error) {
+    clearTimeout(id);
+    throw error;
+  }
+}`,
     },
 ];

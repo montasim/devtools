@@ -5,11 +5,11 @@ import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Copy, Check, Search, FileJson, Code, FileText, FileCode, Database } from 'lucide-react';
+import { Copy, Check, Search, FileJson, Code, FileText, FileCode, Database, Palette, Terminal, Code2 } from 'lucide-react';
 import type { TabComponentProps } from '../../core/types/tool';
 import { SAMPLE_DATA_LIST, type SampleDataEntry } from '../utils/sample-data';
 
-const CATEGORIES = ['all', 'json', 'xml', 'text', 'base64'] as const;
+const CATEGORIES = ['all', 'json', 'xml', 'text', 'base64', 'html', 'css', 'js'] as const;
 
 function getCategoryIcon(cat: string) {
     switch (cat) {
@@ -21,6 +21,12 @@ function getCategoryIcon(cat: string) {
             return <FileText className="h-4 w-4 text-pink-500" />;
         case 'base64':
             return <FileCode className="h-4 w-4 text-purple-500" />;
+        case 'html':
+            return <Code2 className="h-4 w-4 text-orange-500" />;
+        case 'css':
+            return <Palette className="h-4 w-4 text-sky-500" />;
+        case 'js':
+            return <Terminal className="h-4 w-4 text-yellow-500" />;
         default:
             return <Database className="h-4 w-4 text-muted-foreground" />;
     }
