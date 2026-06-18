@@ -1,7 +1,17 @@
 'use client';
 
 import { lazy, type ComponentType } from 'react';
-import { GitCompare, Code, Minimize2, Eye, FileJson, FileOutput, Shield, FileCode } from 'lucide-react';
+import {
+    GitCompare,
+    Code,
+    Minimize2,
+    Eye,
+    FileJson,
+    FileOutput,
+    Shield,
+    FileCode,
+    Braces,
+} from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { createSavedTabPlugin } from '@/features/tools/core/plugins/saved';
 import { createSharedTabPlugin } from '@/features/tools/core/plugins/shared';
@@ -33,6 +43,9 @@ const SchemaTab = lazy(
 ) as unknown as ComponentType<TabComponentProps>;
 const TypeScriptTab = lazy(
     () => import('@/features/tools/json/tabs/typescript-tab'),
+) as unknown as ComponentType<TabComponentProps>;
+const EscapeTab = lazy(
+    () => import('@/features/tools/json/tabs/escape-tab'),
 ) as unknown as ComponentType<TabComponentProps>;
 
 const JSON_TOOL = registerToolAndGet();
@@ -100,6 +113,13 @@ function registerToolAndGet() {
                 component: TypeScriptTab,
                 contentType: 'json' as const,
             },
+            {
+                id: 'escape',
+                label: 'Escape',
+                icon: Braces,
+                component: EscapeTab,
+                contentType: 'text' as const,
+            },
         ],
         plugins: {
             saved: createSavedTabPlugin({
@@ -146,6 +166,11 @@ function registerToolAndGet() {
                         icon: FileCode,
                         color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
                     },
+                    escape: {
+                        name: 'JSON Escape',
+                        icon: Braces,
+                        color: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
+                    },
                 },
                 tabMapping: {
                     diff: 'diff',
@@ -156,6 +181,7 @@ function registerToolAndGet() {
                     export: 'export',
                     schema: 'schema',
                     typescript: 'typescript',
+                    escape: 'escape',
                 },
                 storageKeyMapping: {
                     diff: 'json-diff-left-content',
@@ -166,6 +192,7 @@ function registerToolAndGet() {
                     export: 'json-export-content',
                     schema: 'json-schema-json-content',
                     typescript: 'json-to-ts-input-content',
+                    escape: 'json-escape-content',
                 },
             }),
             shared: createSharedTabPlugin({
@@ -212,6 +239,11 @@ function registerToolAndGet() {
                         icon: FileCode,
                         color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
                     },
+                    escape: {
+                        name: 'JSON Escape',
+                        icon: Braces,
+                        color: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
+                    },
                 },
                 tabMapping: {
                     diff: 'diff',
@@ -222,6 +254,7 @@ function registerToolAndGet() {
                     export: 'export',
                     schema: 'schema',
                     typescript: 'typescript',
+                    escape: 'escape',
                 },
                 storageKeys: {
                     diff: STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT,
@@ -232,6 +265,7 @@ function registerToolAndGet() {
                     export: STORAGE_KEYS.JSON_EXPORT_CONTENT,
                     schema: STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT,
                     typescript: STORAGE_KEYS.JSON_TO_TS_INPUT_CONTENT,
+                    escape: STORAGE_KEYS.JSON_ESCAPE_CONTENT,
                 },
             }),
             history: createHistoryTabPlugin({
@@ -253,6 +287,11 @@ function registerToolAndGet() {
                         icon: FileCode,
                         color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
                     },
+                    escape: {
+                        name: 'JSON Escape',
+                        icon: Braces,
+                        color: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
+                    },
                 },
                 tabMapping: {
                     diff: 'diff',
@@ -260,6 +299,7 @@ function registerToolAndGet() {
                     minify: 'minify',
                     viewer: 'viewer',
                     typescript: 'typescript',
+                    escape: 'escape',
                 },
             }),
         },

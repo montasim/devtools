@@ -1,7 +1,7 @@
 'use client';
 
 import { lazy, type ComponentType } from 'react';
-import { Database, Minimize2 } from 'lucide-react';
+import { Database, Minimize2, Braces } from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { createSavedTabPlugin } from '@/features/tools/core/plugins/saved';
 import { createSharedTabPlugin } from '@/features/tools/core/plugins/shared';
@@ -14,6 +14,9 @@ const FormatTab = lazy(
 ) as unknown as ComponentType<TabComponentProps>;
 const MinifyTab = lazy(
     () => import('@/features/tools/sql/tabs/minify-tab'),
+) as unknown as ComponentType<TabComponentProps>;
+const SqlEscapeTab = lazy(
+    () => import('@/features/tools/sql/tabs/escape-tab'),
 ) as unknown as ComponentType<TabComponentProps>;
 
 const SQL_TOOL = registerToolAndGet();
@@ -39,6 +42,13 @@ function registerToolAndGet() {
                 component: MinifyTab,
                 contentType: 'text' as const,
             },
+            {
+                id: 'escape',
+                label: 'Escape',
+                icon: Braces,
+                component: SqlEscapeTab,
+                contentType: 'text' as const,
+            },
         ],
         plugins: {
             saved: createSavedTabPlugin({
@@ -55,14 +65,21 @@ function registerToolAndGet() {
                         icon: Minimize2,
                         color: 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300',
                     },
+                    escape: {
+                        name: 'SQL Escape',
+                        icon: Braces,
+                        color: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
+                    },
                 },
                 tabMapping: {
                     format: 'format',
                     minify: 'minify',
+                    escape: 'escape',
                 },
                 storageKeyMapping: {
                     format: 'sql-format-content',
                     minify: 'sql-minify-content',
+                    escape: 'sql-escape-content',
                 },
             }),
             shared: createSharedTabPlugin({
@@ -79,14 +96,21 @@ function registerToolAndGet() {
                         icon: Minimize2,
                         color: 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300',
                     },
+                    escape: {
+                        name: 'SQL Escape',
+                        icon: Braces,
+                        color: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
+                    },
                 },
                 tabMapping: {
                     format: 'format',
                     minify: 'minify',
+                    escape: 'escape',
                 },
                 storageKeys: {
                     format: 'sql-format-content',
                     minify: 'sql-minify-content',
+                    escape: 'sql-escape-content',
                 },
             }),
             history: createHistoryTabPlugin({
@@ -103,10 +127,16 @@ function registerToolAndGet() {
                         icon: Minimize2,
                         color: 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300',
                     },
+                    escape: {
+                        name: 'SQL Escape',
+                        icon: Braces,
+                        color: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
+                    },
                 },
                 tabMapping: {
                     format: 'format',
                     minify: 'minify',
+                    escape: 'escape',
                 },
             }),
         },

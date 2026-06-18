@@ -18,6 +18,14 @@ export function formatSql(sql: string, dialect: SqlDialect = 'sql'): string {
     });
 }
 
+export function escapeSqlString(input: string): string {
+    return input.replace(/'/g, "''").replace(/\\/g, '\\\\');
+}
+
+export function unescapeSqlString(input: string): string {
+    return input.replace(/\\\\/g, '\\').replace(/''/g, "'");
+}
+
 export function minifySql(sql: string): string {
     // Remove -- line comments
     let result = sql.replace(/--[^\n]*/g, '');

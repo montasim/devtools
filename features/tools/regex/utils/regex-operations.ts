@@ -67,6 +67,14 @@ export function testRegex(pattern: string, flags: string, testString: string): R
     }
 }
 
+export function escapeRegex(input: string): string {
+    return input.replace(/[[\]\\^$.|?*+(){}]/g, '\\$&');
+}
+
+export function unescapeRegex(input: string): string {
+    return input.replace(/\\([[\]\\^$.|?*+(){}])/g, '$1');
+}
+
 export function highlightMatches(testString: string, matches: MatchResult[]): string {
     if (matches.length === 0) return escapeHtml(testString);
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { lazy, type ComponentType } from 'react';
-import { Regex } from 'lucide-react';
+import { Regex, Braces } from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { createSharedTabPlugin } from '@/features/tools/core/plugins/shared';
 import { createSavedTabPlugin } from '@/features/tools/core/plugins/saved';
@@ -13,15 +13,16 @@ import type { TabComponentProps } from '@/features/tools/core/types/tool';
 const TestTab = lazy(
     () => import('@/features/tools/regex/tabs/test-tab'),
 ) as unknown as ComponentType<TabComponentProps>;
+const RegexEscapeTab = lazy(
+    () => import('@/features/tools/regex/tabs/escape-tab'),
+) as unknown as ComponentType<TabComponentProps>;
 
 const REGEX_COLOR = 'bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-300';
+const ESCAPE_COLOR = 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300';
 
 const toolMapping = {
-    test: {
-        name: 'Regex Tester',
-        icon: Regex,
-        color: REGEX_COLOR,
-    },
+    test: { name: 'Regex Tester', icon: Regex, color: REGEX_COLOR },
+    escape: { name: 'Regex Escape', icon: Braces, color: ESCAPE_COLOR },
 };
 
 const REGEX_TOOL = registerToolAndGet();
@@ -40,28 +41,36 @@ function registerToolAndGet() {
                 component: TestTab,
                 contentType: 'text' as const,
             },
+            {
+                id: 'escape',
+                label: 'Escape',
+                icon: Braces,
+                component: RegexEscapeTab,
+                contentType: 'text' as const,
+            },
         ],
         plugins: {
             saved: createSavedTabPlugin({
                 pageName: 'regex',
                 queryKey: 'regex-saved',
                 toolMapping,
-                tabMapping: { test: 'test' },
+                tabMapping: { test: 'test', escape: 'escape' },
                 storageKeyMapping: {
                     test: STORAGE_KEYS.REGEX_TEST_INPUT,
+                    escape: STORAGE_KEYS.REGEX_ESCAPE_CONTENT,
                 },
             }),
             shared: createSharedTabPlugin({
                 pageName: 'regex',
                 queryKey: 'regex-shared',
                 toolMapping,
-                tabMapping: { test: 'test' },
+                tabMapping: { test: 'test', escape: 'escape' },
             }),
             history: createHistoryTabPlugin({
                 pageName: 'regex',
                 storageKeyFilter: (key) => key.startsWith('regex-'),
                 toolMapping,
-                tabMapping: { test: 'test' },
+                tabMapping: { test: 'test', escape: 'escape' },
             }),
         },
     };
