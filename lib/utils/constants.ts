@@ -95,6 +95,7 @@ export const STORAGE_KEYS = {
     JSON_TO_TS_INPUT_CONTENT: 'json-to-ts-input-content',
     JSON_TO_TS_ROOT_NAME: 'json-to-ts-root-name',
     PLAYGROUND_CODE: 'playground-code',
+    HTTP_HEADER_INPUT_CONTENT: 'http-header-input-content',
 } as const;
 
 export const PAGE_NAMES = {
@@ -145,6 +146,7 @@ export const PAGE_NAMES = {
     SAMPLE: 'sample',
     JSON_TO_TYPESCRIPT: 'json-to-typescript',
     WEB_PLAYGROUND: 'web-playground',
+    HTTP_HEADER_PARSER: 'http-header-parser',
 } as const;
 
 export const BASE64_TABS = {

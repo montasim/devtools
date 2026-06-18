@@ -225,6 +225,13 @@ export const navigationMenu: MenuItem[] = [
                 category: 'Network & API',
             },
             {
+                title: 'HTTP Header Parser',
+                description: 'Parse raw HTTP headers to dynamic tables and cURL',
+                icon: <List className="size-5 shrink-0" />,
+                url: '/http-header-parser',
+                category: 'Network & API',
+            },
+            {
                 title: 'WebSocket Tester',
                 description: 'Debug WebSocket connections in real-time',
                 icon: <Plug className="size-5 shrink-0" />,

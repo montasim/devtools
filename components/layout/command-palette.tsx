@@ -55,6 +55,7 @@ import {
     ShieldAlert,
     Globe2,
     Database,
+    List,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -98,6 +99,7 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
     '/timezones': Globe2,
     '/sample': Database,
     '/web-playground': Monitor,
+    '/http-header-parser': List,
 };
 
 interface CommandEntry {

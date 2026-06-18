@@ -920,6 +920,22 @@ export const seoConfig: SEOConfig = {
             ],
             path: '/web-playground',
             priority: 0.8,
+        },
+
+        'http-header-parser': {
+            title: 'HTTP Header Parser - Parse Raw Headers to Table & cURL',
+            description:
+                'Parse raw HTTP headers and request traces into dynamic key-value tables and copyable cURL commands. Supports raw HTTP/1.x format and Chrome/Firefox HTTP/2 headers.',
+            keywords: [
+                'http header parser',
+                'parse http headers',
+                'raw headers converter',
+                'devtools request parser',
+                'generate curl from headers',
+                'inspect http request',
+            ],
+            path: '/http-header-parser',
+            priority: 0.8,
             changeFrequency: 'monthly',
         },
     },

@@ -39,6 +39,7 @@ import {
     Smile,
     Rss,
     Database,
+    List,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -200,6 +201,12 @@ export const TOOL_CATEGORIES = [
                 description: 'Build, test, and debug HTTP requests online',
                 icon: Globe,
                 featured: true,
+            },
+            {
+                href: '/http-header-parser',
+                label: 'HTTP Header Parser',
+                description: 'Parse raw HTTP headers and request traces into tables and cURL',
+                icon: List,
             },
             {
                 href: '/websocket',
