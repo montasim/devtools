@@ -43,7 +43,7 @@ export function ShareSidebarModal({ open, onOpenChange, config }: ShareSidebarMo
             },
             {
                 onSuccess: (result) => {
-                    const url = `${window.location.origin}/share/${config.pageName}/${result.id}`;
+                    const url = `${window.location.origin}/share/${result.id}`;
                     setShareUrl(url);
                     toast.success('Share link created!');
                 },

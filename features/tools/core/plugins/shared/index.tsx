@@ -33,7 +33,7 @@ export function createSharedTabPlugin(config: SharedTabConfig) {
 
         const handleCopyUrl = (id: string) => {
             const baseUrl = window.location.origin;
-            copy(`${baseUrl}/share/${config.pageName}/${id}`);
+            copy(`${baseUrl}/share/${id}`);
         };
 
         const handleClearAll = () => {

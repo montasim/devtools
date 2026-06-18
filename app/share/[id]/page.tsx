@@ -4,19 +4,28 @@ import { useState, useEffect, use, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { apiClient } from '@/lib/api/client';
 import { PasswordPrompt } from '@/features/sharing/components/password-prompt';
+import { SharedContentBanner } from '@/features/sharing/components/shared-content-banner';
 import { ShareErrorDisplay } from '@/features/sharing/components/share-error-display';
 import { Loader2 } from 'lucide-react';
+import { ToolPage } from '@/features/tools/core/components/tool-page';
+import { getToolDefinition } from '@/features/tools/core/config/tool-registry';
 import type { ShareMetadata, ShareAccessResponse } from '@/features/sharing/types/share';
+
+import '@/app/(tools)/json/page';
+import '@/app/(tools)/text/page';
+import '@/app/(tools)/base64/page';
+import '@/app/(tools)/qrcode/page';
 
 const SESSION_KEY = 'share-text-access-data';
 
-function ShareTextRedirector({ id }: { id: string }) {
+function ShareContentLoader({ id }: { id: string }) {
     const router = useRouter();
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [metadata, setMetadata] = useState<ShareMetadata | null>(null);
     const [needsPassword, setNeedsPassword] = useState(false);
+    const [accessData, setAccessData] = useState<ShareAccessResponse | null>(null);
 
     useEffect(() => {
         loadMetadata();
@@ -28,6 +37,7 @@ function ShareTextRedirector({ id }: { id: string }) {
             const res = await apiClient.get<ShareMetadata>(`/api/shares/${id}`);
             if (!res.ok || !res.data) {
                 setError(res.error?.message ?? 'Share not found');
+                setLoading(false);
                 return;
             }
 
@@ -36,11 +46,12 @@ function ShareTextRedirector({ id }: { id: string }) {
 
             if (meta.expiresAt && new Date(meta.expiresAt) < new Date()) {
                 setError('This share link has expired');
+                setLoading(false);
                 return;
             }
 
             if (!meta.hasPassword) {
-                await accessContent();
+                await accessContent(meta);
             } else {
                 setNeedsPassword(true);
                 setLoading(false);
@@ -51,22 +62,31 @@ function ShareTextRedirector({ id }: { id: string }) {
         }
     }
 
-    async function accessContent(password?: string): Promise<boolean> {
+    async function accessContent(meta: ShareMetadata, passwordInput?: string): Promise<boolean> {
         try {
+            setLoading(true);
             const res = await apiClient.post<ShareAccessResponse>(
                 `/api/shares/${id}/access`,
-                password ? { password } : undefined,
+                passwordInput ? { password: passwordInput } : undefined,
             );
             if (!res.ok || !res.data) {
                 if (res.error?.code === 'INVALID_PASSWORD') {
+                    setLoading(false);
                     return false;
                 }
                 setError(res.error?.message ?? 'Failed to access content');
+                setLoading(false);
                 return false;
             }
 
-            sessionStorage.setItem(SESSION_KEY, JSON.stringify(res.data));
-            router.replace('/share/text');
+            if (meta.pageName === 'text') {
+                sessionStorage.setItem(SESSION_KEY, JSON.stringify(res.data));
+                router.replace('/share/text');
+            } else {
+                setAccessData(res.data);
+                setNeedsPassword(false);
+                setLoading(false);
+            }
             return true;
         } catch {
             setError('Failed to access content');
@@ -91,7 +111,7 @@ function ShareTextRedirector({ id }: { id: string }) {
         return (
             <PasswordPrompt
                 onSubmit={async (pwd) => {
-                    const ok = await accessContent(pwd);
+                    const ok = await accessContent(metadata, pwd);
                     if (!ok) {
                         setError('Incorrect password');
                     }
@@ -100,10 +120,28 @@ function ShareTextRedirector({ id }: { id: string }) {
         );
     }
 
+    if (metadata && metadata.pageName !== 'text') {
+        const toolDefinition = getToolDefinition(metadata.pageName);
+        if (!toolDefinition) {
+            return <ShareErrorDisplay message={`Unknown tool type: ${metadata.pageName}`} />;
+        }
+
+        const sharedData = accessData?.content
+            ? { tabName: metadata.tabName, state: accessData.content.state }
+            : null;
+
+        return (
+            <>
+                <SharedContentBanner metadata={metadata} state={accessData?.content?.state ?? null} />
+                <ToolPage definition={toolDefinition} sharedData={sharedData} />
+            </>
+        );
+    }
+
     return null;
 }
 
-export default function ShareTextRedirectPage({ params }: { params: Promise<{ id: string }> }) {
+export default function SharedContentPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
     return (
         <Suspense
@@ -113,7 +151,7 @@ export default function ShareTextRedirectPage({ params }: { params: Promise<{ id
                 </div>
             }
         >
-            <ShareTextRedirector id={id} />
+            <ShareContentLoader id={id} />
         </Suspense>
     );
 }

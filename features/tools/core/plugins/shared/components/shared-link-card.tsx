@@ -29,7 +29,7 @@ function isExpired(expiresAt: string | null): boolean {
 
 function buildShareUrl(pageName: string, id: string): string {
     if (typeof window === 'undefined') return '';
-    return `${window.location.origin}/share/${pageName}/${id}`;
+    return `${window.location.origin}/share/${id}`;
 }
 
 function extractStateText(state: Record<string, unknown> | null): string {
