@@ -169,6 +169,11 @@ const docSections = [
         title: 'Emoji Picker',
         icon: <Smile className="h-5 w-5" />,
     },
+    {
+        id: 'sample-data',
+        title: 'Sample Data',
+        icon: <Database className="h-5 w-5" />,
+    },
 ];
 
 export default function DocsPage() {
@@ -1521,6 +1526,36 @@ export default function DocsPage() {
                             <p className="text-sm text-muted-foreground">
                                 Find any emoji by name or keyword. Results update as you type.
                                 Filter by category using the pill buttons to narrow results.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="sample-data"
+                    title="Sample Data"
+                    description="Ready-to-use sample/mock data templates in JSON, XML, Text, and Base64 formats."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Database className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                                <h3 className="font-semibold">Mock Data Templates</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Quick access to standard placeholders and structural mock datasets.
+                                Supports standard configurations, bookstore XML catalogs, RSS feeds, SVGs, Lorem Ipsum,
+                                CSV sheets, Apache logs, and transparent Base64 pixels.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Search className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">Search &amp; Filter</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Instantly find templates using live title/description search. Toggle
+                                category filters to quickly narrow down JSON, XML, plain text, or Base64 formats.
                             </p>
                         </div>
                     </div>
