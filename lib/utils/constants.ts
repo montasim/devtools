@@ -61,6 +61,7 @@ export const STORAGE_KEYS = {
     CSS_UNIT_STATE: 'css-unit-state',
     USER_AGENT_INPUT: 'user-agent-input',
     API_BUILDER_STATE: 'api-builder-state',
+    API_BUILDER_LOAD_BALANCER_STATE: 'api-builder-load-balancer-state',
     CURL_CONVERT_INPUT: 'curl-convert-input',
     CURL_TESTER_REQUEST: 'curl-tester-request',
     WEBSOCKET_TESTER_URL: 'websocket-tester-url',
