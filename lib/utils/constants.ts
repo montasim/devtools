@@ -144,7 +144,6 @@ export const PAGE_NAMES = {
     EMOJI: 'emoji',
     RSS: 'rss',
     SAMPLE: 'sample',
-    JSON_TO_TYPESCRIPT: 'json-to-typescript',
     WEB_PLAYGROUND: 'web-playground',
     HTTP_HEADER_PARSER: 'http-header-parser',
 } as const;
@@ -168,6 +167,7 @@ export const JSON_TABS = {
     FORMAT: 'format',
     PARSER: 'parser',
     EXPORT: 'export',
+    TYPESCRIPT: 'typescript',
 } as const;
 
 export const XML_TABS = {

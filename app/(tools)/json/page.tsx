@@ -1,7 +1,7 @@
 'use client';
 
 import { lazy, type ComponentType } from 'react';
-import { GitCompare, Code, Minimize2, Eye, FileJson, FileOutput, Shield } from 'lucide-react';
+import { GitCompare, Code, Minimize2, Eye, FileJson, FileOutput, Shield, FileCode } from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { createSavedTabPlugin } from '@/features/tools/core/plugins/saved';
 import { createSharedTabPlugin } from '@/features/tools/core/plugins/shared';
@@ -30,6 +30,9 @@ const ExportTab = lazy(
 ) as unknown as ComponentType<TabComponentProps>;
 const SchemaTab = lazy(
     () => import('@/features/tools/json/tabs/schema-tab'),
+) as unknown as ComponentType<TabComponentProps>;
+const TypeScriptTab = lazy(
+    () => import('@/features/tools/json/tabs/typescript-tab'),
 ) as unknown as ComponentType<TabComponentProps>;
 
 const JSON_TOOL = registerToolAndGet();
@@ -90,6 +93,13 @@ function registerToolAndGet() {
                 component: SchemaTab,
                 contentType: 'json' as const,
             },
+            {
+                id: 'typescript',
+                label: 'TypeScript',
+                icon: FileCode,
+                component: TypeScriptTab,
+                contentType: 'json' as const,
+            },
         ],
         plugins: {
             saved: createSavedTabPlugin({
@@ -131,6 +141,11 @@ function registerToolAndGet() {
                         icon: Shield,
                         color: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
                     },
+                    typescript: {
+                        name: 'JSON to TypeScript',
+                        icon: FileCode,
+                        color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
+                    },
                 },
                 tabMapping: {
                     diff: 'diff',
@@ -140,6 +155,7 @@ function registerToolAndGet() {
                     parser: 'parser',
                     export: 'export',
                     schema: 'schema',
+                    typescript: 'typescript',
                 },
                 storageKeyMapping: {
                     diff: 'json-diff-left-content',
@@ -149,6 +165,7 @@ function registerToolAndGet() {
                     parser: 'json-parser-content',
                     export: 'json-export-content',
                     schema: 'json-schema-json-content',
+                    typescript: 'json-to-ts-input-content',
                 },
             }),
             shared: createSharedTabPlugin({
@@ -190,6 +207,11 @@ function registerToolAndGet() {
                         icon: Shield,
                         color: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
                     },
+                    typescript: {
+                        name: 'JSON to TypeScript',
+                        icon: FileCode,
+                        color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
+                    },
                 },
                 tabMapping: {
                     diff: 'diff',
@@ -199,6 +221,7 @@ function registerToolAndGet() {
                     parser: 'parser',
                     export: 'export',
                     schema: 'schema',
+                    typescript: 'typescript',
                 },
                 storageKeys: {
                     diff: STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT,
@@ -208,6 +231,7 @@ function registerToolAndGet() {
                     parser: STORAGE_KEYS.JSON_PARSER_CONTENT,
                     export: STORAGE_KEYS.JSON_EXPORT_CONTENT,
                     schema: STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT,
+                    typescript: STORAGE_KEYS.JSON_TO_TS_INPUT_CONTENT,
                 },
             }),
             history: createHistoryTabPlugin({
@@ -224,12 +248,18 @@ function registerToolAndGet() {
                         icon: Code,
                         color: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
                     },
+                    typescript: {
+                        name: 'JSON to TypeScript',
+                        icon: FileCode,
+                        color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
+                    },
                 },
                 tabMapping: {
                     diff: 'diff',
                     format: 'format',
                     minify: 'minify',
                     viewer: 'viewer',
+                    typescript: 'typescript',
                 },
             }),
         },
