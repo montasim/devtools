@@ -60,6 +60,7 @@ import type { LucideIcon } from 'lucide-react';
 
 const TOOL_ICONS: Record<string, LucideIcon> = {
     '/json': FileJson,
+    '/json-to-typescript': FileCode,
     '/xml': Code,
     '/text': FileText,
     '/base64': FileCode,

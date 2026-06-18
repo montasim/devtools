@@ -92,6 +92,8 @@ export const STORAGE_KEYS = {
     THEME: 'theme',
     RSS_ANALYZER_CONTENT: 'rss-analyzer-content',
     RSS_URL_ANALYZER_URL: 'rss-url-analyzer-url',
+    JSON_TO_TS_INPUT_CONTENT: 'json-to-ts-input-content',
+    JSON_TO_TS_ROOT_NAME: 'json-to-ts-root-name',
 } as const;
 
 export const PAGE_NAMES = {
@@ -140,6 +142,7 @@ export const PAGE_NAMES = {
     EMOJI: 'emoji',
     RSS: 'rss',
     SAMPLE: 'sample',
+    JSON_TO_TYPESCRIPT: 'json-to-typescript',
 } as const;
 
 export const BASE64_TABS = {

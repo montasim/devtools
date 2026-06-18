@@ -888,6 +888,23 @@ export const seoConfig: SEOConfig = {
             priority: 0.7,
             changeFrequency: 'monthly',
         },
+
+        'json-to-typescript': {
+            title: 'JSON to TypeScript - Convert JSON to TypeScript Interfaces Instantly',
+            description:
+                'Convert any JSON structure into clean, strongly-typed TypeScript interfaces. Handles nested objects, lists, and optional fields. Safe and fast in your browser.',
+            keywords: [
+                'json to typescript',
+                'json to ts',
+                'convert json to ts',
+                'typescript interface generator',
+                'json to interface converter',
+                'typescript type generator',
+            ],
+            path: '/json-to-typescript',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
     },
 
     disallowedPaths: [

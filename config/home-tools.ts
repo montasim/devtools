@@ -54,6 +54,12 @@ export const TOOL_CATEGORIES = [
                 featured: true,
             },
             {
+                href: '/json-to-typescript',
+                label: 'JSON to TypeScript',
+                description: 'Convert any JSON object into TypeScript interface definitions',
+                icon: FileCode,
+            },
+            {
                 href: '/xml',
                 label: 'XML Tools',
                 description: 'Format, minify, diff, and parse XML easily',
