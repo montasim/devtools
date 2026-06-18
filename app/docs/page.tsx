@@ -67,6 +67,11 @@ const docSections = [
     { id: 'features', title: 'Key Features', icon: <Sparkles className="h-5 w-5" /> },
     { id: 'getting-started', title: 'Getting Started', icon: <Play className="h-5 w-5" /> },
     { id: 'json-tools', title: 'JSON Tools', icon: <FileJson className="h-5 w-5" /> },
+    {
+        id: 'json-to-typescript',
+        title: 'JSON to TypeScript',
+        icon: <FileCode className="h-5 w-5" />,
+    },
     { id: 'xml-tools', title: 'XML Tools', icon: <Code className="h-5 w-5" /> },
     { id: 'text-tools', title: 'Text Tools', icon: <FileText className="h-5 w-5" /> },
     { id: 'base64-tools', title: 'Base64 Tools', icon: <FileCode className="h-5 w-5" /> },
@@ -377,6 +382,47 @@ export default function DocsPage() {
                             <p className="text-sm text-muted-foreground">
                                 Validate data against schemas and export to any format you need.
                                 Stop writing conversion scripts by hand.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="json-to-typescript"
+                    title="JSON to TypeScript"
+                    description="Convert JSON structures to TypeScript interfaces in one click."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <FileCode className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">TypeScript Interface Generation</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Paste any valid JSON object or array structure to dynamically generate
+                                strongly-typed TypeScript interfaces. Handles nested objects, lists,
+                                and resolves key names to PascalCase format.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Settings className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                <h3 className="font-semibold">Customizable Root Name</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Configure a custom root interface name (e.g. <code>UserPayload</code>)
+                                and the tool will dynamically rename the main interface and its children.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Layers className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                                <h3 className="font-semibold">Deep Merging &amp; Optionals</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Merges duplicate structures into a single shared interface when possible.
+                                Marks fields as optional (<code>?</code>) when arrays contain items with
+                                heterogeneous/differing property layouts.
                             </p>
                         </div>
                     </div>
