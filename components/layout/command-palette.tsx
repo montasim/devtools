@@ -57,6 +57,8 @@ import {
     Database,
     List,
     Sparkles,
+    Paintbrush,
+    Layers,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -101,6 +103,10 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
     '/sample': Database,
     '/web-playground': Monitor,
     '/http-header-parser': List,
+    '/html': Code2,
+    '/css': Paintbrush,
+    '/sql': Database,
+    '/yaml': Layers,
 };
 
 interface CommandEntry {

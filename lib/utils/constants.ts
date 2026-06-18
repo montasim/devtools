@@ -96,6 +96,18 @@ export const STORAGE_KEYS = {
     JSON_TO_TS_ROOT_NAME: 'json-to-ts-root-name',
     PLAYGROUND_CODE: 'playground-code',
     HTTP_HEADER_INPUT_CONTENT: 'http-header-input-content',
+    HTML_FORMAT_CONTENT: 'html-format-content',
+    HTML_MINIFY_CONTENT: 'html-minify-content',
+    HTML_VALIDATE_CONTENT: 'html-validate-content',
+    CSS_FORMAT_CONTENT: 'css-format-content',
+    CSS_MINIFY_CONTENT: 'css-minify-content',
+    SQL_FORMAT_CONTENT: 'sql-format-content',
+    SQL_MINIFY_CONTENT: 'sql-minify-content',
+    SQL_FORMAT_DIALECT: 'sql-format-dialect',
+    YAML_FORMAT_CONTENT: 'yaml-format-content',
+    YAML_TO_JSON_YAML_CONTENT: 'yaml-to-json-yaml-content',
+    JSON_TO_YAML_JSON_CONTENT: 'json-to-yaml-json-content',
+    YAML_VALIDATE_CONTENT: 'yaml-validate-content',
 } as const;
 
 export const PAGE_NAMES = {
@@ -147,6 +159,10 @@ export const PAGE_NAMES = {
     WEB_PLAYGROUND: 'web-playground',
     HTTP_HEADER_PARSER: 'http-header-parser',
     SVG_OPTIMIZER: 'svg',
+    HTML: 'html',
+    CSS: 'css',
+    SQL: 'sql',
+    YAML: 'yaml',
 } as const;
 
 export const BASE64_TABS = {
@@ -361,6 +377,30 @@ export const RSS_TABS = {
 
 export const SVG_OPTIMIZER_TABS = {
     OPTIMIZER: 'optimizer',
+    PREVIEWER: 'previewer',
+} as const;
+
+export const HTML_TABS = {
+    FORMAT: 'format',
+    MINIFY: 'minify',
+    VALIDATE: 'validate',
+} as const;
+
+export const CSS_TABS = {
+    FORMAT: 'format',
+    MINIFY: 'minify',
+} as const;
+
+export const SQL_TABS = {
+    FORMAT: 'format',
+    MINIFY: 'minify',
+} as const;
+
+export const YAML_TABS = {
+    FORMAT: 'format',
+    YAML_TO_JSON: 'yaml-to-json',
+    JSON_TO_YAML: 'json-to-yaml',
+    VALIDATE: 'validate',
 } as const;
 
 export const TOOL_COUNT = Object.keys(PAGE_NAMES).length;
@@ -413,4 +453,8 @@ export const TAB_NAMES = {
     ...EMOJI_TABS,
     ...RSS_TABS,
     ...SVG_OPTIMIZER_TABS,
+    ...HTML_TABS,
+    ...CSS_TABS,
+    ...SQL_TABS,
+    ...YAML_TABS,
 } as const;

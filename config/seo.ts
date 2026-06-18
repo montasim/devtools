@@ -922,6 +922,82 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        html: {
+            title: 'HTML Tools - Format, Minify & Validate HTML Instantly',
+            description:
+                'Format messy HTML into clean indented markup, minify for production, and validate for common issues like duplicate IDs and missing alt attributes. Runs entirely in your browser.',
+            keywords: [
+                'HTML formatter',
+                'HTML minifier',
+                'HTML beautifier',
+                'HTML validator',
+                'format HTML online',
+                'minify HTML',
+                'clean HTML code',
+                'online HTML tools',
+            ],
+            path: '/html',
+            priority: 0.9,
+            changeFrequency: 'monthly',
+        },
+
+        css: {
+            title: 'CSS Tools - Format & Minify CSS Stylesheets Online',
+            description:
+                'Format messy CSS into clean indented rules and minify for production with size reduction stats. Supports @media, @keyframes, and nested rules. Runs entirely in your browser.',
+            keywords: [
+                'CSS formatter',
+                'CSS minifier',
+                'CSS beautifier',
+                'format CSS online',
+                'minify CSS',
+                'CSS prettifier',
+                'clean CSS code',
+                'online CSS tools',
+            ],
+            path: '/css',
+            priority: 0.9,
+            changeFrequency: 'monthly',
+        },
+
+        sql: {
+            title: 'SQL Tools - Format & Minify SQL Queries Across 5 Dialects',
+            description:
+                'Format SQL queries with uppercase keywords and clean indentation. Minify for storage or transfer. Supports Standard SQL, MySQL, PostgreSQL, SQLite, and T-SQL. Runs in your browser.',
+            keywords: [
+                'SQL formatter',
+                'SQL minifier',
+                'SQL beautifier',
+                'format SQL online',
+                'MySQL formatter',
+                'PostgreSQL formatter',
+                'SQL query formatter',
+                'online SQL tools',
+            ],
+            path: '/sql',
+            priority: 0.9,
+            changeFrequency: 'monthly',
+        },
+
+        yaml: {
+            title: 'YAML Tools - Format, Validate & Convert YAML ↔ JSON',
+            description:
+                'Format YAML with consistent indentation, validate syntax, and convert between YAML and JSON in both directions. Uses js-yaml for reliable parsing. Runs entirely in your browser.',
+            keywords: [
+                'YAML formatter',
+                'YAML validator',
+                'YAML to JSON',
+                'JSON to YAML',
+                'YAML converter',
+                'format YAML online',
+                'YAML linter',
+                'online YAML tools',
+            ],
+            path: '/yaml',
+            priority: 0.9,
+            changeFrequency: 'monthly',
+        },
+
         svg: {
             title: 'SVG Tools - Optimize, Minify & Preview SVGs Client-Side',
             description:

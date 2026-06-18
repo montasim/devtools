@@ -40,6 +40,8 @@ import {
     Rss,
     Database,
     List,
+    Paintbrush,
+    Layers,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -122,6 +124,30 @@ export const TOOL_CATEGORIES = [
                 label: 'SVG Tools',
                 description: 'Optimize, minify, and preview SVG vector graphics client-side',
                 icon: Sparkles,
+            },
+            {
+                href: '/html',
+                label: 'HTML Tools',
+                description: 'Format, minify, and validate HTML markup instantly',
+                icon: Code2,
+            },
+            {
+                href: '/css',
+                label: 'CSS Tools',
+                description: 'Format and minify CSS stylesheets with size stats',
+                icon: Paintbrush,
+            },
+            {
+                href: '/sql',
+                label: 'SQL Tools',
+                description: 'Format and minify SQL queries across 5 dialects',
+                icon: Database,
+            },
+            {
+                href: '/yaml',
+                label: 'YAML Tools',
+                description: 'Format, validate, and convert YAML ↔ JSON',
+                icon: Layers,
             },
         ],
     },

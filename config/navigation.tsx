@@ -41,6 +41,8 @@ import {
     Type,
     Smile,
     Rss,
+    Paintbrush,
+    Layers,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -77,6 +79,34 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Optimize, minify, and preview SVG graphics client-side',
                 icon: <Sparkles className="size-5 shrink-0" />,
                 url: '/svg',
+                category: 'Formatters & Converters',
+            },
+            {
+                title: 'HTML Tools',
+                description: 'Format, minify, and validate HTML markup instantly',
+                icon: <Code2 className="size-5 shrink-0" />,
+                url: '/html',
+                category: 'Formatters & Converters',
+            },
+            {
+                title: 'CSS Tools',
+                description: 'Format and minify CSS stylesheets with size stats',
+                icon: <Paintbrush className="size-5 shrink-0" />,
+                url: '/css',
+                category: 'Formatters & Converters',
+            },
+            {
+                title: 'SQL Tools',
+                description: 'Format and minify SQL queries across 5 dialects',
+                icon: <Database className="size-5 shrink-0" />,
+                url: '/sql',
+                category: 'Formatters & Converters',
+            },
+            {
+                title: 'YAML Tools',
+                description: 'Format, validate, and convert YAML ↔ JSON',
+                icon: <Layers className="size-5 shrink-0" />,
+                url: '/yaml',
                 category: 'Formatters & Converters',
             },
             {
