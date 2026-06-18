@@ -69,6 +69,7 @@ const docSections = [
     { id: 'getting-started', title: 'Getting Started', icon: <Play className="h-5 w-5" /> },
     { id: 'json-tools', title: 'JSON Tools', icon: <FileJson className="h-5 w-5" /> },
     { id: 'xml-tools', title: 'XML Tools', icon: <Code className="h-5 w-5" /> },
+    { id: 'svg', title: 'SVG Tools', icon: <Sparkles className="h-5 w-5" /> },
     { id: 'text-tools', title: 'Text Tools', icon: <FileText className="h-5 w-5" /> },
     { id: 'base64-tools', title: 'Base64 Tools', icon: <FileCode className="h-5 w-5" /> },
     { id: 'url-encode-decode', title: 'URL Encode / Decode', icon: <Link className="h-5 w-5" /> },
@@ -388,13 +389,17 @@ export default function DocsPage() {
                             <p className="text-sm text-muted-foreground">
                                 Validate data against schemas and export to any format you need.
                                 Stop writing conversion scripts by hand.
+                            </p>
+                        </div>
                         <div className="rounded-xl border bg-background p-5">
                             <div className="mb-2 flex items-center gap-3">
                                 <FileCode className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                                 <h3 className="font-semibold">JSON to TypeScript</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Convert raw JSON structures to clean, strongly-typed TypeScript interfaces. Handles nested objects, deep merging, and configurable root names.
+                                Convert raw JSON structures to clean, strongly-typed TypeScript
+                                interfaces. Handles nested objects, deep merging, and configurable
+                                root names.
                             </p>
                         </div>
                     </div>
@@ -412,7 +417,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">XML Diff</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Compare two XML structures side by side to quickly spot additions, removals, and changes.
+                                Compare two XML structures side by side to quickly spot additions,
+                                removals, and changes.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -421,7 +427,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">XML Format &amp; Minify</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Beautify raw XML into readable code or minify it to save space for production.
+                                Beautify raw XML into readable code or minify it to save space for
+                                production.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -430,7 +437,52 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">XML Parser &amp; Viewer</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                View complex XML structures with an interactive, collapsible tree view.
+                                View complex XML structures with an interactive, collapsible tree
+                                view.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="svg"
+                    title="SVG Tools"
+                    description="Optimize, clean up, and compress SVG vector graphics in real-time."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Sparkles className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                                <h3 className="font-semibold">Interactive Code Preview</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Render optimized SVGs instantly inside a live sandbox. Offers
+                                multiple canvas modes (grid checkerboard, light mode, and dark mode)
+                                and manual zoom adjustments (25% to 800%) to inspect pixel fidelity.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Settings className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">Granular Optimization Presets</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Selectively strip metadata comments, namespaces, and editor markup
+                                (Inkscape/Illustrator). Includes decimal precision sliders to round
+                                floating-point coordinates and save substantial file size.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <FileCode className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                <h3 className="font-semibold">
+                                    Formatted &amp; Minified Code Output
+                                </h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                View original vs optimized file sizes with percentage metrics.
+                                Export your cleaned SVG code as pretty formatted XML tags or fully
+                                minified code.
                             </p>
                         </div>
                     </div>
@@ -890,7 +942,10 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Request Trace Parser</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Paste any HTTP request trace block, including standard HTTP/1.x headers or HTTP/2 browser pseudo-headers (e.g. <code>:authority</code>, <code>:method</code>). The tool will split keys, trim trailing spaces, and extract methods, paths, and domains.
+                                Paste any HTTP request trace block, including standard HTTP/1.x
+                                headers or HTTP/2 browser pseudo-headers (e.g.{' '}
+                                <code>:authority</code>, <code>:method</code>). The tool will split
+                                keys, trim trailing spaces, and extract methods, paths, and domains.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -899,7 +954,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Header Key-Value Table</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                View parsed headers inside a structured, read-friendly layout. Move your cursor over any row to copy the header pair (<code>Key: Value</code>) in one click.
+                                View parsed headers inside a structured, read-friendly layout. Move
+                                your cursor over any row to copy the header pair (
+                                <code>Key: Value</code>) in one click.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -908,7 +965,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">cURL Command Generation</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Automatically converts the parsed request line and key-value headers list into an equivalent, executable <code>curl</code> command.
+                                Automatically converts the parsed request line and key-value headers
+                                list into an equivalent, executable <code>curl</code> command.
                             </p>
                         </div>
                     </div>
@@ -1242,7 +1300,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">HTML Source Editor</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Edit HTML elements, insert styles via <code>&lt;style&gt;</code> blocks, or add dynamic behaviors using <code>&lt;script&gt;</code> tags.
+                                Edit HTML elements, insert styles via <code>&lt;style&gt;</code>{' '}
+                                blocks, or add dynamic behaviors using <code>&lt;script&gt;</code>{' '}
+                                tags.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -1251,7 +1311,9 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Isolated Sandbox Preview</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Renders code blocks inside a sandboxed <code>iframe</code>. Treats scripts under an opaque origin, completely blocking script access to cookies or parent localStorage.
+                                Renders code blocks inside a sandboxed <code>iframe</code>. Treats
+                                scripts under an opaque origin, completely blocking script access to
+                                cookies or parent localStorage.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -1260,7 +1322,8 @@ export default function DocsPage() {
                                 <h3 className="font-semibold">Auto &amp; Manual Execution Modes</h3>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Toggle Auto Run mode to automatically compile code as you type, or disable it to manually trigger reloads with the Run button.
+                                Toggle Auto Run mode to automatically compile code as you type, or
+                                disable it to manually trigger reloads with the Run button.
                             </p>
                         </div>
                     </div>
@@ -1634,8 +1697,9 @@ export default function DocsPage() {
                             </div>
                             <p className="text-sm text-muted-foreground">
                                 Quick access to standard placeholders and structural mock datasets.
-                                Supports standard configurations, bookstore XML catalogs, RSS feeds, SVGs, Lorem Ipsum,
-                                CSV sheets, Apache logs, and transparent Base64 pixels.
+                                Supports standard configurations, bookstore XML catalogs, RSS feeds,
+                                SVGs, Lorem Ipsum, CSV sheets, Apache logs, and transparent Base64
+                                pixels.
                             </p>
                         </div>
                         <div className="rounded-xl border bg-background p-5">
@@ -1645,7 +1709,8 @@ export default function DocsPage() {
                             </div>
                             <p className="text-sm text-muted-foreground">
                                 Instantly find templates using live title/description search. Toggle
-                                category filters to quickly narrow down JSON, XML, plain text, or Base64 formats.
+                                category filters to quickly narrow down JSON, XML, plain text, or
+                                Base64 formats.
                             </p>
                         </div>
                     </div>
