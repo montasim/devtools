@@ -45,6 +45,7 @@ import {
     Route,
     MailX,
     Database,
+    List,
     MailQuestion,
     ShieldAlert,
     Globe2,
@@ -105,6 +106,11 @@ const docSections = [
         id: 'api-builder',
         title: 'API Request Builder',
         icon: <Zap className="h-5 w-5" />,
+    },
+    {
+        id: 'http-header-parser',
+        title: 'HTTP Header Parser',
+        icon: <List className="h-5 w-5" />,
     },
     {
         id: 'websocket-tester',
@@ -906,6 +912,42 @@ export default function DocsPage() {
                                 Full HTTP client: set the method, URL, query params, headers, body
                                 (JSON/text/form), and auth (Bearer/Basic) &mdash; then see the
                                 response with status, timing, and size at a glance.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="http-header-parser"
+                    title="HTTP Header Parser"
+                    description="Parse raw HTTP headers and request traces into dynamic key-value tables and copyable cURL commands."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <List className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">Request Trace Parser</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Paste any HTTP request trace block, including standard HTTP/1.x headers or HTTP/2 browser pseudo-headers (e.g. <code>:authority</code>, <code>:method</code>). The tool will split keys, trim trailing spaces, and extract methods, paths, and domains.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <FileText className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                <h3 className="font-semibold">Header Key-Value Table</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                View parsed headers inside a structured, read-friendly layout. Move your cursor over any row to copy the header pair (<code>Key: Value</code>) in one click.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Play className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                                <h3 className="font-semibold">cURL Command Generation</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Automatically converts the parsed request line and key-value headers list into an equivalent, executable <code>curl</code> command.
                             </p>
                         </div>
                     </div>
