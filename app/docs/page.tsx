@@ -132,6 +132,11 @@ const docSections = [
     { id: 'unicode-lookup', title: 'Unicode Lookup', icon: <Languages className="h-5 w-5" /> },
     { id: 'ascii-table', title: 'ASCII Table', icon: <Table2 className="h-5 w-5" /> },
     { id: 'cron-builder', title: 'CRON Builder', icon: <Timer className="h-5 w-5" /> },
+    {
+        id: 'web-playground',
+        title: 'Web Playground',
+        icon: <Monitor className="h-5 w-5" />,
+    },
     { id: 'unit-converter', title: 'Unit Converter', icon: <ArrowLeftRight className="h-5 w-5" /> },
     { id: 'url-shortener', title: 'URL Shortener', icon: <Link2 className="h-5 w-5" /> },
     {
@@ -1217,6 +1222,42 @@ export default function DocsPage() {
                                 Configure each field visually (Every, Specific, Range, Step, Custom)
                                 and see the expression built in real-time with a plain-English
                                 description. Preview the next 6 execution times before you deploy.
+                            </p>
+                        </div>
+                    </div>
+                </PageSection>
+
+                <PageSection
+                    id="web-playground"
+                    title="Web Playground &amp; Sandbox"
+                    description="A lightweight client-side sandboxed playground to run HTML, CSS, and JS code blocks locally."
+                >
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-semibold">HTML Source Editor</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Edit HTML elements, insert styles via <code>&lt;style&gt;</code> blocks, or add dynamic behaviors using <code>&lt;script&gt;</code> tags.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Monitor className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                <h3 className="font-semibold">Isolated Sandbox Preview</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Renders code blocks inside a sandboxed <code>iframe</code>. Treats scripts under an opaque origin, completely blocking script access to cookies or parent localStorage.
+                            </p>
+                        </div>
+                        <div className="rounded-xl border bg-background p-5">
+                            <div className="mb-2 flex items-center gap-3">
+                                <Play className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                                <h3 className="font-semibold">Auto &amp; Manual Execution Modes</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Toggle Auto Run mode to automatically compile code as you type, or disable it to manually trigger reloads with the Run button.
                             </p>
                         </div>
                     </div>
