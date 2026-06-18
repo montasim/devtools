@@ -8,19 +8,19 @@ import { ToolTabWrapper } from '../../core/components/tool-tab-wrapper';
 import { EditorPaneHeader } from '../../core/components/editor-pane-header';
 import { ShareSidebarModal } from '../../core/plugins/share-sidebar';
 import { STORAGE_KEYS } from '@/lib/utils/constants';
-import { jsonToTypeScript } from '../utils/converter';
-import { JsonEditor } from '../../json/components/json-editor';
+import { jsonToTypeScript } from '../utils/json-to-typescript';
+import { JsonEditor } from '../components/json-editor';
 import { TextEditor } from '../../text/components/text-editor';
 import { Input } from '@/components/ui/input';
 import { Braces, FileCode, Copy } from 'lucide-react';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import type { TabComponentProps } from '../../core/types/tool';
 
-export default function ConverterTab({ sharedData, readOnly }: TabComponentProps) {
+export default function TypeScriptTab({ sharedData, readOnly }: TabComponentProps) {
     const { content, setContent, isReady } = useToolState({
         storageKey: STORAGE_KEYS.JSON_TO_TS_INPUT_CONTENT,
         sharedData,
-        tabId: 'converter',
+        tabId: 'typescript',
         readOnly,
     });
 
@@ -60,8 +60,8 @@ export default function ConverterTab({ sharedData, readOnly }: TabComponentProps
     }, [content, rootName]);
 
     const { actions } = useToolActions({
-        pageName: 'json-to-typescript',
-        tabId: 'converter',
+        pageName: 'json',
+        tabId: 'typescript',
         getContent: () => content,
         onClear: () => setContent(''),
         shareDialogOpen: shareOpen,
@@ -135,8 +135,8 @@ export default function ConverterTab({ sharedData, readOnly }: TabComponentProps
                 open={shareOpen}
                 onOpenChange={setShareOpen}
                 config={{
-                    pageName: 'json-to-typescript',
-                    tabName: 'converter',
+                    pageName: 'json',
+                    tabName: 'typescript',
                     getState: () => ({ content, rootName }),
                     extraActions: output
                         ? [
@@ -145,8 +145,8 @@ export default function ConverterTab({ sharedData, readOnly }: TabComponentProps
                                   label: 'Copy TypeScript',
                                   icon: Copy,
                                   handler: () => copy(output),
-                              },
-                          ]
+                                },
+                            ]
                         : [],
                 }}
             />

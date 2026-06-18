@@ -246,8 +246,6 @@ export function jsonToTypeScript(jsonStr: string, rootName: string = 'RootObject
 
     const declaredInterfaces = generator.getDeclaredInterfaces();
     
-    // We output interfaces in reverse order of definition to put dependencies first, or normal order.
-    // Let's output them in insertion order.
     for (const details of declaredInterfaces.values()) {
         output += `export interface ${details.name} {\n${details.body}}\n\n`;
     }
