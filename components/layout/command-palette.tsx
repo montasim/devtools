@@ -59,6 +59,7 @@ import {
     Sparkles,
     Paintbrush,
     Layers,
+    Clock,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -107,6 +108,7 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
     '/css': Paintbrush,
     '/sql': Database,
     '/yaml': Layers,
+    '/timestamp': Clock,
 };
 
 interface CommandEntry {

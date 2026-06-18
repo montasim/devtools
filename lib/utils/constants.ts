@@ -108,6 +108,10 @@ export const STORAGE_KEYS = {
     YAML_TO_JSON_YAML_CONTENT: 'yaml-to-json-yaml-content',
     JSON_TO_YAML_JSON_CONTENT: 'json-to-yaml-json-content',
     YAML_VALIDATE_CONTENT: 'yaml-validate-content',
+    TIMESTAMP_CONVERT_CONTENT: 'timestamp-convert-content',
+    JSON_ESCAPE_CONTENT: 'json-escape-content',
+    REGEX_ESCAPE_CONTENT: 'regex-escape-content',
+    SQL_ESCAPE_CONTENT: 'sql-escape-content',
 } as const;
 
 export const PAGE_NAMES = {
@@ -163,6 +167,7 @@ export const PAGE_NAMES = {
     CSS: 'css',
     SQL: 'sql',
     YAML: 'yaml',
+    TIMESTAMP: 'timestamp',
 } as const;
 
 export const BASE64_TABS = {
@@ -403,6 +408,10 @@ export const YAML_TABS = {
     VALIDATE: 'validate',
 } as const;
 
+export const TIMESTAMP_TABS = {
+    CONVERT: 'convert',
+} as const;
+
 export const TOOL_COUNT = Object.keys(PAGE_NAMES).length;
 
 export const TOOL_COUNT_LABEL = `${TOOL_COUNT - 3}+`;
@@ -457,4 +466,5 @@ export const TAB_NAMES = {
     ...CSS_TABS,
     ...SQL_TABS,
     ...YAML_TABS,
+    ...TIMESTAMP_TABS,
 } as const;

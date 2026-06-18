@@ -42,6 +42,7 @@ import {
     List,
     Paintbrush,
     Layers,
+    Clock,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -148,6 +149,12 @@ export const TOOL_CATEGORIES = [
                 label: 'YAML Tools',
                 description: 'Format, validate, and convert YAML ↔ JSON',
                 icon: Layers,
+            },
+            {
+                href: '/timestamp',
+                label: 'Unix Timestamp Converter',
+                description: 'Convert unix ↔ ISO ↔ relative time with a live ticker',
+                icon: Clock,
             },
         ],
     },

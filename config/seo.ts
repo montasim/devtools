@@ -922,6 +922,25 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
+        timestamp: {
+            title: 'Unix Timestamp Converter - Unix ↔ ISO ↔ Relative Time',
+            description:
+                'Convert Unix timestamps to ISO 8601, UTC strings, and relative time — and back. Live "time ago" ticker, quick-insert for current time, all fields copyable. Runs in your browser.',
+            keywords: [
+                'unix timestamp converter',
+                'timestamp to date',
+                'unix to ISO',
+                'epoch converter',
+                'timestamp to human readable',
+                'relative time',
+                'time ago converter',
+                'epoch time tool',
+            ],
+            path: '/timestamp',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
         html: {
             title: 'HTML Tools - Format, Minify & Validate HTML Instantly',
             description:

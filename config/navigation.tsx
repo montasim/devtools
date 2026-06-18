@@ -43,6 +43,7 @@ import {
     Rss,
     Paintbrush,
     Layers,
+    Clock,
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -107,6 +108,13 @@ export const navigationMenu: MenuItem[] = [
                 description: 'Format, validate, and convert YAML ↔ JSON',
                 icon: <Layers className="size-5 shrink-0" />,
                 url: '/yaml',
+                category: 'Formatters & Converters',
+            },
+            {
+                title: 'Unix Timestamp Converter',
+                description: 'Convert unix ↔ ISO ↔ relative time with a live ticker',
+                icon: <Clock className="size-5 shrink-0" />,
+                url: '/timestamp',
                 category: 'Formatters & Converters',
             },
             {
