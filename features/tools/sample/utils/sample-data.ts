@@ -3,7 +3,7 @@ export interface SampleDataEntry {
     title: string;
     description: string;
     content: string;
-    category: 'json' | 'xml' | 'text' | 'base64' | 'html' | 'css' | 'js';
+    category: 'json' | 'xml' | 'text' | 'base64' | 'html' | 'css' | 'js' | 'http';
 }
 
 export const SAMPLE_DATA_LIST: SampleDataEntry[] = [
@@ -228,6 +228,44 @@ npm install devtools
 127.0.0.1 - - [18/Jun/2026:16:35:25 +0600] "POST /api/shares HTTP/1.1" 200 482
 192.168.0.15 - - [18/Jun/2026:16:36:01 +0600] "GET /share/qEkWO HTTP/1.1" 200 1024
 127.0.0.1 - - [18/Jun/2026:16:36:10 +0600] "GET /static/logo.svg HTTP/1.1" 304 0`,
+    },
+    // --- HTTP ---
+    {
+        id: 'http-headers-get',
+        title: 'HTTP Request Headers (GET)',
+        description: 'Raw browser GET request headers including method line, authority, tokens, and browser settings.',
+        category: 'http',
+        content: `GET /api/v1/users?limit=10 HTTP/1.1
+Host: api.devtools.local
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.9
+Accept-Encoding: gzip, deflate, br
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIi...
+Connection: keep-alive
+Referer: https://devtools.local/dashboard
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-origin`,
+    },
+    {
+        id: 'http-headers-post',
+        title: 'HTTP Request Headers (POST)',
+        description: 'Raw POST request headers containing body specs, custom credentials, and cross-origin details.',
+        category: 'http',
+        content: `POST /api/shares HTTP/2
+Host: devtools.local
+Content-Type: application/json
+Content-Length: 145
+Authorization: Bearer token123
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36
+Accept: */*
+Origin: https://devtools.local
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9`,
     },
 
     // --- BASE64 ---
