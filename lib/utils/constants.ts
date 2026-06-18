@@ -62,6 +62,7 @@ export const STORAGE_KEYS = {
     USER_AGENT_INPUT: 'user-agent-input',
     API_BUILDER_STATE: 'api-builder-state',
     CURL_CONVERT_INPUT: 'curl-convert-input',
+    CURL_TESTER_REQUEST: 'curl-tester-request',
     WEBSOCKET_TESTER_URL: 'websocket-tester-url',
     CORS_CHECKER_URL: 'cors-checker-url',
     HTML_ENTITY_ENCODE_INPUT: 'html-entity-encode-input',
@@ -285,6 +286,7 @@ export const API_BUILDER_TABS = {
 
 export const CURL_TABS = {
     CONVERT: 'convert',
+    TESTER: 'tester',
 } as const;
 
 export const WEBSOCKET_TABS = {
