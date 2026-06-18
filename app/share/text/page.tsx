@@ -85,8 +85,8 @@ function ShareTextPageContent() {
 
     const [content, setContent] = useState(initial.content);
     const [shareOpen, setShareOpen] = useState(false);
-    const [accessData] = useState<ShareAccessResponse | null>(initial.accessData);
-    const [sharedSnapshot] = useState(initial.isShared ? initial.content : null);
+    const [accessData, setAccessData] = useState<ShareAccessResponse | null>(initial.accessData);
+    const [sharedSnapshot, setSharedSnapshot] = useState<string | null>(initial.isShared ? initial.content : null);
     const [activeTab, setActiveTab] = useState('editor');
 
     useEffect(() => {
@@ -102,7 +102,13 @@ function ShareTextPageContent() {
     return (
         <div className="mx-auto py-4">
             {sharedSnapshot && accessData?.metadata && (
-                <SharedContentBanner metadata={accessData.metadata} />
+                <SharedContentBanner
+                    metadata={accessData.metadata}
+                    onOpenInEditor={() => {
+                        setSharedSnapshot(null);
+                        setAccessData(null);
+                    }}
+                />
             )}
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

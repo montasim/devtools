@@ -3,9 +3,50 @@
 import { Button } from '@/components/ui/button';
 import { Share2, ExternalLink, Eye, Clock, Lock } from 'lucide-react';
 import type { ShareMetadata } from '../types/share';
+import { useRouter } from 'next/navigation';
+import { STORAGE_KEYS } from '@/lib/utils/constants';
 
 interface SharedContentBannerProps {
     metadata: ShareMetadata;
+    state?: Record<string, unknown> | null;
+    onOpenInEditor?: () => void;
+}
+
+function getStorageKey(pageName: string, tabName: string): string | null {
+    if (pageName === 'json') {
+        const keys: Record<string, string> = {
+            diff: STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT,
+            format: STORAGE_KEYS.JSON_FORMAT_LEFT_CONTENT,
+            minify: STORAGE_KEYS.JSON_MINIFY_LEFT_CONTENT,
+            viewer: STORAGE_KEYS.JSON_VIEWER_CONTENT,
+            parser: STORAGE_KEYS.JSON_PARSER_CONTENT,
+            export: STORAGE_KEYS.JSON_EXPORT_CONTENT,
+            schema: STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT,
+        };
+        return keys[tabName] || null;
+    }
+    if (pageName === 'xml') {
+        const keys: Record<string, string> = {
+            format: STORAGE_KEYS.XML_FORMAT_LEFT_CONTENT,
+            minify: STORAGE_KEYS.XML_MINIFY_LEFT_CONTENT,
+            diff: STORAGE_KEYS.XML_DIFF_LEFT_CONTENT,
+            viewer: STORAGE_KEYS.XML_VIEWER_CONTENT,
+            parser: STORAGE_KEYS.XML_PARSER_CONTENT,
+        };
+        return keys[tabName] || null;
+    }
+    if (pageName === 'text') {
+        const keys: Record<string, string> = {
+            diff: STORAGE_KEYS.TEXT_DIFF_LEFT_CONTENT,
+            convert: STORAGE_KEYS.TEXT_CONVERT_INPUT_CONTENT,
+            clean: STORAGE_KEYS.TEXT_CLEAN_INPUT_CONTENT,
+        };
+        return keys[tabName] || null;
+    }
+    if (pageName === 'qrcode') {
+        return STORAGE_KEYS.QR_CREATE_INPUT;
+    }
+    return `${pageName}-${tabName}`;
 }
 
 function formatExpiry(expiresAt: string | null): string {
@@ -26,8 +67,37 @@ function formatDate(dateStr: string): string {
     });
 }
 
-export function SharedContentBanner({ metadata }: SharedContentBannerProps) {
+export function SharedContentBanner({ metadata, state, onOpenInEditor }: SharedContentBannerProps) {
+    const router = useRouter();
     const toolPath = `/${metadata.pageName}`;
+
+    const handleOpenInEditor = (e: React.MouseEvent) => {
+        e.preventDefault();
+
+        if (onOpenInEditor) {
+            onOpenInEditor();
+            return;
+        }
+
+        if (state && typeof window !== 'undefined') {
+            const storageKey = getStorageKey(metadata.pageName, metadata.tabName);
+            if (storageKey) {
+                const content =
+                    (state.leftContent as string) ??
+                    (state.inputContent as string) ??
+                    (state.content as string) ??
+                    (state.text as string) ??
+                    '';
+                try {
+                    localStorage.setItem(storageKey, JSON.stringify(content));
+                } catch (err) {
+                    console.error('Failed to write to localStorage:', err);
+                }
+            }
+        }
+
+        router.push(toolPath);
+    };
 
     return (
         <div className="my-6 rounded-lg border bg-muted/30">
@@ -60,13 +130,11 @@ export function SharedContentBanner({ metadata }: SharedContentBannerProps) {
                 <Button
                     variant="outline"
                     size="sm"
-                    asChild
+                    onClick={handleOpenInEditor}
                     className="bg-primary/10 text-primary hover:bg-primary/20"
                 >
-                    <a href={toolPath} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="h-3.5 w-3.5 mr-1.5" />
-                        Open in Editor
-                    </a>
+                    <ExternalLink className="h-3.5 w-3.5 mr-1.5" />
+                    Open in Editor
                 </Button>
             </div>
             {metadata.comment && (
