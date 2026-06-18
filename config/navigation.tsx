@@ -64,13 +64,7 @@ export const navigationMenu: MenuItem[] = [
                 url: '/json',
                 category: 'Formatters & Converters',
             },
-            {
-                title: 'JSON to TypeScript',
-                description: 'Convert JSON structures to TypeScript interfaces in one click',
-                icon: <FileCode className="size-5 shrink-0" />,
-                url: '/json-to-typescript',
-                category: 'Formatters & Converters',
-            },
+
             {
                 title: 'XML Tools',
                 description: 'Format, diff, validate — easily handle XML data',
