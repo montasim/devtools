@@ -869,6 +869,25 @@ export const seoConfig: SEOConfig = {
             priority: 0.7,
             changeFrequency: 'monthly',
         },
+
+        sample: {
+            title: 'Sample Data - Ready-to-use JSON, XML, Text & Base64 Templates',
+            description:
+                'Ready-to-use sample/mock data templates for testing. Copy JSON objects, bookstore XML structures, Lorem Ipsum paragraphs, CSV data tables, and transparent Base64 pixels.',
+            keywords: [
+                'sample data',
+                'mock data',
+                'JSON template',
+                'XML template',
+                'placeholder text',
+                'lorem ipsum',
+                'Base64 sample',
+                'mock CSV',
+            ],
+            path: '/sample',
+            priority: 0.7,
+            changeFrequency: 'monthly',
+        },
     },
 
     disallowedPaths: [

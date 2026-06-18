@@ -316,6 +316,13 @@ export const navigationMenu: MenuItem[] = [
                 category: 'Reference',
             },
             {
+                title: 'Sample Data',
+                description: 'Ready-to-use JSON, XML, Text, and Base64 sample data templates',
+                icon: <Database className="size-5 shrink-0" />,
+                url: '/sample',
+                category: 'Reference',
+            },
+            {
                 title: 'CRON Builder',
                 description: 'Build cron expressions without memorizing syntax',
                 icon: <Timer className="size-5 shrink-0" />,

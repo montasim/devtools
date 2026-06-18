@@ -139,6 +139,7 @@ export const PAGE_NAMES = {
     TEXT_ART: 'text-art',
     EMOJI: 'emoji',
     RSS: 'rss',
+    SAMPLE: 'sample',
 } as const;
 
 export const BASE64_TABS = {

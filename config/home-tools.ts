@@ -38,6 +38,7 @@ import {
     Globe2,
     Smile,
     Rss,
+    Database,
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = [
@@ -284,6 +285,12 @@ export const TOOL_CATEGORIES = [
                 label: 'Emoji Picker',
                 description: '1,900+ emojis — click to copy for any platform',
                 icon: Smile,
+            },
+            {
+                href: '/sample',
+                label: 'Sample Data',
+                description: 'Ready-to-use JSON, XML, Text, and Base64 mock templates',
+                icon: Database,
             },
         ],
     },

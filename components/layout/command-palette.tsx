@@ -54,6 +54,7 @@ import {
     MailQuestion,
     ShieldAlert,
     Globe2,
+    Database,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -94,6 +95,7 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
     '/free-email': MailQuestion,
     '/spam-words': ShieldAlert,
     '/timezones': Globe2,
+    '/sample': Database,
 };
 
 interface CommandEntry {
