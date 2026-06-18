@@ -46,6 +46,7 @@ import {
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import type { TabComponentProps } from '../../core/types/tool';
 import { ToolContentSkeleton } from '@/app/(tools)/loading';
+import { ShareSidebarModal } from '../../core/plugins/share-sidebar';
 import {
     Dialog,
     DialogContent,
@@ -173,6 +174,7 @@ export default function LoadBalancerTab({ sharedData, readOnly }: TabComponentPr
     const abortRef = useRef(false);
     const { copy } = useClipboard();
     const [copiedLogId, setCopiedLogId] = useState<string | null>(null);
+    const [shareOpen, setShareOpen] = useState(false);
 
     // Helpers
     const hashIp = (ip: string): number => {
@@ -443,6 +445,8 @@ export default function LoadBalancerTab({ sharedData, readOnly }: TabComponentPr
             setProgress(0);
             setTargetStats({});
         },
+        shareDialogOpen: shareOpen,
+        setShareDialogOpen: setShareOpen,
         readOnly,
     });
 
@@ -1126,6 +1130,15 @@ export default function LoadBalancerTab({ sharedData, readOnly }: TabComponentPr
                     )}
                 </DialogContent>
             </Dialog>
+            <ShareSidebarModal
+                open={shareOpen}
+                onOpenChange={setShareOpen}
+                config={{
+                    pageName: 'api-builder',
+                    tabName: 'load-balancer',
+                    getState: () => JSON.parse(content || '{}'),
+                }}
+            />
         </ToolTabWrapper>
     );
 }
