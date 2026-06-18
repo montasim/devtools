@@ -1,31 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { loadDomains, getDomainFromEmail, checkDomain } from '@/features/tools/temp-email/utils/email-checker';
-
-// Rate limiting: simple in-memory counter per IP
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 100; // requests per minute
-const WINDOW_MS = 60 * 1000;
-
-function checkRateLimit(ip: string): boolean {
-    const now = Date.now();
-    const record = rateLimitMap.get(ip);
-
-    if (!record || now > record.resetTime) {
-        rateLimitMap.set(ip, { count: 1, resetTime: now + WINDOW_MS });
-        return true;
-    }
-
-    if (record.count >= RATE_LIMIT) return false;
-
-    record.count++;
-    return true;
-}
+import { rateLimit } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest) {
     try {
         // Rate limit by IP
         const ip = req.headers.get('x-forwarded-for') || 'unknown';
-        if (!checkRateLimit(ip)) {
+        const rl = rateLimit(`${ip}:temp-email-check`, { limit: 100, windowMs: 60000 });
+        if (!rl.success) {
             return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
         }
 
