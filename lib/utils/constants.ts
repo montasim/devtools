@@ -146,6 +146,7 @@ export const PAGE_NAMES = {
     SAMPLE: 'sample',
     WEB_PLAYGROUND: 'web-playground',
     HTTP_HEADER_PARSER: 'http-header-parser',
+    SVG_OPTIMIZER: 'svg',
 } as const;
 
 export const BASE64_TABS = {
@@ -358,6 +359,10 @@ export const RSS_TABS = {
     URL_ANALYZER: 'url-analyzer',
 } as const;
 
+export const SVG_OPTIMIZER_TABS = {
+    OPTIMIZER: 'optimizer',
+} as const;
+
 export const TOOL_COUNT = Object.keys(PAGE_NAMES).length;
 
 export const TOOL_COUNT_LABEL = `${TOOL_COUNT - 3}+`;
@@ -407,4 +412,5 @@ export const TAB_NAMES = {
     ...TEXT_ART_TABS,
     ...EMOJI_TABS,
     ...RSS_TABS,
+    ...SVG_OPTIMIZER_TABS,
 } as const;

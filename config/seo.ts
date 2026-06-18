@@ -889,7 +889,6 @@ export const seoConfig: SEOConfig = {
             changeFrequency: 'monthly',
         },
 
-
         'web-playground': {
             title: 'Web Playground & Sandbox - Run HTML, CSS & JS Locally',
             description:
@@ -919,6 +918,23 @@ export const seoConfig: SEOConfig = {
                 'inspect http request',
             ],
             path: '/http-header-parser',
+            priority: 0.8,
+            changeFrequency: 'monthly',
+        },
+
+        svg: {
+            title: 'SVG Tools - Optimize, Minify & Preview SVGs Client-Side',
+            description:
+                'Optimize, minify, and preview SVG vector graphics client-side. Clean namespace declarations, remove metadata/comments, round decimal coordinates, and preview instantly.',
+            keywords: [
+                'svg optimizer',
+                'minify svg',
+                'svg previewer',
+                'clean svg code',
+                'svg code compressor',
+                'client side svg editor',
+            ],
+            path: '/svg',
             priority: 0.8,
             changeFrequency: 'monthly',
         },

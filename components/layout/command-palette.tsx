@@ -56,12 +56,13 @@ import {
     Globe2,
     Database,
     List,
+    Sparkles,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 const TOOL_ICONS: Record<string, LucideIcon> = {
     '/json': FileJson,
-
+    '/svg': Sparkles,
     '/xml': Code,
     '/text': FileText,
     '/base64': FileCode,

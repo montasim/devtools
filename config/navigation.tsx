@@ -73,6 +73,13 @@ export const navigationMenu: MenuItem[] = [
                 category: 'Formatters & Converters',
             },
             {
+                title: 'SVG Tools',
+                description: 'Optimize, minify, and preview SVG graphics client-side',
+                icon: <Sparkles className="size-5 shrink-0" />,
+                url: '/svg',
+                category: 'Formatters & Converters',
+            },
+            {
                 title: 'Text Tools',
                 description: 'Diff, convert case, and clean messy text in seconds',
                 icon: <FileText className="size-5 shrink-0" />,

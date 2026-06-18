@@ -117,6 +117,12 @@ export const TOOL_CATEGORIES = [
                 description: 'Write Markdown with live preview',
                 icon: FileText,
             },
+            {
+                href: '/svg',
+                label: 'SVG Tools',
+                description: 'Optimize, minify, and preview SVG vector graphics client-side',
+                icon: Sparkles,
+            },
         ],
     },
     {
