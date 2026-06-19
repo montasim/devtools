@@ -6,7 +6,7 @@ import { apiClient } from '@/lib/api/client';
 import { PasswordPrompt } from '@/features/sharing/components/password-prompt';
 import { SharedContentBanner } from '@/features/sharing/components/shared-content-banner';
 import { ShareErrorDisplay } from '@/features/sharing/components/share-error-display';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Share2 } from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { getToolDefinition } from '@/features/tools/core/config/tool-registry';
 import type { ShareMetadata, ShareAccessResponse } from '@/features/sharing/types/share';
@@ -71,6 +71,33 @@ const toolImports: Record<string, () => Promise<any>> = {
 };
 
 const SESSION_KEY = 'share-text-access-data';
+
+function SharedLoadingState() {
+    return (
+        <div className="flex min-h-[80vh] items-center justify-center px-4 animate-in fade-in duration-500">
+            <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl border bg-card p-6 md:p-8 shadow-md text-center">
+                <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.02] to-transparent pointer-events-none" />
+
+                <div className="flex flex-col items-center">
+                    <div className="relative mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary border border-primary/20 shadow-inner">
+                        <Share2 className="h-7 w-7 text-primary animate-pulse" />
+                        <div className="absolute -inset-0.5 rounded-2xl bg-primary/20 blur opacity-40 animate-pulse pointer-events-none" />
+                    </div>
+
+                    <h2 className="text-lg font-bold tracking-tight text-foreground">Fetching Shared Content</h2>
+                    <p className="mt-2 text-xs text-muted-foreground max-w-[240px] leading-relaxed">
+                        Please wait while we verify access permissions and prepare the developer workspace.
+                    </p>
+
+                    <div className="mt-6 flex items-center gap-2 rounded-full bg-muted/60 border px-3 py-1 text-[11px] font-medium text-muted-foreground">
+                        <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
+                        <span>Verifying secure link...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 function ShareContentLoader({ id }: { id: string }) {
     const router = useRouter();
@@ -169,11 +196,7 @@ function ShareContentLoader({ id }: { id: string }) {
     }
 
     if (loading) {
-        return (
-            <div className="flex min-h-screen items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-            </div>
-        );
+        return <SharedLoadingState />;
     }
 
     if (error) {
@@ -217,13 +240,7 @@ function ShareContentLoader({ id }: { id: string }) {
 export default function SharedContentPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
     return (
-        <Suspense
-            fallback={
-                <div className="flex min-h-screen items-center justify-center">
-                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                </div>
-            }
-        >
+        <Suspense fallback={<SharedLoadingState />}>
             <ShareContentLoader id={id} />
         </Suspense>
     );
