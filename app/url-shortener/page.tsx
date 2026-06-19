@@ -17,7 +17,6 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { apiClient } from '@/lib/api/client';
@@ -27,6 +26,7 @@ import { useConfirmAction } from '@/hooks/use-confirm-action';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { EmptyStateCard } from '@/components/ui/empty-state-card';
 import { ContentListSkeleton } from '@/components/ui/content-list-skeleton';
+import { QRCodeSVG } from 'qrcode.react';
 
 const tabTriggerClass =
     'gap-2 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary data-[state=active]:text-primary data-[state=active]:font-semibold data-[state=active]:bg-primary/10';
@@ -106,90 +106,102 @@ function UrlShortenerForm() {
     return (
         <div className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <Label htmlFor="url-input" className="mb-2 block text-sm font-semibold">
-                        Enter URL
+                <div className="space-y-2">
+                    <Label htmlFor="url-input" className="text-sm font-semibold text-foreground">
+                        Shorten a long link
                     </Label>
-                    <div className="flex gap-2">
-                        <Input
-                            id="url-input"
-                            type="url"
-                            value={url}
-                            onChange={(e) => setUrl(e.target.value)}
-                            placeholder="https://example.com/very-long-url-that-needs-shortening"
-                            className="flex-1"
-                        />
-                        <Button
-                            type="submit"
-                            disabled={shortenMutation.isPending}
-                            className="gap-2 shrink-0"
-                        >
-                            {shortenMutation.isPending ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
+                    <div className="flex flex-col gap-3">
+                        <div className="relative">
+                            <div className="pointer-events-none absolute top-3 left-3 text-muted-foreground">
                                 <Link2 className="h-4 w-4" />
-                            )}
-                            Shorten
-                        </Button>
+                            </div>
+                            <textarea
+                                id="url-input"
+                                value={url}
+                                onChange={(e) => setUrl(e.target.value)}
+                                placeholder="Paste your long URL here (e.g., https://example.com/very-long-url...)"
+                                className="w-full pl-9 pr-3 py-2.5 min-h-[80px] border border-border bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-xl text-sm leading-relaxed resize-y"
+                                required
+                            />
+                        </div>
+                        <div className="flex justify-end">
+                            <Button
+                                type="submit"
+                                disabled={shortenMutation.isPending}
+                                className="h-9 px-4 rounded-lg font-semibold gap-1.5 bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm transition text-xs"
+                            >
+                                {shortenMutation.isPending ? (
+                                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                ) : (
+                                    <Zap className="h-3.5 w-3.5" />
+                                )}
+                                Shorten Link
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </form>
 
             {result && (
-                <div className="rounded-lg border bg-primary/5 p-4">
-                    <div className="mb-2 flex items-center justify-between">
-                        <Label className="text-sm font-semibold">Shortened URL</Label>
-                        <div className="flex items-center gap-2">
+                <div className="rounded-2xl border bg-primary/5 p-6 space-y-4 animate-in zoom-in-95 duration-300">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="space-y-1">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-primary">Successfully Shortened</span>
+                            <h4 className="text-lg font-bold text-foreground break-all">
+                                {result.shortUrl}
+                            </h4>
+                            <p className="text-xs text-muted-foreground truncate max-w-md" title={result.originalUrl}>
+                                Redirects to: <span className="font-mono">{result.originalUrl}</span>
+                            </p>
+                        </div>
+
+                        {/* Action buttons */}
+                        <div className="flex items-center gap-2 shrink-0">
                             <Button
                                 variant="outline"
-                                size="sm"
                                 onClick={handleCopy}
-                                className="gap-1.5"
+                                className="gap-1.5 h-9 rounded-lg"
                             >
                                 {copied ? (
-                                    <Check className="h-3.5 w-3.5" />
+                                    <>
+                                        <Check className="h-4 w-4 text-emerald-500" />
+                                        Copied
+                                    </>
                                 ) : (
-                                    <Copy className="h-3.5 w-3.5" />
+                                    <>
+                                        <Copy className="h-4 w-4" />
+                                        Copy
+                                    </>
                                 )}
-                                {copied ? 'Copied' : 'Copy'}
                             </Button>
-                            <Button variant="outline" size="sm" asChild className="gap-1.5">
+                            <Button variant="outline" asChild className="gap-1.5 h-9 rounded-lg">
                                 <a href={result.shortUrl} target="_blank" rel="noopener noreferrer">
-                                    <ExternalLink className="h-3.5 w-3.5" />
+                                    <ExternalLink className="h-4 w-4" />
                                     Open
                                 </a>
                             </Button>
                         </div>
                     </div>
-                    <div className="rounded-md border bg-background p-3">
-                        <code className="break-all font-mono text-sm text-primary">
-                            {result.shortUrl}
-                        </code>
-                    </div>
-                    <p className="mt-2 truncate text-xs text-muted-foreground">
-                        {result.originalUrl}
-                    </p>
-                </div>
-            )}
 
-            {!result && (
-                <div className="grid gap-4 sm:grid-cols-2">
-                    {FEATURES.map((feature) => (
-                        <div
-                            key={feature.title}
-                            className="flex items-start gap-3 rounded-lg border p-4"
-                        >
-                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                                <feature.icon className="h-4 w-4" />
-                            </div>
-                            <div>
-                                <p className="text-sm font-medium">{feature.title}</p>
-                                <p className="text-xs text-muted-foreground">
-                                    {feature.description}
-                                </p>
-                            </div>
+                    {/* QR Code section */}
+                    <div className="pt-4 border-t border-border flex flex-col sm:flex-row items-center gap-4">
+                        <div className="p-3 bg-white dark:bg-zinc-900 rounded-xl border flex items-center justify-center shrink-0 shadow-inner">
+                            <QRCodeSVG
+                                value={result.shortUrl}
+                                size={80}
+                                bgColor="transparent"
+                                fgColor="currentColor"
+                                className="text-foreground"
+                                level="M"
+                            />
                         </div>
-                    ))}
+                        <div className="space-y-1 text-center sm:text-left">
+                            <h5 className="text-xs font-semibold text-foreground">QR Code Generated</h5>
+                            <p className="text-[11px] text-muted-foreground max-w-xs leading-relaxed">
+                                Share this QR code to let users scan and access your shortened link on mobile devices instantly.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
@@ -201,6 +213,8 @@ function UrlHistory() {
     const { copy } = useClipboard();
     const queryClient = useQueryClient();
     const { confirm, dialog } = useConfirmAction();
+
+    const [copiedId, setCopiedId] = useState<string | null>(null);
 
     const { data: urls, isLoading } = useQuery({
         queryKey: ['shortened-urls'],
@@ -236,12 +250,18 @@ function UrlHistory() {
         onError: () => toast.error('Failed to delete URLs'),
     });
 
+    const handleCopy = (urlStr: string, id: string) => {
+        copy(urlStr);
+        setCopiedId(id);
+        setTimeout(() => setCopiedId(null), 2000);
+    };
+
     if (!isAuthenticated) {
         return (
             <EmptyStateCard
                 icon={Link2}
                 title="Login to track your URLs"
-                description="Sign in to see your shortened URL history and click stats"
+                description="Sign in to see your shortened URL history and track real-time click statistics."
                 actionLabel="Login"
                 actionHref="/login"
             />
@@ -257,14 +277,17 @@ function UrlHistory() {
             <EmptyStateCard
                 icon={BarChart3}
                 title="No shortened URLs yet"
-                description="Create a short URL to start tracking clicks"
+                description="Create a short URL to start tracking click metrics."
             />
         );
     }
 
     return (
-        <div className="space-y-2">
-            <div className="flex justify-end">
+        <div className="space-y-4">
+            <div className="flex justify-between items-center">
+                <span className="text-xs font-semibold text-muted-foreground">
+                    {urls.length} Link{urls.length === 1 ? '' : 's'} Created
+                </span>
                 <Button
                     variant="outline"
                     size="sm"
@@ -277,54 +300,64 @@ function UrlHistory() {
                             variant: 'destructive',
                         })
                     }
-                    className="flex items-center gap-1.5 bg-destructive/10 text-destructive hover:bg-destructive/20"
+                    className="flex items-center gap-1.5 bg-destructive/5 text-destructive hover:bg-destructive/10 border-destructive/20 hover:border-destructive/30"
                 >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-3.5 w-3.5" />
                     Clear All
                 </Button>
             </div>
-            <div className="space-y-3">
+
+            <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
                 {urls.map((url) => (
-                    <div key={url.id} className="flex items-start gap-3 rounded-lg border p-3">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                            <Link2 className="h-4 w-4" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                            <button
-                                onClick={() => copy(url.shortUrl)}
-                                className="truncate font-mono text-sm text-primary hover:underline"
-                            >
-                                {url.shortUrl}
-                            </button>
-                            <p className="truncate text-xs text-muted-foreground">
-                                {url.originalUrl}
-                            </p>
-                            <div className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
-                                <span className="inline-flex items-center gap-1">
-                                    <BarChart3 className="h-3 w-3" />
-                                    {url.clicks} clicks
-                                </span>
-                                <span>{new Date(url.createdAt).toLocaleDateString()}</span>
+                    <div key={url.id} className="flex items-center justify-between gap-4 rounded-xl border bg-card p-4 transition-all hover:bg-muted/30 hover:border-primary/20 hover:shadow-sm">
+                        <div className="flex items-center gap-3.5 min-w-0 flex-1">
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary border border-primary/10">
+                                <Link2 className="h-4.5 w-4.5" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                                <button
+                                    onClick={() => handleCopy(url.shortUrl, url.id)}
+                                    className="truncate font-mono text-sm font-semibold text-primary hover:underline block text-left"
+                                >
+                                    {url.shortUrl}
+                                </button>
+                                <p className="truncate text-xs text-muted-foreground mt-0.5 max-w-md" title={url.originalUrl}>
+                                    {url.originalUrl}
+                                </p>
+                                <div className="mt-2 flex items-center gap-4 text-[10px] text-muted-foreground">
+                                    <span className="inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                                        <BarChart3 className="h-3 w-3" />
+                                        {url.clicks} Click{url.clicks === 1 ? '' : 's'}
+                                    </span>
+                                    <span className="flex items-center gap-1">
+                                        {new Date(url.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                        <div className="flex shrink-0 items-center gap-1">
+
+                        <div className="flex shrink-0 items-center gap-1.5">
                             <Button
-                                variant="ghost"
+                                variant="outline"
                                 size="icon"
-                                className="h-7 w-7"
-                                onClick={() => copy(url.shortUrl)}
-                                title="Copy"
+                                className="h-8 w-8 rounded-lg"
+                                onClick={() => handleCopy(url.shortUrl, url.id)}
+                                title="Copy Short URL"
                             >
-                                <Copy className="h-3.5 w-3.5" />
+                                {copiedId === url.id ? (
+                                    <Check className="h-4 w-4 text-emerald-500" />
+                                ) : (
+                                    <Copy className="h-4 w-4" />
+                                )}
                             </Button>
                             <Button
-                                variant="ghost"
+                                variant="outline"
                                 size="icon"
-                                className="h-7 w-7 text-destructive"
+                                className="h-8 w-8 rounded-lg text-destructive hover:bg-destructive/5 hover:border-destructive/30"
                                 onClick={() => deleteMutation.mutate(url.id)}
-                                title="Delete"
+                                title="Delete Link"
                             >
-                                <Trash2 className="h-3.5 w-3.5" />
+                                <Trash2 className="h-4 w-4" />
                             </Button>
                         </div>
                     </div>
@@ -339,39 +372,79 @@ export default function UrlShortenerPage() {
     const [activeTab, setActiveTab] = useState('create');
 
     return (
-        <div className="mx-auto py-4">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <div className="border-b">
-                    <TabsList
-                        variant="line"
-                        className="h-auto w-full justify-start overflow-x-auto border-0 bg-transparent p-0 scrollbar-hide"
-                    >
-                        <div className="flex w-full min-w-max justify-between gap-2 pb-2">
-                            <div className="flex min-w-max gap-1">
-                                <TabsTrigger value="create" className={tabTriggerClass}>
-                                    <Link2 className="h-4 w-4 shrink-0" />
-                                    Create
-                                </TabsTrigger>
+        <div className="py-6 space-y-8 animate-in fade-in duration-500">
+            <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 gap-8">
+                {/* Left Side: Stats and Info (4 cols) */}
+                <div className="lg:col-span-4 space-y-6">
+                    <div className="rounded-2xl border bg-card p-4 shadow-sm relative overflow-hidden">
+                        <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
+                        <h2 className="text-lg font-bold text-foreground mb-4">Analytics & Features</h2>
+                        <div className="space-y-4">
+                            {FEATURES.map((feature) => (
+                                <div key={feature.title} className="flex gap-3.5 items-start p-2 rounded-xl transition hover:bg-muted/50">
+                                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary border border-primary/10">
+                                        <feature.icon className="h-4 w-4" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-semibold text-foreground">{feature.title}</p>
+                                        <p className="text-[11px] text-muted-foreground leading-relaxed mt-0.5">
+                                            {feature.description}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="rounded-2xl border bg-card p-6 shadow-sm flex flex-col justify-between">
+                        <div className="space-y-2">
+                            <h3 className="text-sm font-semibold text-muted-foreground">Quick Stats</h3>
+                            <p className="text-xs text-muted-foreground leading-relaxed">
+                                Get click metrics on all your links automatically. Login to start tracking.
+                            </p>
+                        </div>
+                        {/* A tiny custom stat box */}
+                        <div className="mt-4 pt-4 border-t flex justify-around text-center">
+                            <div>
+                                <span className="block text-2xl font-extrabold text-primary">100%</span>
+                                <span className="text-[10px] text-muted-foreground">Uptime</span>
                             </div>
-                            <div className="flex min-w-max gap-1">
-                                <TabsTrigger value="history" className={tabTriggerClass}>
-                                    <History className="h-4 w-4 shrink-0" />
-                                    History
-                                </TabsTrigger>
+                            <div className="border-l my-2"></div>
+                            <div>
+                                <span className="block text-2xl font-extrabold text-primary">&lt; 5ms</span>
+                                <span className="text-[10px] text-muted-foreground">Redirect Time</span>
                             </div>
                         </div>
-                    </TabsList>
+                    </div>
                 </div>
 
-                <div className="mx-auto">
-                    <TabsContent value="create" className="mt-0 pt-4">
-                        <UrlShortenerForm />
-                    </TabsContent>
-                    <TabsContent value="history" className="mt-0 pt-2">
-                        <UrlHistory />
-                    </TabsContent>
+                {/* Right Side: Interactive Tool Workspace (8 cols) */}
+                <div className="lg:col-span-8">
+                    <div className="rounded-2xl border bg-card p-6 shadow-sm min-h-[450px] flex flex-col">
+                        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-1 flex flex-col">
+                            <TabsList variant="line" className="w-full justify-start border-b pb-1 mb-6 bg-transparent gap-2">
+                                <TabsTrigger value="create" className={tabTriggerClass}>
+                                    <Link2 className="h-4 w-4 shrink-0" />
+                                    Shorten Link
+                                </TabsTrigger>
+                                <TabsTrigger value="history" className={tabTriggerClass}>
+                                    <History className="h-4 w-4 shrink-0" />
+                                    My Links
+                                </TabsTrigger>
+                            </TabsList>
+
+                            <div className="flex-1 flex flex-col">
+                                <TabsContent value="create" className="mt-0 flex-1">
+                                    <UrlShortenerForm />
+                                </TabsContent>
+                                <TabsContent value="history" className="mt-0 flex-1">
+                                    <UrlHistory />
+                                </TabsContent>
+                            </div>
+                        </Tabs>
+                    </div>
                 </div>
-            </Tabs>
+            </div>
         </div>
     );
 }
