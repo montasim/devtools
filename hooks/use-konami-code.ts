@@ -20,6 +20,7 @@ export function useKonamiCode(callback: () => void) {
 
     const handleKeyDown = useCallback(
         (e: KeyboardEvent) => {
+            if (!e.key) return;
             const key =
                 e.key === 'Enter' ? e.key : e.key.length === 1 ? e.key.toLowerCase() : e.key;
 
@@ -48,6 +49,7 @@ export function useKonamiProgress() {
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
+            if (!e.key) return;
             const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
 
             if (key === KONAMI_CODE[indexRef.current]) {
