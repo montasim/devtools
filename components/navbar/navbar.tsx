@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, Suspense } from 'react';
 import Link from 'next/link';
 import { Menu, ChevronDown, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -167,7 +167,9 @@ function DesktopMenu() {
             </div>
             <div className="flex items-center gap-2">
                 <ThemeToggle />
-                <UserMenu />
+                <Suspense fallback={null}>
+                    <UserMenu />
+                </Suspense>
             </div>
         </nav>
     );
@@ -278,7 +280,9 @@ function MobileMenu() {
                         <div className="flex items-center gap-3">
                             <ThemeToggle />
                         </div>
-                        <UserMenu />
+                        <Suspense fallback={null}>
+                            <UserMenu />
+                        </Suspense>
                     </div>
                 </SheetContent>
             </Sheet>

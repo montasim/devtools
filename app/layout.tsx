@@ -1,5 +1,6 @@
 import { Inter, JetBrains_Mono, Montserrat } from 'next/font/google';
 import Script from 'next/script';
+import { Suspense } from 'react';
 import { Providers } from '@/components/providers/providers';
 import { Navbar } from '@/components/navbar/navbar';
 import { Footer } from '@/components/layout/footer';
@@ -40,7 +41,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             >
                 <Providers>
                     <ConsoleBanner />
-                    <CommandPalette />
+                    <Suspense fallback={null}>
+                        <CommandPalette />
+                    </Suspense>
                     <EasterEgg />
                     <Navbar />
                     <AppContextMenu>
