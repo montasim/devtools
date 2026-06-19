@@ -1,7 +1,7 @@
 'use client';
 
 import { lazy, type ComponentType } from 'react';
-import { KeyRound, Database, ShieldCheck } from 'lucide-react';
+import { KeyRound, Database, ShieldCheck, Code2 } from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { createSharedTabPlugin } from '@/features/tools/core/plugins/shared';
 import { createSavedTabPlugin } from '@/features/tools/core/plugins/saved';
@@ -22,6 +22,10 @@ const StrengthCheckerTab = lazy(
     () => import('@/features/tools/password/tabs/strength-checker-tab'),
 ) as unknown as ComponentType<TabComponentProps>;
 
+const ApiRefTab = lazy(
+    () => import('@/features/tools/password/tabs/api-ref-tab'),
+) as unknown as ComponentType<TabComponentProps>;
+
 const PASSWORD_COLOR = 'bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-300';
 
 const toolMapping = {
@@ -38,6 +42,11 @@ const toolMapping = {
     'strength-checker': {
         name: 'Strength Checker',
         icon: ShieldCheck,
+        color: PASSWORD_COLOR,
+    },
+    'api-ref': {
+        name: 'API Reference',
+        icon: Code2,
         color: PASSWORD_COLOR,
     },
 };
@@ -72,6 +81,13 @@ function registerToolAndGet() {
                 component: SampleDataTab,
                 contentType: 'text' as const,
             },
+            {
+                id: 'api-ref',
+                label: 'API Reference',
+                icon: Code2,
+                component: ApiRefTab,
+                contentType: 'text' as const,
+            },
         ],
         plugins: {
             saved: createSavedTabPlugin({
@@ -82,6 +98,7 @@ function registerToolAndGet() {
                     generate: 'generate',
                     'sample-data': 'sample-data',
                     'strength-checker': 'strength-checker',
+                    'api-ref': 'api-ref',
                 },
                 storageKeyMapping: {
                     generate: STORAGE_KEYS.PASSWORD_RESULTS,
@@ -95,6 +112,7 @@ function registerToolAndGet() {
                     generate: 'generate',
                     'sample-data': 'sample-data',
                     'strength-checker': 'strength-checker',
+                    'api-ref': 'api-ref',
                 },
             }),
             history: createHistoryTabPlugin({
@@ -105,6 +123,7 @@ function registerToolAndGet() {
                     generate: 'generate',
                     'sample-data': 'sample-data',
                     'strength-checker': 'strength-checker',
+                    'api-ref': 'api-ref',
                 },
             }),
         },

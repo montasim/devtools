@@ -1,7 +1,7 @@
 'use client';
 
 import { lazy, type ComponentType } from 'react';
-import { ShieldAlert, Search, Database } from 'lucide-react';
+import { ShieldAlert, Search, Database, Code2 } from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { registerTool } from '@/features/tools/core/config/tool-registry';
 import type { TabComponentProps } from '@/features/tools/core/types/tool';
@@ -12,6 +12,10 @@ const CheckerTab = lazy(
 
 const BrowserTab = lazy(
     () => import('@/features/tools/spam-words/tabs/browser-tab'),
+) as unknown as ComponentType<TabComponentProps>;
+
+const ApiRefTab = lazy(
+    () => import('@/features/tools/spam-words/tabs/api-ref-tab'),
 ) as unknown as ComponentType<TabComponentProps>;
 
 const SPAM_WORDS_TOOL = registerToolAndGet();
@@ -35,6 +39,13 @@ function registerToolAndGet() {
                 label: 'Browser',
                 icon: Database,
                 component: BrowserTab,
+                contentType: 'text' as const,
+            },
+            {
+                id: 'api-ref',
+                label: 'API Reference',
+                icon: Code2,
+                component: ApiRefTab,
                 contentType: 'text' as const,
             },
         ],

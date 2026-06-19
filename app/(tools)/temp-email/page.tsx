@@ -1,7 +1,7 @@
 'use client';
 
 import { lazy, type ComponentType } from 'react';
-import { MailX, Search, Database } from 'lucide-react';
+import { MailX, Search, Database, Code2 } from 'lucide-react';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { registerTool } from '@/features/tools/core/config/tool-registry';
 import type { TabComponentProps } from '@/features/tools/core/types/tool';
@@ -12,6 +12,10 @@ const CheckerTab = lazy(
 
 const SampleDataTab = lazy(
     () => import('@/features/tools/temp-email/tabs/sample-data-tab'),
+) as unknown as ComponentType<TabComponentProps>;
+
+const ApiRefTab = lazy(
+    () => import('@/features/tools/temp-email/tabs/api-ref-tab'),
 ) as unknown as ComponentType<TabComponentProps>;
 
 const TEMP_EMAIL_TOOL = registerToolAndGet();
@@ -35,6 +39,13 @@ function registerToolAndGet() {
                 label: 'Sample Data',
                 icon: Database,
                 component: SampleDataTab,
+                contentType: 'text' as const,
+            },
+            {
+                id: 'api-ref',
+                label: 'API Reference',
+                icon: Code2,
+                component: ApiRefTab,
                 contentType: 'text' as const,
             },
         ],
