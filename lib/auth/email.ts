@@ -41,7 +41,7 @@ export async function sendOtpEmail(
 
                     <div style="border-top: 1px solid #f3f4f6; margin-top: 32px; padding-top: 16px;">
                         <p style="font-size: 12px; color: #9ca3af; margin: 0;">
-                            &copy; ${currentYear} DevTools. All rights reserved.
+                            &copy; ${currentYear} <a href="${process.env.NEXT_PUBLIC_APP_URL || '#'}" target="_blank" rel="noopener noreferrer" style="color: #9ca3af; text-decoration: underline;">DevTools</a>. All rights reserved.
                         </p>
                     </div>
 
