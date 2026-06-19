@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import {
     CommandDialog,
@@ -138,6 +138,7 @@ export function CommandPalette() {
     const [open, setOpen] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
+    const searchParams = useSearchParams();
     const { theme, setTheme } = useTheme();
     const { save, share } = useToolActionsContext();
 
@@ -252,7 +253,17 @@ export function CommandPalette() {
                 id: 'login',
                 label: 'Login',
                 icon: LogIn,
-                onSelect: () => navigate(authButtons.login.url),
+                onSelect: () => {
+                    const isAuthRoute = pathname === '/login' || pathname === '/signup';
+                    if (isAuthRoute) {
+                        navigate(authButtons.login.url);
+                    } else {
+                        const redirectUrl = searchParams.toString()
+                            ? `${pathname}?${searchParams.toString()}`
+                            : pathname;
+                        navigate(`/login?redirect=${encodeURIComponent(redirectUrl)}`);
+                    }
+                },
             },
         ];
 

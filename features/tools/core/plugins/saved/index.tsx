@@ -11,12 +11,15 @@ import { SavedItemCard } from './components/saved-item-card';
 import { EmptyStateCard } from '@/components/ui/empty-state-card';
 import { ContentListSkeleton } from '@/components/ui/content-list-skeleton';
 import { useAuth } from '@/features/auth/hooks/use-auth';
+import { usePathname, useSearchParams } from 'next/navigation';
 import type { SavedTabConfig, SavedItemData } from './types';
 import type { PluginTabProps } from '../../types/tool';
 
 export function createSavedTabPlugin(config: SavedTabConfig) {
     return function SavedTabPlugin({ onTabChange }: PluginTabProps) {
         const { isAuthenticated } = useAuth();
+        const pathname = usePathname();
+        const searchParams = useSearchParams();
         const { data: items, isLoading } = useSavedItems(config.pageName, config.queryKey);
         const deleteMutation = useDeleteSavedItem(config.queryKey);
         const clearAllMutation = useClearAllSavedItems(config.queryKey, config.pageName);
@@ -37,13 +40,17 @@ export function createSavedTabPlugin(config: SavedTabConfig) {
         };
 
         if (!isAuthenticated) {
+            const redirectUrl = searchParams.toString()
+                ? `${pathname}?${searchParams.toString()}`
+                : pathname;
+            const loginHref = `/login?redirect=${encodeURIComponent(redirectUrl)}`;
             return (
                 <EmptyStateCard
                     icon={LogIn}
                     title="Login required"
                     description="Sign in to save and access your work from any device"
                     actionLabel="Login"
-                    actionHref="/login"
+                    actionHref={loginHref}
                 />
             );
         }

@@ -11,6 +11,7 @@ import { SharedLinkCard } from './components/shared-link-card';
 import { EmptyStateCard } from '@/components/ui/empty-state-card';
 import { ContentListSkeleton } from '@/components/ui/content-list-skeleton';
 import { useAuth } from '@/features/auth/hooks/use-auth';
+import { usePathname, useSearchParams } from 'next/navigation';
 import type { SharedTabConfig } from './types';
 import type { PluginTabProps } from '../../types/tool';
 
@@ -41,14 +42,21 @@ export function createSharedTabPlugin(config: SharedTabConfig) {
             clearAllMutation.mutate(items.map((item) => item.id));
         };
 
+        const pathname = usePathname();
+        const searchParams = useSearchParams();
+
         if (!isAuthenticated) {
+            const redirectUrl = searchParams.toString()
+                ? `${pathname}?${searchParams.toString()}`
+                : pathname;
+            const loginHref = `/login?redirect=${encodeURIComponent(redirectUrl)}`;
             return (
                 <EmptyStateCard
                     icon={LogIn}
                     title="Login required"
                     description="Sign in to view your shared links"
                     actionLabel="Login"
-                    actionHref="/login"
+                    actionHref={loginHref}
                 />
             );
         }
