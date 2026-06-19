@@ -2,14 +2,15 @@
 
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { AuthPageLayout } from '@/components/auth/auth-page-layout';
 import { FormField } from '@/components/auth/form-field';
 import { AuthFooter } from '@/components/auth/auth-footer';
+import { OtpInput } from '@/components/auth/otp-input';
 import { useAuth } from '@/features/auth/hooks/use-auth';
 import { useRedirectIfAuthenticated } from '@/features/auth/hooks/use-redirect-if-authenticated';
+import { authClient } from '@/lib/auth/auth-client';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import AuthLoadingSkeleton from '@/app/(auth)/loading';
@@ -31,16 +32,44 @@ function LoginForm() {
     const redirect = searchParams.get('redirect');
     const { login } = useAuth();
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [otp, setOtp] = useState('');
+    const [step, setStep] = useState<'email' | 'otp'>('email');
     const [isLoading, setIsLoading] = useState(false);
 
-    async function handleSubmit(e: React.FormEvent) {
+    async function handleSendOTP(e: React.FormEvent) {
         e.preventDefault();
         setIsLoading(true);
         try {
-            await login(email, password);
-            toast.success('Login successful');
-            router.push(isValidRedirect(redirect) ? redirect! : '/json?tab=format');
+            const { error } = await authClient.emailOtp.sendVerificationOtp({
+                email,
+                type: 'sign-in',
+            });
+            if (error) {
+                toast.error(error.message ?? 'Failed to send OTP');
+            } else {
+                toast.success('OTP sent to your email');
+                setStep('otp');
+            }
+        } catch (error) {
+            toast.error('Failed to send OTP');
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        if (otp.length !== 6 || !/^\d{6}$/.test(otp)) {
+            toast.error('Please enter a valid 6-digit code');
+            return;
+        }
+        setIsLoading(true);
+        try {
+            const success = await login(email, otp);
+            if (success) {
+                toast.success('Login successful');
+                router.push(isValidRedirect(redirect) ? redirect! : '/json?tab=format');
+            }
         } catch (error) {
             toast.error(error instanceof Error ? error.message : 'Login failed');
         } finally {
@@ -51,7 +80,7 @@ function LoginForm() {
     return (
         <AuthPageLayout
             title="Welcome back"
-            subtitle="Sign in to your account"
+            subtitle={step === 'email' ? 'Sign in with one-time passcode' : `Enter the code sent to ${email}`}
             footer={
                 <AuthFooter
                     linkText="Don't have an account?"
@@ -60,48 +89,44 @@ function LoginForm() {
                 />
             }
         >
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <FormField
-                    id="email"
-                    label="Email address"
-                    type="email"
-                    value={email}
-                    onChange={setEmail}
-                    placeholder="you@example.com"
-                    required
-                />
-                <FormField
-                    id="password"
-                    label="Password"
-                    type="password"
-                    value={password}
-                    onChange={setPassword}
-                    placeholder="••••••••"
-                    required
-                />
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                        <input
-                            id="remember-me"
-                            type="checkbox"
-                            className="h-4 w-4 rounded accent-primary"
-                        />
-                        <Label htmlFor="remember-me" className="ml-2 block text-sm">
-                            Remember me
-                        </Label>
+            {step === 'email' ? (
+                <form onSubmit={handleSendOTP} className="space-y-6">
+                    <FormField
+                        id="email"
+                        label="Email address"
+                        type="email"
+                        value={email}
+                        onChange={setEmail}
+                        placeholder="you@example.com"
+                        required
+                    />
+                    <Button type="submit" disabled={isLoading || !email.trim()} className="w-full">
+                        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {isLoading ? 'Sending...' : 'Send OTP'}
+                    </Button>
+                </form>
+            ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="flex flex-col items-center gap-2">
+                        <Label htmlFor="otp">Verification code</Label>
+                        <OtpInput value={otp} onChange={setOtp} />
                     </div>
-                    <Link
-                        href="/reset-password"
-                        className="text-sm text-primary/90 hover:underline"
-                    >
-                        Forgot password?
-                    </Link>
-                </div>
-                <Button type="submit" disabled={isLoading} className="w-full">
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {isLoading ? 'Signing in...' : 'Sign in'}
-                </Button>
-            </form>
+                    <div className="flex gap-4">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setStep('email')}
+                            className="flex-1"
+                        >
+                            Back
+                        </Button>
+                        <Button type="submit" disabled={isLoading || otp.length !== 6} className="flex-1">
+                            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            {isLoading ? 'Signing in...' : 'Sign in'}
+                        </Button>
+                    </div>
+                </form>
+            )}
         </AuthPageLayout>
     );
 }

@@ -45,7 +45,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
             );
         }
 
-        const payload = verifyToken(token);
+        const payload = await verifyToken(token);
         if (!payload || url.userId !== payload.userId) {
             return NextResponse.json(
                 { ok: false, error: { code: 'NOT_FOUND', message: 'URL not found' } },
@@ -75,7 +75,7 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
             );
         }
 
-        const payload = verifyToken(token);
+        const payload = await verifyToken(token);
         if (!payload) {
             return NextResponse.json(
                 { ok: false, error: { code: 'INVALID_TOKEN', message: 'Invalid token' } },

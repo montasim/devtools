@@ -37,7 +37,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
         }
 
         const token = await getTokenFromCookies();
-        const payload = token ? verifyToken(token) : null;
+        const payload = token ? await verifyToken(token) : null;
 
         const isOwner = payload && link.userId === payload.userId;
 
@@ -79,7 +79,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
             );
         }
 
-        const payload = verifyToken(token);
+        const payload = await verifyToken(token);
         if (!payload) {
             return NextResponse.json(
                 { ok: false, error: { code: 'INVALID_TOKEN', message: 'Invalid token' } },

@@ -10,7 +10,7 @@ export async function POST(request: Request) {
         let userId: string | null = null;
 
         if (token) {
-            const payload = verifyToken(token);
+            const payload = await verifyToken(token);
             if (payload) {
                 userId = payload.userId;
             }
@@ -89,7 +89,7 @@ export async function GET(request: Request) {
             );
         }
 
-        const payload = verifyToken(token);
+        const payload = await verifyToken(token);
         if (!payload) {
             return NextResponse.json(
                 { ok: false, error: { code: 'INVALID_TOKEN', message: 'Invalid token' } },

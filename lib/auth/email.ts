@@ -9,20 +9,43 @@ export async function sendOtpEmail(
     purpose: 'register' | 'password-reset',
 ) {
     const subject = purpose === 'register' ? 'Verify your email' : 'Reset your password';
-    const purposeText = purpose === 'register' ? 'email verification' : 'password reset';
+    const currentYear = new Date().getFullYear();
 
     await resend.emails.send({
         from: FROM_EMAIL,
         to: email,
         subject,
         html: `
-            <div style="font-family: sans-serif; max-width: 400px; margin: 0 auto;">
-                <h2>${subject}</h2>
-                <p>Your ${purposeText} code is:</p>
-                <div style="font-size: 32px; font-weight: bold; letter-spacing: 4px; padding: 16px; background: #f5f5f5; border-radius: 8px; text-align: center;">
-                    ${otp}
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f9fafb; padding: 32px 16px; margin: 0; min-height: 100%;">
+                <div style="max-width: 440px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 1px solid #f3f4f6; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); padding: 32px; text-align: center;">
+                    
+                    <!-- Logo / Header -->
+                    <div style="margin-bottom: 24px;">
+                        <span style="font-size: 24px; font-weight: 800; color: #10b981; letter-spacing: -0.5px;">&gt; DevTools</span>
+                    </div>
+
+                    <h1 style="font-size: 20px; font-weight: 700; color: #111827; margin: 0 0 12px 0;">Verify your request</h1>
+                    
+                    <p style="font-size: 14px; line-height: 24px; color: #4b5563; margin: 0 0 24px 0;">
+                        Use the following one-time passcode to complete your verification. This code is only valid for 10 minutes.
+                    </p>
+
+                    <!-- OTP Code Block -->
+                    <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 32px; font-weight: 700; letter-spacing: 6px; padding: 18px; background-color: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 12px; color: #111827; display: inline-block; margin-bottom: 24px; min-width: 180px; padding-left: 24px;">
+                        ${otp}
+                    </div>
+
+                    <p style="font-size: 13px; line-height: 20px; color: #9ca3af; margin: 0 0 16px 0;">
+                        If you did not make this request, you can safely ignore this email.
+                    </p>
+
+                    <div style="border-top: 1px solid #f3f4f6; margin-top: 32px; padding-top: 16px;">
+                        <p style="font-size: 12px; color: #9ca3af; margin: 0;">
+                            &copy; ${currentYear} DevTools. All rights reserved.
+                        </p>
+                    </div>
+
                 </div>
-                <p style="color: #666; margin-top: 16px;">This code expires in 10 minutes.</p>
             </div>
         `,
     });

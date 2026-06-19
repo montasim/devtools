@@ -81,27 +81,52 @@ model ShortenedUrl {
 model User {
   id             String    @id @default(uuid())
   email          String    @unique
-  passwordHash   String
   name           String
-  emailVerified  DateTime?
+  emailVerified  Boolean   @default(false)
+  image          String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  otps           UserOtp[]
   shares         SharedLink[]
   savedItems     SavedItem[]
   shortenedUrls  ShortenedUrl[]
+  sessions       Session[]
+  accounts       Account[]
 }
 
-model UserOtp {
-  id        String   @id @default(uuid())
-  email     String
-  codeHash  String   // HMAC-SHA256(otp, OTP_HMAC_SECRET)
-  intent    String   // REGISTER | PASSWORD_RESET
-  used      Boolean  @default(false)
+model Session {
+  id        String   @id
   expiresAt DateTime
-  createdAt DateTime  @default(now())
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
-  @@index([email, intent, used, expiresAt])
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
 }

@@ -10,96 +10,77 @@ import { FormField } from '@/components/auth/form-field';
 import { AuthFooter } from '@/components/auth/auth-footer';
 import { OtpInput } from '@/components/auth/otp-input';
 import { useRedirectIfAuthenticated } from '@/features/auth/hooks/use-redirect-if-authenticated';
-import { apiClient } from '@/lib/api/client';
-import { handleApiError } from '@/lib/hooks/use-error-handler';
+import { useAuth } from '@/features/auth/hooks/use-auth';
+import { authClient } from '@/lib/auth/auth-client';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 
-type Step = 'email' | 'otp' | 'account';
+type Step = 'details' | 'otp';
 
 export default function SignupPage() {
     useRedirectIfAuthenticated();
     const router = useRouter();
-    const [step, setStep] = useState<Step>('email');
+    const { signup } = useAuth();
+    const [step, setStep] = useState<Step>('details');
     const [email, setEmail] = useState('');
-    const [otp, setOtp] = useState('');
     const [name, setName] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [otp, setOtp] = useState('');
     const [agreedToPolicies, setAgreedToPolicies] = useState(false);
     const [loading, setLoading] = useState(false);
 
     async function handleSendOTP(e: React.FormEvent) {
         e.preventDefault();
+        if (!agreedToPolicies) {
+            toast.error('You must agree to the policies to create an account');
+            return;
+        }
         setLoading(true);
         try {
-            const res = await apiClient.post('/api/auth/register/send-otp', { email });
-            if (res.ok) {
+            const { error } = await authClient.emailOtp.sendVerificationOtp({
+                email,
+                type: 'sign-in',
+            });
+            if (error) {
+                toast.error(error.message ?? 'Failed to send OTP');
+            } else {
                 toast.success('OTP sent to your email');
                 setStep('otp');
-            } else {
-                handleApiError(res.error?.message ?? 'Failed to send OTP');
             }
         } catch (error) {
-            handleApiError('Failed to send OTP', error);
+            toast.error('Failed to send OTP');
         } finally {
             setLoading(false);
         }
     }
 
-    async function handleVerifyOTP(e: React.FormEvent) {
+    async function handleVerifyAndSignup(e: React.FormEvent) {
         e.preventDefault();
         if (otp.length !== 6 || !/^\d{6}$/.test(otp)) {
             toast.error('Please enter a valid 6-digit code');
             return;
         }
-        toast.success('OTP verified');
-        setStep('account');
-    }
-
-    async function handleCreateAccount(e: React.FormEvent) {
-        e.preventDefault();
-        if (!agreedToPolicies) {
-            toast.error('You must agree to the policies to create an account');
-            return;
-        }
-        if (password !== confirmPassword) {
-            toast.error('Passwords do not match');
-            return;
-        }
         setLoading(true);
         try {
-            const res = await apiClient.post('/api/auth/register/verify-otp', {
-                email,
-                code: otp,
-                name,
-                password,
-            });
-            if (res.ok) {
-                toast.success('Account created! Please login');
+            const success = await signup(email, otp, name);
+            if (success) {
+                toast.success('Account created successfully! Please sign in.');
                 router.push('/login');
-            } else {
-                handleApiError(res.error?.message ?? 'Failed to create account');
             }
         } catch (error) {
-            handleApiError('Failed to create account', error);
+            toast.error(error instanceof Error ? error.message : 'Signup failed');
         } finally {
             setLoading(false);
         }
     }
 
     const stepConfig = {
-        email: {
+        details: {
             title: 'Create account',
-            subtitle: 'Step 1 of 3: Enter your email',
+            subtitle: 'Step 1 of 2: Enter your details',
         },
         otp: {
             title: 'Verify email',
-            subtitle: `Step 2 of 3: Enter the 6-digit code sent to ${email}`,
-        },
-        account: {
-            title: 'Complete profile',
-            subtitle: 'Step 3 of 3: Create your password',
+            subtitle: `Step 2 of 2: Enter the 6-digit code sent to ${email}`,
         },
     };
 
@@ -115,49 +96,8 @@ export default function SignupPage() {
                 />
             }
         >
-            {step === 'email' && (
+            {step === 'details' && (
                 <form onSubmit={handleSendOTP} className="space-y-6">
-                    <FormField
-                        id="email"
-                        label="Email address"
-                        type="email"
-                        value={email}
-                        onChange={setEmail}
-                        placeholder="you@example.com"
-                        required
-                    />
-                    <Button type="submit" disabled={loading} className="w-full">
-                        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        {loading ? 'Sending...' : 'Send OTP'}
-                    </Button>
-                </form>
-            )}
-
-            {step === 'otp' && (
-                <form onSubmit={handleVerifyOTP} className="space-y-6">
-                    <div className="flex flex-col items-center gap-2">
-                        <Label htmlFor="otp">Verification code</Label>
-                        <OtpInput value={otp} onChange={setOtp} />
-                    </div>
-                    <div className="flex gap-4">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => setStep('email')}
-                            className="flex-1"
-                        >
-                            Back
-                        </Button>
-                        <Button type="submit" disabled={loading} className="flex-1">
-                            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Verify
-                        </Button>
-                    </div>
-                </form>
-            )}
-
-            {step === 'account' && (
-                <form onSubmit={handleCreateAccount} className="space-y-6">
                     <FormField
                         id="name"
                         label="Full name"
@@ -168,22 +108,12 @@ export default function SignupPage() {
                         required
                     />
                     <FormField
-                        id="password"
-                        label="Password"
-                        type="password"
-                        value={password}
-                        onChange={setPassword}
-                        placeholder="••••••••"
-                        required
-                        minLength={8}
-                    />
-                    <FormField
-                        id="confirmPassword"
-                        label="Confirm password"
-                        type="password"
-                        value={confirmPassword}
-                        onChange={setConfirmPassword}
-                        placeholder="••••••••"
+                        id="email"
+                        label="Email address"
+                        type="email"
+                        value={email}
+                        onChange={setEmail}
+                        placeholder="you@example.com"
                         required
                     />
                     <div className="flex items-start">
@@ -210,18 +140,31 @@ export default function SignupPage() {
                             </Link>
                         </Label>
                     </div>
+                    <Button type="submit" disabled={loading || !name.trim() || !email.trim() || !agreedToPolicies} className="w-full">
+                        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {loading ? 'Sending...' : 'Send OTP'}
+                    </Button>
+                </form>
+            )}
+
+            {step === 'otp' && (
+                <form onSubmit={handleVerifyAndSignup} className="space-y-6">
+                    <div className="flex flex-col items-center gap-2">
+                        <Label htmlFor="otp">Verification code</Label>
+                        <OtpInput value={otp} onChange={setOtp} />
+                    </div>
                     <div className="flex gap-4">
                         <Button
                             type="button"
                             variant="outline"
-                            onClick={() => setStep('otp')}
+                            onClick={() => setStep('details')}
                             className="flex-1"
                         >
                             Back
                         </Button>
-                        <Button type="submit" disabled={loading} className="flex-1">
+                        <Button type="submit" disabled={loading || otp.length !== 6} className="flex-1">
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            {loading ? 'Creating...' : 'Create account'}
+                            Verify & Sign up
                         </Button>
                     </div>
                 </form>

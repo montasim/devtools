@@ -12,7 +12,7 @@ export async function POST(request: Request) {
             );
         }
 
-        const payload = verifyToken(token);
+        const payload = await verifyToken(token);
         if (!payload) {
             return NextResponse.json(
                 { ok: false, error: { code: 'INVALID_TOKEN', message: 'Invalid token' } },
@@ -58,7 +58,7 @@ export async function GET(request: Request) {
             );
         }
 
-        const payload = verifyToken(token);
+        const payload = await verifyToken(token);
         if (!payload) {
             return NextResponse.json(
                 { ok: false, error: { code: 'INVALID_TOKEN', message: 'Invalid token' } },

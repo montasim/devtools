@@ -25,7 +25,7 @@ export async function POST(request: Request) {
         let userId: string | null = null;
         const token = await getTokenFromCookies();
         if (token) {
-            const payload = verifyToken(token);
+            const payload = await verifyToken(token);
             if (payload) userId = payload.userId;
         }
 

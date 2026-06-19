@@ -35,7 +35,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
         if (link.passwordHash) {
             const token = await getTokenFromCookies();
-            const payload = token ? verifyToken(token) : null;
+            const payload = token ? await verifyToken(token) : null;
             const isOwner = payload && link.userId === payload.userId;
 
             if (!isOwner) {

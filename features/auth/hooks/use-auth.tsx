@@ -1,8 +1,9 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
-import { apiClient } from '@/lib/api/client';
+import { createContext, useContext, useCallback, type ReactNode } from 'react';
+import { authClient } from '@/lib/auth/auth-client';
 import { handleApiError } from '@/lib/hooks/use-error-handler';
+import { toast } from 'sonner';
 
 interface User {
     id: string;
@@ -15,8 +16,8 @@ interface AuthContextType {
     user: User | null;
     isLoading: boolean;
     isAuthenticated: boolean;
-    login: (email: string, password: string) => Promise<boolean>;
-    signup: (email: string, password: string, name: string) => Promise<boolean>;
+    login: (email: string, otp: string) => Promise<boolean>;
+    signup: (email: string, otp: string, name?: string) => Promise<boolean>;
     logout: () => Promise<void>;
     updateName: (name: string) => Promise<boolean>;
     updatePassword: (currentPassword: string, newPassword: string) => Promise<boolean>;
@@ -25,37 +26,23 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<User | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const { data: sessionData, isPending: isLoading } = authClient.useSession();
 
-    const checkAuth = useCallback(async () => {
+    const user: User | null = sessionData?.user ? {
+        id: sessionData.user.id,
+        email: sessionData.user.email,
+        name: sessionData.user.name || '',
+        emailVerified: sessionData.user.emailVerified ? new Date().toISOString() : null,
+    } : null;
+
+    const login = useCallback(async (email: string, otp: string): Promise<boolean> => {
         try {
-            const res = await apiClient.get<User>('/api/auth/me');
-            if (res.ok && res.data) {
-                setUser(res.data);
-            } else {
-                setUser(null);
+            const { error } = await authClient.signIn.emailOtp({ email, otp });
+            if (error) {
+                handleApiError(error.message ?? 'Login failed');
+                return false;
             }
-        } catch {
-            setUser(null);
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        checkAuth();
-    }, [checkAuth]);
-
-    const login = useCallback(async (email: string, password: string): Promise<boolean> => {
-        try {
-            const res = await apiClient.post<User>('/api/auth/login', { email, password });
-            if (res.ok && res.data) {
-                setUser(res.data);
-                return true;
-            }
-            handleApiError(res.error?.message ?? 'Login failed');
-            return false;
+            return true;
         } catch (error) {
             handleApiError('Login failed', error);
             return false;
@@ -63,19 +50,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const signup = useCallback(
-        async (email: string, password: string, name: string): Promise<boolean> => {
+        async (email: string, otp: string, name?: string): Promise<boolean> => {
             try {
-                const res = await apiClient.post<User>('/api/auth/register/verify-otp', {
-                    email,
-                    password,
-                    name,
-                });
-                if (res.ok && res.data) {
-                    setUser(res.data);
-                    return true;
+                const { error } = await authClient.signIn.emailOtp({ email, otp });
+                if (error) {
+                    handleApiError(error.message ?? 'Signup failed');
+                    return false;
                 }
-                handleApiError(res.error?.message ?? 'Signup failed');
-                return false;
+                if (name) {
+                    await authClient.updateUser({ name });
+                }
+                await authClient.signOut();
+                return true;
             } catch (error) {
                 handleApiError('Signup failed', error);
                 return false;
@@ -86,8 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const logout = useCallback(async () => {
         try {
-            await apiClient.post('/api/auth/logout');
-            setUser(null);
+            await authClient.signOut();
         } catch (error) {
             handleApiError('Logout failed', error);
         }
@@ -95,13 +80,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const updateName = useCallback(async (name: string): Promise<boolean> => {
         try {
-            const res = await apiClient.post<User>('/api/auth/update-name', { name });
-            if (res.ok && res.data) {
-                setUser(res.data);
-                return true;
+            const { error } = await authClient.updateUser({ name });
+            if (error) {
+                handleApiError(error.message ?? 'Failed to update name');
+                return false;
             }
-            handleApiError(res.error?.message ?? 'Failed to update name');
-            return false;
+            return true;
         } catch (error) {
             handleApiError('Failed to update name', error);
             return false;
@@ -110,18 +94,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const updatePassword = useCallback(
         async (currentPassword: string, newPassword: string): Promise<boolean> => {
-            try {
-                const res = await apiClient.post('/api/auth/update-password', {
-                    currentPassword,
-                    newPassword,
-                });
-                if (res.ok) return true;
-                handleApiError(res.error?.message ?? 'Failed to update password');
-                return false;
-            } catch (error) {
-                handleApiError('Failed to update password', error);
-                return false;
-            }
+            toast.error('Password updates are not supported in passwordless authentication.');
+            return false;
         },
         [],
     );

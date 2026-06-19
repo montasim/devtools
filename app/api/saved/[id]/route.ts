@@ -12,7 +12,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
             );
         }
 
-        const payload = verifyToken(token);
+        const payload = await verifyToken(token);
         if (!payload) {
             return NextResponse.json(
                 { ok: false, error: { code: 'INVALID_TOKEN', message: 'Invalid token' } },
