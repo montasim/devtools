@@ -29,7 +29,7 @@ function LoginForm() {
     useRedirectIfAuthenticated();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const redirect = searchParams.get('redirect');
+    const redirect = searchParams.get('redirect') || searchParams.get('callbackUrl');
     const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [otp, setOtp] = useState('');
@@ -77,6 +77,8 @@ function LoginForm() {
         }
     }
 
+    const signupHref = redirect ? `/signup?redirect=${encodeURIComponent(redirect)}` : '/signup';
+
     return (
         <AuthPageLayout
             title="Welcome back"
@@ -84,7 +86,7 @@ function LoginForm() {
             footer={
                 <AuthFooter
                     linkText="Don't have an account?"
-                    linkHref="/signup"
+                    linkHref={signupHref}
                     linkLabel="Sign up"
                 />
             }

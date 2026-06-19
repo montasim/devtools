@@ -11,13 +11,15 @@ import {
 import { LogOut, User } from 'lucide-react';
 import { useAuth } from '../hooks/use-auth';
 import { useLogoutConfirmDialog } from '@/components/auth/logout-confirm-dialog';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import Link from 'next/link';
 
 export function UserMenu() {
     const { user, logout, isAuthenticated } = useAuth();
     const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     const { LogoutButton } = useLogoutConfirmDialog({
         onConfirm: async () => {
@@ -32,13 +34,23 @@ export function UserMenu() {
     });
 
     if (!isAuthenticated) {
+        const redirectParam = searchParams.get('redirect') || searchParams.get('callbackUrl');
+        const redirectUrl = redirectParam
+            ? redirectParam
+            : (pathname !== '/login' && pathname !== '/signup'
+                ? (searchParams.toString() ? `${pathname}?${searchParams.toString()}` : pathname)
+                : '');
+
+        const loginHref = redirectUrl ? `/login?redirect=${encodeURIComponent(redirectUrl)}` : '/login';
+        const signupHref = redirectUrl ? `/signup?redirect=${encodeURIComponent(redirectUrl)}` : '/signup';
+
         return (
             <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" asChild>
-                    <Link href="/login">Login</Link>
+                    <Link href={loginHref}>Login</Link>
                 </Button>
                 <Button size="sm" asChild>
-                    <Link href="/signup">Sign up</Link>
+                    <Link href={signupHref}>Sign up</Link>
                 </Button>
             </div>
         );

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -20,6 +20,8 @@ type Step = 'details' | 'otp';
 export default function SignupPage() {
     useRedirectIfAuthenticated();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirect = searchParams.get('redirect') || searchParams.get('callbackUrl');
     const { signup } = useAuth();
     const [step, setStep] = useState<Step>('details');
     const [email, setEmail] = useState('');
@@ -64,7 +66,8 @@ export default function SignupPage() {
             const success = await signup(email, otp, name);
             if (success) {
                 toast.success('Account created successfully! Please sign in.');
-                router.push('/login');
+                const loginHref = redirect ? `/login?redirect=${encodeURIComponent(redirect)}` : '/login';
+                router.push(loginHref);
             }
         } catch (error) {
             toast.error(error instanceof Error ? error.message : 'Signup failed');
@@ -84,6 +87,8 @@ export default function SignupPage() {
         },
     };
 
+    const loginHref = redirect ? `/login?redirect=${encodeURIComponent(redirect)}` : '/login';
+
     return (
         <AuthPageLayout
             title={stepConfig[step].title}
@@ -91,7 +96,7 @@ export default function SignupPage() {
             footer={
                 <AuthFooter
                     linkText="Already have an account?"
-                    linkHref="/login"
+                    linkHref={loginHref}
                     linkLabel="Sign in"
                 />
             }

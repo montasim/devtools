@@ -27,6 +27,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { EmptyStateCard } from '@/components/ui/empty-state-card';
 import { ContentListSkeleton } from '@/components/ui/content-list-skeleton';
 import { QRCodeSVG } from 'qrcode.react';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const tabTriggerClass =
     'gap-2 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary data-[state=active]:text-primary data-[state=active]:font-semibold data-[state=active]:bg-primary/10';
@@ -256,14 +257,20 @@ function UrlHistory() {
         setTimeout(() => setCopiedId(null), 2000);
     };
 
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
     if (!isAuthenticated) {
+        const redirectUrl = searchParams.toString()
+            ? `${pathname}?${searchParams.toString()}`
+            : pathname;
         return (
             <EmptyStateCard
                 icon={Link2}
                 title="Login to track your URLs"
                 description="Sign in to see your shortened URL history and track real-time click statistics."
                 actionLabel="Login"
-                actionHref="/login"
+                actionHref={`/login?redirect=${encodeURIComponent(redirectUrl)}`}
             />
         );
     }

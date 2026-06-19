@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/features/auth/hooks/use-auth';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
@@ -41,6 +41,8 @@ const COLORS = ['#10b981', '#3b82f6', '#f59e0b'];
 export default function ProfilePage() {
     const { isLoading, isAuthenticated, user, updateName, logout } = useAuth();
     const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
     const { data: sessionData } = authClient.useSession();
 
     const [isMounted, setIsMounted] = useState(false);
@@ -65,7 +67,10 @@ export default function ProfilePage() {
         if (isLoading) return;
 
         if (!isAuthenticated) {
-            router.push('/login');
+            const redirectUrl = searchParams.toString()
+                ? `${pathname}?${searchParams.toString()}`
+                : pathname;
+            router.push(`/login?redirect=${encodeURIComponent(redirectUrl)}`);
             return;
         }
 
