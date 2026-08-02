@@ -1,6 +1,8 @@
+[![Support me on SupportKori](https://img.shields.io/badge/Support%20me-SupportKori-FFDD00?style=flat-square)](https://www.supportkori.com/montasim)
+
 # DevTools
 
-[![Support me on SupportKori](https://img.shields.io/badge/Support%20me-SupportKori-FFDD00?style=flat-square)](https://www.supportkori.com/montasim)
+
 
 A comprehensive suite of 40+ free developer tools for formatting, validating, generating, and transforming data. All tools run entirely in your browser for maximum privacy and speed.
 
