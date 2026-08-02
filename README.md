@@ -1,4 +1,8 @@
+[![Support me on SupportKori](https://img.shields.io/badge/Support%20me-SupportKori-FFDD00?style=flat-square)](https://www.supportkori.com/montasim)
+
 # DevTools
+
+
 
 A comprehensive suite of 40+ free developer tools for formatting, validating, generating, and transforming data. All tools run entirely in your browser for maximum privacy and speed.
 
@@ -178,6 +182,12 @@ devtools/
 5. Open a Pull Request
 
 This project uses [Conventional Commits](https://www.conventionalcommits.org/) enforced by commitlint.
+
+## Support
+
+If this project has been useful, you can support its continued maintenance:
+
+[![Support me on SupportKori](https://img.shields.io/badge/Support%20me-SupportKori-FFDD00?style=flat-square)](https://www.supportkori.com/montasim)
 
 ## License
 
