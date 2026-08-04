@@ -1,194 +1,182 @@
-[![Support me on SupportKori](https://img.shields.io/badge/Support%20me-SupportKori-FFDD00?style=flat-square)](https://www.supportkori.com/montasim)
-
 # DevTools
 
+**A fast toolbox for formatting, generating, testing, and inspecting developer data.**
 
+[![CI](https://github.com/montasim/devtools/actions/workflows/ci.yml/badge.svg)](https://github.com/montasim/devtools/actions/workflows/ci.yml)
+[![Live app](https://img.shields.io/badge/live-devtoolsn.vercel.app-000000?logo=vercel)](https://devtoolsn.vercel.app)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+[![Support on SupportKori](https://img.shields.io/badge/support-SupportKori-ffdd00)](https://www.supportkori.com/montasim)
 
-A comprehensive suite of 40+ free developer tools for formatting, validating, generating, and transforming data. All tools run entirely in your browser for maximum privacy and speed.
+DevTools puts more than 50 everyday utilities behind one searchable interface:
+JSON and text transforms, encoders, generators, network diagnostics, security
+inspectors, and reference tables. Most transformations run locally in the
+browser, while account sync, saved shares, short links, webhooks, and selected
+network checks use server-side APIs.
 
-## Features
+**[Open DevTools](https://devtoolsn.vercel.app)** · Press `Ctrl+K` or `Cmd+K`
+inside the app to jump directly to a tool.
 
-### Formatters & Converters
+## Tool collection
 
-| Tool                          | Description                                                  |
-| ----------------------------- | ------------------------------------------------------------ |
-| **JSON Tools**                | Format, minify, diff, validate, and transform JSON           |
-| **Text Tools**                | Diff, case conversion, and text cleaning                     |
-| **Base64 Tools**              | Encode/decode Base64 with media preview and format detection |
-| **URL Encode/Decode**         | Encode and decode percent-encoded URLs                       |
-| **HTML Entity Encode/Decode** | Encode and decode HTML entities                              |
-| **cURL Converter**            | Convert cURL to fetch, Axios, Python, and HTTPie             |
-| **Number Base Converter**     | Binary, octal, decimal, hex, and custom radix                |
-| **CSS Unit Converter**        | Convert between px, rem, em, vw, vh, pt, cm                  |
-| **Color Picker**              | HEX, RGB, HSL, OKLCH and palette generator                   |
-| **Markdown Preview**          | Write Markdown with live preview                             |
+| Area | Included workflows |
+| --- | --- |
+| Structured data | JSON, XML, SVG, HTML, CSS, SQL, YAML, and CSV formatting or transformation |
+| Text and encoding | Text cleanup and diff, Base64, URL encoding, HTML entities, cURL conversion, fancy/leet text, and text art |
+| Generators | UUID/ULID/NanoID, hashes, bcrypt/Argon2, RSA keys, passwords, passphrases, QR codes, sample data, and Git branch names |
+| Network and APIs | Request builder, header parser, WebSocket tester, CORS checker, DNS lookup, STUN/TURN checks, webhook inbox, certificate decoding, and IP/CIDR tools |
+| References | Regex, HTTP status, MIME and Content-Type, Unicode, ASCII, emoji, time zones, and cron expressions |
+| Browser utilities | Markdown preview, color and unit conversion, web playground, email-domain checks, spam-word checks, and RSS analysis |
 
-### Generators
+The navigation registry in [`config/navigation.tsx`](config/navigation.tsx) is
+the source of truth for the current catalog.
 
-| Tool                       | Description                          |
-| -------------------------- | ------------------------------------ |
-| **ID Generator**           | Generate UUIDs, ULIDs, and NanoIDs   |
-| **Hash Generator**         | Generate hashes and HMAC signatures  |
-| **Bcrypt / Argon2 Hasher** | Hash and verify passwords            |
-| **RSA Key Generator**      | Generate RSA key pairs (PEM/DER)     |
-| **Password Generator**     | Secure passwords with strength meter |
-| **QR Code Generator**      | Generate customizable QR codes       |
-| **Git Branch Generator**   | Generate consistent git branch names |
+## Privacy boundary
 
-### Network & API
+“Browser-based” does not mean every feature is offline. The boundary is:
 
-| Tool                    | Description                                         |
-| ----------------------- | --------------------------------------------------- |
-| **API Request Builder** | Build, test, and debug HTTP requests                |
-| **WebSocket Tester**    | Connect to WS endpoints, send/receive in real-time  |
-| **CORS Checker**        | Test cross-origin requests and inspect CORS headers |
-| **Certificate Decoder** | Decode and inspect SSL/TLS X.509 certificates       |
-| **User Agent Analyzer** | Parse and decode User-Agent strings                 |
-| **DNS Lookup**          | Query NS, A, AAAA, MX, TXT, CNAME, SOA, PTR records |
+- Formatters, encoders, generators, parsers, and most reference tools process
+  their current input in the browser.
+- API, WebSocket, DNS, CORS, IP, STUN/TURN, email-domain, leaked-password, RSS,
+  and webhook utilities necessarily contact the selected target or a server
+  endpoint.
+- Creating a share link, saved item, account, or shortened URL stores the
+  submitted state in PostgreSQL. Password-protected shares store a password
+  hash, but their content is still held server-side.
+- Tool history and preferences that use local storage remain on that browser
+  unless the user explicitly invokes an account-backed feature.
 
-### Reference
+Do not paste credentials, production private keys, personal data, or classified
+content into a networked workflow. Inspect the destination before sending an
+API or WebSocket request.
 
-| Tool                    | Description                                                |
-| ----------------------- | ---------------------------------------------------------- |
-| **Regex Tester**        | Test regex with live matching and capture groups           |
-| **HTTP Status Codes**   | Searchable reference with descriptions and specs           |
-| **MIME Type Reference** | File extension to MIME type mapping                        |
-| **Unicode Lookup**      | Search Unicode characters by name and codepoint            |
-| **ASCII Table**         | Interactive ASCII/Unicode reference with search and filter |
+## Platform features
 
-### Utilities
+- Command palette and global right-click menu for navigation and actions
+- Local input history and reusable saved state
+- Optional email-OTP accounts with cross-device saved items
+- Expiring and optionally password-protected share links
+- URL shortening with click tracking
+- Webhook request capture and inspection
+- Light/dark themes and responsive layouts
+- Keyboard-accessible tool tabs and controls
 
-| Tool               | Description                                          |
-| ------------------ | ---------------------------------------------------- |
-| **CRON Builder**   | Visual cron expression builder with next-run preview |
-| **Unit Converter** | Data sizes, time durations, and time zones           |
-| **URL Shortener**  | Shorten long URLs into compact links                 |
+## Run locally
 
-### Platform Features
+### Requirements
 
-- **Command Palette** — Press `Cmd+K` / `Ctrl+K` to search tools, actions, and pages
-- **Context Menu** — Right-click anywhere for save, share, history, navigation, and quick tool access
-- **Share Text** — Share content via links with optional password protection and expiration
-- **Save & Sync** — Save tool state to your account and restore across sessions
-- **History** — Automatic local history tracking for all tool inputs
-- **Authentication** — Sign up, login, profile management with email/password
-- **Dark Mode** — Full dark/light theme support with system preference detection
-- **Responsive** — Works on desktop, tablet, and mobile
-- **Easter Egg** — Try the Konami code (↑↑↓↓←→←→BA)
-- **Console Banner** — Branded ASCII art greeting in browser DevTools console
-
-## Tech Stack
-
-| Layer     | Technology                         |
-| --------- | ---------------------------------- |
-| Framework | Next.js 16 (App Router, Turbopack) |
-| UI        | React 19, shadcn/ui, Radix UI      |
-| Styling   | Tailwind CSS 4                     |
-| State     | TanStack React Query               |
-| Editor    | CodeMirror 6                       |
-| Database  | PostgreSQL via Prisma 7            |
-| Auth      | JWT with bcrypt password hashing   |
-| Icons     | Lucide React, Tabler Icons         |
-| Email     | Resend                             |
-| Language  | TypeScript                         |
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- pnpm (recommended) or npm
-- PostgreSQL (for auth and save/share features)
-
-### Installation
+- Node.js 24.12.0, matching [`.nvmrc`](.nvmrc)
+- pnpm 10, matching the CI workflow
+- PostgreSQL for authentication, shares, saved items, and short URLs
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/montasim/devtools.git
 cd devtools
-
+nvm use
 pnpm install
-
-# Set up environment variables
 cp .env.example .env
-# Edit .env with your database URL and other secrets
-
-# Set up database
-pnpm prisma generate
-pnpm prisma db push
-
+pnpm exec prisma generate
+pnpm exec prisma db push
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open <http://localhost:3000>.
 
-### Available Scripts
+`prisma db push` changes the configured database schema. Point
+`DATABASE_URL` at a disposable development database first; use reviewed Prisma
+migrations rather than schema push for production change management.
 
-```bash
-pnpm dev             # Start development server
-pnpm build           # Build for production
-pnpm start           # Start production server
-pnpm lint            # Run ESLint
-pnpm lint:fix        # Fix ESLint errors
-pnpm format          # Format with Prettier
-pnpm format:check    # Check formatting
-pnpm typecheck       # TypeScript type checking
-pnpm test            # Run Vitest
+### Active configuration
+
+The application code currently reads these settings:
+
+| Variable | Required for | Purpose |
+| --- | --- | --- |
+| `DATABASE_URL` | Server-backed features | PostgreSQL connection used by Prisma |
+| `BETTER_AUTH_SECRET` | Authentication | Better Auth signing secret; falls back to `JWT_SECRET` |
+| `BETTER_AUTH_URL` | Authentication | Canonical auth origin; falls back to `BASE_URL` |
+| `OTP_HMAC_SECRET` | Email OTP | HMAC secret used for OTP handling |
+| `RESEND_API_KEY` | Email OTP | Resend API key; without it, email delivery is skipped |
+| `FROM_EMAIL` | Email OTP | Verified sender address |
+| `NEXT_PUBLIC_APP_URL` | Browser links | Public origin for auth and generated short URLs |
+
+Replace every placeholder with a development-safe value and never commit the
+result. [`.env.example`](.env.example) also contains infrastructure notes and
+reserved settings; the table above is intentionally limited to variables
+referenced by the current application.
+
+## Commands
+
+| Command | Purpose |
+| --- | --- |
+| `pnpm dev` | Start the Next.js development server |
+| `pnpm build` | Generate Prisma Client and create a production build |
+| `pnpm start` | Serve the production build |
+| `pnpm lint` | Run ESLint |
+| `pnpm typecheck` | Check TypeScript without emitting files |
+| `pnpm test --run` | Run the Vitest suite once |
+| `pnpm format:check` | Check Prettier formatting |
+| `pnpm format` | Rewrite files with Prettier |
+
+The GitHub Actions workflow runs dependency installation, lint, TypeScript,
+and the production build for pushes and pull requests targeting `main`.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  Browser[Tool interface] --> Local[Local transforms and storage]
+  Browser --> API[Next.js route handlers]
+  API --> External[DNS / email / target services]
+  API --> DB[(PostgreSQL / Prisma)]
+  DB --> Accounts[Accounts, shares, saved items, short URLs]
 ```
 
-## Project Structure
-
-```
-devtools/
-├── app/
-│   ├── (auth)/              # Auth pages (login, signup, profile, reset-password)
-│   ├── (legal)/             # Legal pages (privacy, terms, cookies, disclaimer)
-│   ├── (tools)/             # 30 tool pages
-│   ├── api/                 # API routes (auth, saved, shares, shortener)
-│   ├── docs/                # Documentation
-│   ├── share/               # Shared content viewer
-│   ├── layout.tsx           # Root layout
-│   └── page.tsx             # Home page
-├── components/
-│   ├── layout/              # Layout components (context menu, command palette, easter egg)
-│   ├── navbar/              # Navigation bar
-│   ├── providers/           # Theme, auth, query, tooltip providers
-│   └── ui/                  # Reusable UI primitives (shadcn)
-├── config/
-│   ├── navigation.tsx       # Navigation menu and tool definitions
-│   └── seo.ts               # SEO metadata for all pages
-├── features/
-│   ├── auth/                # Authentication hooks and components
-│   └── tools/               # Tool implementations
-│       ├── core/            # Shared hooks, components, plugins, context
-│       └── <tool>/          # Individual tool modules with tabs
-├── hooks/                   # Shared React hooks
-├── lib/                     # Utilities, API client, SEO helpers
-└── prisma/                  # Database schema and migrations
+```text
+app/(tools)/           Tool pages and route-level metadata
+features/tools/        Individual tools, tabs, hooks, data, and utilities
+features/auth/         Account-facing hooks and components
+app/api/               Auth, DNS, saved, share, URL, and webhook endpoints
+config/navigation.tsx  Searchable tool catalog and navigation
+lib/                   Auth, Prisma, API client, storage, and shared helpers
+prisma/schema.prisma   Server-backed data model
 ```
 
-## Keyboard Shortcuts
+## Deployment
 
-| Shortcut           | Action               |
-| ------------------ | -------------------- |
-| `Cmd+K` / `Ctrl+K` | Open command palette |
-| `↑↑↓↓←→←→BA`       | Easter egg           |
+The maintained deployment runs at
+[devtoolsn.vercel.app](https://devtoolsn.vercel.app). A self-hosted deployment
+needs a PostgreSQL database and production values for the active configuration
+above. Use HTTPS for auth and shared-content flows, set the canonical public
+origin consistently, and apply the Prisma schema before serving traffic.
 
-## Contributing
+## Limitations
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- Browser security policies can block cross-origin API checks even when the
+  target works from a server or CLI.
+- DNS, IP reputation, disposable-email, and similar third-party information can
+  be incomplete or stale.
+- Cryptographic utilities are convenience tools, not a substitute for a
+  reviewed key-management or password-storage design.
+- Share and URL-shortener availability depends on the deployment and database;
+  local-only utilities remain useful without an account.
 
-This project uses [Conventional Commits](https://www.conventionalcommits.org/) enforced by commitlint.
+## Contributing and security
 
-## Support
+Open a focused issue or pull request with reproduction steps, screenshots when
+useful, and the checks you ran. New tools should declare whether input stays in
+the browser, contacts a third party, or is persisted server-side.
 
-If this project has been useful, you can support its continued maintenance:
+Report vulnerabilities privately through the contact links on
+[the maintainer's GitHub profile](https://github.com/montasim), not in a public
+issue. Never include real secrets or user-submitted share content in reports.
 
-[![Support me on SupportKori](https://img.shields.io/badge/Support%20me-SupportKori-FFDD00?style=flat-square)](https://www.supportkori.com/montasim)
+Optional support through [SupportKori](https://www.supportkori.com/montasim)
+helps fund hosting and maintenance.
 
 ## License
 
-MIT
+Licensed under the [MIT License](LICENSE).
+
+## Maintainer
+
+[Mohammad Montasim Al Mamun Shuvo](https://github.com/montasim)
