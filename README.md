@@ -16,6 +16,19 @@ network checks use server-side APIs.
 **[Open DevTools](https://devtoolsn.vercel.app)** · Press `Ctrl+K` or `Cmd+K`
 inside the app to jump directly to a tool.
 
+> **Project status:** the public tool suite is actively deployed. Local-only
+> transforms work without an account; authentication, sync, sharing, short
+> links, and server-assisted network tools depend on the production APIs and
+> PostgreSQL configuration. CI validates lint, TypeScript, and a production
+> build for changes targeting `main`.
+
+## Why DevTools?
+
+Small developer tasks often mean searching for many unrelated websites,
+rechecking how each handles pasted data, and losing context between tools.
+DevTools keeps those workflows in one consistent, searchable interface and
+makes the local-versus-network processing boundary explicit.
+
 ## Tool collection
 
 | Area | Included workflows |
@@ -29,6 +42,33 @@ inside the app to jump directly to a tool.
 
 The navigation registry in [`config/navigation.tsx`](config/navigation.tsx) is
 the source of truth for the current catalog.
+
+## Using DevTools
+
+### Run a local transformation
+
+1. Open [DevTools](https://devtoolsn.vercel.app) and press `Ctrl+K` or `Cmd+K`.
+2. Search for a formatter, encoder, generator, parser, or reference page.
+3. Paste or generate the input and choose the relevant tab or operation.
+4. Review the result before copying or downloading it.
+5. Clear the browser state when working on a shared device.
+
+### Run a network check
+
+1. Open the API, WebSocket, DNS, CORS, STUN/TURN, webhook, or email-domain tool.
+2. Confirm that you are authorized to contact the target and that the request
+   contains no secret that should be kept out of a third-party service.
+3. Submit the narrowest useful request and inspect status, headers, timing, and
+   response output.
+4. Treat browser CORS failures and third-party lookup results as diagnostic
+   evidence, not definitive proof that a service is unavailable or safe.
+
+### Save or share work
+
+Sign in with email OTP to sync supported saved items. Creating a share or short
+link persists content or destination metadata on the server; set an expiration
+and password where supported, and remove saved material when it is no longer
+needed.
 
 ## Privacy boundary
 
@@ -48,6 +88,19 @@ the source of truth for the current catalog.
 Do not paste credentials, production private keys, personal data, or classified
 content into a networked workflow. Inspect the destination before sending an
 API or WebSocket request.
+
+## Technology
+
+| Area | Technology |
+| --- | --- |
+| Application | Next.js 16, React 19, TypeScript 5 |
+| Interface | Tailwind CSS 4, shadcn/ui, Radix UI, CodeMirror 6 |
+| Client data | TanStack React Query, local storage |
+| Server data | PostgreSQL, Prisma 7 |
+| Authentication | Better Auth email OTP, bcrypt |
+| Validation and formatting | Zod, AJV, Shiki, SQL Formatter |
+| Testing and quality | Vitest, Testing Library, ESLint, Prettier, GitHub Actions |
+| Deployment | Vercel |
 
 ## Platform features
 
@@ -74,6 +127,11 @@ cd devtools
 nvm use
 pnpm install
 cp .env.example .env
+```
+
+Replace `DATABASE_URL` and every secret placeholder before schema setup:
+
+```bash
 pnpm exec prisma generate
 pnpm exec prisma db push
 pnpm dev
@@ -93,11 +151,14 @@ The application code currently reads these settings:
 | --- | --- | --- |
 | `DATABASE_URL` | Server-backed features | PostgreSQL connection used by Prisma |
 | `BETTER_AUTH_SECRET` | Authentication | Better Auth signing secret; falls back to `JWT_SECRET` |
+| `JWT_SECRET` | Authentication fallback | Fallback signing secret when `BETTER_AUTH_SECRET` is absent |
 | `BETTER_AUTH_URL` | Authentication | Canonical auth origin; falls back to `BASE_URL` |
+| `BASE_URL` | Authentication fallback | Server-side fallback application origin |
 | `OTP_HMAC_SECRET` | Email OTP | HMAC secret used for OTP handling |
 | `RESEND_API_KEY` | Email OTP | Resend API key; without it, email delivery is skipped |
 | `FROM_EMAIL` | Email OTP | Verified sender address |
 | `NEXT_PUBLIC_APP_URL` | Browser links | Public origin for auth and generated short URLs |
+| `NEXT_PUBLIC_BASE_URL` | Browser auth fallback | Browser-visible fallback origin for the auth client |
 
 Replace every placeholder with a development-safe value and never commit the
 result. [`.env.example`](.env.example) also contains infrastructure notes and
@@ -112,10 +173,14 @@ referenced by the current application.
 | `pnpm build` | Generate Prisma Client and create a production build |
 | `pnpm start` | Serve the production build |
 | `pnpm lint` | Run ESLint |
+| `pnpm lint:fix` | Run ESLint and apply safe fixes |
 | `pnpm typecheck` | Check TypeScript without emitting files |
 | `pnpm test --run` | Run the Vitest suite once |
 | `pnpm format:check` | Check Prettier formatting |
 | `pnpm format` | Rewrite files with Prettier |
+
+`pnpm prepare` installs the repository's Husky hooks and normally runs as an
+install lifecycle step.
 
 The GitHub Actions workflow runs dependency installation, lint, TypeScript,
 and the production build for pushes and pull requests targeting `main`.
@@ -141,6 +206,16 @@ lib/                   Auth, Prisma, API client, storage, and shared helpers
 prisma/schema.prisma   Server-backed data model
 ```
 
+## Documentation
+
+- [In-app documentation](https://devtoolsn.vercel.app/docs)
+- [Tool registry](config/navigation.tsx)
+- [Environment template](.env.example)
+- [Database schema](prisma/schema.prisma)
+- [CI workflow](.github/workflows/ci.yml)
+- [Privacy boundary](#privacy-boundary)
+- [Local development](#run-locally)
+
 ## Deployment
 
 The maintained deployment runs at
@@ -159,6 +234,8 @@ origin consistently, and apply the Prisma schema before serving traffic.
   reviewed key-management or password-storage design.
 - Share and URL-shortener availability depends on the deployment and database;
   local-only utilities remain useful without an account.
+- The current CI workflow does not execute the Vitest suite; run
+  `pnpm test --run` explicitly when changing tool behavior.
 
 ## Contributing and security
 
@@ -170,8 +247,23 @@ Report vulnerabilities privately through the contact links on
 [the maintainer's GitHub profile](https://github.com/montasim), not in a public
 issue. Never include real secrets or user-submitted share content in reports.
 
+The repository currently has no dedicated `CONTRIBUTING.md`, `SECURITY.md`,
+`CODE_OF_CONDUCT.md`, or `SUPPORT.md`. Use
+[Issues](https://github.com/montasim/devtools/issues) for public reports,
+[Pull Requests](https://github.com/montasim/devtools/pulls) for changes, and the
+maintainer's profile for private security reports. Contributions use
+Conventional Commits as configured by commitlint.
+
 Optional support through [SupportKori](https://www.supportkori.com/montasim)
 helps fund hosting and maintenance.
+
+## Funding
+
+Optional SupportKori contributions help cover hosting, database services, and
+maintenance of the growing tool catalog. Bug reports, tests, accessibility
+improvements, and documentation are equally valuable.
+
+[![Support DevTools on SupportKori](https://img.shields.io/badge/Support_DevTools-SupportKori-00B8B5?style=for-the-badge)](https://www.supportkori.com/montasim)
 
 ## License
 
