@@ -56,8 +56,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Script
                     src="https://www.supportkori.com/widget.js"
                     data-id="montasim"
-                    data-message="Support montasim"
-                    data-color="#FFDD00"
+                    data-message="Support"
+                    data-color="#34a853"
                     data-position="right"
                     strategy="lazyOnload"
                 />
