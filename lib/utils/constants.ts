@@ -112,6 +112,8 @@ export const STORAGE_KEYS = {
     YAML_VALIDATE_CONTENT: 'yaml-validate-content',
     TIMESTAMP_CONVERT_CONTENT: 'timestamp-convert-content',
     JSON_ESCAPE_CONTENT: 'json-escape-content',
+    JSON_TO_TOON_CONTENT: 'json-to-toon-content',
+    TOON_TO_JSON_CONTENT: 'toon-to-json-content',
     REGEX_ESCAPE_CONTENT: 'regex-escape-content',
     SQL_ESCAPE_CONTENT: 'sql-escape-content',
     WEBHOOK_INBOX_ID: 'webhook-inbox-id',
@@ -119,6 +121,9 @@ export const STORAGE_KEYS = {
     IP_CIDR_INPUT: 'ip-cidr-input',
     CSV_CONVERT_CONTENT: 'csv-convert-content',
     CSV_PREVIEW_CONTENT: 'csv-preview-content',
+    LIVE_WEB_EDITOR_HTML_CONTENT: 'live-web-editor-html-content',
+    LIVE_WEB_EDITOR_CSS_CONTENT: 'live-web-editor-css-content',
+    LIVE_WEB_EDITOR_JS_CONTENT: 'live-web-editor-js-content',
 } as const;
 
 export const PAGE_NAMES = {
@@ -178,6 +183,7 @@ export const PAGE_NAMES = {
     WEBHOOK: 'webhook',
     IP: 'ip',
     CSV: 'csv',
+    LIVE_WEB_EDITOR: 'live-web-editor',
 } as const;
 
 export const BASE64_TABS = {
@@ -437,6 +443,10 @@ export const CSV_TABS = {
     PREVIEW: 'preview',
 } as const;
 
+export const LIVE_WEB_EDITOR_TABS = {
+    EDITOR: 'editor',
+} as const;
+
 export const TOOL_COUNT = Object.keys(PAGE_NAMES).length;
 
 export const TOOL_COUNT_LABEL = `${TOOL_COUNT - 3}+`;
@@ -495,4 +505,5 @@ export const TAB_NAMES = {
     ...WEBHOOK_TABS,
     ...IP_TABS,
     ...CSV_TABS,
+    ...LIVE_WEB_EDITOR_TABS,
 } as const;

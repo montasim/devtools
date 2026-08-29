@@ -11,7 +11,9 @@ import {
     Shield,
     FileCode,
     Braces,
-} from 'lucide-react';
+    Rows3,
+    BracesIcon,
+} from '@/components/icons';
 import { ToolPage } from '@/features/tools/core/components/tool-page';
 import { createSavedTabPlugin } from '@/features/tools/core/plugins/saved';
 import { createSharedTabPlugin } from '@/features/tools/core/plugins/shared';
@@ -46,6 +48,12 @@ const TypeScriptTab = lazy(
 ) as unknown as ComponentType<TabComponentProps>;
 const EscapeTab = lazy(
     () => import('@/features/tools/json/tabs/escape-tab'),
+) as unknown as ComponentType<TabComponentProps>;
+const JsonToToonTab = lazy(
+    () => import('@/features/tools/json/tabs/json-to-toon-tab'),
+) as unknown as ComponentType<TabComponentProps>;
+const ToonToJsonTab = lazy(
+    () => import('@/features/tools/json/tabs/toon-to-json-tab'),
 ) as unknown as ComponentType<TabComponentProps>;
 
 const JSON_TOOL = registerToolAndGet();
@@ -120,6 +128,20 @@ function registerToolAndGet() {
                 component: EscapeTab,
                 contentType: 'text' as const,
             },
+            {
+                id: 'json-to-toon',
+                label: 'JSON to TOON',
+                icon: Rows3,
+                component: JsonToToonTab,
+                contentType: 'json' as const,
+            },
+            {
+                id: 'toon-to-json',
+                label: 'TOON to JSON',
+                icon: BracesIcon,
+                component: ToonToJsonTab,
+                contentType: 'text' as const,
+            },
         ],
         plugins: {
             saved: createSavedTabPlugin({
@@ -171,6 +193,16 @@ function registerToolAndGet() {
                         icon: Braces,
                         color: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
                     },
+                    'json-to-toon': {
+                        name: 'JSON to TOON',
+                        icon: Rows3,
+                        color: 'bg-lime-100 text-lime-700 dark:bg-lime-900 dark:text-lime-300',
+                    },
+                    'toon-to-json': {
+                        name: 'TOON to JSON',
+                        icon: BracesIcon,
+                        color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300',
+                    },
                 },
                 tabMapping: {
                     diff: 'diff',
@@ -182,6 +214,8 @@ function registerToolAndGet() {
                     schema: 'schema',
                     typescript: 'typescript',
                     escape: 'escape',
+                    'json-to-toon': 'json-to-toon',
+                    'toon-to-json': 'toon-to-json',
                 },
                 storageKeyMapping: {
                     diff: 'json-diff-left-content',
@@ -193,6 +227,8 @@ function registerToolAndGet() {
                     schema: 'json-schema-json-content',
                     typescript: 'json-to-ts-input-content',
                     escape: 'json-escape-content',
+                    'json-to-toon': 'json-to-toon-content',
+                    'toon-to-json': 'toon-to-json-content',
                 },
             }),
             shared: createSharedTabPlugin({
@@ -244,6 +280,16 @@ function registerToolAndGet() {
                         icon: Braces,
                         color: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
                     },
+                    'json-to-toon': {
+                        name: 'JSON to TOON',
+                        icon: Rows3,
+                        color: 'bg-lime-100 text-lime-700 dark:bg-lime-900 dark:text-lime-300',
+                    },
+                    'toon-to-json': {
+                        name: 'TOON to JSON',
+                        icon: BracesIcon,
+                        color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300',
+                    },
                 },
                 tabMapping: {
                     diff: 'diff',
@@ -255,6 +301,8 @@ function registerToolAndGet() {
                     schema: 'schema',
                     typescript: 'typescript',
                     escape: 'escape',
+                    'json-to-toon': 'json-to-toon',
+                    'toon-to-json': 'toon-to-json',
                 },
                 storageKeys: {
                     diff: STORAGE_KEYS.JSON_DIFF_LEFT_CONTENT,
@@ -266,11 +314,14 @@ function registerToolAndGet() {
                     schema: STORAGE_KEYS.JSON_SCHEMA_JSON_CONTENT,
                     typescript: STORAGE_KEYS.JSON_TO_TS_INPUT_CONTENT,
                     escape: STORAGE_KEYS.JSON_ESCAPE_CONTENT,
+                    'json-to-toon': STORAGE_KEYS.JSON_TO_TOON_CONTENT,
+                    'toon-to-json': STORAGE_KEYS.TOON_TO_JSON_CONTENT,
                 },
             }),
             history: createHistoryTabPlugin({
                 pageName: 'json',
-                storageKeyFilter: (key) => key.startsWith('json-'),
+                storageKeyFilter: (key) =>
+                    key.startsWith('json-') || key === STORAGE_KEYS.TOON_TO_JSON_CONTENT,
                 toolMapping: {
                     diff: {
                         name: 'JSON Diff',
@@ -292,6 +343,16 @@ function registerToolAndGet() {
                         icon: Braces,
                         color: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
                     },
+                    'json-to-toon': {
+                        name: 'JSON to TOON',
+                        icon: Rows3,
+                        color: 'bg-lime-100 text-lime-700 dark:bg-lime-900 dark:text-lime-300',
+                    },
+                    'toon-to-json': {
+                        name: 'TOON to JSON',
+                        icon: BracesIcon,
+                        color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300',
+                    },
                 },
                 tabMapping: {
                     diff: 'diff',
@@ -300,6 +361,8 @@ function registerToolAndGet() {
                     viewer: 'viewer',
                     typescript: 'typescript',
                     escape: 'escape',
+                    'json-to-toon': 'json-to-toon',
+                    'toon-to-json': 'toon-to-json',
                 },
             }),
         },
